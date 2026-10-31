@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import type { Snapshot } from '../app/session';
+import { cheer } from './mascot/bus';
 
 /* Guida di montaggio: un passo per pezzo, con animazione nel visualizzatore. */
 
@@ -22,6 +23,10 @@ export function AssemblyPanel({ snap, step, setStep, playing, setPlaying }: {
     const t = setTimeout(() => setStep(step + 1), 2600);
     return () => clearTimeout(t);
   }, [playing, step, n, setStep, setPlaying]);
+
+  useEffect(() => {
+    if (n > 1 && step === n - 1) cheer('montaggio');
+  }, [step, n]);
 
   if (!n) {
     return (

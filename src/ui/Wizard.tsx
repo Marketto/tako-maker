@@ -2,6 +2,8 @@ import { useMemo, useState } from 'react';
 import { PRINTERS, store, uid } from '../app/store';
 import { COMMON_COLORS, MATERIALS } from '../data/materials';
 import type { Filament, UserSetup, Vec3 } from '../core/types';
+import { Polpetta } from './mascot/Polpetta';
+import { MusicButton } from './MusicButton';
 
 /* Prima configurazione: marca → modello → sistema multicolore → filamenti → chiave API. */
 
@@ -48,11 +50,15 @@ export function Wizard({ initial, onDone }: { initial?: UserSetup | null; onDone
 
       {step === 'welcome' && (
         <section className="wizard-card hero">
-          <img src={`${import.meta.env.BASE_URL}icons/icon.svg`} alt="" width={72} height={72} />
+          <div className="hero-mascot">
+            <div className="speech static">Ciao! Sono Polpetta ♡</div>
+            <Polpetta mood="felice" size={210} />
+          </div>
           <h1>Tako Maker</h1>
           <p>Descrivi l’oggetto che vuoi stampare: troviamo un modello libero o lo creiamo, e lo adattiamo alla tua stampante e ai tuoi filamenti.</p>
           <p className="muted">Prima due domande veloci sulla tua attrezzatura.</p>
-          <button className="btn primary big" onClick={() => setStep('brand')}>Iniziamo</button>
+          <button className="btn primary big" onClick={() => setStep('brand')}>Iniziamo!</button>
+          <div className="row gap center-row"><MusicButton /><span className="muted small">Musica rilassante</span></div>
         </section>
       )}
 
@@ -112,7 +118,10 @@ export function Wizard({ initial, onDone }: { initial?: UserSetup | null; onDone
 
       {step === 'filaments' && (
         <section className="wizard-card">
-          <h2>Quali filamenti hai?</h2>
+          <div className="row gap">
+            <Polpetta mood={filaments.length ? 'felice' : 'normale'} size={84} tips={filaments.map((f) => f.hex)} />
+            <h2>Quali filamenti hai?</h2>
+          </div>
           <p className="muted">Scegli il materiale, poi tocca i colori che possiedi.</p>
           <div className="segmented" role="tablist">
             {MATERIALS.slice(0, 7).map((m) => (

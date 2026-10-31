@@ -20,8 +20,8 @@ export default defineConfig({
         description:
           'Crea e adatta modelli 3D stampabili in base alla tua stampante e ai tuoi filamenti.',
         lang: 'it',
-        theme_color: '#1f6f5c',
-        background_color: '#f6f4ef',
+        theme_color: '#6a3fd8',
+        background_color: '#fbf7ff',
         display: 'standalone',
         orientation: 'any',
         start_url: '.',

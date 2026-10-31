@@ -28,7 +28,10 @@ src/
 │  ├─ assembly/plan.ts        guida di montaggio
 │  └─ export/                 3MF (Orca/Bambu e PrusaSlicer) e STL
 ├─ data/                      stampanti, materiali, modello d'esempio
-└─ ui/                        componenti React (wizard, home, area di lavoro, pannelli, anteprima)
+├─ ui/                        componenti React (wizard, home, area di lavoro, pannelli, anteprima)
+│  └─ mascot/                 Polpetta: sprite generati, umori, fumetto, frasi, bus di eventi
+└─ app/music.ts               musica di sottofondo generata con Web Audio
+tools/mascot/polpetta.py      generatore di Polpetta (sprite SVG + icone PWA)
 ```
 
 ## Flusso di un messaggio
@@ -68,3 +71,12 @@ e non calcola tempi o costi: modifica un documento JSON piccolo e valida, il res
 `vite-plugin-pwa` genera manifest e service worker (precache di app e WASM). L’app funziona offline
 per tutto ciò che non richiede l’AI: anteprima, analisi, montaggio, esportazione. Quando esce una
 nuova versione compare una barra “Aggiorna”.
+
+## Polpetta e atmosfera
+
+- **Sprite**: `tools/mascot/polpetta.py` genera `src/ui/mascot/sprites.ts` (un corpo comune + un viso per umore, ~7 KB compressi) e le icone in `public/icons/`. Le punte dei tentacoli usano le variabili CSS `--tip0…--tip6`, impostate con i colori dei filamenti dell'utente.
+- **Umori**: `MascotDock` deriva l'espressione dallo stato del progetto (in attesa dell'AI → pensierosa, calcolo → concentrata, errore → confusa, modifica riuscita/esportazione → felice).
+- **Frasi**: `ui/mascot/phrases.ts`, scelte localmente senza ripetizioni consecutive.
+- **Musica**: `app/music.ts` sintetizza in tempo reale accordi e carillon pentatonico; parte solo dopo un gesto dell'utente e si sospende quando la scheda è nascosta.
+- **Riduci movimento**: animazioni della mascotte, coriandoli e rimbalzi si disattivano se il sistema lo richiede.
+- **Font**: M PLUS Rounded 1c (licenza OFL) incluso nel bundle, solo il sottoinsieme latino.

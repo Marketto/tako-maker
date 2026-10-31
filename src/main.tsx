@@ -2,7 +2,10 @@ import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { registerSW } from 'virtual:pwa-register';
 import { App } from './App';
+import '@fontsource/m-plus-rounded-1c/latin-500.css';
+import '@fontsource/m-plus-rounded-1c/latin-800.css';
 import './styles.css';
+import { armMusicResume } from './ui/MusicButton';
 
 const updateSW = registerSW({
   onNeedRefresh() {
@@ -16,6 +19,8 @@ const updateSW = registerSW({
     document.body.appendChild(bar);
   },
 });
+
+armMusicResume();
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
