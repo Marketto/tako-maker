@@ -28,10 +28,20 @@ function sig(design: Design): string {
   return design.parts.map((p) => `${p.id}:${p.filamentId ?? ''}`).sort().join(',');
 }
 
+/** Raggio di arrotondamento ottenibile su un box (limitato dallo spessore). */
+function targetRadius(size: Vec3, radius = CHILD_RADIUS): number {
+  return Math.round(Math.min(radius, Math.min(...size) / 4) * 10) / 10;
+}
+
+const isSharp = (node: { size: Vec3; radius?: number }) => {
+  const t = targetRadius(node.size);
+  return t >= 0.3 && (node.radius ?? 0) < t - 0.05;
+};
+
 export function sharpBoxes(shape: ShapeNode): number {
   let n = 0;
   walkShape(shape, (node, ctx) => {
-    if (node.op === 'box' && !ctx.subtractive && (node.radius ?? 0) < 1) n++;
+    if (node.op === 'box' && !ctx.subtractive && isSharp(node)) n++;
   });
   return n;
 }
@@ -39,9 +49,8 @@ export function sharpBoxes(shape: ShapeNode): number {
 /** Copia della forma con gli spigoli esterni arrotondati. */
 export function roundShape(shape: ShapeNode, radius = CHILD_RADIUS, subtractive = false): ShapeNode {
   if (shape.op === 'box') {
-    if (subtractive || (shape.radius ?? 0) >= 1) return shape;
-    const r = Math.min(radius, Math.min(...shape.size) / 4);
-    return { ...shape, radius: Math.round(r * 10) / 10 };
+    if (subtractive || !isSharp(shape)) return shape;
+    return { ...shape, radius: targetRadius(shape.size, radius) };
   }
   if ('children' in shape) {
     return { ...shape, children: shape.children.map((c, i) => roundShape(c, radius, subtractive || (shape.op === 'difference' && i > 0))) };

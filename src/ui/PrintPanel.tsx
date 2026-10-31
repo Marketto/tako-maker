@@ -2,6 +2,8 @@ import type { ProjectSession, Snapshot } from '../app/session';
 import { printerById, useStore } from '../app/store';
 import { fmtTime, STRATEGY_LABEL } from '../core/analysis/estimate';
 import type { Connection, PrintStrategy } from '../core/types';
+import { cheer } from './mascot/bus';
+import { confetti } from './confetti';
 
 export function PrintPanel({ session, snap }: { session: ProjectSession; snap: Snapshot }) {
   const { setup } = useStore();
@@ -15,6 +17,8 @@ export function PrintPanel({ session, snap }: { session: ProjectSession; snap: S
     a.download = f.filename;
     a.click();
     setTimeout(() => URL.revokeObjectURL(url), 2000);
+    cheer('export');
+    confetti(setup!.filaments.map((x) => x.hex));
   };
 
   if (!d.parts.length) return <div className="panel-empty muted">Qui vedrai tempi, consumi ed esportazione quando il modello sarà pronto.</div>;

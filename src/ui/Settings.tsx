@@ -90,6 +90,18 @@ export function SettingsDialog({ onClose, onEditSetup }: { onClose: () => void; 
         </section>
 
         <section>
+          <h3>Atmosfera</h3>
+          <label className="check">
+            <input type="checkbox" checked={settings.mascotOn} onChange={(e) => store.setSettings({ mascotOn: e.target.checked })} />
+            Mostra Polpetta e le frasi di incitamento
+          </label>
+          <label className="field">
+            Volume della musica
+            <input type="range" min={0} max={1} step={0.05} value={settings.musicVolume} onChange={(e) => store.setSettings({ musicVolume: Number(e.target.value) })} />
+          </label>
+        </section>
+
+        <section>
           <h3>Attrezzatura</h3>
           <button className="btn" onClick={onEditSetup}>Cambia stampante o filamenti</button>
         </section>
