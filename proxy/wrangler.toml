@@ -1,0 +1,6 @@
+name = "tako-maker-proxy"
+main = "worker.js"
+compatibility_date = "2026-10-01"
+
+# I secret (ANTHROPIC_API_KEY, ACCESS_CODE, ALLOWED_ORIGIN) vengono impostati
+# dalla GitHub Action o a mano con `npx wrangler secret put NOME`.
