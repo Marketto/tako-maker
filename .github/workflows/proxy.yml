@@ -1,0 +1,40 @@
+name: Proxy opzionale (Cloudflare Worker)
+
+# Pubblica il proxy solo se hai configurato i secret necessari.
+# Senza secret il job viene saltato e l'app funziona con la chiave personale (BYOK).
+
+on:
+  push:
+    branches: [main]
+    paths: ['proxy/**', '.github/workflows/proxy.yml']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  deploy-proxy:
+    runs-on: ubuntu-latest
+    env:
+      HAS_CF: ${{ secrets.CLOUDFLARE_API_TOKEN != '' }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Secret mancanti
+        if: env.HAS_CF != 'true'
+        run: echo "CLOUDFLARE_API_TOKEN non impostato, proxy non pubblicato (è facoltativo)."
+      - name: Pubblica il Worker
+        if: env.HAS_CF == 'true'
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          workingDirectory: proxy
+          # I valori finiscono come secret del Worker, mai nel codice o nel sito.
+          secrets: |
+            ANTHROPIC_API_KEY
+            ACCESS_CODE
+            ALLOWED_ORIGIN
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          ACCESS_CODE: ${{ secrets.PROXY_ACCESS_CODE }}
+          ALLOWED_ORIGIN: ${{ secrets.PROXY_ALLOWED_ORIGIN }}
