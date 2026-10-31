@@ -172,3 +172,27 @@ describe('cerniere e colori', () => {
     expect(q?.options[0].ops).toEqual([{ op: 'update_part', id: 'screen', filamentId: 'f3' }]);
   });
 });
+
+describe('arrotondamento pezzi sottili', () => {
+  it('dopo aver arrotondato non ripropone la domanda (anche per box sottili)', () => {
+    const shape = { op: 'union' as const, children: [{ op: 'box' as const, size: [14, 12, 3] as [number, number, number] }, { op: 'box' as const, size: [100, 80, 10] as [number, number, number] }] };
+    expect(sharpBoxes(shape)).toBe(2);
+    expect(sharpBoxes(roundShape(shape))).toBe(0);
+  });
+});
+
+describe('montaggio con cerniera', () => {
+  it('la parte incernierata risulta unita alla base, senza animazione', async () => {
+    const w = await manifold();
+    const d = toyLaptop();
+    d.parts = d.parts.filter((p) => p.id !== 'keys');
+    d.parts[1].shape = { op: 'box', size: [160, 8, 100], at: [0, 102, 20] }; // non tocca la base
+    d.printPlan = { strategy: 'separate', connection: 'glue' };
+    const parts = evaluateDesign(w, d).parts;
+    const plan = planAssembly(d, parts.map((p) => ({ id: p.id, box: p.contactBox })));
+    const screen = plan.steps.find((s) => s.partId === 'screen')!;
+    expect(screen.text).toMatch(/cerniera/);
+    expect(screen.distance).toBe(0);
+    expect(plan.loose).toHaveLength(0);
+  });
+});

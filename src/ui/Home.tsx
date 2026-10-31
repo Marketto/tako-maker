@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { deleteProject, listProjects, printerById, saveProject, uid, useStore, type Project } from '../app/store';
 import { emptyDesign } from '../core/types';
 import { InstallButton } from './Install';
+import { MusicButton } from './MusicButton';
 import { demoDesign } from '../data/demo';
 
 export function Home({ onOpen, onSettings }: { onOpen: (id: string) => void; onSettings: () => void }) {
@@ -29,6 +30,7 @@ export function Home({ onOpen, onSettings }: { onOpen: (id: string) => void; onS
         </div>
         <div className="row gap">
           <InstallButton />
+          <MusicButton />
           <button className="icon-btn" onClick={onSettings} aria-label="Impostazioni">⚙</button>
         </div>
       </header>

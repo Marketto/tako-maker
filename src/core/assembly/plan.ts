@@ -46,6 +46,13 @@ export function planAssembly(design: Design, boxes: { id: string; box: Box }[], 
   if (boxes.length < 2) return { steps: [], loose: [] };
   const name = (id: string) => design.parts.find((p) => p.id === id)?.name ?? id;
   const contacts = findContacts(boxes);
+  // Le articolazioni stampate già montate contano come collegamento anche se i box non si toccano.
+  const ids = new Set(boxes.map((b) => b.id));
+  for (const j of design.joints) {
+    if (!ids.has(j.partA) || !ids.has(j.partB)) continue;
+    if (contacts.some((c) => [c.a, c.b].sort().join('|') === [j.partA, j.partB].sort().join('|'))) continue;
+    contacts.push({ a: j.partA, b: j.partB, axis: 2, center: j.origin, span: 0, dir: 1, depthA: 0, depthB: 0 });
+  }
   const jointPairs = new Map(design.joints.map((j) => [[j.partA, j.partB].sort().join('|'), j]));
 
   const byVol = [...boxes].sort((a, b) => volumeOf(b.box) - volumeOf(a.box));
@@ -106,7 +113,8 @@ export function planAssembly(design: Design, boxes: { id: string; box: Box }[], 
       text = `Accosta "${name(best.id)}" a ${target} ${from}.`;
     }
 
-    steps.push({ index: steps.length, partId: best.id, partName: name(best.id), attachTo, approach, distance: Math.max(20, size * 0.6), text, tips });
+    // Le parti incernierate escono già montate: nessuna animazione d'arrivo.
+    steps.push({ index: steps.length, partId: best.id, partName: name(best.id), attachTo, approach, distance: joint ? 0 : Math.max(20, size * 0.6), text, tips });
     placed.add(best.id);
   }
 

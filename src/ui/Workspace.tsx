@@ -7,6 +7,8 @@ import { ChatPanel } from './ChatPanel';
 import { PrintPanel } from './PrintPanel';
 import { AssemblyPanel } from './AssemblyPanel';
 import { BudgetBadge } from './Settings';
+import { MusicButton } from './MusicButton';
+import { MascotDock } from './mascot/MascotDock';
 
 type Tab = 'chat' | 'print' | 'assembly';
 
@@ -31,7 +33,7 @@ export function Workspace({ projectId, onBack, onSettings }: { projectId: string
 
 function WorkspaceInner({ session, onBack, onSettings }: { session: ProjectSession; onBack: () => void; onSettings: () => void }) {
   const snap = useSyncExternalStore(session.subscribe, session.getSnapshot);
-  const { setup } = useStore();
+  const { setup, settings } = useStore();
   const [tab, setTab] = useState<Tab>('chat');
   const [step, setStep] = useState(0);
   const [playing, setPlaying] = useState(false);
@@ -43,6 +45,8 @@ function WorkspaceInner({ session, onBack, onSettings }: { session: ProjectSessi
     return Object.fromEntries(snap.project.design.parts.map((p) => [p.id, byId.get(p.filamentId ?? '') ?? '#c9c4b8']));
   }, [snap.project.design, setup]);
 
+  const tips = useMemo(() => setup!.filaments.map((f) => f.hex), [setup]);
+  const compact = useMediaQuery('(max-width: 760px)');
   const hasAssembly = (snap.assembly?.steps.length ?? 0) > 1;
   useEffect(() => {
     if (step >= (snap.assembly?.steps.length ?? 0)) setStep(0);
@@ -64,6 +68,7 @@ function WorkspaceInner({ session, onBack, onSettings }: { session: ProjectSessi
         <div className="title" title={snap.project.design.name}>{snap.project.design.name}</div>
         <div className="row gap">
           <BudgetBadge />
+          <MusicButton />
           <button className="icon-btn" disabled={!snap.project.undo.length || !!snap.busy} onClick={() => session.undo()} aria-label="Annulla ultima modifica" title="Annulla">↶</button>
           <button className="icon-btn" onClick={onSettings} aria-label="Impostazioni">⚙</button>
         </div>
@@ -73,6 +78,7 @@ function WorkspaceInner({ session, onBack, onSettings }: { session: ProjectSessi
         <div className="ws-viewer">
           <Viewer3D parts={snap.parts} colors={colors} bed={bed} assembly={assemblyView} />
           {!snap.parts.length && <div className="viewer-hint">L’anteprima 3D comparirà qui</div>}
+          {settings.mascotOn && <MascotDock snap={snap} tips={tips} compact={compact} />}
           {snap.parts.length > 0 && (
             <div className="viewer-legend">
               {snap.parts.map((p) => (
@@ -101,4 +107,15 @@ function WorkspaceInner({ session, onBack, onSettings }: { session: ProjectSessi
       </div>
     </div>
   );
+}
+
+function useMediaQuery(q: string): boolean {
+  const [m, setM] = useState(() => window.matchMedia(q).matches);
+  useEffect(() => {
+    const mq = window.matchMedia(q);
+    const on = () => setM(mq.matches);
+    mq.addEventListener('change', on);
+    return () => mq.removeEventListener('change', on);
+  }, [q]);
+  return m;
 }

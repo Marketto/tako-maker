@@ -19,6 +19,11 @@ export type Settings = typeof DEFAULT_SETTINGS & {
   searchFirst: boolean;
   accessCode: string;
   rememberKey: boolean;
+  /** Musica di sottofondo (spenta di default). */
+  musicOn: boolean;
+  musicVolume: number;
+  /** Mascotte e frasi di incitamento. */
+  mascotOn: boolean;
 };
 
 interface AppState {
@@ -37,7 +42,7 @@ function load(): AppState {
       return null;
     }
   };
-  const settings = { ...DEFAULT_SETTINGS, searchFirst: true, accessCode: '', rememberKey: true, ...(parse<Partial<Settings>>(LS.settings) ?? {}) };
+  const settings = { ...DEFAULT_SETTINGS, searchFirst: true, accessCode: '', rememberKey: true, musicOn: false, musicVolume: 0.4, mascotOn: true, ...(parse<Partial<Settings>>(LS.settings) ?? {}) };
   return {
     setup: parse<UserSetup>(LS.setup),
     settings,
