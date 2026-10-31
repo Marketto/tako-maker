@@ -27,6 +27,10 @@ export interface ExportOptions {
   strategy: PrintStrategy;
   bed: Vec3;
   attribution?: Attribution;
+  /** Le parti sono già posizionate in coordinate del piatto: non spostarle (oggetti separati). */
+  keepPositions?: boolean;
+  /** File di testo aggiuntivi nel pacchetto (es. istruzioni). */
+  extraFiles?: Record<string, string>;
 }
 
 export function flavorForSlicer(slicer: string): SlicerFlavor {
@@ -115,14 +119,14 @@ function groupedLayout(parts: ExportPart[], bed: Vec3): Vec3[] {
 
 export function build3MF(parts: ExportPart[], opt: ExportOptions): Uint8Array {
   if (!parts.length) throw new Error('Nessuna parte da esportare');
-  const separate = opt.strategy === 'separate';
+  const separate = opt.strategy === 'separate' || !!opt.keepPositions;
   const all = bounds(parts.map((p) => p.mesh));
   const centerOffset: Vec3 = [
     opt.bed[0] / 2 - (all.min[0] + all.max[0]) / 2,
     opt.bed[1] / 2 - (all.min[1] + all.max[1]) / 2,
     -all.min[2],
   ];
-  const offsets = separate ? groupedLayout(parts, opt.bed) : parts.map(() => centerOffset);
+  const offsets: Vec3[] = opt.keepPositions ? parts.map(() => [0, 0, 0]) : separate ? groupedLayout(parts, opt.bed) : parts.map(() => centerOffset);
 
   const colors = parts.map((p) => p.filament?.hex ?? '#cccccc');
   const baseMaterials = `<basematerials id="1">${parts
@@ -209,6 +213,7 @@ ${meta.join('\n')}
   );
   files['3D/3dmodel.model'] = strToU8(model);
   if (opt.attribution) files['Metadata/ATTRIBUZIONE.txt'] = strToU8(attributionText(opt.attribution));
+  for (const [name, text] of Object.entries(opt.extraFiles ?? {})) files[name] = strToU8(text);
   return zipSync(files, { level: 6 });
 }
 

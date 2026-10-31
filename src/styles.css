@@ -328,3 +328,16 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
   .msg, .question, .result, .speech, .mascot-btn.jump, .icon-btn.music.on { animation: none !important; }
   .btn, .btn:hover, .btn:active { transition: none; transform: none; }
 }
+
+/* ---------- Consigli e campioni di prova ---------- */
+.tips-list { margin: 0.3rem 0; padding-left: 1.1rem; display: flex; flex-direction: column; gap: 0.3rem; font-size: 0.92rem; }
+.tips-list li::marker { content: '✦  '; color: var(--accent); }
+.material-note { background: var(--surface-2); border-radius: 14px; padding: 0.5rem 0.8rem; margin: 0.4rem 0; }
+.material-note summary { cursor: pointer; margin: 0; color: var(--ink); }
+.material-note ul { margin: 0.4rem 0 0.2rem; padding-left: 1.1rem; font-size: 0.9rem; }
+.calib { border: 2px solid var(--line); border-radius: 16px; padding: 0.7rem 0.8rem; margin-top: 0.7rem; display: flex; flex-direction: column; gap: 0.6rem; }
+.calib-head { display: flex; align-items: center; gap: 0.4rem; }
+.calib-head .badge { margin: 0; }
+.badge.off { background: var(--surface-2); color: var(--muted); }
+.calib-row { display: flex; flex-direction: column; gap: 0.3rem; font-size: 0.92rem; }
+.calib-row select { border: 2px solid var(--line); border-radius: 12px; padding: 0.45rem; background: var(--surface); min-height: 42px; }

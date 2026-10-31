@@ -42,4 +42,4 @@ Se qualcosa non va, il design resta invariato e l’AI riceve il messaggio d’e
 | Scatto (`detent`) | sfere sporgenti su B e incavi su A agli angoli indicati (default 0° e 90°) |
 | Perni tra parti separate | sulle facce di contatto (dai bounding box), diametro 3-8 mm; gioco 0,1 mm a incastro, 0,3 mm per colla; saltati se il foro non cadrebbe nel pieno |
 
-Le tolleranze sono in `TOL` e vanno tarate sulla propria stampante.
+Le tolleranze dipendono dal materiale di ogni parte (`src/data/guidelines.ts`) e dai valori calibrati con i campioni di prova (`src/core/calibration/`); vedi docs/ANALISI.md.

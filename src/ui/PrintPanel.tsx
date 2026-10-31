@@ -4,6 +4,8 @@ import { fmtTime, STRATEGY_LABEL } from '../core/analysis/estimate';
 import type { Connection, PrintStrategy } from '../core/types';
 import { cheer } from './mascot/bus';
 import { confetti } from './confetti';
+import { centerValue, materialsToTest, neededTests, TEST_HOWTO, TEST_KEYS, TEST_LABEL, testValues } from '../core/calibration/coupons';
+import { isCalibrated, tolerancesFor } from '../core/calibration/tolerances';
 
 export function PrintPanel({ session, snap }: { session: ProjectSession; snap: Snapshot }) {
   const { setup } = useStore();
@@ -20,6 +22,9 @@ export function PrintPanel({ session, snap }: { session: ProjectSession; snap: S
     cheer('export');
     confetti(setup!.filaments.map((x) => x.hex));
   };
+
+  const kinds = neededTests(d);
+  const mats = setup ? materialsToTest(d, setup) : [];
 
   if (!d.parts.length) return <div className="panel-empty muted">Qui vedrai tempi, consumi ed esportazione quando il modello sarà pronto.</div>;
 
@@ -87,6 +92,65 @@ export function PrintPanel({ session, snap }: { session: ProjectSession; snap: S
         </div>
       )}
 
+      {report && (report.tips.length > 0 || report.materialNotes.length > 0) && (
+        <>
+          <h3>Consigli per {printer.brand} {printer.model}</h3>
+          <ul className="tips-list">
+            {report.tips.map((t) => <li key={t}>{t}</li>)}
+          </ul>
+          {report.materialNotes.map((m) => (
+            <details key={m.material} className="material-note">
+              <summary>
+                <strong>{m.material}</strong> · ugello {m.nozzleC[0]}–{m.nozzleC[1]} °C · piatto {m.bedC[0]}–{m.bedC[1]} °C
+              </summary>
+              <ul>
+                {m.tips.map((t) => <li key={t}>{t}</li>)}
+              </ul>
+            </details>
+          ))}
+          <p className="muted small">Temperature indicative: segui l’etichetta della bobina e il profilo dello slicer.</p>
+        </>
+      )}
+
+      {kinds.length > 0 && (
+        <>
+          <h3>Campioni di prova</h3>
+          <p className="small">Stampa piccoli campioni con giochi diversi per trovare quello giusto per la tua stampante. Un piatto per materiale.</p>
+          <button className="btn" disabled={!!snap.busy} onClick={() => session.downloadCalibration()}>Scarica i campioni di prova</button>
+          {mats.map(({ material }) => (
+            <div key={material} className="calib">
+              <div className="calib-head">
+                <strong>{material}</strong>
+                <span className={`badge ${kinds.every((k) => isCalibrated(material, setup!, TEST_KEYS[k])) ? '' : 'off'}`}>
+                  {kinds.every((k) => isCalibrated(material, setup!, TEST_KEYS[k])) ? 'calibrato' : 'valori consigliati'}
+                </span>
+              </div>
+              {kinds.map((k) => {
+                const current = centerValue(k, tolerancesFor(material, setup!));
+                return (
+                  <label key={k} className="calib-row">
+                    <span>
+                      {TEST_LABEL[k]}
+                      <span className="muted small"> · {TEST_HOWTO[k]}</span>
+                    </span>
+                    <select
+                      aria-label={`Campione migliore ${TEST_LABEL[k]} ${material}`}
+                      value={String(current)}
+                      onChange={(e) => session.saveCalibration(material, k, Number(e.target.value))}
+                    >
+                      {!testValues(k, material).includes(current) && <option value={String(current)}>in uso: {fmtMm(current)}</option>}
+                      {testValues(k, material).map((v, i) => (
+                        <option key={v} value={String(v)}>{'●'.repeat(i + 1)} {fmtMm(v)}</option>
+                      ))}
+                    </select>
+                  </label>
+                );
+              })}
+            </div>
+          ))}
+        </>
+      )}
+
       {d.source && (
         <div className="attribution small">
           Remix di <a href={d.source.url} target="_blank" rel="noreferrer">{d.source.title}</a>{d.source.author ? ` di ${d.source.author}` : ''} · {d.source.license}. L’attribuzione viene inclusa nel file esportato.
@@ -102,3 +166,5 @@ export function PrintPanel({ session, snap }: { session: ProjectSession; snap: S
     </div>
   );
 }
+
+const fmtMm = (v: number) => `${v.toFixed(2).replace('.', ',')} mm`;
