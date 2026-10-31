@@ -35,3 +35,40 @@ Punteggio = ore + grammi di scarto / 20 + penalità (montaggio, attenzione richi
 Parte dalla parte più voluminosa, poi aggiunge per ampiezza le parti che toccano quelle già montate,
 scegliendo ogni volta quella con più contatti. Ogni passo ha testo, consigli (colla, pressione, scatti)
 e una direzione d’arrivo usata dall’anteprima per l’animazione.
+
+## Linee guida per stampante e materiale (`src/data/guidelines.ts`)
+
+Per ogni materiale: temperature indicative, ritiro, sbalzo e ponte massimi, delta sulle tolleranze,
+idoneità a scatti/incastri, tendenza a deformarsi, consigli pratici. Per la stampante: cinematica
+(CoreXY o piatto mobile), camera chiusa, ugello (`printers.json`).
+
+| Controllo | Quando |
+|---|---|
+| Elementi sottili | box non sottrattivi più sottili di 3 linee di estrusione (2,4 mm per bambini) |
+| Pezzi alti e stretti | stampante a piatto mobile, altezza > 60 mm e > 3 volte il lato minore |
+| Deformazione | materiali come ABS/ASA/PA/PC con pezzi più lunghi di 100 mm → brim |
+| Materiali incompatibili | parti a contatto nella stessa stampa che aderiscono male (PLA/PETG, PLA/ABS…) |
+| Scatti fragili | incastri o scatti in PLA → suggerisce PETG se disponibile |
+| Ritiro | materiali con ritiro > 0,4% e pezzi da incastrare → compensare la scala |
+| Cerniere | asse verticale o parti in TPU |
+
+Le stesse regole, con le tolleranze effettive, sono nel blocco “Linee guida da rispettare” del prompt
+(in cache), così l'AI crea modelli già conformi.
+
+## Tolleranze e campioni di prova (`src/core/calibration/`)
+
+Tolleranza effettiva = base → delta del materiale → valore calibrato dall'utente (`UserSetup.tolerances[materiale]`).
+Per ogni coppia di parti si usa la tolleranza più larga dei due materiali.
+
+Con giunti o incastri (e materiali non ancora calibrati) l'app chiede se stampare i campioni:
+
+| Prova | Campione | Valori |
+|---|---|---|
+| Cerniera | due placchette con cerniera stampata montata | consigliato ±0,1 mm (5 valori) |
+| Scatto | come sopra, con scatti a 0°, 90°, 180° | consigliato ±0,1 mm |
+| Incastro a pressione | perno + blocco con foro | consigliato ±0,1 mm (min 0) |
+| Perno da incollare | perno + blocco con foro | consigliato ±0,1 mm |
+
+Il numero di puntini in rilievo (1–5) identifica il campione. Un 3MF per piatto, un materiale per piatto;
+con più piatti si scarica uno zip con `LEGGIMI.txt`. La scelta del campione migliore si fa nella scheda
+Stampa → Campioni di prova.

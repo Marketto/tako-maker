@@ -1,5 +1,6 @@
 import type { ManifoldToplevel, Manifold } from 'manifold-3d';
-import type { Design, Joint, Part, ShapeNode, Vec3 } from '../types';
+import type { Design, Joint, Part, ShapeNode, Tolerances, Vec3 } from '../types';
+import { BASE_TOLERANCES } from '../../data/guidelines';
 
 /* Trasforma il Design in mesh triangolari usando manifold-3d (WASM).
    Gira in un Web Worker nel browser e direttamente in Node nei test. */
@@ -28,17 +29,8 @@ export interface EvalResult {
   errors: string[];
 }
 
-export const TOL = {
-  /** Gioco tra le parti di una cerniera stampata già montata. */
-  hingeGap: 0.4,
-  /** Gioco del perno nel foro. */
-  pinClearance: 0.35,
-  /** Gioco dello scatto (sfera nell'incavo). */
-  detentClearance: 0.25,
-  /** Foro del perno di collegamento: incastro a pressione / incollaggio. */
-  pegSnap: 0.1,
-  pegGlue: 0.3,
-};
+/** Tolleranze di base (le effettive dipendono dal materiale: core/calibration/tolerances.ts). */
+export const TOL: Tolerances = BASE_TOLERANCES;
 
 const SEG = 32;
 
@@ -140,11 +132,11 @@ interface JointGeometry {
 }
 
 /** Cerniera stampabile già montata: nocche A-B-A con perno integrato in A. */
-export function hingeGeometry(ctx: Ctx, j: Joint): JointGeometry {
+export function hingeGeometry(ctx: Ctx, j: Joint, tol: Tolerances = TOL): JointGeometry {
   const { Manifold } = ctx.w;
   const L = j.length ?? 30;
   const R = j.radius ?? 4;
-  const g = TOL.hingeGap;
+  const g = tol.hingeGap;
   const seg = (L - 2 * g) / 3;
   const pinR = R * 0.45;
   const z0 = -L / 2;
@@ -162,7 +154,7 @@ export function hingeGeometry(ctx: Ctx, j: Joint): JointGeometry {
   out.subB.push(
     placeOnAxis(ctx, cyl(seg + g, R + g, z0 - 0.01), j),
     placeOnAxis(ctx, cyl(seg + g, R + g, z0 + 2 * seg + g + 0.01), j),
-    placeOnAxis(ctx, cyl(L + 1, pinR + TOL.pinClearance, z0 - 0.5), j),
+    placeOnAxis(ctx, cyl(L + 1, pinR + tol.pinClearance, z0 - 0.5), j),
   );
   out.addB.push(placeOnAxis(ctx, kB, j));
 
@@ -176,7 +168,7 @@ export function hingeGeometry(ctx: Ctx, j: Joint): JointGeometry {
       out.addB.push(placeOnAxis(ctx, ctx.keep(ctx.keep(Manifold.sphere(bumpR, 16)).translate([ring, 0, fz])), j));
       for (const a of angles) {
         const rad = (a * Math.PI) / 180;
-        const dimple = ctx.keep(ctx.keep(Manifold.sphere(bumpR + TOL.detentClearance, 16)).translate([ring * Math.cos(rad), ring * Math.sin(rad), fz]));
+        const dimple = ctx.keep(ctx.keep(Manifold.sphere(bumpR + tol.detentClearance, 16)).translate([ring * Math.cos(rad), ring * Math.sin(rad), fz]));
         out.subA.push(placeOnAxis(ctx, dimple, j));
       }
     }
@@ -185,22 +177,22 @@ export function hingeGeometry(ctx: Ctx, j: Joint): JointGeometry {
 }
 
 /** Giunto rotante semplice: base A con perno, B ruota sopra con foro. */
-export function rotaryGeometry(ctx: Ctx, j: Joint): JointGeometry {
+export function rotaryGeometry(ctx: Ctx, j: Joint, tol: Tolerances = TOL): JointGeometry {
   const { Manifold } = ctx.w;
   const L = j.length ?? 10;
   const R = j.radius ?? 5;
   const pinR = R * 0.5;
   const pin = ctx.keep(ctx.keep(Manifold.cylinder(L, pinR, pinR * 0.9, SEG)).translate([0, 0, -L / 2]));
-  const hole = ctx.keep(ctx.keep(Manifold.cylinder(L + 1, pinR + TOL.pinClearance, pinR + TOL.pinClearance, SEG)).translate([0, 0, -L / 2]));
+  const hole = ctx.keep(ctx.keep(Manifold.cylinder(L + 1, pinR + tol.pinClearance, pinR + tol.pinClearance, SEG)).translate([0, 0, -L / 2]));
   const out: JointGeometry = { addA: [placeOnAxis(ctx, pin, j)], subA: [], addB: [], subB: [placeOnAxis(ctx, hole, j)] };
   if (j.detent?.enabled) {
     const bumpR = Math.max(0.6, R * 0.12);
-    const ring = pinR + TOL.pinClearance + bumpR * 1.5;
+    const ring = pinR + tol.pinClearance + bumpR * 1.5;
     out.addA.push(placeOnAxis(ctx, ctx.keep(ctx.keep(Manifold.sphere(bumpR, 16)).translate([ring, 0, -L / 2])), j));
     for (const a of j.detent.anglesDeg?.length ? j.detent.anglesDeg : [0, 90, 180, 270]) {
       const rad = (a * Math.PI) / 180;
       out.subB.push(
-        placeOnAxis(ctx, ctx.keep(ctx.keep(Manifold.sphere(bumpR + TOL.detentClearance, 16)).translate([ring * Math.cos(rad), ring * Math.sin(rad), -L / 2])), j),
+        placeOnAxis(ctx, ctx.keep(ctx.keep(Manifold.sphere(bumpR + tol.detentClearance, 16)).translate([ring * Math.cos(rad), ring * Math.sin(rad), -L / 2])), j),
       );
     }
   }
@@ -260,12 +252,12 @@ export function findContacts(boxes: { id: string; box: Box }[], tol = 0.3): Cont
   return out;
 }
 
-function pegGeometry(ctx: Ctx, c: Contact, snap: boolean): { addA: Manifold; subB: Manifold } | null {
+function pegGeometry(ctx: Ctx, c: Contact, snap: boolean, tol: Tolerances = TOL): { addA: Manifold; subB: Manifold } | null {
   const { Manifold } = ctx.w;
   const d = Math.min(8, Math.max(3, c.span * 0.25));
   const depth = Math.min(6, c.depthB * 0.6, c.depthA * 0.6);
   if (depth < 2 || c.span < d + 2) return null;
-  const clearance = snap ? TOL.pegSnap : TOL.pegGlue;
+  const clearance = snap ? tol.pegSnap : tol.pegGlue;
   const rot: Vec3 = c.axis === 0 ? [0, 90, 0] : c.axis === 1 ? [-90, 0, 0] : [0, 0, 0];
   const make = (r: number, h: number) => {
     let m = ctx.keep(Manifold.cylinder(h, r, snap ? r : r * 0.9, SEG));
@@ -286,7 +278,19 @@ function axisVec(axis: 0 | 1 | 2, s: number): Vec3 {
 
 /* ---------- Valutazione completa ---------- */
 
-export function evaluateDesign(w: ManifoldToplevel, design: Design, meshes: Record<string, RawMesh> = {}): EvalResult {
+/** Per ogni coppia usa la tolleranza più larga tra i due materiali (più sicuro). */
+function mergeTol(a?: Tolerances, b?: Tolerances): Tolerances {
+  if (!a && !b) return TOL;
+  if (!a || !b) return (a ?? b)!;
+  return Object.fromEntries(Object.keys(a).map((k) => [k, Math.max(a[k as keyof Tolerances], b[k as keyof Tolerances])])) as unknown as Tolerances;
+}
+
+export function evaluateDesign(
+  w: ManifoldToplevel,
+  design: Design,
+  meshes: Record<string, RawMesh> = {},
+  tolByPart: Record<string, Tolerances> = {},
+): EvalResult {
   const ctx = new Ctx(w, meshes);
   const errors: string[] = [];
   const base = new Map<string, Manifold>();
@@ -314,7 +318,8 @@ export function evaluateDesign(w: ManifoldToplevel, design: Design, meshes: Reco
   for (const j of design.joints) {
     if (!base.has(j.partA) || !base.has(j.partB)) continue;
     try {
-      const g = j.type === 'hinge' ? hingeGeometry(ctx, j) : j.type === 'rotary' ? rotaryGeometry(ctx, j) : null;
+      const t = mergeTol(tolByPart[j.partA], tolByPart[j.partB]);
+      const g = j.type === 'hinge' ? hingeGeometry(ctx, j, t) : j.type === 'rotary' ? rotaryGeometry(ctx, j, t) : null;
       if (!g) continue;
       push(add, j.partA, g.addA);
       push(sub, j.partA, g.subA);
@@ -331,7 +336,7 @@ export function evaluateDesign(w: ManifoldToplevel, design: Design, meshes: Reco
     const boxes = [...base.entries()].map(([id, m]) => ({ id, box: m.boundingBox() as Box }));
     for (const c of findContacts(boxes)) {
       if (jointPairs.has([c.a, c.b].sort().join('|'))) continue;
-      const g = pegGeometry(ctx, c, connection === 'snap');
+      const g = pegGeometry(ctx, c, connection === 'snap', mergeTol(tolByPart[c.a], tolByPart[c.b]));
       if (!g) continue;
       // Il foro deve cadere nel materiale di B (es. non tra due tasti) e il perno deve poggiare su A.
       const inB = ctx.keep(base.get(c.b)!.intersect(g.subB)).volume();
