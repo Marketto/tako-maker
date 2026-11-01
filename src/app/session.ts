@@ -103,8 +103,8 @@ export class ProjectSession {
     try {
       const r = await this.evaluate(d);
       if (seq !== this.evalSeq) return; // nel frattempo è arrivata una modifica più recente
-      const report = analyze(d, r.parts, this.setup, this.printer, new Set(this.snap.project.answered));
-      const assembly = d.printPlan.strategy === 'separate' ? planAssembly(d, r.parts.map((p) => ({ id: p.id, box: p.contactBox }))) : null;
+      const report = analyze(d, r.parts, this.setup, this.printer, new Set(this.snap.project.answered), { connectors: r.connectors, overlaps: r.overlaps });
+      const assembly = d.printPlan.strategy === 'separate' ? planAssembly(d, r.parts.map((p) => ({ id: p.id, box: p.contactBox })), d.printPlan.connection, r.connectors) : null;
       const meshInfo = this.snap.project.meshIds.map((id) => {
         const part = r.parts.find((p) => d.parts.find((x) => x.id === p.id)?.shape.op === 'mesh' && (d.parts.find((x) => x.id === p.id)!.shape as { ref: string }).ref === id);
         const size = part ? ([0, 1, 2].map((k) => part.bbox.max[k] - part.bbox.min[k]) as [number, number, number]) : ([0, 0, 0] as [number, number, number]);
@@ -171,9 +171,9 @@ export class ProjectSession {
       printer: this.printer,
       evaluate: async (d) => {
         const r = await this.evaluate(d);
-        return { parts: r.parts, errors: r.errors };
+        return { parts: r.parts, errors: r.errors, connectors: r.connectors, overlaps: r.overlaps };
       },
-      analyze: (d, parts) => analyze(d, parts, this.setup, this.printer, new Set(this.snap.project.answered)),
+      analyze: (d, parts, extras) => analyze(d, parts, this.setup, this.printer, new Set(this.snap.project.answered), extras),
     };
   }
 

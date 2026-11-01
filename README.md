@@ -22,7 +22,7 @@ Funziona su telefono, tablet e computer. Tutti i dati restano sul dispositivo.
 - **Campioni di prova**: con parti mobili o incastri l'app propone di stampare serie di campioni con giochi diversi (cerniera, scatto, incastro a pressione, perno da incollare), un piatto per materiale (più piatti se non ci stanno). Dopo la stampa scegli il campione migliore: quei valori vengono usati per tutti i modelli successivi con quel materiale.
 - **Guida di montaggio animata** passo passo per le parti separate.
 - **Esportazione 3MF** per Bambu Studio, OrcaSlicer, Creality Print, ElegooSlicer, Anycubic Slicer Next e PrusaSlicer (colori/estrusori assegnati quando lo slicer li legge), oppure **STL per ogni parte**.
-- **Polpetta, la mascotte**: un polpo kawaii in stile anime anni 2000 che cambia espressione mentre lavori (pensa, si concentra, si confonde, festeggia), dice frasi di incitamento e ha le punte dei tentacoli dei colori dei tuoi filamenti. Toccala per una coccola.
+- **Taky, la mascotte**: un polpo kawaii in stile anime anni 2000 che cambia espressione mentre lavori (pensa, si concentra, si confonde, festeggia), dice frasi di incitamento e ha le punte dei tentacoli dei colori dei tuoi filamenti. Toccala per una coccola.
 - **Musica rilassante** generata dal browser (accordi morbidi e carillon), spenta di default, con volume regolabile.
 - **Spesa sotto controllo**: contatore dei costi, tetto mensile, modalità risparmio, cache delle ricerche.
 

@@ -1,6 +1,7 @@
 import type { Design, PrinterSpec, Question, UserSetup } from '../core/types';
 import { applyOps, DesignError, type DesignOp } from '../core/design/ops';
 import type { AnalysisReport } from '../core/analysis';
+import type { ConnectorReport, OverlapReport } from '../core/geometry/evaluate';
 import type { PartStat } from '../core/analysis/estimate';
 import { fmtTime, STRATEGY_LABEL } from '../core/analysis/estimate';
 import type { ServerTool, ToolDef } from './client';
@@ -25,8 +26,8 @@ export interface ToolEnv {
   setup: UserSetup;
   printer: PrinterSpec;
   /** Calcola la geometria (Web Worker) e restituisce statistiche per parte. */
-  evaluate(d: Design): Promise<{ parts: PartStat[]; errors: string[] }>;
-  analyze(d: Design, parts: PartStat[]): AnalysisReport;
+  evaluate(d: Design): Promise<{ parts: PartStat[]; errors: string[]; connectors?: ConnectorReport[]; overlaps?: OverlapReport[] }>;
+  analyze(d: Design, parts: PartStat[], extras?: { connectors?: ConnectorReport[]; overlaps?: OverlapReport[] }): AnalysisReport;
 }
 
 export const TOOL_DEFS: Record<string, ToolDef | ServerTool> = {
@@ -141,13 +142,13 @@ export async function runTool(name: string, input: unknown, env: ToolEnv): Promi
       const ev = await env.evaluate(next);
       if (ev.errors.length) return { kind: 'result', content: `Geometria non valida: ${ev.errors.join(' | ')}`, isError: true };
       env.commit(next, typeof args.summary === 'string' ? args.summary : undefined);
-      const report = env.analyze(next, ev.parts);
+      const report = env.analyze(next, ev.parts, ev);
       return { kind: 'result', content: `OK. Parti: ${partsText(next, ev.parts, env.setup)}\nAnalisi:\n${reportText(report)}` };
     }
     case 'print_report': {
       const d = env.design();
       const ev = await env.evaluate(d);
-      return { kind: 'result', content: reportText(env.analyze(d, ev.parts)) };
+      return { kind: 'result', content: reportText(env.analyze(d, ev.parts, ev)) };
     }
     case 'ask_user': {
       const opts = Array.isArray(args.options) ? (args.options as { id: string; label: string }[]) : [];

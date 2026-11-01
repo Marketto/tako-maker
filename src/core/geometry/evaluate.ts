@@ -24,9 +24,29 @@ export interface PartResult {
   warnings: string[];
 }
 
+export interface ConnectorReport {
+  a: string;
+  b: string;
+  /** Perni inseriti tra le due parti. */
+  pegs: number;
+  diameter: number;
+  reason?: string;
+}
+
+export interface OverlapReport {
+  a: string;
+  b: string;
+  /** Volume compenetrato (mm³). */
+  volume: number;
+}
+
 export interface EvalResult {
   parts: PartResult[];
   errors: string[];
+  /** Perni generati per ogni coppia di parti da assemblare. */
+  connectors: ConnectorReport[];
+  /** Parti che si compenetrano (escluse quelle unite da giunti). */
+  overlaps: OverlapReport[];
 }
 
 /** Tolleranze di base (le effettive dipendono dal materiale: core/calibration/tolerances.ts). */
@@ -35,9 +55,9 @@ export const TOL: Tolerances = BASE_TOLERANCES;
 const SEG = 32;
 
 class Ctx {
-  created: Manifold[] = [];
+  created: { delete(): void }[] = [];
   constructor(public w: ManifoldToplevel, public meshes: Record<string, RawMesh>) {}
-  keep<T extends Manifold>(m: T): T {
+  keep<T extends { delete(): void }>(m: T): T {
     this.created.push(m);
     return m;
   }
@@ -252,29 +272,132 @@ export function findContacts(boxes: { id: string; box: Box }[], tol = 0.3): Cont
   return out;
 }
 
-function pegGeometry(ctx: Ctx, c: Contact, snap: boolean, tol: Tolerances = TOL): { addA: Manifold; subB: Manifold } | null {
-  const { Manifold } = ctx.w;
-  const d = Math.min(8, Math.max(3, c.span * 0.25));
-  const depth = Math.min(6, c.depthB * 0.6, c.depthA * 0.6);
-  if (depth < 2 || c.span < d + 2) return null;
-  const clearance = snap ? tol.pegSnap : tol.pegGlue;
-  const rot: Vec3 = c.axis === 0 ? [0, 90, 0] : c.axis === 1 ? [-90, 0, 0] : [0, 0, 0];
-  const make = (r: number, h: number) => {
-    let m = ctx.keep(Manifold.cylinder(h, r, snap ? r : r * 0.9, SEG));
-    if (c.dir === -1) m = ctx.keep(m.rotate([180, 0, 0]));
-    return ctx.keep(ctx.keep(m.rotate(rot)).translate(c.center));
-  };
-  // Il perno parte 1 mm dentro A per una buona fusione.
-  const pegBase = ctx.keep(make(d / 2, depth - 0.3 + 1).translate(axisVec(c.axis, -c.dir)));
-  const hole = make(d / 2 + clearance, depth);
-  return { addA: pegBase, subB: hole };
+/* Perni di allineamento/incastro posizionati lungo i bordi della superficie che combacia.
+   1. si porta l'asse del contatto su +Z (B sopra A);
+   2. si "affettano" A e B appena sotto/sopra il piano di contatto: l'intersezione è la sagoma reale
+      della faccia comune (funziona anche con i bordi sottili delle scatole cave);
+   3. la sagoma viene ristretta di raggio + gioco + parete: dove resta spazio, il perno ha materiale intorno;
+   4. si scelgono punti sul contorno ristretto (cioè vicino ai bordi), il più distanti possibile tra loro. */
+
+const PEG_WALL = 1.2;
+
+function toZ(m: Manifold, axis: 0 | 1 | 2, dir: 1 | -1): Manifold {
+  let r = m;
+  if (axis === 0) r = r.rotate([0, -90, 0]);
+  else if (axis === 1) r = r.rotate([90, 0, 0]);
+  if (dir === -1) r = r.rotate([180, 0, 0]);
+  return r;
 }
 
-function axisVec(axis: 0 | 1 | 2, s: number): Vec3 {
-  const v: Vec3 = [0, 0, 0];
-  v[axis] = s;
-  return v;
+function fromZ(m: Manifold, axis: 0 | 1 | 2, dir: 1 | -1): Manifold {
+  let r = m;
+  if (dir === -1) r = r.rotate([180, 0, 0]);
+  if (axis === 0) r = r.rotate([0, 90, 0]);
+  else if (axis === 1) r = r.rotate([-90, 0, 0]);
+  return r;
 }
+
+export function pointToZ([x, y, z]: Vec3, axis: 0 | 1 | 2, dir: 1 | -1): Vec3 {
+  let p: Vec3 = axis === 0 ? [-z, y, x] : axis === 1 ? [x, -z, y] : [x, y, z];
+  if (dir === -1) p = [p[0], -p[1], -p[2]];
+  return p;
+}
+
+type P2 = [number, number];
+
+/** Campiona i contorni ogni `step` mm. */
+function sampleContours(polys: P2[][], step: number): P2[] {
+  const out: P2[] = [];
+  for (const poly of polys)
+    for (let i = 0; i < poly.length; i++) {
+      const [x0, y0] = poly[i];
+      const [x1, y1] = poly[(i + 1) % poly.length];
+      const len = Math.hypot(x1 - x0, y1 - y0);
+      const n = Math.max(1, Math.floor(len / step));
+      for (let k = 0; k < n; k++) out.push([x0 + ((x1 - x0) * k) / n, y0 + ((y1 - y0) * k) / n]);
+    }
+  return out;
+}
+
+function perimeter(polys: P2[][]): number {
+  let p = 0;
+  for (const poly of polys) for (let i = 0; i < poly.length; i++) p += Math.hypot(poly[(i + 1) % poly.length][0] - poly[i][0], poly[(i + 1) % poly.length][1] - poly[i][1]);
+  return p;
+}
+
+/** Scelta "farthest point": punti ben distribuiti, i primi due agli estremi opposti. */
+export function spreadPoints(cands: P2[], count: number, minDist: number): P2[] {
+  if (!cands.length) return [];
+  const cx = cands.reduce((s, p) => s + p[0], 0) / cands.length;
+  const cy = cands.reduce((s, p) => s + p[1], 0) / cands.length;
+  let first = cands[0];
+  for (const p of cands) if (Math.hypot(p[0] - cx, p[1] - cy) > Math.hypot(first[0] - cx, first[1] - cy)) first = p;
+  const chosen: P2[] = [first];
+  while (chosen.length < count) {
+    let best: P2 | null = null;
+    let bestD = -1;
+    for (const p of cands) {
+      const d = Math.min(...chosen.map((c) => Math.hypot(p[0] - c[0], p[1] - c[1])));
+      if (d > bestD) {
+        bestD = d;
+        best = p;
+      }
+    }
+    if (!best || bestD < minDist) break;
+    chosen.push(best);
+  }
+  return chosen;
+}
+
+function placePegs(
+  ctx: Ctx,
+  A: Manifold,
+  B: Manifold,
+  c: Contact,
+  snap: boolean,
+  tol: Tolerances,
+): { addA: Manifold[]; subB: Manifold[]; report: Omit<ConnectorReport, 'a' | 'b'> } {
+  const { Manifold } = ctx.w;
+  const clearance = snap ? tol.pegSnap : tol.pegGlue;
+  const At = ctx.keep(toZ(A, c.axis, c.dir));
+  const Bt = ctx.keep(toZ(B, c.axis, c.dir));
+  const zc = pointToZ(c.center, c.axis, c.dir)[2];
+  const common = ctx.keep(ctx.keep(At.slice(zc - 0.2)).intersect(ctx.keep(Bt.slice(zc + 0.2))));
+  const none = (reason: string) => ({ addA: [], subB: [], report: { pegs: 0, diameter: 0, reason } });
+  if (common.isEmpty() || common.area() < 4) return none('le facce di contatto non combaciano');
+
+  const bbA = At.boundingBox() as Box;
+  const bbB = Bt.boundingBox() as Box;
+  const depth = Math.min(6, (bbB.max[2] - zc) * 0.6, (zc - bbA.min[2]) * 0.8);
+  if (depth < 2) return none('parti troppo sottili per i perni');
+
+  const fb = common.bounds();
+  const faceMin = Math.min(fb.max[0] - fb.min[0], fb.max[1] - fb.min[1]);
+  for (const d of [6, 5, 4, 3]) {
+    if (d > faceMin * 0.35 && d > 3) continue;
+    const r = d / 2;
+    const region = ctx.keep(common.offset(-(r + clearance + PEG_WALL), 'Round'));
+    if (region.isEmpty()) continue;
+    const polys = region.toPolygons() as P2[][];
+    const want = Math.max(2, Math.min(6, Math.round(perimeter(common.toPolygons() as P2[][]) / 80) + 1));
+    const pts = spreadPoints(sampleContours(polys, 2), want, Math.max(4 * d, 12));
+    const addA: Manifold[] = [];
+    const subB: Manifold[] = [];
+    for (const [x, y] of pts) {
+      const hole = ctx.keep(ctx.keep(Manifold.cylinder(depth, r + clearance, r + clearance, SEG)).translate([x, y, zc - 0.01]));
+      const seat = ctx.keep(ctx.keep(Manifold.cylinder(1.5, r, r, SEG)).translate([x, y, zc - 1.5]));
+      const inB = ctx.keep(Bt.intersect(hole)).volume();
+      const inA = ctx.keep(At.intersect(seat)).volume();
+      if (inB < hole.volume() * 0.95 || inA < seat.volume() * 0.95) continue;
+      const peg = ctx.keep(ctx.keep(Manifold.cylinder(depth - 0.3 + 1, r, snap ? r : r * 0.85, SEG)).translate([x, y, zc - 1]));
+      addA.push(ctx.keep(fromZ(peg, c.axis, c.dir)));
+      subB.push(ctx.keep(fromZ(hole, c.axis, c.dir)));
+    }
+    if (addA.length) return { addA, subB, report: { pegs: addA.length, diameter: d } };
+  }
+  return none(`bordi troppo sottili per un perno da 3 mm (serve una parete di almeno ${(3 + 2 * (PEG_WALL + clearance)).toFixed(1).replace('.', ',')} mm)`);
+}
+
 
 /* ---------- Valutazione completa ---------- */
 
@@ -331,21 +454,32 @@ export function evaluateDesign(
   }
 
   const { strategy, connection } = design.printPlan;
+  const connectors: ConnectorReport[] = [];
+  const jointPairs = new Set(design.joints.map((j) => [j.partA, j.partB].sort().join('|')));
   if (strategy === 'separate' && connection !== 'none') {
-    const jointPairs = new Set(design.joints.map((j) => [j.partA, j.partB].sort().join('|')));
     const boxes = [...base.entries()].map(([id, m]) => ({ id, box: m.boundingBox() as Box }));
     for (const c of findContacts(boxes)) {
       if (jointPairs.has([c.a, c.b].sort().join('|'))) continue;
-      const g = pegGeometry(ctx, c, connection === 'snap', mergeTol(tolByPart[c.a], tolByPart[c.b]));
-      if (!g) continue;
-      // Il foro deve cadere nel materiale di B (es. non tra due tasti) e il perno deve poggiare su A.
-      const inB = ctx.keep(base.get(c.b)!.intersect(g.subB)).volume();
-      const holeVol = g.subB.volume();
-      if (inB < holeVol * 0.9) continue;
-      push(add, c.a, [g.addA]);
-      push(sub, c.b, [g.subB]);
+      const g = placePegs(ctx, base.get(c.a)!, base.get(c.b)!, c, connection === 'snap', mergeTol(tolByPart[c.a], tolByPart[c.b]));
+      connectors.push({ a: c.a, b: c.b, ...g.report });
+      if (!g.addA.length) continue;
+      push(add, c.a, g.addA);
+      push(sub, c.b, g.subB);
     }
   }
+
+  // Compenetrazioni tra parti (le parti unite da giunti hanno già il loro gioco)
+  const overlaps: OverlapReport[] = [];
+  const ids = [...base.keys()];
+  for (let i = 0; i < ids.length; i++)
+    for (let k = i + 1; k < ids.length; k++) {
+      if (jointPairs.has([ids[i], ids[k]].sort().join('|'))) continue;
+      const A = base.get(ids[i])!.boundingBox() as Box;
+      const B = base.get(ids[k])!.boundingBox() as Box;
+      if ([0, 1, 2].some((d) => Math.min(A.max[d], B.max[d]) - Math.max(A.min[d], B.min[d]) <= 0.05)) continue;
+      const v = ctx.keep(base.get(ids[i])!.intersect(base.get(ids[k])!)).volume();
+      if (v > 1) overlaps.push({ a: ids[i], b: ids[k], volume: v });
+    }
 
   const parts: PartResult[] = [];
   for (const p of design.parts) {
@@ -380,7 +514,7 @@ export function evaluateDesign(
     });
   }
   ctx.dispose();
-  return { parts, errors };
+  return { parts, errors, connectors, overlaps };
 }
 
 function positionsOnly(vp: Float32Array, numProp: number, tri: Uint32Array): RawMesh {
