@@ -93,7 +93,7 @@ export function SettingsDialog({ onClose, onEditSetup }: { onClose: () => void; 
           <h3>Atmosfera</h3>
           <label className="check">
             <input type="checkbox" checked={settings.mascotOn} onChange={(e) => store.setSettings({ mascotOn: e.target.checked })} />
-            Mostra Polpetta e le frasi di incitamento
+            Mostra Taky e le frasi di incitamento
           </label>
           <label className="field">
             Volume della musica

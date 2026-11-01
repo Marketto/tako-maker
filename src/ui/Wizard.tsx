@@ -2,7 +2,7 @@ import { useMemo, useState } from 'react';
 import { PRINTERS, store, uid } from '../app/store';
 import { COMMON_COLORS, MATERIALS } from '../data/materials';
 import type { Filament, UserSetup, Vec3 } from '../core/types';
-import { Polpetta } from './mascot/Polpetta';
+import { Taky } from './mascot/Taky';
 import { MusicButton } from './MusicButton';
 
 /* Prima configurazione: marca → modello → sistema multicolore → filamenti → chiave API. */
@@ -51,8 +51,8 @@ export function Wizard({ initial, onDone }: { initial?: UserSetup | null; onDone
       {step === 'welcome' && (
         <section className="wizard-card hero">
           <div className="hero-mascot">
-            <div className="speech static">Ciao! Sono Polpetta ♡</div>
-            <Polpetta mood="felice" size={210} />
+            <div className="speech static">Ciao! Sono Taky ♡</div>
+            <Taky mood="felice" size={210} />
           </div>
           <h1>Tako Maker</h1>
           <p>Descrivi l’oggetto che vuoi stampare: troviamo un modello libero o lo creiamo, e lo adattiamo alla tua stampante e ai tuoi filamenti.</p>
@@ -119,7 +119,7 @@ export function Wizard({ initial, onDone }: { initial?: UserSetup | null; onDone
       {step === 'filaments' && (
         <section className="wizard-card">
           <div className="row gap">
-            <Polpetta mood={filaments.length ? 'felice' : 'normale'} size={84} tips={filaments.map((f) => f.hex)} />
+            <Taky mood={filaments.length ? 'felice' : 'normale'} size={84} tips={filaments.map((f) => f.hex)} />
             <h2>Quali filamenti hai?</h2>
           </div>
           <p className="muted">Scegli il materiale, poi tocca i colori che possiedi.</p>

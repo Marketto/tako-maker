@@ -72,3 +72,22 @@ Con giunti o incastri (e materiali non ancora calibrati) l'app chiede se stampar
 Il numero di puntini in rilievo (1–5) identifica il campione. Un 3MF per piatto, un materiale per piatto;
 con più piatti si scarica uno zip con `LEGGIMI.txt`. La scelta del campione migliore si fa nella scheda
 Stampa → Campioni di prova.
+
+## Coerenza della forma e perni di incastro
+
+Dopo ogni modifica, per le parti che vanno montate:
+
+| Controllo | Proposta (zero token) |
+|---|---|
+| Parti che si compenetrano | ricavare nella parte più grande la sede esatta della più piccola (`difference`) |
+| Spazio di 0,05–2 mm tra parti che dovrebbero toccarsi | avvicinarle (`move_part`) |
+| Facce a contatto con la stessa sagoma ma sfalsate | allinearle (`move_part`) |
+| Sagome quasi uguali (differenza ≤ 3 mm) | avviso: si vedrà un gradino |
+
+**Perni** (parti separate a incastro o da incollare, `core/geometry/evaluate.ts → placePegs`):
+1. il contatto viene ruotato su +Z e i due pezzi “affettati” appena sotto e sopra il piano: l'intersezione è la sagoma reale della faccia comune (anche i bordi sottili delle scatole cave);
+2. la sagoma si restringe di raggio + gioco + 1,2 mm di parete: dove resta spazio il perno ha materiale tutto intorno;
+3. i punti si scelgono sul contorno ristretto, quindi **vicino ai bordi**, il più distanti tra loro (almeno 2, fino a 6; diametro da 6 a 3 mm);
+4. ogni perno è verificato: il foro deve stare tutto nel materiale della parte superiore e il perno poggiare sul pieno.
+
+Se non c'è spazio per due perni l'app avvisa (un solo perno lascia ruotare il pezzo) e indica lo spessore di parete necessario.

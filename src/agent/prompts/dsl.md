@@ -31,5 +31,6 @@ Regole di stampabilità:
 - Appoggio piatto e ampio sul piano z=0. Sporgenze oltre 45° richiedono supporti: evitale.
 - Le parti di colore diverso che vanno stampate insieme devono toccarsi (facce combacianti), non compenetrarsi molto.
 - Tutto deve stare nel volume di stampa indicato nel contesto.
+- Parti da assemblare: facce di contatto piane e con la stessa sagoma (bordi che combaciano), niente compenetrazioni né piccoli spazi tra parti che devono toccarsi. Lungo i bordi di contatto lascia pareti di almeno 6 mm: l'app ci mette i perni di incastro (almeno due, vicino ai bordi). Se una parte si incastra dentro un'altra, ricava la sede con `difference` usando la stessa forma.
 - Mantieni il modello semplice: pochi nodi, forme pulite. Massimo ~40 parti e ~600 nodi in totale.
 - Usa id brevi e leggibili in minuscolo (es. "base", "schermo", "tasti").

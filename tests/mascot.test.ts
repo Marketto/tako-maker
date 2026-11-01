@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { BODY, FACES } from '../src/ui/mascot/sprites';
 import { PHRASES, pickPhrase } from '../src/ui/mascot/phrases';
 
-describe('Polpetta', () => {
+describe('Taky', () => {
   it('ha un viso per ogni umore e il segnaposto nel corpo', () => {
     expect(BODY).toContain('<!--FACE-->');
     expect(Object.keys(FACES).sort()).toEqual(['concentrata', 'confusa', 'felice', 'normale', 'pensierosa']);

@@ -21,7 +21,7 @@ Esegui sempre `npm test && npm run build` prima di proporre un commit.
 - **Linee guida di stampa** (materiali, tolleranze, temperature) solo in `src/data/guidelines.ts`; le tolleranze effettive passano sempre da `core/calibration/tolerances.ts`, mai valori fissi nella geometria.
 - **Mai** chiavi, token o dati personali nel codice, nei test o nei fixture. Il sito è pubblico.
 - **Licenze**: non aggiungere al repository modelli 3D di terzi. Il modello d’esempio è originale.
-- **Polpetta**: non modificare a mano `src/ui/mascot/sprites.ts` né le icone; cambia `tools/mascot/polpetta.py` e rigenera con `python3 tools/mascot/polpetta.py` (poi riconverti le PNG delle icone). Frasi nuove in `ui/mascot/phrases.ts`, brevi e gentili.
+- **Taky**: non modificare a mano `src/ui/mascot/sprites.ts` né le icone; cambia `tools/mascot/taky.py` e rigenera con `python3 tools/mascot/taky.py` (poi riconverti le PNG delle icone). Frasi nuove in `ui/mascot/phrases.ts`, brevi e gentili.
 - **Accessibilità e mobile**: bersagli tattili ≥ 40 px, etichette `aria-label` sui pulsanti a icona, layout verificato a 390 px di larghezza.
 
 ## Struttura

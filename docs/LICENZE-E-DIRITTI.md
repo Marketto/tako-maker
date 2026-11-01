@@ -21,7 +21,7 @@ L’app è pensata per un uso **personale e non commerciale** e per rispettare i
 
 - Codice: licenza MIT.
 - Dati delle stampanti: specifiche tecniche pubbliche, riportate in forma sintetica.
-- Polpetta (mascotte) e icone: personaggio e disegni originali del progetto, licenza MIT.
+- Taky (mascotte) e icone: personaggio e disegni originali del progetto, licenza MIT.
 - Musica: generata dal codice in tempo reale, nessun brano di terzi.
 - Font M PLUS Rounded 1c: SIL Open Font License 1.1 (pacchetto `@fontsource/m-plus-rounded-1c`).
 - Nessuna chiave, token o dato personale nel codice o nella cronologia git.

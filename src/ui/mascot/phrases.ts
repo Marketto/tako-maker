@@ -1,4 +1,4 @@
-/* Frasi di incitamento di Polpetta: tutte locali, zero token.
+/* Frasi di incitamento di Taky: tutte locali, zero token.
    Ogni evento ha più frasi; non si ripete la stessa due volte di fila. */
 
 export type PhraseKind =
@@ -15,7 +15,7 @@ export type PhraseKind =
 
 export const PHRASES: Record<PhraseKind, string[]> = {
   benvenuto: [
-    'Ciao! Sono Polpetta, ti aiuto a stampare ♡',
+    'Ciao! Sono Taky, ti aiuto a stampare ♡',
     'Bentornato! Ho lucidato tutti e otto i tentacoli ✦',
     'Eccoti! Cosa costruiamo oggi?',
   ],

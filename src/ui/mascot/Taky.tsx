@@ -1,14 +1,14 @@
 import { useMemo, type CSSProperties } from 'react';
 import { BODY, FACES, MASCOT_CSS, VIEWBOX, type Mood } from './sprites';
 
-/* Polpetta, la mascotte. Le punte dei tentacoli prendono i colori dei
+/* Taky, la mascotte. Le punte dei tentacoli prendono i colori dei
    filamenti dell'utente tramite le variabili CSS --tip0 … --tip6. */
 
 let injected = false;
 function injectCss() {
   if (injected || typeof document === 'undefined') return;
   const el = document.createElement('style');
-  el.dataset.polpetta = '';
+  el.dataset.taky = '';
   el.textContent = MASCOT_CSS;
   document.head.appendChild(el);
   injected = true;
@@ -16,12 +16,12 @@ function injectCss() {
 
 let seq = 0;
 
-export function Polpetta({
+export function Taky({
   mood = 'normale',
   size = 160,
   tips = [],
   className = '',
-  label = 'Polpetta, la mascotte di Tako Maker',
+  label = 'Taky, la mascotte di Tako Maker',
 }: {
   mood?: Mood;
   size?: number;
@@ -39,7 +39,7 @@ export function Polpetta({
   }, [tips]);
   return (
     <svg
-      className={`polpetta ${className}`}
+      className={`taky ${className}`}
       viewBox={VIEWBOX}
       width={size}
       height={Math.round((size * 400) / 410)}
