@@ -2,6 +2,7 @@ import { BufferGeometry, Mesh, Matrix4, type Object3D } from 'three';
 import { STLLoader } from 'three/examples/jsm/loaders/STLLoader.js';
 import { ThreeMFLoader } from 'three/examples/jsm/loaders/3MFLoader.js';
 import type { RawMesh } from './evaluate';
+import { t } from '../../i18n';
 
 /* Importa STL o 3MF scaricati dall'utente (es. da Printables) come RawMesh. */
 
@@ -51,8 +52,8 @@ export async function importModelFile(file: File): Promise<RawMesh> {
     group.traverse((o) => {
       if ((o as Mesh).isMesh) meshes.push(fromGeometry((o as Mesh).geometry as BufferGeometry, o.matrixWorld));
     });
-    if (!meshes.length) throw new Error('Il file 3MF non contiene mesh');
+    if (!meshes.length) throw new Error(t('Il file 3MF non contiene mesh'));
     return normalize(merge(meshes));
   }
-  throw new Error('Formato non supportato: usa STL o 3MF');
+  throw new Error(t('Formato non supportato: usa STL o 3MF'));
 }

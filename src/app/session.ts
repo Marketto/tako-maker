@@ -22,6 +22,7 @@ import { SKILLS, type SkillName } from '../agent/skills';
 import type { SearchResult, ToolEnv } from '../agent/tools';
 import type { ImportedMeshInfo } from '../agent/context';
 import { cachedSearch, loadMesh, printerById, saveMesh, saveProject, store, storeSearch, uid, type ChatItem, type Project } from './store';
+import { t } from '../i18n';
 
 /* Orchestratore di un progetto aperto: collega UI, router, agente,
    geometria (worker) e analisi locali. La UI si limita a leggere lo snapshot. */
@@ -120,7 +121,7 @@ export class ProjectSession {
         questions: [...(this.pendingAgent ? [this.pendingAgent.question] : []), ...report.questions],
       });
     } catch (e) {
-      this.set({ error: `Errore nel calcolo della geometria: ${(e as Error).message}` });
+      this.set({ error: t('Errore nel calcolo della geometria: {error}', { error: (e as Error).message }) });
     }
   }
 
@@ -201,10 +202,10 @@ export class ProjectSession {
     await this.pushChat({ role: 'user', text });
     const client = makeClient();
     if (!client.isConfigured()) {
-      this.set({ error: 'Per usare l’assistente aggiungi una chiave AI (Claude, GPT o Gemini) nelle impostazioni (icona ⚙).' });
+      this.set({ error: t('Per usare l’assistente aggiungi una chiave AI (Claude, GPT o Gemini) nelle impostazioni (icona ⚙).') });
       return;
     }
-    this.set({ busy: 'Capisco cosa ti serve…' });
+    this.set({ busy: t('Capisco cosa ti serve…') });
     try {
       const s = store.get().settings;
       const decision = force
@@ -216,7 +217,7 @@ export class ProjectSession {
       if (decision.skill === 'cerca-modelli') {
         const cached = await cachedSearch(text, LIMITS.searchCacheDays);
         if (cached) {
-          await this.pushChat({ role: 'assistant', text: 'Ecco i modelli trovati (ricerca già fatta di recente, nessun costo):', results: cached, skill: decision.skill, costUsd: 0 });
+          await this.pushChat({ role: 'assistant', text: t('Ecco i modelli trovati (ricerca già fatta di recente, nessun costo):'), results: cached, skill: decision.skill, costUsd: 0 });
           return;
         }
       }
@@ -234,13 +235,13 @@ export class ProjectSession {
       if (query && out.results.length) await storeSearch(query, out.results);
       await this.pushChat({
         role: 'assistant',
-        text: out.results.length ? out.text || 'Ecco cosa ho trovato. Scegline uno oppure chiedimi di crearlo da zero.' : 'Non ho trovato modelli con licenza adatta. Vuoi che lo crei da zero?',
+        text: out.results.length ? out.text || t('Ecco cosa ho trovato. Scegline uno oppure chiedimi di crearlo da zero.') : t('Non ho trovato modelli con licenza adatta. Vuoi che lo crei da zero?'),
         results: out.results,
         skill,
         costUsd: out.costUsd,
       });
     } else if (out.text || !out.question) {
-      await this.pushChat({ role: 'assistant', text: out.text || 'Fatto.', skill, costUsd: out.costUsd });
+      await this.pushChat({ role: 'assistant', text: out.text || t('Fatto.'), skill, costUsd: out.costUsd });
     }
     if (out.question && out.state) {
       this.pendingAgent = { question: out.question, state: out.state };
@@ -261,7 +262,7 @@ export class ProjectSession {
       const label = chosen.map((o) => o.label).join(', ') || 'nessuna preferenza';
       await this.pushChat({ role: 'user', text: label });
       const client = makeClient();
-      this.set({ busy: 'Continuo…', questions: this.snap.questions.filter((x) => x.id !== q.id) });
+      this.set({ busy: t('Continuo…'), questions: this.snap.questions.filter((x) => x.id !== q.id) });
       try {
         const out = await resumeAgent(this.baseInput(pending.state.skill.name, client), pending.state, label);
         await this.handleOutcome(out, pending.state.skill.name);
@@ -288,15 +289,15 @@ export class ProjectSession {
   async useAsInspiration(r: SearchResult) {
     const p = this.snap.project;
     await this.persist({ ...p, reference: r });
-    await this.send(`Crea un modello ispirato a "${r.title}": ${r.summary}`, 'crea-modello');
+    await this.send(t('Crea un modello ispirato a "{title}": {summary}', { title: r.title, summary: r.summary }), 'crea-modello');
   }
 
   async importFile(file: File, r?: SearchResult) {
     if (r && LICENSE_NO_DERIVATIVES.test(r.license)) {
-      this.set({ error: 'La licenza di questo modello non permette modifiche: puoi usarlo solo come ispirazione.' });
+      this.set({ error: t('La licenza di questo modello non permette modifiche: puoi usarlo solo come ispirazione.') });
       return;
     }
-    this.set({ busy: 'Importo il file…', error: null });
+    this.set({ busy: t('Importo il file…'), error: null });
     try {
       const mesh = await importModelFile(file);
       const id = `m${uid()}`;
@@ -307,10 +308,10 @@ export class ProjectSession {
       const design: Design = structuredClone(p.design);
       design.parts.push({ id: partId, name: file.name.replace(/\.(stl|3mf)$/i, ''), filamentId: this.setup.filaments[0]?.id, shape: { op: 'mesh', ref: id } });
       if (r) design.source = { kind: 'remix', title: r.title, url: r.url, author: r.author, license: r.license };
-      if (!design.name || design.name === 'Nuovo modello') design.name = r?.title ?? file.name;
+      if (!design.name || design.name === t('Nuovo modello')) design.name = r?.title ?? file.name;
       await this.persist({ ...p, meshIds: [...p.meshIds, id] });
       await this.commitDesign(design);
-      await this.pushChat({ role: 'assistant', text: `Ho importato "${file.name}". Ora puoi chiedermi delle modifiche.` });
+      await this.pushChat({ role: 'assistant', text: t('Ho importato "{file}". Ora puoi chiedermi delle modifiche.', { file: file.name }) });
     } catch (e) {
       this.set({ error: (e as Error).message });
     } finally {
@@ -331,15 +332,16 @@ export class ProjectSession {
 
   /** Genera e scarica i campioni di prova (un piatto per materiale). */
   async downloadCalibration(): Promise<CalibrationFiles | null> {
-    this.set({ busy: 'Preparo i campioni di prova…', error: null });
+    this.set({ busy: t('Preparo i campioni di prova…'), error: null });
     try {
       const files = await buildCalibrationFiles(this.snap.project.design, this.setup, this.printer, async (d, tol) => (await evaluateInWorker(d, {}, tol)).parts);
       downloadBlob(new Blob([files.data as BlobPart], { type: files.mime }), files.filename);
       await this.pushChat({
         role: 'assistant',
         text:
-          `Ecco i campioni di prova: ${files.plates} piatt${files.plates === 1 ? 'o' : 'i'} (${files.materials.join(', ')}). ` +
-          'Ogni campione ha da 1 a 5 puntini: dopo la stampa prova quale funziona meglio e indicalo nella scheda Stampa → Campioni di prova.\n\n' +
+          `${files.plates === 1 ? t('Ecco i campioni di prova: 1 piatto ({materials}).', { materials: files.materials.join(', ') }) : t('Ecco i campioni di prova: {n} piatti ({materials}).', { n: files.plates, materials: files.materials.join(', ') })} ` +
+          t('Ogni campione ha da 1 a 5 puntini: dopo la stampa prova quale funziona meglio e indicalo nella scheda Stampa → Campioni di prova.') +
+          '\n\n' +
           files.readme
             .split('\n')
             .filter((l) => /^ {2}●|^---|: /.test(l) && !/^Poi|^CAMPIONI/.test(l))

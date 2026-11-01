@@ -1,6 +1,7 @@
 import type { ManifoldToplevel, Manifold } from 'manifold-3d';
 import type { Design, Joint, Part, ShapeNode, Tolerances, Vec3 } from '../types';
 import { BASE_TOLERANCES } from '../../data/guidelines';
+import { msg } from '../../i18n';
 
 /* Trasforma il Design in mesh triangolari usando manifold-3d (WASM).
    Gira in un Web Worker nel browser e direttamente in Node nei test. */
@@ -30,7 +31,9 @@ export interface ConnectorReport {
   /** Perni inseriti tra le due parti. */
   pegs: number;
   diameter: number;
+  /** Frase italiana (tradotta nell'interfaccia: qui siamo nel worker). */
   reason?: string;
+  reasonVars?: Record<string, number>;
 }
 
 export interface OverlapReport {
@@ -363,13 +366,13 @@ function placePegs(
   const Bt = ctx.keep(toZ(B, c.axis, c.dir));
   const zc = pointToZ(c.center, c.axis, c.dir)[2];
   const common = ctx.keep(ctx.keep(At.slice(zc - 0.2)).intersect(ctx.keep(Bt.slice(zc + 0.2))));
-  const none = (reason: string) => ({ addA: [], subB: [], report: { pegs: 0, diameter: 0, reason } });
-  if (common.isEmpty() || common.area() < 4) return none('le facce di contatto non combaciano');
+  const none = (reason: string, reasonVars?: Record<string, number>) => ({ addA: [], subB: [], report: { pegs: 0, diameter: 0, reason, reasonVars } });
+  if (common.isEmpty() || common.area() < 4) return none(msg('le facce di contatto non combaciano'));
 
   const bbA = At.boundingBox() as Box;
   const bbB = Bt.boundingBox() as Box;
   const depth = Math.min(6, (bbB.max[2] - zc) * 0.6, (zc - bbA.min[2]) * 0.8);
-  if (depth < 2) return none('parti troppo sottili per i perni');
+  if (depth < 2) return none(msg('parti troppo sottili per i perni'));
 
   const fb = common.bounds();
   const faceMin = Math.min(fb.max[0] - fb.min[0], fb.max[1] - fb.min[1]);
@@ -395,7 +398,7 @@ function placePegs(
     }
     if (addA.length) return { addA, subB, report: { pegs: addA.length, diameter: d } };
   }
-  return none(`bordi troppo sottili per un perno da 3 mm (serve una parete di almeno ${(3 + 2 * (PEG_WALL + clearance)).toFixed(1).replace('.', ',')} mm)`);
+  return none(msg('bordi troppo sottili per un perno da 3 mm (serve una parete di almeno {wall} mm)'), { wall: 3 + 2 * (PEG_WALL + clearance) });
 }
 
 

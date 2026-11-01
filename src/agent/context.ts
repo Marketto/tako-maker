@@ -8,6 +8,7 @@ import type { Skill } from './skills';
 import { MATERIALS } from '../data/materials';
 import { guideline, minWall } from '../data/guidelines';
 import { tolerancesFor } from '../core/calibration/tolerances';
+import { localeInfo } from '../i18n';
 
 /* Costruzione del contesto pensata per il prompt caching:
    [system statico] + [DSL statico] + [skill] + [stampante e filamenti]  ← in cache
@@ -38,7 +39,13 @@ export function printerBlock(setup: UserSetup, printer: PrinterSpec): string {
       return `- ${m}: sbalzi max ${g.overhangDeg}°, ponti max ${g.bridgeMm} mm, ${g.goodForSnap ? 'adatto' : 'poco adatto'} a scatti/incastri, giochi${cal} cerniera ${t.hingeGap} mm, incastro ${t.pegSnap} mm, colla ${t.pegGlue} mm${g.warps ? ', tende a deformarsi: basi ampie e niente angoli vivi grandi' : ''}`;
     })
     .join('\n');
-  return `## Stampante e materiali dell'utente\nStampante: ${printer.brand} ${printer.model}, volume ${bed.join('×')} mm, ${printer.enclosed ? 'camera chiusa' : 'aperta'}, ${kin}, ugello ${nozzle} mm, ${multi}. Slicer: ${printer.slicer}.\nFilamenti disponibili (id=materiale colore): ${fil}.\n${notes}\n## Linee guida da rispettare\n- Pareti e dettagli: almeno ${minWall(nozzle, false)} mm (${minWall(nozzle, true)} mm per oggetti da bambini).\n- I giochi di cerniere e perni li applica l'app con i valori sotto: non aggiungerli tu nella geometria.\n${rules}\n- PLA e PETG (e PLA con ABS/ASA) aderiscono male tra loro: non metterli a contatto nella stessa stampa.\n- Cerniere stampate già montate: asse parallelo al piatto (x o y).`;
+  return `## Stampante e materiali dell'utente\nStampante: ${printer.brand} ${printer.model}, volume ${bed.join('×')} mm, ${printer.enclosed ? 'camera chiusa' : 'aperta'}, ${kin}, ugello ${nozzle} mm, ${multi}. Slicer: ${printer.slicer}.\nFilamenti disponibili (id=materiale colore): ${fil}.\n${notes}\n## Linee guida da rispettare\n- Pareti e dettagli: almeno ${minWall(nozzle, false)} mm (${minWall(nozzle, true)} mm per oggetti da bambini).\n- I giochi di cerniere e perni li applica l'app con i valori sotto: non aggiungerli tu nella geometria.\n${rules}\n- PLA e PETG (e PLA con ABS/ASA) aderiscono male tra loro: non metterli a contatto nella stessa stampa.\n- Cerniere stampate già montate: asse parallelo al piatto (x o y).${languageLine()}`;
+}
+
+/** Lingua delle risposte: l'interfaccia è tradotta, l'assistente deve seguirla. */
+function languageLine(): string {
+  const l = localeInfo();
+  return l.code === 'it' ? '' : `\n## Lingua\nL'utente usa l'app in ${l.english}: scrivi in ${l.english} tutti i testi per l'utente (messaggi, domande, opzioni, riassunti, nomi di parti nuove).`;
 }
 
 export function systemBlocks(skill: Skill, setup: UserSetup, printer: PrinterSpec) {

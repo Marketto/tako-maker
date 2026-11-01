@@ -4,6 +4,7 @@ import { emptyDesign } from '../core/types';
 import { InstallButton } from './Install';
 import { MusicButton } from './MusicButton';
 import { demoDesign } from '../data/demo';
+import { locale, t } from '../i18n';
 
 export function Home({ onOpen, onSettings }: { onOpen: (id: string) => void; onSettings: () => void }) {
   const { setup, keys } = useStore();
@@ -15,7 +16,7 @@ export function Home({ onOpen, onSettings }: { onOpen: (id: string) => void; onS
 
   const create = async (demo = false) => {
     const now = Date.now();
-    const design = demo && setup ? demoDesign(setup.filaments) : emptyDesign();
+    const design = demo && setup ? demoDesign(setup.filaments) : emptyDesign(t('Nuovo modello'));
     const p: Project = { id: uid(), name: design.name, design, undo: [], chat: [], answered: [], meshIds: [], createdAt: now, updatedAt: now };
     await saveProject(p);
     onOpen(p.id);
@@ -31,54 +32,54 @@ export function Home({ onOpen, onSettings }: { onOpen: (id: string) => void; onS
         <div className="row gap">
           <InstallButton />
           <MusicButton />
-          <button className="icon-btn" onClick={onSettings} aria-label="Impostazioni">⚙</button>
+          <button className="icon-btn" onClick={onSettings} aria-label={t('Impostazioni')}>⚙</button>
         </div>
       </header>
 
       <main className="home-main">
         <section className="setup-summary">
           <div>
-            <div className="muted small">La tua stampante</div>
-            <strong>{printer?.brand} {printer?.model}</strong>
+            <div className="muted small">{t('La tua stampante')}</div>
+            <strong>{t(printer?.brand ?? '')} {t(printer?.model ?? '')}</strong>
             {setup?.hasMulti && printer?.multi && <span className="badge">{printer.multi.system}</span>}
           </div>
           <div className="chips">
             {setup?.filaments.map((f) => (
-              <span key={f.id} className="chip small"><span className="dot" style={{ background: f.hex }} />{f.material} {f.colorName}</span>
+              <span key={f.id} className="chip small"><span className="dot" style={{ background: f.hex }} />{f.material} {t(f.colorName)}</span>
             ))}
           </div>
         </section>
 
         {!keys.some((k) => k.enabled && (k.key || k.baseUrl)) && (
-          <button className="notice" onClick={onSettings}>Aggiungi una chiave AI (Claude, GPT o Gemini) per usare l’assistente →</button>
+          <button className="notice" onClick={onSettings}>{t('Aggiungi una chiave AI (Claude, GPT o Gemini) per usare l’assistente →')}</button>
         )}
 
         <button className="new-project" onClick={() => create()}>
           <span className="plus">+</span>
           <span>
-            <strong>Nuovo modello</strong>
-            <span className="muted">Descrivi cosa vuoi stampare</span>
+            <strong>{t('Nuovo modello')}</strong>
+            <span className="muted">{t('Descrivi cosa vuoi stampare')}</span>
           </span>
         </button>
 
-        <button className="link small" onClick={() => create(true)}>Oppure apri un modello d’esempio (non serve la chiave)</button>
+        <button className="link small" onClick={() => create(true)}>{t('Oppure apri un modello d’esempio (non serve la chiave)')}</button>
 
-        <h2 className="section-title">I tuoi modelli</h2>
+        <h2 className="section-title">{t('I tuoi modelli')}</h2>
         {projects === null ? null : projects.length === 0 ? (
-          <p className="muted">Ancora nessun modello.</p>
+          <p className="muted">{t('Ancora nessun modello.')}</p>
         ) : (
           <ul className="project-list">
             {projects.map((p) => (
               <li key={p.id}>
                 <button className="project" onClick={() => onOpen(p.id)}>
                   <strong>{p.name}</strong>
-                  <span className="muted small">{p.design.parts.length} parti · {new Date(p.updatedAt).toLocaleDateString('it-IT')}</span>
+                  <span className="muted small">{t('{n} parti', { n: p.design.parts.length })} · {new Date(p.updatedAt).toLocaleDateString(locale())}</span>
                 </button>
                 <button
                   className="icon-btn"
-                  aria-label={`Elimina ${p.name}`}
+                  aria-label={t('Elimina {name}', { name: p.name })}
                   onClick={async () => {
-                    if (!confirm(`Eliminare "${p.name}"?`)) return;
+                    if (!confirm(t('Eliminare "{name}"?', { name: p.name }))) return;
                     await deleteProject(p);
                     setProjects(await listProjects());
                   }}

@@ -1,4 +1,5 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useSyncExternalStore } from 'react';
+import { locale, onLocaleChange } from './i18n';
 import { useStore } from './app/store';
 import { Wizard } from './ui/Wizard';
 import { Home } from './ui/Home';
@@ -15,6 +16,12 @@ function useHashRoute(): [string, (h: string) => void] {
     return () => window.removeEventListener('hashchange', on);
   }, []);
   return [hash, (h) => (location.hash = h)];
+}
+
+/** Ridisegna tutta l'app quando cambia la lingua (anche testi calcolati come analisi e guida). */
+export function LocaleRoot() {
+  const code = useSyncExternalStore(onLocaleChange, locale);
+  return <App key={code} />;
 }
 
 export function App() {

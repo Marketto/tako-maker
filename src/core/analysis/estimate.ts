@@ -1,5 +1,6 @@
 import type { Filament, PrinterSpec, PrintStrategy, UserSetup, Vec3 } from '../types';
 import { material } from '../../data/materials';
+import { msg, t } from '../../i18n';
 
 /* Stime volutamente semplici e trasparenti (vedi docs/ANALISI.md).
    Servono a confrontare le strategie tra loro, non a sostituire lo slicer. */
@@ -126,19 +127,19 @@ export function estimateStrategies(parts: PartStat[], setup: UserSetup, printer:
   };
 
   if (k <= 1) {
-    out.push(mk({ strategy: 'single', feasible: assembledFits, reason: assembledFits ? undefined : 'Il modello montato non entra nel piatto', timeS: baseTime, filamentG: totalG, wasteG: 0, plates: 1, colorChanges: 0, needsAssembly: false }));
+    out.push(mk({ strategy: 'single', feasible: assembledFits, reason: assembledFits ? undefined : t('Il modello montato non entra nel piatto'), timeS: baseTime, filamentG: totalG, wasteG: 0, plates: 1, colorChanges: 0, needsAssembly: false }));
   }
 
   // Multicolore in un'unica stampa
   {
     const multi = printer.multi;
     let reason: string | undefined;
-    if (k <= 1) reason = 'Un solo colore';
-    else if (!multi) reason = 'La stampante non ha un sistema multicolore';
-    else if (!setup.hasMulti) reason = `Non hai indicato di avere ${multi.system}`;
-    else if (k > multi.slots) reason = `Servono ${k} colori, ${multi.system} ne gestisce ${multi.slots}`;
-    else if (usedIds.some((id) => fil.get(id) && !material(fil.get(id)!.material).multiFriendly)) reason = 'Uno dei materiali non è adatto al sistema multicolore';
-    else if (!assembledFits) reason = 'Il modello montato non entra nel piatto';
+    if (k <= 1) reason = t('Un solo colore');
+    else if (!multi) reason = t('La stampante non ha un sistema multicolore');
+    else if (!setup.hasMulti) reason = t('Non hai indicato di avere {system}', { system: multi.system });
+    else if (k > multi.slots) reason = t('Servono {k} colori, {system} ne gestisce {slots}', { k, system: multi.system, slots: multi.slots });
+    else if (usedIds.some((id) => fil.get(id) && !material(fil.get(id)!.material).multiFriendly)) reason = t('Uno dei materiali non è adatto al sistema multicolore');
+    else if (!assembledFits) reason = t('Il modello montato non entra nel piatto');
     const changes = colorChangesPerPrint(parts);
     const purge = multi ? changes * multi.purgeMm3 : 0;
     out.push(mk({ strategy: 'multicolor', feasible: !reason, reason, timeS: baseTime + changes * (multi?.changeS ?? 0), filamentG: totalG, wasteG: avgDensityG(purge), plates: 1, colorChanges: changes, needsAssembly: false }));
@@ -147,7 +148,7 @@ export function estimateStrategies(parts: PartStat[], setup: UserSetup, printer:
   // Cambio colore manuale a quota (solo se i colori sono a fasce)
   if (k > 1) {
     const ok = isZStratified(parts) && assembledFits;
-    out.push(mk({ strategy: 'layer-swap', feasible: ok, reason: ok ? undefined : 'I colori non sono a fasce orizzontali', timeS: baseTime + (k - 1) * EST.layerSwapS, filamentG: totalG, wasteG: avgDensityG((k - 1) * EST.layerSwapWasteMm3), plates: 1, colorChanges: k - 1, needsAssembly: false }));
+    out.push(mk({ strategy: 'layer-swap', feasible: ok, reason: ok ? undefined : t('I colori non sono a fasce orizzontali'), timeS: baseTime + (k - 1) * EST.layerSwapS, filamentG: totalG, wasteG: avgDensityG((k - 1) * EST.layerSwapWasteMm3), plates: 1, colorChanges: k - 1, needsAssembly: false }));
   }
 
   // Parti separate, un piatto per colore (più piatti se non entrano)
@@ -161,26 +162,26 @@ export function estimateStrategies(parts: PartStat[], setup: UserSetup, printer:
         return s + (sz[0] + 5) * (sz[1] + 5);
       }, 0);
       plates += Math.max(1, Math.ceil(area / (bed[0] * bed[1] * 0.7)));
-      if (group.some((p) => !fitsBed(sizeOf(p.bbox), bed))) reason = 'Almeno una parte non entra nel piatto';
+      if (group.some((p) => !fitsBed(sizeOf(p.bbox), bed))) reason = t('Almeno una parte non entra nel piatto');
     }
     const fil = (id: string) => parts.find((p) => p.id === id)?.filamentId;
-    if (linked.some(([a, b]) => fil(a) !== fil(b))) reason = 'Una cerniera stampata già montata unisce parti di colori diversi';
-    const t = extrudeTimeS(totalVol, printer) + plates * EST.plateOverheadS + (plates - 1) * EST.manualSwapS;
-    out.push(mk({ strategy: 'separate', feasible: !reason, reason, timeS: t, filamentG: totalG, wasteG: 0, plates, colorChanges: 0, needsAssembly: true }));
+    if (linked.some(([a, b]) => fil(a) !== fil(b))) reason = t('Una cerniera stampata già montata unisce parti di colori diversi');
+    const time = extrudeTimeS(totalVol, printer) + plates * EST.plateOverheadS + (plates - 1) * EST.manualSwapS;
+    out.push(mk({ strategy: 'separate', feasible: !reason, reason, timeS: time, filamentG: totalG, wasteG: 0, plates, colorChanges: 0, needsAssembly: true }));
   }
 
   return out.sort((a, b) => a.score - b.score);
 }
 
 export const STRATEGY_LABEL: Record<PrintStrategy, string> = {
-  single: 'stampa unica, un colore',
-  multicolor: 'stampa multicolore unica',
-  separate: 'parti separate da assemblare',
-  'layer-swap': 'cambio colore manuale a quota',
+  single: msg('stampa unica, un colore'),
+  multicolor: msg('stampa multicolore unica'),
+  separate: msg('parti separate da assemblare'),
+  'layer-swap': msg('cambio colore manuale a quota'),
 };
 
 export function fmtTime(s: number): string {
   const h = Math.floor(s / 3600);
   const m = Math.round((s % 3600) / 60);
-  return h ? `${h} h ${m} min` : `${m} min`;
+  return h ? t('{h} h {m} min', { h, m }) : t('{m} min', { m });
 }
