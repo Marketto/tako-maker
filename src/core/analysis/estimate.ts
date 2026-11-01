@@ -165,7 +165,7 @@ export function estimateStrategies(parts: PartStat[], setup: UserSetup, printer:
       if (group.some((p) => !fitsBed(sizeOf(p.bbox), bed))) reason = t('Almeno una parte non entra nel piatto');
     }
     const fil = (id: string) => parts.find((p) => p.id === id)?.filamentId;
-    if (linked.some(([a, b]) => fil(a) !== fil(b))) reason = t('Una cerniera stampata già montata unisce parti di colori diversi');
+    if (linked.some(([a, b]) => fil(a) !== fil(b))) reason = t('Una parte stampata già montata (cerniera o pulsante) unisce parti di colori diversi');
     const time = extrudeTimeS(totalVol, printer) + plates * EST.plateOverheadS + (plates - 1) * EST.manualSwapS;
     out.push(mk({ strategy: 'separate', feasible: !reason, reason, timeS: time, filamentG: totalG, wasteG: 0, plates, colorChanges: 0, needsAssembly: true }));
   }

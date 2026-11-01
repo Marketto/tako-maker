@@ -75,11 +75,23 @@ export type ShapeNode =
   | (NodeBase & { op: 'mesh'; ref: string; scale?: number })
   | (NodeBase & { op: 'union' | 'difference' | 'intersection' | 'hull'; children: ShapeNode[] });
 
+/** Pulsante stampato già montato nel suo guscio: la meccanica la genera l'app. */
+export interface ButtonSpec {
+  /** Parte in cui è inserito il pulsante. */
+  housing: string;
+  /** Quanto sporge dalla superficie (mm). Lo sceglie l'utente. */
+  protrusionMm?: number;
+  /** Risposta alla pressione. La sceglie l'utente. */
+  feel?: 'click' | 'soft';
+}
+
 export interface Part {
   id: string;
   name: string;
   filamentId?: string;
   shape: ShapeNode;
+  /** Se presente, la parte è un pulsante: la forma indica solo l'impronta del tasto. */
+  button?: ButtonSpec;
 }
 
 export type JointType = 'hinge' | 'slider' | 'rotary';
