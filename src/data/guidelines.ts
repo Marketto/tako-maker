@@ -1,4 +1,5 @@
 import type { Tolerances } from '../core/types';
+import { msg } from '../i18n';
 
 /* Linee guida di stampa per materiale. Valori indicativi e prudenti, raccolti dalle
    pratiche comuni: l'etichetta della bobina e il profilo dello slicer hanno la precedenza.
@@ -42,40 +43,40 @@ const plus = (d: number): Partial<Tolerances> => ({
 export const GUIDELINES: Record<string, MaterialGuideline> = {
   PLA: {
     nozzleC: [190, 220], bedC: [50, 65], shrinkPct: 0.3, overhangDeg: 50, bridgeMm: 50, tol: {}, goodForSnap: false, warps: false,
-    tips: ['Rigido ma fragile: gli incastri a scatto usati spesso possono spezzarsi.', 'Si deforma al caldo (sopra i 50 °C circa): non lasciarlo in auto al sole.'],
+    tips: [msg('Rigido ma fragile: gli incastri a scatto usati spesso possono spezzarsi.'), msg('Si deforma al caldo (sopra i 50 °C circa): non lasciarlo in auto al sole.')],
   },
   'PLA-Silk': {
     nozzleC: [200, 230], bedC: [55, 65], shrinkPct: 0.3, overhangDeg: 45, bridgeMm: 35, tol: {}, goodForSnap: false, warps: false,
-    tips: ['Bello da vedere ma con strati meno uniti: evitalo per cerniere e incastri.'],
+    tips: [msg('Bello da vedere ma con strati meno uniti: evitalo per cerniere e incastri.')],
   },
   'PLA-Matte': {
     nozzleC: [200, 230], bedC: [55, 65], shrinkPct: 0.3, overhangDeg: 45, bridgeMm: 40, tol: {}, goodForSnap: false, warps: false,
-    tips: ['Leggermente più ruvido: le parti mobili possono richiedere un po’ di gioco in più.'],
+    tips: [msg('Leggermente più ruvido: le parti mobili possono richiedere un po’ di gioco in più.')],
   },
   PETG: {
     nozzleC: [230, 250], bedC: [70, 85], shrinkPct: 0.4, overhangDeg: 45, bridgeMm: 30, tol: plus(0.05), goodForSnap: true, warps: false,
-    tips: ['Ottimo per cerniere e incastri: è tenace e un po’ elastico.', 'Fa qualche filo (stringing): asciuga la bobina se succede spesso.', 'Sul piatto PEI liscio si attacca troppo: usa la colla stick come distaccante.'],
+    tips: [msg('Ottimo per cerniere e incastri: è tenace e un po’ elastico.'), msg('Fa qualche filo (stringing): asciuga la bobina se succede spesso.'), msg('Sul piatto PEI liscio si attacca troppo: usa la colla stick come distaccante.')],
   },
   ABS: {
     nozzleC: [240, 260], bedC: [90, 110], shrinkPct: 0.7, overhangDeg: 45, bridgeMm: 30, tol: plus(0.05), goodForSnap: true, warps: true,
-    tips: ['Serve la camera chiusa e una stanza ventilata.', 'Usa un brim sui pezzi grandi per evitare che si sollevino gli angoli.', 'Ritira circa lo 0,7%: compensa la scala nello slicer per pezzi da incastrare.'],
+    tips: [msg('Serve la camera chiusa e una stanza ventilata.'), msg('Usa un brim sui pezzi grandi per evitare che si sollevino gli angoli.'), msg('Ritira circa lo 0,7%: compensa la scala nello slicer per pezzi da incastrare.')],
   },
   ASA: {
     nozzleC: [240, 260], bedC: [90, 110], shrinkPct: 0.6, overhangDeg: 45, bridgeMm: 30, tol: plus(0.05), goodForSnap: true, warps: true,
-    tips: ['Come l’ABS ma resiste al sole: ideale per l’esterno.', 'Camera chiusa e brim sui pezzi grandi.'],
+    tips: [msg('Come l’ABS ma resiste al sole: ideale per l’esterno.'), msg('Camera chiusa e brim sui pezzi grandi.')],
   },
   TPU: {
     nozzleC: [210, 230], bedC: [30, 60], shrinkPct: 0.2, overhangDeg: 40, bridgeMm: 15,
     tol: { hingeGap: 0.5, pinClearance: 0.45, detentClearance: 0.3, pegSnap: 0, pegGlue: 0.3 }, goodForSnap: false, warps: false,
-    tips: ['Stampa lenta, meglio con estrusore diretto.', 'Non va nei sistemi multicolore standard: stampalo come parte separata.', 'È flessibile: perfetto per paracolpi e parti morbide, non per cerniere rigide.'],
+    tips: [msg('Stampa lenta, meglio con estrusore diretto.'), msg('Non va nei sistemi multicolore standard: stampalo come parte separata.'), msg('È flessibile: perfetto per paracolpi e parti morbide, non per cerniere rigide.')],
   },
   PA: {
     nozzleC: [250, 280], bedC: [70, 90], shrinkPct: 1, overhangDeg: 40, bridgeMm: 25, tol: plus(0.1), goodForSnap: true, warps: true,
-    tips: ['Assorbe umidità: essicca la bobina prima di stampare.', 'Camera chiusa consigliata; ritiro alto (circa 1%).'],
+    tips: [msg('Assorbe umidità: essicca la bobina prima di stampare.'), msg('Camera chiusa consigliata; ritiro alto (circa 1%).')],
   },
   PC: {
     nozzleC: [260, 300], bedC: [100, 120], shrinkPct: 0.6, overhangDeg: 40, bridgeMm: 25, tol: plus(0.05), goodForSnap: true, warps: true,
-    tips: ['Molto resistente ma difficile: camera chiusa, piatto caldo e brim.'],
+    tips: [msg('Molto resistente ma difficile: camera chiusa, piatto caldo e brim.')],
   },
 };
 

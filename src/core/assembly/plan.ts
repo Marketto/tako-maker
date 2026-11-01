@@ -1,5 +1,6 @@
 import type { Connection, Design, Vec3 } from '../types';
 import { findContacts, type Contact } from '../geometry/evaluate';
+import { msg, t } from '../../i18n';
 
 /* Guida di montaggio calcolata localmente (zero token):
    1. si parte dalla parte più grande (la "base");
@@ -33,9 +34,9 @@ interface Box {
 }
 
 const AXIS_WORD: Record<number, [string, string]> = {
-  0: ['da destra', 'da sinistra'],
-  1: ['da dietro', 'davanti'],
-  2: ['dall’alto', 'dal basso'],
+  0: [msg('da destra'), msg('da sinistra')],
+  1: [msg('da dietro'), msg('davanti')],
+  2: [msg('dall’alto'), msg('dal basso')],
 };
 
 function volumeOf(b: Box) {
@@ -74,8 +75,8 @@ export function planAssembly(
     attachTo: [],
     approach: [0, 0, 1],
     distance: 0,
-    text: `Appoggia "${name(byVol[0].id)}" sul tavolo: è la base.`,
-    tips: ['Rimuovi eventuali supporti e sbavature prima di iniziare.'],
+    text: t('Appoggia "{name}" sul tavolo: è la base.', { name: name(byVol[0].id) }),
+    tips: [t('Rimuovi eventuali supporti e sbavature prima di iniziare.')],
   });
 
   let progress = true;
@@ -97,27 +98,37 @@ export function planAssembly(
     const approach: Vec3 = [0, 0, 0];
     approach[c.axis] = sign;
     const words = AXIS_WORD[c.axis];
-    const from = sign > 0 ? words[0] : words[1];
+    const from = t(sign > 0 ? words[0] : words[1]);
     const attachTo = best.links.map((l) => (l.a === best!.id ? l.b : l.a)).filter((v, i, a) => a.indexOf(v) === i).map((id) => ({ id, name: name(id) }));
-    const joint = attachTo.map((t) => jointPairs.get([t.id, best!.id].sort().join('|'))).find(Boolean);
-    const target = attachTo.map((t) => `"${t.name}"`).join(' e ');
+    const joint = attachTo.map((a) => jointPairs.get([a.id, best!.id].sort().join('|'))).find(Boolean);
+    const quoted = attachTo.map((a) => `"${a.name}"`);
+    const target = quoted.length > 1 ? t('{a} e {b}', { a: quoted.slice(0, -1).join(', '), b: quoted[quoted.length - 1] }) : quoted.join('');
 
     let text: string;
     const tips: string[] = [];
     if (joint) {
-      text = `"${name(best.id)}" esce dalla stampa già unita a ${target} con la ${joint.type === 'hinge' ? 'cerniera' : 'articolazione'}: muovila con delicatezza per staccarla dal piatto e liberarla.`;
-      if (joint.detent?.enabled) tips.push('Muovila un paio di volte con decisione per “rodare” gli scatti.');
+      text =
+        joint.type === 'hinge'
+          ? t('"{name}" esce dalla stampa già unita a {target} con la cerniera: muovila con delicatezza per staccarla dal piatto e liberarla.', { name: name(best.id), target })
+          : t('"{name}" esce dalla stampa già unita a {target} con l\'articolazione: muovila con delicatezza per staccarla dal piatto e liberarla.', { name: name(best.id), target });
+      if (joint.detent?.enabled) tips.push(t('Muovila un paio di volte con decisione per “rodare” gli scatti.'));
     } else if (connection === 'snap') {
-      const n = attachTo.reduce((sum, t) => sum + pegsBetween(t.id, best!.id), 0);
-      text = `Allinea ${n > 1 ? `i ${n} perni` : n === 1 ? 'il perno' : 'i perni'} di "${name(best.id)}" ai fori di ${target} e premi ${from} fino in fondo.`;
-      tips.push('Se entra troppo duro, passa una punta da trapano nel foro o carta vetrata sul perno.');
-      tips.push('Premi in modo uniforme, senza fare leva su un lato.');
+      const n = attachTo.reduce((sum, a) => sum + pegsBetween(a.id, best!.id), 0);
+      const v = { n, name: name(best.id), target, from };
+      text =
+        n > 1
+          ? t('Allinea i {n} perni di "{name}" ai fori di {target} e premi {from} fino in fondo.', v)
+          : n === 1
+            ? t('Allinea il perno di "{name}" ai fori di {target} e premi {from} fino in fondo.', v)
+            : t('Allinea i perni di "{name}" ai fori di {target} e premi {from} fino in fondo.', v);
+      tips.push(t('Se entra troppo duro, passa una punta da trapano nel foro o carta vetrata sul perno.'));
+      tips.push(t('Premi in modo uniforme, senza fare leva su un lato.'));
     } else if (connection === 'glue') {
-      text = `Metti la colla sulla faccia di contatto, poi accosta "${name(best.id)}" a ${target} ${from} usando i perni di centraggio.`;
-      tips.push('Colla cianoacrilica per PLA/PETG: poche gocce, tieni premuto 30 secondi.');
-      tips.push('Prova prima a secco che i pezzi combacino.');
+      text = t('Metti la colla sulla faccia di contatto, poi accosta "{name}" a {target} {from} usando i perni di centraggio.', { name: name(best.id), target, from });
+      tips.push(t('Colla cianoacrilica per PLA/PETG: poche gocce, tieni premuto 30 secondi.'));
+      tips.push(t('Prova prima a secco che i pezzi combacino.'));
     } else {
-      text = `Accosta "${name(best.id)}" a ${target} ${from}.`;
+      text = t('Accosta "{name}" a {target} {from}.', { name: name(best.id), target, from });
     }
 
     // Le parti incernierate escono già montate: nessuna animazione d'arrivo.
@@ -134,7 +145,7 @@ export function planAssembly(
       attachTo: [],
       approach: [0, 0, 1],
       distance: Math.max(20, size * 0.6),
-      text: `Posiziona "${name(id)}" come mostrato nell’anteprima (non tocca altre parti).`,
+      text: t('Posiziona "{name}" come mostrato nell’anteprima (non tocca altre parti).', { name: name(id) }),
       tips: [],
     });
   }

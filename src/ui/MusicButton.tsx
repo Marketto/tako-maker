@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { store, useStore } from '../app/store';
 import { music } from '../app/music';
+import { t } from '../i18n';
 
 /* Interruttore della musica. Se l'utente l'aveva lasciata accesa, riparte
    al primo tocco sulla pagina (i browser non permettono l'avvio automatico). */
@@ -31,8 +32,8 @@ export function MusicButton() {
     <button
       className={`icon-btn music ${on ? 'on' : ''}`}
       aria-pressed={on}
-      aria-label={on ? 'Spegni la musica' : 'Accendi la musica rilassante'}
-      title={on ? 'Spegni la musica' : 'Musica rilassante'}
+      aria-label={on ? t('Spegni la musica') : t('Accendi la musica rilassante')}
+      title={on ? t('Spegni la musica') : t('Musica rilassante')}
       onClick={() => {
         store.setSettings({ musicOn: !on });
         if (on) music.stop();

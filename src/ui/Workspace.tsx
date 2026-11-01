@@ -9,6 +9,7 @@ import { AssemblyPanel } from './AssemblyPanel';
 import { BudgetBadge } from './Settings';
 import { MusicButton } from './MusicButton';
 import { MascotDock } from './mascot/MascotDock';
+import { t } from '../i18n';
 
 type Tab = 'chat' | 'print' | 'assembly';
 
@@ -26,8 +27,8 @@ export function Workspace({ projectId, onBack, onSettings }: { projectId: string
       alive = false;
     };
   }, [projectId]);
-  if (failed) return <div className="center-msg">Progetto non trovato. <button className="link" onClick={onBack}>Torna indietro</button></div>;
-  if (!session) return <div className="center-msg"><span className="spinner" /> Carico il progetto…</div>;
+  if (failed) return <div className="center-msg">{t('Progetto non trovato.')} <button className="link" onClick={onBack}>{t('Torna indietro')}</button></div>;
+  if (!session) return <div className="center-msg"><span className="spinner" /> {t('Carico il progetto…')}</div>;
   return <WorkspaceInner session={session} onBack={onBack} onSettings={onSettings} />;
 }
 
@@ -64,20 +65,20 @@ function WorkspaceInner({ session, onBack, onSettings }: { session: ProjectSessi
   return (
     <div className="workspace">
       <header className="topbar">
-        <button className="icon-btn" onClick={onBack} aria-label="Torna ai modelli">‹</button>
+        <button className="icon-btn" onClick={onBack} aria-label={t('Torna ai modelli')}>‹</button>
         <div className="title" title={snap.project.design.name}>{snap.project.design.name}</div>
         <div className="row gap">
           <BudgetBadge />
           <MusicButton />
-          <button className="icon-btn" disabled={!snap.project.undo.length || !!snap.busy} onClick={() => session.undo()} aria-label="Annulla ultima modifica" title="Annulla">↶</button>
-          <button className="icon-btn" onClick={onSettings} aria-label="Impostazioni">⚙</button>
+          <button className="icon-btn" disabled={!snap.project.undo.length || !!snap.busy} onClick={() => session.undo()} aria-label={t('Annulla ultima modifica')} title={t('Annulla')}>↶</button>
+          <button className="icon-btn" onClick={onSettings} aria-label={t('Impostazioni')}>⚙</button>
         </div>
       </header>
 
       <div className="ws-body">
         <div className="ws-viewer">
           <Viewer3D parts={snap.parts} colors={colors} bed={bed} assembly={assemblyView} />
-          {!snap.parts.length && <div className="viewer-hint">L’anteprima 3D comparirà qui</div>}
+          {!snap.parts.length && <div className="viewer-hint">{t('L’anteprima 3D comparirà qui')}</div>}
           {settings.mascotOn && <MascotDock snap={snap} tips={tips} compact={compact} />}
           {snap.parts.length > 0 && (
             <div className="viewer-legend">
@@ -91,11 +92,11 @@ function WorkspaceInner({ session, onBack, onSettings }: { session: ProjectSessi
         <aside className="ws-panel">
           <nav className="tabs" role="tablist">
             <button role="tab" aria-selected={tab === 'chat'} className={tab === 'chat' ? 'on' : ''} onClick={() => setTab('chat')}>
-              Assistente{pendingQuestions > 0 && tab !== 'chat' && <span className="pill">{pendingQuestions}</span>}
+              {t('Assistente')}{pendingQuestions > 0 && tab !== 'chat' && <span className="pill">{pendingQuestions}</span>}
             </button>
-            <button role="tab" aria-selected={tab === 'print'} className={tab === 'print' ? 'on' : ''} onClick={() => setTab('print')}>Stampa</button>
-            <button role="tab" aria-selected={tab === 'assembly'} className={tab === 'assembly' ? 'on' : ''} onClick={() => setTab('assembly')} disabled={!hasAssembly} title={hasAssembly ? '' : 'Disponibile con parti separate'}>
-              Montaggio
+            <button role="tab" aria-selected={tab === 'print'} className={tab === 'print' ? 'on' : ''} onClick={() => setTab('print')}>{t('Stampa')}</button>
+            <button role="tab" aria-selected={tab === 'assembly'} className={tab === 'assembly' ? 'on' : ''} onClick={() => setTab('assembly')} disabled={!hasAssembly} title={hasAssembly ? '' : t('Disponibile con parti separate')}>
+              {t('Montaggio')}
             </button>
           </nav>
           <div className="tab-body">

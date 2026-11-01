@@ -4,6 +4,7 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import type { PartResult } from '../core/geometry/evaluate';
 import type { AssemblyStep } from '../core/assembly/plan';
 import type { Vec3 } from '../core/types';
+import { t } from '../i18n';
 
 /* Anteprima 3D: rotazione (un dito / tasto sinistro), zoom (pizzico / rotellina),
    spostamento (due dita / tasto destro). In modalità montaggio anima il pezzo
@@ -182,5 +183,5 @@ export function Viewer3D({ parts, colors, bed, assembly }: Props) {
     } else r.anim = null;
   }, [assembly, parts]);
 
-  return <div ref={host} className="viewer" aria-label="Anteprima 3D: trascina per ruotare, pizzica o usa la rotellina per lo zoom" />;
+  return <div ref={host} className="viewer" aria-label={t('Anteprima 3D: trascina per ruotare, pizzica o usa la rotellina per lo zoom')} />;
 }

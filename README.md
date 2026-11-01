@@ -25,6 +25,7 @@ Funziona su telefono, tablet e computer. Tutti i dati restano sul dispositivo.
 - **Takotta, la mascotte**: un polpo kawaii in stile anime anni 2000 che cambia espressione mentre lavori (pensa, si concentra, si confonde, festeggia), dice frasi di incitamento e ha le punte dei tentacoli dei colori dei tuoi filamenti. Toccala per una coccola.
 - **Musica rilassante** generata dal browser (accordi morbidi e carillon), spenta di default, con volume regolabile.
 - **Più provider AI**: Claude, GPT e Gemini, anche più chiavi per provider con una priorità; se una chiave finisce il credito, va in pausa o non risponde, l'app passa automaticamente alla successiva.
+- **42 lingue**: italiano, inglese e tutte le altre lingue europee, più russo, cinese, arabo (da destra a sinistra), giapponese e coreano. La lingua si sceglie al primo avvio o nelle impostazioni (di default quella del dispositivo); anche l’AI risponde nella lingua scelta.
 - **Spesa sotto controllo**: contatore dei costi, tetto mensile, modalità risparmio, cache delle ricerche.
 
 Senza chiave puoi già provare il **modello d’esempio**: analisi, scatti, montaggio ed esportazione non usano l’API.
@@ -60,6 +61,7 @@ e per l’alternativa opzionale con un proxy che la tiene sul server.
 | [docs/ANALISI.md](docs/ANALISI.md) | Stime di tempo e scarto, domande automatiche, montaggio |
 | [docs/COSTI.md](docs/COSTI.md) | Come l’app risparmia credito API, con stime per operazione |
 | [docs/LICENZE-E-DIRITTI.md](docs/LICENZE-E-DIRITTI.md) | Licenze dei modelli, attribuzione, cosa fa e non fa l’app |
+| [docs/TRADUZIONI.md](docs/TRADUZIONI.md) | Come funzionano le lingue e come aggiungere o correggere una traduzione |
 | [docs/DEPLOY.md](docs/DEPLOY.md) | GitHub Pages, chiavi, proxy opzionale |
 | [CLAUDE.md](CLAUDE.md) | Istruzioni per chi sviluppa il progetto con Claude Code |
 

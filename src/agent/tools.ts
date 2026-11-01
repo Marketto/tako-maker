@@ -53,7 +53,7 @@ export const TOOL_DEFS: Record<string, ToolDef | ServerTool> = {
               url: { type: 'string' },
               site: { type: 'string' },
               author: { type: 'string' },
-              license: { type: 'string', description: 'Es. "CC BY 4.0", oppure "da verificare"' },
+              license: { type: 'string', description: 'Es. "CC BY 4.0", oppure "?" se non chiara' },
               summary: { type: 'string', description: 'Una frase in italiano' },
               printInPlace: { type: 'boolean' },
             },

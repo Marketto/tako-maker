@@ -3,6 +3,7 @@ import { Takotta, type Mood } from './Takotta';
 import { pickPhrase, type PhraseKind } from './phrases';
 import { onCheer } from './bus';
 import type { Snapshot } from '../../app/session';
+import { t } from '../../i18n';
 
 /* Takotta nell'area di lavoro: cambia espressione in base a cosa succede
    e ogni tanto dice una frase di incitamento nel fumetto. */
@@ -99,7 +100,7 @@ export function MascotDock({ snap, tips, compact }: { snap: Snapshot; tips: stri
           setJump((n) => n + 1);
           say('coccola', true);
         }}
-        aria-label="Coccola Takotta"
+        aria-label={t('Coccola Takotta')}
       >
         <Takotta mood={mood} size={compact ? 92 : 132} tips={tips} />
       </button>

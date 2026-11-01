@@ -1,5 +1,6 @@
 import { useMemo, type CSSProperties } from 'react';
 import { BODY, FACES, MASCOT_CSS, VIEWBOX, type Mood } from './sprites';
+import { t } from '../../i18n';
 
 /* Takotta, la mascotte. Le punte dei tentacoli prendono i colori dei
    filamenti dell'utente tramite le variabili CSS --tip0 … --tip6. */
@@ -21,7 +22,7 @@ export function Takotta({
   size = 160,
   tips = [],
   className = '',
-  label = 'Takotta, la mascotte di Printopus',
+  label,
 }: {
   mood?: Mood;
   size?: number;
@@ -44,7 +45,7 @@ export function Takotta({
       width={size}
       height={Math.round((size * 400) / 410)}
       role="img"
-      aria-label={label}
+      aria-label={label ?? t('Takotta, la mascotte di Printopus')}
       style={style}
       dangerouslySetInnerHTML={{ __html: html }}
     />
