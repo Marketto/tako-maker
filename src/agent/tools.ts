@@ -1,7 +1,7 @@
 import type { Design, PrinterSpec, Question, UserSetup } from '../core/types';
 import { applyOps, DesignError, type DesignOp } from '../core/design/ops';
 import type { AnalysisReport } from '../core/analysis';
-import type { ConnectorReport, OverlapReport } from '../core/geometry/evaluate';
+import type { ButtonReport, ConnectorReport, OverlapReport } from '../core/geometry/evaluate';
 import type { PartStat } from '../core/analysis/estimate';
 import { fmtTime, STRATEGY_LABEL } from '../core/analysis/estimate';
 import type { ServerTool, ToolDef } from './client';
@@ -26,8 +26,8 @@ export interface ToolEnv {
   setup: UserSetup;
   printer: PrinterSpec;
   /** Calcola la geometria (Web Worker) e restituisce statistiche per parte. */
-  evaluate(d: Design): Promise<{ parts: PartStat[]; errors: string[]; connectors?: ConnectorReport[]; overlaps?: OverlapReport[] }>;
-  analyze(d: Design, parts: PartStat[], extras?: { connectors?: ConnectorReport[]; overlaps?: OverlapReport[] }): AnalysisReport;
+  evaluate(d: Design): Promise<{ parts: PartStat[]; errors: string[]; connectors?: ConnectorReport[]; overlaps?: OverlapReport[]; buttons?: ButtonReport[] }>;
+  analyze(d: Design, parts: PartStat[], extras?: { connectors?: ConnectorReport[]; overlaps?: OverlapReport[]; buttons?: ButtonReport[] }): AnalysisReport;
 }
 
 export const TOOL_DEFS: Record<string, ToolDef | ServerTool> = {
@@ -132,6 +132,13 @@ function withoutUserChoices(o: DesignOp): DesignOp {
     const { decision: _d, ...patch } = o.patch;
     return { ...o, patch };
   }
+  // Sporgenza e risposta dei pulsanti le sceglie l'utente (domande dell'app).
+  const bare = <T extends { protrusionMm?: number; feel?: unknown }>(b: T): T => {
+    const { protrusionMm: _p, feel: _f, ...rest } = b;
+    return rest as T;
+  };
+  if (o && o.op === 'add_part' && o.part?.button) return { ...o, part: { ...o.part, button: bare(o.part.button) } };
+  if (o && o.op === 'update_part' && o.button) return { ...o, button: bare(o.button) };
   return o;
 }
 

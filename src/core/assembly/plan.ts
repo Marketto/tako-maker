@@ -61,6 +61,12 @@ export function planAssembly(
     if (contacts.some((c) => [c.a, c.b].sort().join('|') === [j.partA, j.partB].sort().join('|'))) continue;
     contacts.push({ a: j.partA, b: j.partB, axis: 2, center: j.origin, span: 0, dir: 1, depthA: 0, depthB: 0 });
   }
+  // Anche i pulsanti escono già montati nel loro guscio.
+  const buttonOf = new Map(design.parts.filter((p) => p.button && ids.has(p.id) && ids.has(p.button.housing)).map((p) => [p.id, p.button!.housing]));
+  for (const [b, h] of buttonOf) {
+    if (contacts.some((c) => [c.a, c.b].sort().join('|') === [b, h].sort().join('|'))) continue;
+    contacts.push({ a: h, b, axis: 2, center: [0, 0, 0], span: 0, dir: 1, depthA: 0, depthB: 0 });
+  }
   const jointPairs = new Map(design.joints.map((j) => [[j.partA, j.partB].sort().join('|'), j]));
 
   const byVol = [...boxes].sort((a, b) => volumeOf(b.box) - volumeOf(a.box));
@@ -110,7 +116,9 @@ export function planAssembly(
 
     let text: string;
     const tips: string[] = [];
-    if (joint) {
+    if (buttonOf.has(best.id)) {
+      text = t('"{name}" esce dalla stampa già montato in {target}: premilo qualche volta per staccarlo e farlo scorrere bene.', { name: name(best.id), target });
+    } else if (joint) {
       text =
         joint.type === 'hinge'
           ? t('"{name}" esce dalla stampa già unita a {target} con la cerniera: muovila con delicatezza per staccarla dal piatto e liberarla.', { name: name(best.id), target })
@@ -136,7 +144,7 @@ export function planAssembly(
     }
 
     // Le parti incernierate escono già montate: nessuna animazione d'arrivo.
-    steps.push({ index: steps.length, partId: best.id, partName: name(best.id), attachTo, approach, distance: joint ? 0 : Math.max(20, size * 0.6), text, tips });
+    steps.push({ index: steps.length, partId: best.id, partName: name(best.id), attachTo, approach, distance: joint || buttonOf.has(best.id) ? 0 : Math.max(20, size * 0.6), text, tips });
     placed.add(best.id);
   }
 

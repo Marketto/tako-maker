@@ -1,7 +1,8 @@
 import type { Design, PrinterSpec, Question, ShapeNode, UserSetup, Vec3 } from '../types';
 import type { DesignOp } from '../design/ops';
 import { walkShape } from '../design/ops';
-import { findContacts, type ConnectorReport, type OverlapReport } from '../geometry/evaluate';
+import { findContacts, PEG_SPACING, type ButtonReport, type ConnectorReport, type OverlapReport } from '../geometry/evaluate';
+import { printedTogether } from '../design/links';
 import { material } from '../../data/materials';
 import { bondsPoorly, guideline, minWall } from '../../data/guidelines';
 import { materialsToTest, neededTests, TEST_KEYS, TEST_LABEL } from '../calibration/coupons';
@@ -73,16 +74,17 @@ export function analyze(
   setup: UserSetup,
   printer: PrinterSpec,
   answered: Set<string>,
-  extras: { connectors?: ConnectorReport[]; overlaps?: OverlapReport[] } = {},
+  extras: { connectors?: ConnectorReport[]; overlaps?: OverlapReport[]; buttons?: ButtonReport[] } = {},
 ): AnalysisReport {
   const questions: Question[] = [];
   const warnings: string[] = [];
   const s = sig(design);
+  const pname0 = (id: string) => design.parts.find((x) => x.id === id)?.name ?? id;
   const bed = bedOf(setup, printer);
   const filById = new Map(setup.filaments.map((f) => [f.id, f]));
 
   /* ---- Strategia ---- */
-  const linked = design.joints.filter((j) => j.type !== 'slider').map((j) => [j.partA, j.partB] as [string, string]);
+  const linked = printedTogether(design);
   const estimates = estimateStrategies(parts, setup, printer, linked);
   const feasible = estimates.filter((e) => e.feasible);
   const recommended = feasible[0];
@@ -166,6 +168,23 @@ export function analyze(
       const f = filById.get(fil(id) ?? '');
       return f ? `${f.material} ${t(f.colorName)}` : t('senza filamento');
     };
+    for (const p of design.parts.filter((x) => x.button && fil(x.id) !== fil(x.button.housing))) {
+      const h = p.button!.housing;
+      const key = `buttoncolor:${p.id}:${s}`;
+      if (answered.has(key)) continue;
+      questions.push({
+        id: key,
+        key,
+        source: 'analysis',
+        text: t('Il pulsante "{button}" è stampato già montato in "{housing}": usiamo lo stesso colore?', { button: p.name, housing: partName(h) }),
+        detail: t('Senza stampa multicolore devono uscire insieme dallo stesso piatto, quindi dello stesso filamento.'),
+        options: [
+          { id: 'a', label: t('Tutto {filament}', { filament: label(h) }), ops: [{ op: 'update_part', id: p.id, filamentId: fil(h) }] },
+          { id: 'b', label: t('Tutto {filament}', { filament: label(p.id) }), ops: [{ op: 'update_part', id: h, filamentId: fil(p.id) }] },
+          { id: 'no', label: t('Lascia così') },
+        ],
+      });
+    }
     for (const j of design.joints.filter((x) => x.type !== 'slider' && fil(x.partA) !== fil(x.partB))) {
       const key = `jointcolor:${j.id}:${s}`;
       if (answered.has(key)) continue;
@@ -201,6 +220,51 @@ export function analyze(
         ],
       });
     }
+  }
+
+  /* ---- Pulsanti: sporgenza e risposta alla pressione ---- */
+  const btns = design.parts.filter((p) => p.button);
+  const names = (list: typeof btns) => list.map((p) => `"${p.name}"`).join(', ');
+  const noProt = btns.filter((p) => p.button!.protrusionMm === undefined);
+  if (noProt.length) {
+    const key = `button-prot:${noProt.map((p) => p.id).join(',')}`;
+    if (!answered.has(key)) {
+      const set = (mm: number): DesignOp[] => noProt.map((p) => ({ op: 'update_part', id: p.id, button: { protrusionMm: mm } }));
+      questions.push({
+        id: key,
+        key,
+        source: 'analysis',
+        text: noProt.length === 1 ? t('Quanto deve sporgere il pulsante "{name}"?', { name: noProt[0].name }) : t('Quanto devono sporgere i pulsanti ({names})?', { names: names(noProt) }),
+        detail: design.intendedUse.children ? t('Per i bambini è meglio che sporgano almeno 2 mm: si trovano e si premono più facilmente.') : undefined,
+        options: [
+          { id: '1', label: '1 mm', hint: t('quasi a filo, elegante'), ops: set(1) },
+          { id: '2', label: '2 mm', hint: t('classico, facile da premere'), ops: set(2) },
+          { id: '3', label: '3 mm', hint: t('ben in rilievo, si trova al tatto'), ops: set(3) },
+        ],
+      });
+    }
+  }
+  const noFeel = btns.filter((p) => p.button!.feel === undefined);
+  if (noFeel.length) {
+    const key = `button-feel:${noFeel.map((p) => p.id).join(',')}`;
+    if (!answered.has(key)) {
+      const set = (feel: 'click' | 'soft'): DesignOp[] => noFeel.map((p) => ({ op: 'update_part', id: p.id, button: { feel } }));
+      questions.push({
+        id: key,
+        key,
+        source: 'analysis',
+        text: noFeel.length === 1 ? t('Quando premi "{name}", deve fare "click" o essere morbido?', { name: noFeel[0].name }) : t('Quando li premi, i pulsanti ({names}) devono fare "click" o essere morbidi?', { names: names(noFeel) }),
+        options: [
+          { id: 'click', label: t('Con il click'), hint: t('si sente lo scatto, corsa breve'), ops: set('click') },
+          { id: 'soft', label: t('Morbido'), hint: t('senza scatto, ritorno dolce'), ops: set('soft') },
+        ],
+      });
+    }
+  }
+  for (const r of extras.buttons ?? []) {
+    if (r.ok || !r.reason) continue;
+    const vars = Object.fromEntries(Object.entries(r.reasonVars ?? {}).map(([k, v]) => [k, fmtNum(v, 1, 0)]));
+    warnings.push(t(r.reason, { ...vars, name: pname0(r.id) }));
   }
 
   /* ---- Parti mobili → scatti ---- */
@@ -390,6 +454,15 @@ export function analyze(
 
   // 4. Perni: ce ne devono essere almeno due vicino ai bordi per ogni coppia
   for (const c of extras.connectors ?? []) {
+    const spacing = design.printPlan.connection === 'snap' ? PEG_SPACING.snap : PEG_SPACING.glue;
+    if (c.pegs >= 2 && (c.maxSpanMm ?? 0) > spacing * 1.5)
+      warnings.push(
+        t('Tra "{a}" e "{b}" c\'è un tratto di bordo di circa {mm} mm senza ganci: lì le parti possono aprirsi. Allarga quel bordo (almeno 6 mm) per far posto a un gancio intermedio.', {
+          a: pname(c.a),
+          b: pname(c.b),
+          mm: c.maxSpanMm!,
+        }),
+      );
     if (c.pegs >= 2) continue;
     if (c.pegs === 1) warnings.push(t('Tra "{a}" e "{b}" c\'è spazio per un solo perno: il pezzo può ruotare. Allarga i bordi di contatto o aggiungi colla.', { a: pname(c.a), b: pname(c.b) }));
     else warnings.push(t('Tra "{a}" e "{b}" non ho potuto mettere perni: {reason}.', { a: pname(c.a), b: pname(c.b), reason: t(c.reason ?? 'spazio insufficiente', Object.fromEntries(Object.entries(c.reasonVars ?? {}).map(([k, v]) => [k, fmtNum(v, 1)]))) }));
