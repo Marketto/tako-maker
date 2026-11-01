@@ -1,5 +1,6 @@
 import type { ManifoldToplevel, Manifold } from 'manifold-3d';
-import type { Design, Joint, Part, ShapeNode, Tolerances, Vec3 } from '../types';
+import type { ButtonSpec, Design, Joint, Part, ShapeNode, Tolerances, Vec3 } from '../types';
+import { pairKey, printedTogether } from '../design/links';
 import { BASE_TOLERANCES } from '../../data/guidelines';
 import { msg } from '../../i18n';
 
@@ -34,6 +35,19 @@ export interface ConnectorReport {
   /** Frase italiana (tradotta nell'interfaccia: qui siamo nel worker). */
   reason?: string;
   reasonVars?: Record<string, number>;
+  /** Tratto di bordo più lungo senza perni vicini (mm). */
+  maxSpanMm?: number;
+}
+
+export interface ButtonReport {
+  id: string;
+  housing: string;
+  ok: boolean;
+  protrusion: number;
+  travel: number;
+  /** Frase italiana con {name} (tradotta nell'interfaccia). */
+  reason?: string;
+  reasonVars?: Record<string, number>;
 }
 
 export interface OverlapReport {
@@ -50,6 +64,8 @@ export interface EvalResult {
   connectors: ConnectorReport[];
   /** Parti che si compenetrano (escluse quelle unite da giunti). */
   overlaps: OverlapReport[];
+  /** Pulsanti generati (o il motivo per cui non è stato possibile). */
+  buttons: ButtonReport[];
 }
 
 /** Tolleranze di base (le effettive dipendono dal materiale: core/calibration/tolerances.ts). */
@@ -283,6 +299,9 @@ export function findContacts(boxes: { id: string; box: Box }[], tol = 0.3): Cont
    4. si scelgono punti sul contorno ristretto (cioè vicino ai bordi), il più distanti possibile tra loro. */
 
 const PEG_WALL = 1.2;
+/** Distanza massima tra due perni lungo il bordo: sui bordi lunghi servono ganci intermedi. */
+export const PEG_SPACING = { snap: 40, glue: 60 };
+const MAX_PEGS = 16;
 
 function toZ(m: Manifold, axis: 0 | 1 | 2, dir: 1 | -1): Manifold {
   let r = m;
@@ -320,6 +339,16 @@ function sampleContours(polys: P2[][], step: number): P2[] {
       for (let k = 0; k < n; k++) out.push([x0 + ((x1 - x0) * k) / n, y0 + ((y1 - y0) * k) / n]);
     }
   return out;
+}
+
+function signedArea(poly: P2[]): number {
+  let a = 0;
+  for (let i = 0; i < poly.length; i++) {
+    const [x0, y0] = poly[i];
+    const [x1, y1] = poly[(i + 1) % poly.length];
+    a += x0 * y1 - x1 * y0;
+  }
+  return a / 2;
 }
 
 function perimeter(polys: P2[][]): number {
@@ -376,16 +405,25 @@ function placePegs(
 
   const fb = common.bounds();
   const faceMin = Math.min(fb.max[0] - fb.min[0], fb.max[1] - fb.min[1]);
+  const spacing = snap ? PEG_SPACING.snap : PEG_SPACING.glue;
+  // Lunghezza del bordo da tenere unito: contorni esterni della faccia di contatto.
+  const outer = (common.toPolygons() as P2[][]).filter((poly) => signedArea(poly) > 0);
+  const want = Math.max(2, Math.min(MAX_PEGS, Math.ceil(perimeter(outer) / spacing)));
+  const edge = sampleContours(common.toPolygons() as P2[][], 2);
+  type Try = { addA: Manifold[]; subB: Manifold[]; report: { pegs: number; diameter: number; maxSpanMm: number } };
+  let best: Try | null = null;
+  // Si prova dal perno più grosso al più sottile: vince il più grosso che copre tutto il bordo
+  // (ganci intermedi compresi); altrimenti quello che lascia scoperto il tratto più corto.
   for (const d of [6, 5, 4, 3]) {
     if (d > faceMin * 0.35 && d > 3) continue;
     const r = d / 2;
     const region = ctx.keep(common.offset(-(r + clearance + PEG_WALL), 'Round'));
     if (region.isEmpty()) continue;
     const polys = region.toPolygons() as P2[][];
-    const want = Math.max(2, Math.min(6, Math.round(perimeter(common.toPolygons() as P2[][]) / 80) + 1));
     const pts = spreadPoints(sampleContours(polys, 2), want, Math.max(4 * d, 12));
     const addA: Manifold[] = [];
     const subB: Manifold[] = [];
+    const used: P2[] = [];
     for (const [x, y] of pts) {
       const hole = ctx.keep(ctx.keep(Manifold.cylinder(depth, r + clearance, r + clearance, SEG)).translate([x, y, zc - 0.01]));
       const seat = ctx.keep(ctx.keep(Manifold.cylinder(1.5, r, r, SEG)).translate([x, y, zc - 1.5]));
@@ -394,13 +432,98 @@ function placePegs(
       if (inB < hole.volume() * 0.95 || inA < seat.volume() * 0.95) continue;
       const peg = ctx.keep(ctx.keep(Manifold.cylinder(depth - 0.3 + 1, r, snap ? r : r * 0.85, SEG)).translate([x, y, zc - 1]));
       addA.push(ctx.keep(fromZ(peg, c.axis, c.dir)));
+      used.push([x, y]);
       subB.push(ctx.keep(fromZ(hole, c.axis, c.dir)));
     }
-    if (addA.length) return { addA, subB, report: { pegs: addA.length, diameter: d } };
+    if (!addA.length) continue;
+    // Tratto di bordo più lontano da un perno (misurato sul contorno di contatto).
+    const maxSpanMm = Math.round(2 * Math.max(0, ...edge.map((e) => Math.min(...used.map((q) => Math.hypot(e[0] - q[0], e[1] - q[1]))))));
+    const t: Try = { addA, subB, report: { pegs: addA.length, diameter: d, maxSpanMm } };
+    if (maxSpanMm <= spacing * 1.5) return t;
+    if (!best || maxSpanMm < best.report.maxSpanMm) best = t;
   }
+  if (best) return best;
   return none(msg('bordi troppo sottili per un perno da 3 mm (serve una parete di almeno {wall} mm)'), { wall: 3 + 2 * (PEG_WALL + clearance) });
 }
 
+
+/* ---------- Pulsanti stampati già montati ---------- */
+
+/** Il tasto è tondo se la forma disegnata è un cilindro (anche dentro un gruppo con un solo figlio). */
+function isRound(s: ShapeNode): boolean {
+  if (s.op === 'cylinder') return true;
+  return 'children' in s && s.children.length === 1 && isRound(s.children[0]);
+}
+
+/** Misure della meccanica del pulsante (mm). Il gioco usa la tolleranza delle cerniere. */
+export const BUTTON = { skin: 1.6, flange: 1.5, flangeH: 1.2, beam: 0.8, floor: 1.2, travelSoft: 1.5, travelClick: 1.0, protrusion: 1.5, minSize: 4 };
+
+/** Spessore del guscio necessario sotto la superficie per ospitare il pulsante. */
+export function buttonDepthNeeded(feel: ButtonSpec['feel'], gap: number): number {
+  const T = feel === 'click' ? BUTTON.travelClick : BUTTON.travelSoft;
+  return BUTTON.skin + gap + BUTTON.flangeH + gap + BUTTON.beam + T + 0.4 + BUTTON.floor;
+}
+
+/** Tasto con gambo nel foro, flangia che lo trattiene, lamella che lo spinge su;
+    con "click" due coppie di dentini superano il bordo del foro quando lo premi. */
+export function buttonGeometry(
+  ctx: Ctx,
+  footprint: Manifold,
+  housing: Manifold,
+  spec: ButtonSpec,
+  round: boolean,
+  tol: Tolerances = TOL,
+): { button?: Manifold; subH: Manifold[]; postH: Manifold[]; report: Omit<ButtonReport, 'id' | 'housing'> } {
+  const { Manifold } = ctx.w;
+  const bb = footprint.boundingBox() as Box;
+  const w = bb.max[0] - bb.min[0];
+  const d = bb.max[1] - bb.min[1];
+  const cx = (bb.min[0] + bb.max[0]) / 2;
+  const cy = (bb.min[1] + bb.max[1]) / 2;
+  const P = spec.protrusionMm ?? BUTTON.protrusion;
+  const click = spec.feel === 'click';
+  const T = click ? BUTTON.travelClick : BUTTON.travelSoft;
+  const g = tol.hingeGap;
+  const fail = (reason: string, reasonVars?: Record<string, number>) => ({ subH: [], postH: [], report: { ok: false, protrusion: P, travel: T, reason, reasonVars } });
+  if (Math.min(w, d) < BUTTON.minSize) return fail(msg('Il pulsante "{name}" è troppo piccolo: serve almeno {mm} mm di lato.'), { mm: BUTTON.minSize });
+
+  const fp = (off: number, z0: number, h: number): Manifold =>
+    round
+      ? ctx.keep(ctx.keep(Manifold.cylinder(h, Math.min(w, d) / 2 + off, Math.min(w, d) / 2 + off, SEG)).translate([cx, cy, z0]))
+      : ctx.keep(ctx.keep(Manifold.cube([w + 2 * off, d + 2 * off, h])).translate([cx - w / 2 - off, cy - d / 2 - off, z0]));
+
+  // Superficie del guscio sotto l'impronta del tasto
+  const probe = fp(-0.5, bb.min[2] - 500, 1000);
+  const under = ctx.keep(housing.intersect(probe));
+  if (under.isEmpty()) return fail(msg('Il pulsante "{name}" non si trova sopra la parte che dovrebbe contenerlo.'));
+  const hb = under.boundingBox() as Box;
+  const S = hb.max[2];
+  const need = buttonDepthNeeded(spec.feel, g);
+  if (S - hb.min[2] < need) return fail(msg('Sotto il pulsante "{name}" il guscio è troppo sottile: servono almeno {mm} mm.'), { mm: Math.ceil(need * 10) / 10 });
+
+  const zCavTop = S - BUTTON.skin;
+  const zFlTop = zCavTop - g;
+  const zFlBot = zFlTop - BUTTON.flangeH;
+  const zBeamTop = zFlBot - g;
+  const zBeamBot = zBeamTop - BUTTON.beam;
+  const zCavBot = zBeamBot - T - 0.4;
+
+  const parts = [fp(0, zFlTop - 0.01, S + P - zFlTop + 0.01), fp(BUTTON.flange, zFlBot, BUTTON.flangeH)];
+  if (click) {
+    const r = Math.max(0.3, Math.min(0.6, P / 2 - 0.05));
+    const zb = S + r + 0.05;
+    const half = round ? [Math.min(w, d) / 2, Math.min(w, d) / 2] : [w / 2, d / 2];
+    for (const [dx, dy] of [[half[0], 0], [-half[0], 0], [0, half[1]], [0, -half[1]]])
+      parts.push(ctx.keep(ctx.keep(Manifold.sphere(r, 16)).translate([cx + dx, cy + dy, zb])));
+  }
+  const button = ctx.keep(Manifold.union(parts));
+  const subH = [fp(g, zCavTop - 0.01, S + P + 2 - zCavTop), fp(BUTTON.flange + g, zCavBot, zCavTop - zCavBot)];
+  // Lamella elastica sotto la flangia, ancorata alle pareti della cavità
+  const span = (round ? Math.min(w, d) : w) + 2 * (BUTTON.flange + g) + 1;
+  const bw = Math.min(4, (round ? Math.min(w, d) : d) * 0.6);
+  const beam = ctx.keep(ctx.keep(Manifold.cube([span, bw, BUTTON.beam])).translate([cx - span / 2, cy - bw / 2, zBeamBot]));
+  return { button, subH, postH: [beam], report: { ok: true, protrusion: P, travel: T } };
+}
 
 /* ---------- Valutazione completa ---------- */
 
@@ -439,6 +562,10 @@ export function evaluateDesign(
 
   const add = new Map<string, Manifold[]>();
   const sub = new Map<string, Manifold[]>();
+  /** Aggiunte dopo le sottrazioni (es. la lamella dentro la cavità del pulsante). */
+  const post = new Map<string, Manifold[]>();
+  /** Geometria che sostituisce la forma disegnata (pulsanti). */
+  const replaced = new Map<string, Manifold>();
   const push = (m: Map<string, Manifold[]>, id: string, list: Manifold[]) => m.set(id, [...(m.get(id) ?? []), ...list]);
 
   for (const j of design.joints) {
@@ -456,9 +583,25 @@ export function evaluateDesign(
     }
   }
 
+  const buttons: ButtonReport[] = [];
+  for (const p of design.parts) {
+    const b = p.button;
+    if (!b || !base.has(p.id) || !base.has(b.housing)) continue;
+    try {
+      const g = buttonGeometry(ctx, base.get(p.id)!, base.get(b.housing)!, b, isRound(p.shape), mergeTol(tolByPart[p.id], tolByPart[b.housing]));
+      buttons.push({ id: p.id, housing: b.housing, ...g.report });
+      if (!g.button) continue;
+      replaced.set(p.id, g.button);
+      push(sub, b.housing, g.subH);
+      push(post, b.housing, g.postH);
+    } catch (e) {
+      errors.push(`Pulsante "${p.name}": ${(e as Error).message}`);
+    }
+  }
+
   const { strategy, connection } = design.printPlan;
   const connectors: ConnectorReport[] = [];
-  const jointPairs = new Set(design.joints.map((j) => [j.partA, j.partB].sort().join('|')));
+  const jointPairs = new Set(printedTogether(design).map(([a, b]) => pairKey(a, b)));
   if (strategy === 'separate' && connection !== 'none') {
     const boxes = [...base.entries()].map(([id, m]) => ({ id, box: m.boundingBox() as Box }));
     for (const c of findContacts(boxes)) {
@@ -491,12 +634,14 @@ export function evaluateDesign(
       parts.push(resultFromRaw(p, raw, warnings.get(p.id)!));
       continue;
     }
-    let m = base.get(p.id);
+    let m = replaced.get(p.id) ?? base.get(p.id);
     if (!m) continue;
     const a = add.get(p.id);
     if (a?.length) m = ctx.keep(w.Manifold.union([m, ...a]));
     const s = sub.get(p.id);
     if (s?.length) m = ctx.keep(w.Manifold.difference([m, ...s]));
+    const pa = post.get(p.id);
+    if (pa?.length) m = ctx.keep(w.Manifold.union([m, ...pa]));
     if (m.isEmpty()) {
       errors.push(`Parte "${p.name}": la geometria risultante è vuota`);
       continue;
@@ -517,7 +662,7 @@ export function evaluateDesign(
     });
   }
   ctx.dispose();
-  return { parts, errors, connectors, overlaps };
+  return { parts, errors, connectors, overlaps, buttons };
 }
 
 function positionsOnly(vp: Float32Array, numProp: number, tri: Uint32Array): RawMesh {

@@ -24,6 +24,7 @@ import type { ImportedMeshInfo } from '../agent/context';
 import { cachedSearch, loadMesh, printerById, saveMesh, saveProject, store, storeSearch, uid, type ChatItem, type Project } from './store';
 import { t } from '../i18n';
 import { shoppingListText } from '../core/hardware';
+import { printedTogether } from '../core/design/links';
 
 /* Orchestratore di un progetto aperto: collega UI, router, agente,
    geometria (worker) e analisi locali. La UI si limita a leggere lo snapshot. */
@@ -106,7 +107,7 @@ export class ProjectSession {
     try {
       const r = await this.evaluate(d);
       if (seq !== this.evalSeq) return; // nel frattempo è arrivata una modifica più recente
-      const report = analyze(d, r.parts, this.setup, this.printer, new Set(this.snap.project.answered), { connectors: r.connectors, overlaps: r.overlaps });
+      const report = analyze(d, r.parts, this.setup, this.printer, new Set(this.snap.project.answered), { connectors: r.connectors, overlaps: r.overlaps, buttons: r.buttons });
       const assembly = d.printPlan.strategy === 'separate' ? planAssembly(d, r.parts.map((p) => ({ id: p.id, box: p.contactBox })), d.printPlan.connection, r.connectors) : null;
       const meshInfo = this.snap.project.meshIds.map((id) => {
         const part = r.parts.find((p) => d.parts.find((x) => x.id === p.id)?.shape.op === 'mesh' && (d.parts.find((x) => x.id === p.id)!.shape as { ref: string }).ref === id);
@@ -174,7 +175,7 @@ export class ProjectSession {
       printer: this.printer,
       evaluate: async (d) => {
         const r = await this.evaluate(d);
-        return { parts: r.parts, errors: r.errors, connectors: r.connectors, overlaps: r.overlaps };
+        return { parts: r.parts, errors: r.errors, connectors: r.connectors, overlaps: r.overlaps, buttons: r.buttons };
       },
       analyze: (d, parts, extras) => analyze(d, parts, this.setup, this.printer, new Set(this.snap.project.answered), extras),
     };
@@ -408,9 +409,10 @@ export class ProjectSession {
 export function jointGroups(d: Design): Map<string, string> {
   const parent = new Map<string, string>();
   const find = (x: string): string => (parent.get(x) ?? x) === x ? x : find(parent.get(x)!);
-  for (const j of d.joints) if (j.type !== 'slider') parent.set(find(j.partB), find(j.partA));
+  const pairs = printedTogether(d);
+  for (const [a, b] of pairs) parent.set(find(b), find(a));
   const out = new Map<string, string>();
-  for (const p of d.parts) if (d.joints.some((j) => j.partA === p.id || j.partB === p.id)) out.set(p.id, find(p.id));
+  for (const p of d.parts) if (pairs.some(([a, b]) => a === p.id || b === p.id)) out.set(p.id, find(p.id));
   return out;
 }
 
