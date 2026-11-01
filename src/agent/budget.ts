@@ -1,4 +1,4 @@
-import { MODELS, WEB_SEARCH_COST, type ModelTier } from './config';
+import type { ModelPrice } from './config';
 
 /* Contatore della spesa: ogni risposta dell'API riporta i token usati,
    qui vengono convertiti in dollari e sommati per mese. */
@@ -11,15 +11,14 @@ export interface Usage {
   server_tool_use?: { web_search_requests?: number } | null;
 }
 
-export function costOf(tier: ModelTier, u: Usage): number {
-  const p = MODELS[tier].price;
+export function costOf(p: ModelPrice, u: Usage): number {
   const m = 1_000_000;
   return (
     (u.input_tokens * p.input) / m +
     (u.output_tokens * p.output) / m +
     ((u.cache_creation_input_tokens ?? 0) * p.cacheWrite) / m +
     ((u.cache_read_input_tokens ?? 0) * p.cacheRead) / m +
-    (u.server_tool_use?.web_search_requests ?? 0) * WEB_SEARCH_COST
+    (u.server_tool_use?.web_search_requests ?? 0) * p.search
   );
 }
 
@@ -58,8 +57,8 @@ export class Budget {
     return this.current().usd + estimateUsd < this.capUsd;
   }
 
-  record(tier: ModelTier, u: Usage): number {
-    const usd = costOf(tier, u);
+  record(price: ModelPrice, u: Usage): number {
+    const usd = costOf(price, u);
     const r = this.current();
     r.usd += usd;
     r.calls += 1;

@@ -4,6 +4,7 @@ import printersData from '../data/printers.json';
 import type { Design, PrinterSpec, UserSetup } from '../core/types';
 import type { RawMesh } from '../core/geometry/evaluate';
 import { DEFAULT_SETTINGS } from '../agent/config';
+import type { KeyEntry } from '../agent/providers/types';
 import type { ChatTurn } from '../agent/runner';
 import type { SearchResult } from '../agent/tools';
 
@@ -17,7 +18,6 @@ export const printerById = (id: string) => PRINTERS.find((p) => p.id === id) ?? 
 
 export type Settings = typeof DEFAULT_SETTINGS & {
   searchFirst: boolean;
-  accessCode: string;
   rememberKey: boolean;
   /** Musica di sottofondo (spenta di default). */
   musicOn: boolean;
@@ -29,10 +29,11 @@ export type Settings = typeof DEFAULT_SETTINGS & {
 interface AppState {
   setup: UserSetup | null;
   settings: Settings;
-  apiKey: string;
+  /** Chiavi AI in ordine di priorità (la prima viene provata per prima). */
+  keys: KeyEntry[];
 }
 
-const LS = { setup: 'm3d.setup', settings: 'm3d.settings', key: 'm3d.apikey' };
+const LS = { setup: 'm3d.setup', settings: 'm3d.settings', keys: 'm3d.keys', legacyKey: 'm3d.apikey' };
 
 function load(): AppState {
   const parse = <T,>(k: string): T | null => {
@@ -42,13 +43,24 @@ function load(): AppState {
       return null;
     }
   };
-  const settings = { ...DEFAULT_SETTINGS, searchFirst: true, accessCode: '', rememberKey: true, musicOn: false, musicVolume: 0.4, mascotOn: true, ...(parse<Partial<Settings>>(LS.settings) ?? {}) };
-  return {
-    setup: parse<UserSetup>(LS.setup),
-    settings,
-    apiKey: localStorage.getItem(LS.key) ?? sessionStorage.getItem(LS.key) ?? '',
-  };
+  const saved = parse<Partial<Settings> & { proxyUrl?: string; accessCode?: string }>(LS.settings) ?? {};
+  const settings = { ...DEFAULT_SETTINGS, searchFirst: true, rememberKey: true, musicOn: false, musicVolume: 0.4, mascotOn: true, ...saved };
+  let keys: KeyEntry[] = [];
+  try {
+    keys = JSON.parse(localStorage.getItem(LS.keys) ?? sessionStorage.getItem(LS.keys) ?? '[]');
+  } catch {
+    keys = [];
+  }
+  // Migrazione dalla versione con una sola chiave Claude (ed eventuale proxy)
+  const legacy = localStorage.getItem(LS.legacyKey) ?? sessionStorage.getItem(LS.legacyKey);
+  if (!keys.length && (legacy || saved.proxyUrl)) {
+    if (saved.proxyUrl) keys.push({ id: uid(), provider: 'anthropic', label: 'Proxy Claude', key: '', baseUrl: saved.proxyUrl, accessCode: saved.accessCode, enabled: true });
+    if (legacy) keys.push({ id: uid(), provider: 'anthropic', label: 'Claude', key: legacy, enabled: true });
+  }
+  return { setup: parse<UserSetup>(LS.setup), settings, keys };
 }
+
+export const uid = () => Math.random().toString(36).slice(2, 10);
 
 let state: AppState = load();
 const listeners = new Set<() => void>();
@@ -69,14 +81,16 @@ export const store = {
   setSettings(patch: Partial<Settings>) {
     state = { ...state, settings: { ...state.settings, ...patch } };
     localStorage.setItem(LS.settings, JSON.stringify(state.settings));
-    if (patch.rememberKey !== undefined) store.setApiKey(state.apiKey);
+    if (patch.rememberKey !== undefined) store.setKeys(state.keys);
     emit();
   },
-  setApiKey(key: string) {
-    state = { ...state, apiKey: key.trim() };
-    localStorage.removeItem(LS.key);
-    sessionStorage.removeItem(LS.key);
-    if (state.apiKey) (state.settings.rememberKey ? localStorage : sessionStorage).setItem(LS.key, state.apiKey);
+  setKeys(keys: KeyEntry[]) {
+    state = { ...state, keys: keys.map((k) => ({ ...k, key: k.key.trim() })) };
+    for (const k of [LS.keys, LS.legacyKey]) {
+      localStorage.removeItem(k);
+      sessionStorage.removeItem(k);
+    }
+    if (state.keys.length) (state.settings.rememberKey ? localStorage : sessionStorage).setItem(LS.keys, JSON.stringify(state.keys));
     emit();
   },
 };
@@ -140,4 +154,3 @@ export async function cachedSearch(query: string, maxAgeDays: number): Promise<S
 export const storeSearch = (query: string, results: SearchResult[]) => set(`search:${normalizeQuery(query)}`, { at: Date.now(), results });
 export const normalizeQuery = (q: string) => q.toLowerCase().replace(/[^\p{L}\p{N} ]/gu, ' ').replace(/\s+/g, ' ').trim();
 
-export const uid = () => Math.random().toString(36).slice(2, 10);

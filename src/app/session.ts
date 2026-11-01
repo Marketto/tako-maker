@@ -13,7 +13,8 @@ import { buildSTLZip } from '../core/export/stl';
 import { bedOf } from '../core/analysis/estimate';
 import type { Design, Question } from '../core/types';
 import { Budget } from '../agent/budget';
-import { ClaudeClient } from '../agent/client';
+import type { AiClient } from '../agent/client';
+import { KeyRouter } from '../agent/providers/keyRouter';
 import { LIMITS } from '../agent/config';
 import { route } from '../agent/router';
 import { resumeAgent, runAgent, type AgentState, type RunInput } from '../agent/runner';
@@ -37,12 +38,12 @@ export interface Snapshot {
   meshInfo: ImportedMeshInfo[];
 }
 
-export function makeClient(): ClaudeClient {
+let router: KeyRouter | null = null;
+/** Client AI condiviso: router delle chiavi con fallback tra provider. */
+export function makeClient(): KeyRouter {
   const s = store.get();
-  return new ClaudeClient(
-    () => ({ apiKey: s.apiKey, proxyUrl: s.settings.proxyUrl || undefined, accessCode: s.settings.accessCode || undefined }),
-    new Budget(localStorage, s.settings.monthlyCapUsd),
-  );
+  router = new KeyRouter(() => store.get().keys, localStorage, new Budget(localStorage, s.settings.monthlyCapUsd));
+  return router;
 }
 
 export const LICENSE_NO_DERIVATIVES = /\bND\b|no[\s-]?deriv|non opere derivate|standard digital file/i;
@@ -177,7 +178,7 @@ export class ProjectSession {
     };
   }
 
-  private baseInput(skill: SkillName, client: ClaudeClient): Omit<RunInput, 'text' | 'history'> {
+  private baseInput(skill: SkillName, client: AiClient): Omit<RunInput, 'text' | 'history'> {
     this.abort = new AbortController();
     return {
       skill: SKILLS[skill],
@@ -200,7 +201,7 @@ export class ProjectSession {
     await this.pushChat({ role: 'user', text });
     const client = makeClient();
     if (!client.isConfigured()) {
-      this.set({ error: 'Per usare l’assistente inserisci la chiave API nelle impostazioni (icona ⚙).' });
+      this.set({ error: 'Per usare l’assistente aggiungi una chiave AI (Claude, GPT o Gemini) nelle impostazioni (icona ⚙).' });
       return;
     }
     this.set({ busy: 'Capisco cosa ti serve…' });
