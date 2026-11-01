@@ -277,14 +277,30 @@ def scoped_css():
     return '\n'.join(out)
 
 
-def icon_svg(size, pad=0.0, bg='#f3ecff'):
-    """Testa di Takotta per le icone PWA (niente tentacoli: leggibile anche a 48 px)."""
+# Colori del tema "scatola dei filamenti" (src/styles.css)
+LAYERS = ['#ff4fa0', '#2f9bff', '#1fbf8f', '#ff8a2b', '#6a3fd8']
+
+
+def icon_svg(size, pad=0.0, bg='#ffcf2e'):
+    """Icona PWA: Takotta su sfondo limone a puntini, appoggiata su strati di stampa colorati."""
     inner = mascot('normale', 'icon', accessories=False)
     inner = inner.replace('__UID__', 'icon')
     s = 1 - 2 * pad
+    rx = 0 if pad else 88
+    # Strati di filamento in basso, come un pezzo appena stampato
+    h = 13 * s
+    y0 = 400 - pad * 400 - 18 * s - h * len(LAYERS)
+    layers = ''.join(f'<rect x="0" y="{y0 + i * h:.1f}" width="400" height="{h + 0.6:.1f}" fill="{c}"/>' for i, c in enumerate(LAYERS))
+    layers += f'<rect x="0" y="{y0 + h * len(LAYERS):.1f}" width="400" height="400" fill="{LAYERS[-1]}"/>'
     return (f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="{size}" height="{size}">'
-            f'<rect width="400" height="400" rx="{0 if pad else 88}" fill="{bg}"/>'
-            f'<g transform="translate({200 - 200 * s * 1.15:.1f},{200 - 172 * s * 1.15:.1f}) scale({s * 1.15:.3f})">{inner}</g></svg>')
+            f'<defs><clipPath id="icon-clip"><rect width="400" height="400" rx="{rx}"/></clipPath>'
+            f'<radialGradient id="icon-glow" cx="50%" cy="38%" r="60%"><stop offset="0" stop-color="#fff3b8"/><stop offset="1" stop-color="{bg}"/></radialGradient>'
+            f'<pattern id="icon-dots" width="22" height="22" patternUnits="userSpaceOnUse"><circle cx="11" cy="11" r="2.4" fill="#ffffff" fill-opacity=".45"/></pattern></defs>'
+            f'<g clip-path="url(#icon-clip)">'
+            f'<rect width="400" height="400" fill="url(#icon-glow)"/><rect width="400" height="400" fill="url(#icon-dots)"/>'
+            f'{layers}'
+            f'<g transform="translate({200 - 205 * s * 1.0:.1f},{200 - 205 * s * 1.0:.1f}) scale({s * 1.0:.3f})">{inner}</g>'
+            f'</g></svg>')
 
 
 if __name__ == '__main__':

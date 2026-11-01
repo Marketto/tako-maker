@@ -89,7 +89,7 @@ function WorkspaceInner({ session, onBack, onSettings }: { session: ProjectSessi
           )}
         </div>
 
-        <aside className="ws-panel">
+        <aside className="ws-panel" data-tab={tab}>
           <nav className="tabs" role="tablist">
             <button role="tab" aria-selected={tab === 'chat'} className={tab === 'chat' ? 'on' : ''} onClick={() => setTab('chat')}>
               {t('Assistente')}{pendingQuestions > 0 && tab !== 'chat' && <span className="pill">{pendingQuestions}</span>}
