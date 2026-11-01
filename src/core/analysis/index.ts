@@ -1,7 +1,7 @@
 import type { Design, PrinterSpec, Question, ShapeNode, UserSetup, Vec3 } from '../types';
 import type { DesignOp } from '../design/ops';
 import { walkShape } from '../design/ops';
-import { findContacts } from '../geometry/evaluate';
+import { findContacts, type ConnectorReport, type OverlapReport } from '../geometry/evaluate';
 import { material } from '../../data/materials';
 import { bondsPoorly, guideline, minWall } from '../../data/guidelines';
 import { materialsToTest, neededTests, TEST_KEYS, TEST_LABEL } from '../calibration/coupons';
@@ -71,6 +71,7 @@ export function analyze(
   setup: UserSetup,
   printer: PrinterSpec,
   answered: Set<string>,
+  extras: { connectors?: ConnectorReport[]; overlaps?: OverlapReport[] } = {},
 ): AnalysisReport {
   const questions: Question[] = [];
   const warnings: string[] = [];
@@ -238,6 +239,113 @@ export function analyze(
     if (info.needsEnclosure && !printer.enclosed) warnings.push(`${info.label} su una stampante aperta tende a deformarsi: valuta PLA o PETG.`);
   }
   for (const p of design.parts) if (p.filamentId && !filById.has(p.filamentId)) warnings.push(`La parte "${p.name}" usa un filamento che non hai più.`);
+
+  /* ---- Coerenza della forma tra parti da assemblare ---- */
+  const pname = (id: string) => design.parts.find((x) => x.id === id)?.name ?? id;
+  const statOf = (id: string) => parts.find((p) => p.id === id);
+  const jointed = new Set(design.joints.map((j) => [j.partA, j.partB].sort().join('|')));
+  const fmt = (v: number) => v.toFixed(1).replace('.', ',');
+
+  // 1. Compenetrazioni: si ricava nella parte più grande la sede esatta della più piccola
+  for (const o of extras.overlaps ?? []) {
+    const va = statOf(o.a)?.volume ?? 0;
+    const vb = statOf(o.b)?.volume ?? 0;
+    const [big, small] = va >= vb ? [o.a, o.b] : [o.b, o.a];
+    const bigPart = design.parts.find((p) => p.id === big);
+    const smallPart = design.parts.find((p) => p.id === small);
+    if (!bigPart || !smallPart) continue;
+    const key = `overlap:${[o.a, o.b].sort().join('|')}:${Math.round(o.volume)}`;
+    if (answered.has(key)) continue;
+    questions.push({
+      id: key,
+      key,
+      source: 'analysis',
+      text: `"${pname(small)}" entra dentro "${pname(big)}": ricavo in "${pname(big)}" la sede esatta, così le forme combaciano?`,
+      detail: `Si sovrappongono per circa ${fmt(o.volume / 1000)} cm³: stampate così non si potrebbero montare (o lo slicer le fonderebbe).`,
+      options: [
+        { id: 'yes', label: 'Sì, crea la sede', ops: [{ op: 'update_part', id: big, shape: { op: 'difference', children: [bigPart.shape, smallPart.shape] } }] },
+        { id: 'no', label: 'No, lascia così' },
+      ],
+    });
+  }
+
+  // 2. Parti quasi a contatto (piccolo spazio non voluto) e 3. bordi non allineati
+  const boxOf = (id: string) => statOf(id)?.contactBox ?? statOf(id)?.bbox;
+  for (let i = 0; i < parts.length; i++)
+    for (let k = i + 1; k < parts.length; k++) {
+      const A = boxOf(parts[i].id)!;
+      const B = boxOf(parts[k].id)!;
+      const ia = parts[i].id, ib = parts[k].id;
+      if (jointed.has([ia, ib].sort().join('|'))) continue;
+      for (const axis of [2, 0, 1] as const) {
+        const o1 = ((axis + 1) % 3) as 0 | 1 | 2;
+        const o2 = ((axis + 2) % 3) as 0 | 1 | 2;
+        const ov = (d: number) => Math.min(A.max[d], B.max[d]) - Math.max(A.min[d], B.min[d]);
+        const minFace = (d: number) => Math.min(A.max[d] - A.min[d], B.max[d] - B.min[d]);
+        if (ov(o1) < minFace(o1) * 0.5 || ov(o2) < minFace(o2) * 0.5) continue;
+        const gapUp = B.min[axis] - A.max[axis];
+        const gapDown = A.min[axis] - B.max[axis];
+        const gap = gapUp > 0 ? gapUp : gapDown > 0 ? gapDown : 0;
+        if (gap > 0.05 && gap <= 2) {
+          const mover = (statOf(ia)?.volume ?? 0) < (statOf(ib)?.volume ?? 0) ? ia : ib;
+          const towards = mover === ib ? (gapUp > 0 ? -1 : 1) : gapUp > 0 ? 1 : -1;
+          const at: Vec3 = [0, 0, 0];
+          at[axis] = towards * gap;
+          const key = `gap:${[ia, ib].sort().join('|')}:${gap.toFixed(2)}`;
+          if (!answered.has(key))
+            questions.push({
+              id: key,
+              key,
+              source: 'analysis',
+              text: `Tra "${pname(ia)}" e "${pname(ib)}" c'è uno spazio di ${fmt(gap)} mm: le avvicino perché combacino?`,
+              detail: design.printPlan.strategy === 'separate' ? 'Rimarrebbe una fessura visibile dopo il montaggio.' : 'Stampate insieme uscirebbero come pezzi staccati.',
+              options: [
+                { id: 'yes', label: 'Sì, avvicinale', ops: [{ op: 'move_part', id: mover, at }] },
+                { id: 'no', label: 'No, lo spazio è voluto' },
+              ],
+            });
+          break;
+        }
+        // Facce a contatto: le sagome dovrebbero combaciare se sono quasi uguali
+        if (Math.abs(gap) <= 0.05 && (Math.abs(B.min[axis] - A.max[axis]) <= 0.3 || Math.abs(A.min[axis] - B.max[axis]) <= 0.3)) {
+          const sizes = [o1, o2].map((d) => [A.max[d] - A.min[d], B.max[d] - B.min[d]]);
+          const near = sizes.every(([x, y]) => Math.abs(x - y) <= 3 && Math.min(x, y) > 5);
+          if (!near) break;
+          const offs = [o1, o2].map((d) => (B.min[d] + B.max[d]) / 2 - (A.min[d] + A.max[d]) / 2);
+          const sameSize = sizes.every(([x, y]) => Math.abs(x - y) <= 0.3);
+          const misaligned = offs.some((o) => Math.abs(o) > 0.2);
+          if (sameSize && misaligned) {
+            const mover = (statOf(ia)?.volume ?? 0) < (statOf(ib)?.volume ?? 0) ? ia : ib;
+            const at: Vec3 = [0, 0, 0];
+            [o1, o2].forEach((d, n) => (at[d] = mover === ib ? -offs[n] : offs[n]));
+            const key = `align:${[ia, ib].sort().join('|')}:${offs.map((o) => o.toFixed(1)).join(',')}`;
+            if (!answered.has(key))
+              questions.push({
+                id: key,
+                key,
+                source: 'analysis',
+                text: `I bordi di "${pname(ia)}" e "${pname(ib)}" sono sfalsati di ${fmt(Math.max(...offs.map(Math.abs)))} mm: li allineo?`,
+                detail: 'Hanno la stessa sagoma: allineate, il pezzo montato avrà bordi continui.',
+                options: [
+                  { id: 'yes', label: 'Sì, allinea', ops: [{ op: 'move_part', id: mover, at }] },
+                  { id: 'no', label: 'No, è voluto' },
+                ],
+              });
+          } else if (!sameSize) {
+            const diff = Math.max(...sizes.map(([x, y]) => Math.abs(x - y)));
+            warnings.push(`"${pname(ia)}" e "${pname(ib)}" hanno sagome quasi uguali ma diverse di ${fmt(diff)} mm: i bordi non combaciano e si vedrà un gradino.`);
+          }
+        }
+        break;
+      }
+    }
+
+  // 4. Perni: ce ne devono essere almeno due vicino ai bordi per ogni coppia
+  for (const c of extras.connectors ?? []) {
+    if (c.pegs >= 2) continue;
+    if (c.pegs === 1) warnings.push(`Tra "${pname(c.a)}" e "${pname(c.b)}" c'è spazio per un solo perno: il pezzo può ruotare. Allarga i bordi di contatto o aggiungi colla.`);
+    else warnings.push(`Tra "${pname(c.a)}" e "${pname(c.b)}" non ho potuto mettere perni: ${c.reason ?? 'spazio insufficiente'}.`);
+  }
 
   /* ---- Campioni di prova per giunti e incastri ---- */
   const kinds = neededTests(design);

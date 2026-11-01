@@ -135,7 +135,7 @@ export function build3MF(parts: ExportPart[], opt: ExportOptions): Uint8Array {
 
   const meta: string[] = [
     `<metadata name="Title">${esc(opt.title)}</metadata>`,
-    `<metadata name="Application">Tako Maker</metadata>`,
+    `<metadata name="Application">Printopus</metadata>`,
     `<metadata name="CreationDate">${new Date().toISOString().slice(0, 10)}</metadata>`,
   ];
   if (opt.attribution) {

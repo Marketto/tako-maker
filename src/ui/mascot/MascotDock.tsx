@@ -1,10 +1,10 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { Polpetta, type Mood } from './Polpetta';
+import { Takotta, type Mood } from './Takotta';
 import { pickPhrase, type PhraseKind } from './phrases';
 import { onCheer } from './bus';
 import type { Snapshot } from '../../app/session';
 
-/* Polpetta nell'area di lavoro: cambia espressione in base a cosa succede
+/* Takotta nell'area di lavoro: cambia espressione in base a cosa succede
    e ogni tanto dice una frase di incitamento nel fumetto. */
 
 const BUBBLE_MS = 4500;
@@ -99,9 +99,9 @@ export function MascotDock({ snap, tips, compact }: { snap: Snapshot; tips: stri
           setJump((n) => n + 1);
           say('coccola', true);
         }}
-        aria-label="Coccola Polpetta"
+        aria-label="Coccola Takotta"
       >
-        <Polpetta mood={mood} size={compact ? 92 : 132} tips={tips} />
+        <Takotta mood={mood} size={compact ? 92 : 132} tips={tips} />
       </button>
     </div>
   );

@@ -42,7 +42,13 @@ function volumeOf(b: Box) {
   return (b.max[0] - b.min[0]) * (b.max[1] - b.min[1]) * (b.max[2] - b.min[2]);
 }
 
-export function planAssembly(design: Design, boxes: { id: string; box: Box }[], connection: Connection = design.printPlan.connection): AssemblyPlan {
+export function planAssembly(
+  design: Design,
+  boxes: { id: string; box: Box }[],
+  connection: Connection = design.printPlan.connection,
+  connectors: { a: string; b: string; pegs: number }[] = [],
+): AssemblyPlan {
+  const pegsBetween = (x: string, y: string) => connectors.find((c) => (c.a === x && c.b === y) || (c.a === y && c.b === x))?.pegs ?? 0;
   if (boxes.length < 2) return { steps: [], loose: [] };
   const name = (id: string) => design.parts.find((p) => p.id === id)?.name ?? id;
   const contacts = findContacts(boxes);
@@ -102,7 +108,8 @@ export function planAssembly(design: Design, boxes: { id: string; box: Box }[], 
       text = `"${name(best.id)}" esce dalla stampa già unita a ${target} con la ${joint.type === 'hinge' ? 'cerniera' : 'articolazione'}: muovila con delicatezza per staccarla dal piatto e liberarla.`;
       if (joint.detent?.enabled) tips.push('Muovila un paio di volte con decisione per “rodare” gli scatti.');
     } else if (connection === 'snap') {
-      text = `Allinea i perni di "${name(best.id)}" ai fori di ${target} e premi ${from} fino in fondo.`;
+      const n = attachTo.reduce((sum, t) => sum + pegsBetween(t.id, best!.id), 0);
+      text = `Allinea ${n > 1 ? `i ${n} perni` : n === 1 ? 'il perno' : 'i perni'} di "${name(best.id)}" ai fori di ${target} e premi ${from} fino in fondo.`;
       tips.push('Se entra troppo duro, passa una punta da trapano nel foro o carta vetrata sul perno.');
       tips.push('Premi in modo uniforme, senza fare leva su un lato.');
     } else if (connection === 'glue') {
