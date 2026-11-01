@@ -23,6 +23,19 @@ export interface PrinterSpec {
   flowMm3s: number;
   slicer: string;
   multi: MultiMaterialSystem | null;
+  /** corexy: piatto fermo in XY; bedslinger: il piatto si muove avanti/indietro (Y). */
+  kinematics?: 'corexy' | 'bedslinger';
+  /** Diametro ugello di serie (mm). */
+  nozzle?: number;
+}
+
+/** Giochi e tolleranze usati per cerniere, scatti e perni (mm). */
+export interface Tolerances {
+  hingeGap: number;
+  pinClearance: number;
+  detentClearance: number;
+  pegSnap: number;
+  pegGlue: number;
 }
 
 export interface Filament {
@@ -39,6 +52,10 @@ export interface UserSetup {
   /** L'utente possiede il sistema multicolore (AMS, MMU...). */
   hasMulti: boolean;
   filaments: Filament[];
+  /** Diametro ugello montato (default: quello della stampante, 0,4 mm). */
+  nozzle?: number;
+  /** Tolleranze calibrate con i campioni di prova, per materiale (es. "PLA"). */
+  tolerances?: Record<string, Partial<Tolerances>>;
 }
 
 /* ---------- Design DSL ---------- */
@@ -125,6 +142,8 @@ export interface QuestionOption {
   hint?: string;
   /** Modifiche applicate localmente se l'utente sceglie questa opzione (zero token). */
   ops?: DesignOp[];
+  /** Azione locale aggiuntiva (es. generare i campioni di prova). */
+  action?: 'calibration';
 }
 
 export interface Question {

@@ -18,6 +18,8 @@ Funziona su telefono, tablet e computer. Tutti i dati restano sul dispositivo.
   - con parti separate chiede se le vuoi **a incastro** o **da incollare** e genera i perni;
   - con parti mobili chiede se vuoi lo **scatto** che le blocca in posizione;
   - per oggetti da **bambini** propone di arrotondare gli spigoli esterni e segnala le parti piccole.
+- **Linee guida per stampante e materiale**, sempre applicate: tolleranze consigliate per materiale, spessori minimi in base all'ugello, avvisi su deformazione (ABS/ASA), pezzi alti su stampanti a piatto mobile, materiali che non aderiscono tra loro (es. PLA e PETG), TPU nei sistemi multicolore, orientamento delle cerniere; consigli di temperatura, brim e ritiro. Le stesse regole guidano l'AI quando crea i modelli.
+- **Campioni di prova**: con parti mobili o incastri l'app propone di stampare serie di campioni con giochi diversi (cerniera, scatto, incastro a pressione, perno da incollare), un piatto per materiale (più piatti se non ci stanno). Dopo la stampa scegli il campione migliore: quei valori vengono usati per tutti i modelli successivi con quel materiale.
 - **Guida di montaggio animata** passo passo per le parti separate.
 - **Esportazione 3MF** per Bambu Studio, OrcaSlicer, Creality Print, ElegooSlicer, Anycubic Slicer Next e PrusaSlicer (colori/estrusori assegnati quando lo slicer li legge), oppure **STL per ogni parte**.
 - **Polpetta, la mascotte**: un polpo kawaii in stile anime anni 2000 che cambia espressione mentre lavori (pensa, si concentra, si confonde, festeggia), dice frasi di incitamento e ha le punte dei tentacoli dei colori dei tuoi filamenti. Toccala per una coccola.
