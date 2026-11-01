@@ -369,3 +369,121 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
 /* Elementi da acquistare */
 .hardware-list { list-style: none; margin: 0.3rem 0; padding: 0; display: flex; flex-direction: column; gap: 0.4rem; }
 .hardware-list li { display: flex; justify-content: space-between; align-items: center; gap: 0.6rem; border: 1px solid var(--line); border-radius: 12px; padding: 0.5rem 0.7rem; background: var(--surface); }
+
+/* ==========================================================================
+   Tema "scatola dei filamenti": colori a caramella e strati di stampa.
+   Ogni zona dell'app ha il suo colore di filamento; la firma visiva è la
+   striscia a strati colorati (come le linee di stampa) sotto le barre.
+   ========================================================================== */
+:root {
+  --grape: #6a3fd8;
+  --bubble: #ff4fa0;
+  --lemon: #ffcf2e;
+  --mint: #1fbf8f;
+  --sky: #2f9bff;
+  --tangerine: #ff8a2b;
+  --bg: #f7f0ff;
+  --dots: #e6d8ff;
+  --accent: var(--bubble);
+  --accent-soft: #ffe1f0;
+  --sun: var(--lemon);
+  /* La striscia: cinque filamenti affiancati. */
+  --layers: linear-gradient(90deg, var(--bubble) 0 20%, var(--lemon) 20% 40%, var(--mint) 40% 60%, var(--sky) 60% 80%, var(--grape) 80% 100%);
+  /* Colore della zona attiva (cambia con la scheda). */
+  --zone: var(--grape);
+  --zone-soft: var(--brand-soft);
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bubble: #ff6fb3;
+    --lemon: #ffd84d;
+    --mint: #3bd6a5;
+    --sky: #5cb0ff;
+    --bg: #1a1230;
+    --dots: #2a1f48;
+    --accent-soft: #46203a;
+  }
+}
+
+/* Barre in alto: la striscia a strati di filamento */
+.topbar { border-bottom: 0; box-shadow: 0 2px 0 var(--line); }
+.topbar::after { content: ''; position: absolute; inset: auto 0 -6px 0; height: 4px; background: var(--layers); }
+.brand span { font-weight: 800; font-size: 1.1rem; letter-spacing: 0.01em; }
+.budget { background: var(--lemon); color: #4a3200; font-weight: 800; }
+
+/* Avanzamento della configurazione: ogni passo un colore */
+.wizard-progress span { height: 8px; border-radius: 8px; }
+.wizard-progress span.on:nth-child(5n + 1) { background: var(--bubble); }
+.wizard-progress span.on:nth-child(5n + 2) { background: var(--lemon); }
+.wizard-progress span.on:nth-child(5n + 3) { background: var(--mint); }
+.wizard-progress span.on:nth-child(5n + 4) { background: var(--sky); }
+.wizard-progress span.on:nth-child(5n) { background: var(--grape); }
+.wizard-card.hero { position: relative; overflow: hidden; }
+.wizard-card.hero::before { content: ''; position: absolute; inset: 0 0 auto; height: 8px; background: var(--layers); }
+.wizard-card.hero h1 { font-size: 2.4rem; color: var(--grape); text-shadow: 3px 3px 0 var(--lemon); }
+
+/* Home */
+.setup-summary { position: relative; overflow: hidden; padding-top: 1.2rem; }
+.setup-summary::before { content: ''; position: absolute; inset: 0 0 auto; height: 6px; background: var(--layers); }
+.notice { border: 2px dashed var(--tangerine); background: color-mix(in srgb, var(--tangerine) 12%, var(--surface)); color: var(--ink); }
+.new-project {
+  background: var(--grape) radial-gradient(rgb(255 255 255 / 0.16) 1.6px, transparent 2px) 0 0 / 16px 16px;
+  color: #fff;
+}
+.new-project .plus { background: var(--lemon); color: #4a3200; font-weight: 800; box-shadow: 0 3px 0 #c99b00; }
+.project-list li { border-inline-start: 6px solid var(--sky); }
+.project-list li:nth-child(5n + 2) { border-inline-start-color: var(--bubble); }
+.project-list li:nth-child(5n + 3) { border-inline-start-color: var(--mint); }
+.project-list li:nth-child(5n + 4) { border-inline-start-color: var(--tangerine); }
+.project-list li:nth-child(5n) { border-inline-start-color: var(--grape); }
+
+/* Pulsanti a "mattoncino": ombra piena colorata, scendono quando li premi */
+.btn.primary { background: var(--grape); border-color: var(--brand-dark); }
+.btn:not(.primary):not(.ghost):hover:not(:disabled) { border-color: var(--zone); box-shadow: 0 3px 0 var(--zone); }
+.chip { border: 2px solid var(--line); background: var(--surface); font-weight: 700; }
+.dot { width: 16px; height: 16px; border: 2px solid rgb(0 0 0 / 0.12); box-shadow: inset -2px -2px 0 rgb(0 0 0 / 0.12); }
+
+/* Area di lavoro: ogni scheda ha il suo filamento */
+.ws-panel[data-tab='chat'] { --zone: var(--bubble); --zone-soft: var(--accent-soft); }
+.ws-panel[data-tab='print'] { --zone: var(--sky); --zone-soft: color-mix(in srgb, var(--sky) 14%, var(--surface)); }
+.ws-panel[data-tab='assembly'] { --zone: var(--mint); --zone-soft: color-mix(in srgb, var(--mint) 14%, var(--surface)); }
+.ws-panel { border-inline-start: 0; box-shadow: -2px 0 0 var(--line); }
+.tabs { position: relative; border-bottom: 0; background: var(--surface); }
+.tabs::after { content: ''; position: absolute; inset: auto 0 0; height: 3px; background: var(--layers); opacity: 0.35; }
+.tabs button { border-bottom: 0; position: relative; z-index: 1; font-weight: 800; }
+.tabs button::after { content: ''; position: absolute; inset: auto 18% 0; height: 6px; border-radius: 6px 6px 0 0; background: transparent; transition: background 0.15s, inset 0.2s cubic-bezier(.3,1.6,.5,1); }
+.tabs button:nth-child(1).on::after { background: var(--bubble); inset-inline: 10%; }
+.tabs button:nth-child(2).on::after { background: var(--sky); inset-inline: 10%; }
+.tabs button:nth-child(3).on::after { background: var(--mint); inset-inline: 10%; }
+.tabs button.on { color: var(--ink); }
+.pill { background: var(--bubble); color: #fff; font-weight: 800; }
+.ws-panel h3 { color: var(--ink); }
+.ws-panel h3::before { content: ''; display: inline-block; width: 0.75em; height: 0.75em; border-radius: 3px; background: var(--zone); margin-inline-end: 0.45em; vertical-align: -0.05em; transform: rotate(45deg) scale(0.8); }
+
+/* Chat e domande */
+.msg.user .bubble { background: var(--grape); }
+.question { border-color: var(--zone); background: var(--zone-soft); box-shadow: 0 4px 0 color-mix(in srgb, var(--zone) 55%, transparent); }
+.q-text::before { color: var(--zone); }
+.opt:hover:not(:disabled) { border-color: var(--zone); box-shadow: 0 2px 0 var(--zone); }
+.opt.on { border-color: var(--zone); background: var(--zone-soft); }
+.composer textarea:focus { outline: 2px solid var(--zone); }
+
+/* Scheda Stampa: un colore per tipo di informazione */
+.summary { background: var(--lemon); color: #3d2a00; border: 2px solid #e0ad00; box-shadow: 0 3px 0 #e0ad00; font-weight: 800; }
+.warnings { background: color-mix(in srgb, var(--tangerine) 16%, var(--surface)); color: var(--ink); border: 2px solid color-mix(in srgb, var(--tangerine) 60%, transparent); }
+.tips-list li::marker { color: var(--mint); }
+.material-note { background: color-mix(in srgb, var(--mint) 12%, var(--surface)); border: 2px solid color-mix(in srgb, var(--mint) 35%, transparent); }
+.hardware-list li { border: 2px solid color-mix(in srgb, var(--sky) 45%, var(--line)); }
+.estimates tr.current td { background: var(--zone-soft); }
+.calib { border-color: color-mix(in srgb, var(--grape) 30%, var(--line)); }
+
+/* Montaggio */
+.step-list li.on button { background: var(--zone-soft); color: var(--ink); box-shadow: inset 4px 0 0 var(--zone); }
+
+/* Impostazioni */
+.sheet { background: var(--layers) top / 100% 8px no-repeat local, var(--surface); padding-top: 1.4rem; }
+.key-prio { background: var(--lemon); color: #3d2a00; }
+
+/* Fumetto di Takotta: bordo colorato */
+.speech { border-color: var(--grape); box-shadow: 3px 3px 0 var(--bubble); }
+.speech::after { border-color: var(--grape); }
