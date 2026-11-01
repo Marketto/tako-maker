@@ -110,6 +110,20 @@ export interface Attribution {
   license: string;
 }
 
+/** Elemento non stampabile da comprare a parte (vite, magnete, molla, cuscinetto…). */
+export interface Hardware {
+  id: string;
+  /** Nome comune, es. "Magnete al neodimio". */
+  name: string;
+  qty: number;
+  /** Misure o tipo, es. "6×2 mm", "M3×10". */
+  spec?: string;
+  /** A cosa serve nel modello. */
+  purpose?: string;
+  /** Scelta dell'utente: undefined = da chiedere, 'buy' = lo compra, 'printed' = sostituirlo con una soluzione stampata. */
+  decision?: 'buy' | 'printed';
+}
+
 export interface Design {
   version: 1;
   name: string;
@@ -118,6 +132,8 @@ export interface Design {
   source?: Attribution & { kind: 'remix' | 'inspiration' };
   parts: Part[];
   joints: Joint[];
+  /** Elementi da comprare a parte. */
+  hardware?: Hardware[];
   printPlan: {
     strategy: PrintStrategy;
     connection: Connection;
@@ -144,7 +160,9 @@ export interface QuestionOption {
   /** Modifiche applicate localmente se l'utente sceglie questa opzione (zero token). */
   ops?: DesignOp[];
   /** Azione locale aggiuntiva (es. generare i campioni di prova). */
-  action?: 'calibration';
+  action?: 'calibration' | 'ask_ai';
+  /** Con action 'ask_ai': richiesta inviata all'assistente. */
+  prompt?: string;
 }
 
 export interface Question {

@@ -400,5 +400,22 @@
  "Viola": "Fialová",
  "Volume della musica": "Hlasitosť hudby",
  "Volume di stampa (mm)": "Tlačový priestor (mm)",
- "Wow, sei proprio un maker!": "Wow, ty si fakt maker!"
+ "Wow, sei proprio un maker!": "Wow, ty si fakt maker!",
+ "\"{item}\" va ancora sostituito con una soluzione stampata: chiedilo all'assistente.": "\"{item}\" treba ešte nahradiť tlačeným riešením: požiadaj o to asistenta.",
+ "Cerca un'alternativa stampata": "Hľadať tlačenú alternatívu",
+ "confermato": "potvrdené",
+ "Da acquistare a parte": "Kúpiť zvlášť",
+ "DA ACQUISTARE A PARTE – {name}": "KÚPIŤ ZVLÁŠŤ – {name}",
+ "da confermare": "na potvrdenie",
+ "da sostituire": "na nahradenie",
+ "È per bambini: fissa bene gli elementi acquistati ({items}) in modo che non si possano staccare. Magneti e pile a bottone ingeriti sono molto pericolosi.": "Je to pre deti: kupované diely ({items}) pevne uchyť, aby sa nedali uvoľniť. Prehltnuté magnety a gombíkové batérie sú veľmi nebezpečné.",
+ "La lista viene inclusa nei file esportati (DA-ACQUISTARE.txt).": "Zoznam je súčasťou exportovaných súborov (DA-ACQUISTARE.txt).",
+ "Serve per: {purpose}.": "Slúži na: {purpose}.",
+ "Serve un elemento da comprare a parte: {item}. Va bene o cerco un'alternativa stampata?": "Treba diel, ktorý sa kupuje zvlášť: {item}. Je to v poriadku, alebo mám hľadať tlačenú alternatívu?",
+ "Sostituisci \"{item}\" ({purpose}) con una soluzione stampata, senza elementi da comprare.": "Nahraď \"{item}\" ({purpose}) tlačeným riešením, bez dielov na kúpu.",
+ "Sostituisci \"{item}\" con una soluzione stampata, senza elementi da comprare.": "Nahraď \"{item}\" tlačeným riešením, bez dielov na kúpu.",
+ "Tieni a portata di mano: {items}.": "Maj po ruke: {items}.",
+ "ugello {n0}–{n1} °C · piatto {b0}–{b1} °C": "tryska {n0}–{n1} °C · podložka {b0}–{b1} °C",
+ "usa l'assistente AI": "použi AI asistenta",
+ "Va bene, lo compro": "V poriadku, kúpim to"
 }

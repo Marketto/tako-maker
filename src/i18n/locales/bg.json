@@ -400,5 +400,22 @@
  "Viola": "Лилав",
  "Volume della musica": "Сила на музиката",
  "Volume di stampa (mm)": "Обем за печат (mm)",
- "Wow, sei proprio un maker!": "Леле, ти си истински мейкър!"
+ "Wow, sei proprio un maker!": "Леле, ти си истински мейкър!",
+ "\"{item}\" va ancora sostituito con una soluzione stampata: chiedilo all'assistente.": "\"{item}\" все още трябва да се замени с отпечатано решение: помоли асистента.",
+ "Cerca un'alternativa stampata": "Потърси отпечатана алтернатива",
+ "confermato": "потвърдено",
+ "Da acquistare a parte": "Купува се отделно",
+ "DA ACQUISTARE A PARTE – {name}": "КУПУВА СЕ ОТДЕЛНО – {name}",
+ "da confermare": "за потвърждение",
+ "da sostituire": "за замяна",
+ "È per bambini: fissa bene gli elementi acquistati ({items}) in modo che non si possano staccare. Magneti e pile a bottone ingeriti sono molto pericolosi.": "За деца е: закрепи добре купените елементи ({items}), за да не могат да се откачат. Погълнатите магнити и бутонни батерии са много опасни.",
+ "La lista viene inclusa nei file esportati (DA-ACQUISTARE.txt).": "Списъкът се включва в експортираните файлове (DA-ACQUISTARE.txt).",
+ "Serve per: {purpose}.": "Служи за: {purpose}.",
+ "Serve un elemento da comprare a parte: {item}. Va bene o cerco un'alternativa stampata?": "Нужен е елемент, който се купува отделно: {item}. Става ли, или да потърся отпечатана алтернатива?",
+ "Sostituisci \"{item}\" ({purpose}) con una soluzione stampata, senza elementi da comprare.": "Замени \"{item}\" ({purpose}) с отпечатано решение, без елементи за купуване.",
+ "Sostituisci \"{item}\" con una soluzione stampata, senza elementi da comprare.": "Замени \"{item}\" с отпечатано решение, без елементи за купуване.",
+ "Tieni a portata di mano: {items}.": "Дръж под ръка: {items}.",
+ "ugello {n0}–{n1} °C · piatto {b0}–{b1} °C": "дюза {n0}–{n1} °C · плоча {b0}–{b1} °C",
+ "usa l'assistente AI": "ползвай AI асистента",
+ "Va bene, lo compro": "Добре, ще го купя"
 }

@@ -400,5 +400,22 @@
  "Viola": "Vjola",
  "Volume della musica": "Volum tal-mużika",
  "Volume di stampa (mm)": "Volum tal-istampar (mm)",
- "Wow, sei proprio un maker!": "Wow, int maker veru!"
+ "Wow, sei proprio un maker!": "Wow, int maker veru!",
+ "\"{item}\" va ancora sostituito con una soluzione stampata: chiedilo all'assistente.": "\"{item}\" għad irid jiġi sostitwit b'soluzzjoni stampata: staqsi lill-assistent.",
+ "Cerca un'alternativa stampata": "Fittex alternattiva stampata",
+ "confermato": "ikkonfermat",
+ "Da acquistare a parte": "Għax-xiri separat",
+ "DA ACQUISTARE A PARTE – {name}": "GĦAX-XIRI SEPARAT – {name}",
+ "da confermare": "irid jiġi kkonfermat",
+ "da sostituire": "irid jiġi sostitwit",
+ "È per bambini: fissa bene gli elementi acquistati ({items}) in modo che non si possano staccare. Magneti e pile a bottone ingeriti sono molto pericolosi.": "Huwa għat-tfal: waħħal sew l-elementi mixtrija ({items}) biex ma jkunux jistgħu jinqalgħu. Kalamiti u batteriji tal-buttuna mibluħa huma perikolużi ħafna.",
+ "La lista viene inclusa nei file esportati (DA-ACQUISTARE.txt).": "Il-lista hija inkluża fil-fajls esportati (DA-ACQUISTARE.txt).",
+ "Serve per: {purpose}.": "Jservi għal: {purpose}.",
+ "Serve un elemento da comprare a parte: {item}. Va bene o cerco un'alternativa stampata?": "Hemm bżonn ta' element li jinxtara separatament: {item}. Tajjeb jew infittex alternattiva stampata?",
+ "Sostituisci \"{item}\" ({purpose}) con una soluzione stampata, senza elementi da comprare.": "Issostitwixxi \"{item}\" ({purpose}) b'soluzzjoni stampata, mingħajr elementi li jridu jinxtraw.",
+ "Sostituisci \"{item}\" con una soluzione stampata, senza elementi da comprare.": "Issostitwixxi \"{item}\" b'soluzzjoni stampata, mingħajr elementi li jridu jinxtraw.",
+ "Tieni a portata di mano: {items}.": "Żomm fil-qrib: {items}.",
+ "ugello {n0}–{n1} °C · piatto {b0}–{b1} °C": "nozzle {n0}–{n1} °C · pjanċa {b0}–{b1} °C",
+ "usa l'assistente AI": "uża l-assistent AI",
+ "Va bene, lo compro": "Tajjeb, nixtrih"
 }

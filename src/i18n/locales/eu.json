@@ -400,5 +400,22 @@
  "Viola": "Morea",
  "Volume della musica": "Musikaren bolumena",
  "Volume di stampa (mm)": "Inprimatze-bolumena (mm)",
- "Wow, sei proprio un maker!": "Aupa, benetako maker bat zara!"
+ "Wow, sei proprio un maker!": "Aupa, benetako maker bat zara!",
+ "\"{item}\" va ancora sostituito con una soluzione stampata: chiedilo all'assistente.": "\"{item}\" oraindik inprimatutako irtenbide batekin ordeztu behar da: eskatu laguntzaileari.",
+ "Cerca un'alternativa stampata": "Bilatu inprimatutako alternatiba bat",
+ "confermato": "berretsita",
+ "Da acquistare a parte": "Aparte erosteko",
+ "DA ACQUISTARE A PARTE – {name}": "APARTE EROSTEKO – {name}",
+ "da confermare": "berresteko",
+ "da sostituire": "ordezteko",
+ "È per bambini: fissa bene gli elementi acquistati ({items}) in modo che non si possano staccare. Magneti e pile a bottone ingeriti sono molto pericolosi.": "Haurrentzat da: ondo finkatu erositako elementuak ({items}), askatu ezin daitezen. Irentsitako imanak eta botoi-pilak oso arriskutsuak dira.",
+ "La lista viene inclusa nei file esportati (DA-ACQUISTARE.txt).": "Zerrenda esportatutako fitxategietan dago (DA-ACQUISTARE.txt).",
+ "Serve per: {purpose}.": "Honetarako: {purpose}.",
+ "Serve un elemento da comprare a parte: {item}. Va bene o cerco un'alternativa stampata?": "Aparte erosi beharreko elementu bat behar da: {item}. Ados, ala inprimatutako alternatiba bat bilatuko dut?",
+ "Sostituisci \"{item}\" ({purpose}) con una soluzione stampata, senza elementi da comprare.": "Ordeztu \"{item}\" ({purpose}) inprimatutako irtenbide batekin, erosi beharreko elementurik gabe.",
+ "Sostituisci \"{item}\" con una soluzione stampata, senza elementi da comprare.": "Ordeztu \"{item}\" inprimatutako irtenbide batekin, erosi beharreko elementurik gabe.",
+ "Tieni a portata di mano: {items}.": "Izan eskura: {items}.",
+ "ugello {n0}–{n1} °C · piatto {b0}–{b1} °C": "tobera {n0}–{n1} °C · plaka {b0}–{b1} °C",
+ "usa l'assistente AI": "erabili AA laguntzailea",
+ "Va bene, lo compro": "Ados, erosiko dut"
 }

@@ -400,5 +400,22 @@
  "Viola": "Mor",
  "Volume della musica": "Müzik sesi",
  "Volume di stampa (mm)": "Baskı hacmi (mm)",
- "Wow, sei proprio un maker!": "Vay, tam bir maker'sın!"
+ "Wow, sei proprio un maker!": "Vay, tam bir maker'sın!",
+ "\"{item}\" va ancora sostituito con una soluzione stampata: chiedilo all'assistente.": "\"{item}\" hâlâ basılı bir çözümle değiştirilmeli: asistandan iste.",
+ "Cerca un'alternativa stampata": "Basılı bir alternatif ara",
+ "confermato": "onaylandı",
+ "Da acquistare a parte": "Ayrıca satın alınacak",
+ "DA ACQUISTARE A PARTE – {name}": "AYRICA SATIN ALINACAK – {name}",
+ "da confermare": "onay bekliyor",
+ "da sostituire": "değiştirilecek",
+ "È per bambini: fissa bene gli elementi acquistati ({items}) in modo che non si possano staccare. Magneti e pile a bottone ingeriti sono molto pericolosi.": "Çocuklar için: satın alınan parçaları ({items}) çıkmayacak şekilde iyice sabitle. Yutulan mıknatıslar ve düğme piller çok tehlikelidir.",
+ "La lista viene inclusa nei file esportati (DA-ACQUISTARE.txt).": "Liste dışa aktarılan dosyalara eklenir (DA-ACQUISTARE.txt).",
+ "Serve per: {purpose}.": "Kullanım amacı: {purpose}.",
+ "Serve un elemento da comprare a parte: {item}. Va bene o cerco un'alternativa stampata?": "Ayrıca satın alınması gereken bir parça var: {item}. Uygun mu, yoksa basılı bir alternatif mi arayayım?",
+ "Sostituisci \"{item}\" ({purpose}) con una soluzione stampata, senza elementi da comprare.": "\"{item}\" ({purpose}) parçasını satın alınacak parça gerektirmeyen basılı bir çözümle değiştir.",
+ "Sostituisci \"{item}\" con una soluzione stampata, senza elementi da comprare.": "\"{item}\" parçasını satın alınacak parça gerektirmeyen basılı bir çözümle değiştir.",
+ "Tieni a portata di mano: {items}.": "Yakınında bulundur: {items}.",
+ "ugello {n0}–{n1} °C · piatto {b0}–{b1} °C": "nozül {n0}–{n1} °C · tabla {b0}–{b1} °C",
+ "usa l'assistente AI": "AI asistanını kullan",
+ "Va bene, lo compro": "Tamam, satın alırım"
 }

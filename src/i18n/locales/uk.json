@@ -400,5 +400,22 @@
  "Viola": "Фіолетовий",
  "Volume della musica": "Гучність музики",
  "Volume di stampa (mm)": "Область друку (mm)",
- "Wow, sei proprio un maker!": "Ого, та ти справжній мейкер!"
+ "Wow, sei proprio un maker!": "Ого, та ти справжній мейкер!",
+ "\"{item}\" va ancora sostituito con una soluzione stampata: chiedilo all'assistente.": "\"{item}\" ще треба замінити друкованим рішенням: попроси про це помічника.",
+ "Cerca un'alternativa stampata": "Пошукати друковану альтернативу",
+ "confermato": "підтверджено",
+ "Da acquistare a parte": "Купити окремо",
+ "DA ACQUISTARE A PARTE – {name}": "КУПИТИ ОКРЕМО – {name}",
+ "da confermare": "треба підтвердити",
+ "da sostituire": "треба замінити",
+ "È per bambini: fissa bene gli elementi acquistati ({items}) in modo che non si possano staccare. Magneti e pile a bottone ingeriti sono molto pericolosi.": "Це для дітей: надійно закріпи куплені деталі ({items}), щоб їх не можна було відірвати. Проковтнуті магніти й батарейки-таблетки дуже небезпечні.",
+ "La lista viene inclusa nei file esportati (DA-ACQUISTARE.txt).": "Список додається до експортованих файлів (DA-ACQUISTARE.txt).",
+ "Serve per: {purpose}.": "Потрібно для: {purpose}.",
+ "Serve un elemento da comprare a parte: {item}. Va bene o cerco un'alternativa stampata?": "Потрібна деталь, яку треба купити окремо: {item}. Підходить, чи пошукати друковану альтернативу?",
+ "Sostituisci \"{item}\" ({purpose}) con una soluzione stampata, senza elementi da comprare.": "Заміни \"{item}\" ({purpose}) друкованим рішенням, без деталей, які треба купувати.",
+ "Sostituisci \"{item}\" con una soluzione stampata, senza elementi da comprare.": "Заміни \"{item}\" друкованим рішенням, без деталей, які треба купувати.",
+ "Tieni a portata di mano: {items}.": "Тримай під рукою: {items}.",
+ "ugello {n0}–{n1} °C · piatto {b0}–{b1} °C": "сопло {n0}–{n1} °C · стіл {b0}–{b1} °C",
+ "usa l'assistente AI": "скористайся AI-помічником",
+ "Va bene, lo compro": "Гаразд, куплю"
 }

@@ -400,5 +400,22 @@
  "Viola": "Lila",
  "Volume della musica": "Musikvolym",
  "Volume di stampa (mm)": "Byggvolym (mm)",
- "Wow, sei proprio un maker!": "Wow, du är en riktig maker!"
+ "Wow, sei proprio un maker!": "Wow, du är en riktig maker!",
+ "\"{item}\" va ancora sostituito con una soluzione stampata: chiedilo all'assistente.": "”{item}” behöver fortfarande ersättas med en utskriven lösning: fråga assistenten.",
+ "Cerca un'alternativa stampata": "Sök ett utskrivet alternativ",
+ "confermato": "bekräftad",
+ "Da acquistare a parte": "Köps separat",
+ "DA ACQUISTARE A PARTE – {name}": "KÖPS SEPARAT – {name}",
+ "da confermare": "ska bekräftas",
+ "da sostituire": "ska ersättas",
+ "È per bambini: fissa bene gli elementi acquistati ({items}) in modo che non si possano staccare. Magneti e pile a bottone ingeriti sono molto pericolosi.": "Det är för barn: fäst de köpta delarna ({items}) ordentligt så att de inte kan lossna. Magneter och knappcellsbatterier som sväljs är mycket farliga.",
+ "La lista viene inclusa nei file esportati (DA-ACQUISTARE.txt).": "Listan följer med de exporterade filerna (DA-ACQUISTARE.txt).",
+ "Serve per: {purpose}.": "Behövs till: {purpose}.",
+ "Serve un elemento da comprare a parte: {item}. Va bene o cerco un'alternativa stampata?": "Det behövs en del som köps separat: {item}. Går det bra, eller ska jag söka ett utskrivet alternativ?",
+ "Sostituisci \"{item}\" ({purpose}) con una soluzione stampata, senza elementi da comprare.": "Ersätt ”{item}” ({purpose}) med en utskriven lösning, utan delar att köpa.",
+ "Sostituisci \"{item}\" con una soluzione stampata, senza elementi da comprare.": "Ersätt ”{item}” med en utskriven lösning, utan delar att köpa.",
+ "Tieni a portata di mano: {items}.": "Ha till hands: {items}.",
+ "ugello {n0}–{n1} °C · piatto {b0}–{b1} °C": "munstycke {n0}–{n1} °C · platta {b0}–{b1} °C",
+ "usa l'assistente AI": "använd AI-assistenten",
+ "Va bene, lo compro": "Okej, jag köper den"
 }

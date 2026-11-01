@@ -1,6 +1,7 @@
 import type { Connection, Design, Vec3 } from '../types';
 import { findContacts, type Contact } from '../geometry/evaluate';
 import { msg, t } from '../../i18n';
+import { hardwareLabel, toBuy } from '../hardware';
 
 /* Guida di montaggio calcolata localmente (zero token):
    1. si parte dalla parte più grande (la "base");
@@ -76,7 +77,10 @@ export function planAssembly(
     approach: [0, 0, 1],
     distance: 0,
     text: t('Appoggia "{name}" sul tavolo: è la base.', { name: name(byVol[0].id) }),
-    tips: [t('Rimuovi eventuali supporti e sbavature prima di iniziare.')],
+    tips: [
+      t('Rimuovi eventuali supporti e sbavature prima di iniziare.'),
+      ...(toBuy(design).length ? [t('Tieni a portata di mano: {items}.', { items: toBuy(design).map(hardwareLabel).join(', ') })] : []),
+    ],
   });
 
   let progress = true;

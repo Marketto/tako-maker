@@ -400,5 +400,22 @@
  "Viola": "보라",
  "Volume della musica": "음악 볼륨",
  "Volume di stampa (mm)": "출력 크기(mm)",
- "Wow, sei proprio un maker!": "와, 진짜 메이커네요!"
+ "Wow, sei proprio un maker!": "와, 진짜 메이커네요!",
+ "\"{item}\" va ancora sostituito con una soluzione stampata: chiedilo all'assistente.": "“{item}”은(는) 아직 출력 방식으로 바꿔야 해요. 어시스턴트에게 부탁하세요.",
+ "Cerca un'alternativa stampata": "출력 대안 찾기",
+ "confermato": "확인됨",
+ "Da acquistare a parte": "별도 구매",
+ "DA ACQUISTARE A PARTE – {name}": "별도 구매 – {name}",
+ "da confermare": "확인 필요",
+ "da sostituire": "교체 필요",
+ "È per bambini: fissa bene gli elementi acquistati ({items}) in modo che non si possano staccare. Magneti e pile a bottone ingeriti sono molto pericolosi.": "어린이용이에요: 구매한 부품({items})은 떨어지지 않도록 단단히 고정하세요. 자석과 단추형 전지를 삼키면 매우 위험해요.",
+ "La lista viene inclusa nei file esportati (DA-ACQUISTARE.txt).": "목록은 내보낸 파일에 포함돼요(DA-ACQUISTARE.txt).",
+ "Serve per: {purpose}.": "용도: {purpose}.",
+ "Serve un elemento da comprare a parte: {item}. Va bene o cerco un'alternativa stampata?": "따로 사야 하는 부품이 있어요: {item}. 괜찮을까요, 아니면 출력 대안을 찾아볼까요?",
+ "Sostituisci \"{item}\" ({purpose}) con una soluzione stampata, senza elementi da comprare.": "“{item}”({purpose})을(를) 구매 부품 없이 출력 방식으로 바꿔 주세요.",
+ "Sostituisci \"{item}\" con una soluzione stampata, senza elementi da comprare.": "“{item}”을(를) 구매 부품 없이 출력 방식으로 바꿔 주세요.",
+ "Tieni a portata di mano: {items}.": "미리 준비해 두세요: {items}.",
+ "ugello {n0}–{n1} °C · piatto {b0}–{b1} °C": "노즐 {n0}–{n1} °C · 플레이트 {b0}–{b1} °C",
+ "usa l'assistente AI": "AI 어시스턴트 사용",
+ "Va bene, lo compro": "좋아요, 살게요"
 }

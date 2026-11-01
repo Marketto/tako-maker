@@ -400,5 +400,22 @@
  "Viola": "Violet",
  "Volume della musica": "Volume de la musique",
  "Volume di stampa (mm)": "Volume d’impression (mm)",
- "Wow, sei proprio un maker!": "Waouh, tu es un vrai maker !"
+ "Wow, sei proprio un maker!": "Waouh, tu es un vrai maker !",
+ "\"{item}\" va ancora sostituito con una soluzione stampata: chiedilo all'assistente.": "\"{item}\" doit encore être remplacé par une solution imprimée : demande-le à l’assistant.",
+ "Cerca un'alternativa stampata": "Chercher une alternative imprimée",
+ "confermato": "confirmé",
+ "Da acquistare a parte": "À acheter à part",
+ "DA ACQUISTARE A PARTE – {name}": "À ACHETER À PART – {name}",
+ "da confermare": "à confirmer",
+ "da sostituire": "à remplacer",
+ "È per bambini: fissa bene gli elementi acquistati ({items}) in modo che non si possano staccare. Magneti e pile a bottone ingeriti sono molto pericolosi.": "C’est pour des enfants : fixe bien les éléments achetés ({items}) pour qu’ils ne puissent pas se détacher. Les aimants et les piles bouton avalés sont très dangereux.",
+ "La lista viene inclusa nei file esportati (DA-ACQUISTARE.txt).": "La liste est incluse dans les fichiers exportés (DA-ACQUISTARE.txt).",
+ "Serve per: {purpose}.": "Sert à : {purpose}.",
+ "Serve un elemento da comprare a parte: {item}. Va bene o cerco un'alternativa stampata?": "Il faut un élément à acheter à part : {item}. Ça te va ou je cherche une alternative imprimée ?",
+ "Sostituisci \"{item}\" ({purpose}) con una soluzione stampata, senza elementi da comprare.": "Remplace \"{item}\" ({purpose}) par une solution imprimée, sans éléments à acheter.",
+ "Sostituisci \"{item}\" con una soluzione stampata, senza elementi da comprare.": "Remplace \"{item}\" par une solution imprimée, sans éléments à acheter.",
+ "Tieni a portata di mano: {items}.": "Garde sous la main : {items}.",
+ "ugello {n0}–{n1} °C · piatto {b0}–{b1} °C": "buse {n0}–{n1} °C · plateau {b0}–{b1} °C",
+ "usa l'assistente AI": "utilise l’assistant IA",
+ "Va bene, lo compro": "D’accord, je l’achète"
 }
