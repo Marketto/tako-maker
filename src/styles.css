@@ -132,13 +132,17 @@ code { background: var(--surface-2); padding: 0 4px; border-radius: 4px; }
 .wizard-card.hero img { margin-bottom: 0.5rem; }
 .choice-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 0.6rem; margin: 1rem 0; }
 .choice-grid.two { grid-template-columns: 1fr 1fr; }
-.choice-list { display: flex; flex-direction: column; gap: 0.5rem; margin: 1rem 0; max-height: 50vh; overflow: auto; }
+.choice-list { display: flex; flex-direction: column; gap: 0.5rem; margin: 1rem 0; max-height: 55vh; overflow: auto; padding: 2px 2px 4px; }
+.choice-list > * { flex-shrink: 0; }
 .choice { border: 1.5px solid var(--line); background: var(--surface); border-radius: 12px; padding: 0.9rem; cursor: pointer; text-align: start; font-weight: 600; min-height: 52px; }
 .choice.row { display: flex; flex-direction: column; gap: 0.15rem; }
 .choice.row .muted { font-weight: 400; font-size: 0.85rem; }
 .choice.selected { border-color: var(--brand); background: var(--brand-soft); }
 .wizard-nav { display: flex; justify-content: space-between; margin-top: 1.2rem; }
 .bed-input input { width: 100%; }
+.bed-input { display: flex; flex-direction: column; gap: 0.3rem; margin-top: 0.6rem; }
+.bed-input > label { font-weight: 800; font-size: 0.9rem; margin-top: 0.4rem; }
+.bed-input .segmented button { min-height: 40px; }
 .segmented { display: flex; flex-wrap: wrap; gap: 0.3rem; background: var(--surface-2); padding: 0.25rem; border-radius: 12px; margin: 0.6rem 0; }
 .segmented button { flex: 1 0 auto; border: 0; background: transparent; padding: 0.45rem 0.7rem; border-radius: 9px; cursor: pointer; font-size: 0.9rem; }
 .segmented button.on { background: var(--surface); box-shadow: var(--shadow); font-weight: 600; }

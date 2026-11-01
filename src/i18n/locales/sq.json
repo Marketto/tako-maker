@@ -435,5 +435,15 @@
  "si sente lo scatto, corsa breve": "ndihet kliku, lëvizje e shkurtër",
  "Sotto il pulsante \"{name}\" il guscio è troppo sottile: servono almeno {mm} mm.": "Nën butonin \"{name}\" guaska është shumë e hollë: duhen të paktën {mm} mm.",
  "Tra \"{a}\" e \"{b}\" c'è un tratto di bordo di circa {mm} mm senza ganci: lì le parti possono aprirsi. Allarga quel bordo (almeno 6 mm) per far posto a un gancio intermedio.": "Midis \"{a}\" dhe \"{b}\" ka një pjesë buze rreth {mm} mm pa grepa: aty pjesët mund të hapen. Zgjeroje atë buzë (të paktën 6 mm) që të ketë vend për një grep të ndërmjetëm.",
- "Una parte stampata già montata (cerniera o pulsante) unisce parti di colori diversi": "Një pjesë e printuar e montuar (menteshë ose buton) bashkon pjesë me ngjyra të ndryshme"
+ "Una parte stampata già montata (cerniera o pulsante) unisce parti di colori diversi": "Një pjesë e printuar e montuar (menteshë ose buton) bashkon pjesë me ngjyra të ndryshme",
+ "AMS + doppio ugello": "AMS + grykë e dyfishtë",
+ "Aperta": "I hapur",
+ "Cambio utensile": "Ndërruesi i veglave",
+ "Chiusa, con sportello": "I mbyllur, me derë",
+ "Com’è fatta?": "Si është?",
+ "Cosa si muove avanti e indietro?": "Çfarë lëviz para e mbrapa?",
+ "Il piatto": "Pllaka",
+ "Quanti colori può stampare nello stesso pezzo?": "Sa ngjyra mund të printojë në të njëjtën pjesë?",
+ "sistema multicolore": "sistem shumëngjyrësh",
+ "Solo la testina (CoreXY)": "Vetëm koka (CoreXY)"
 }

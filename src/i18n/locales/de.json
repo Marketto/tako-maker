@@ -435,5 +435,15 @@
  "si sente lo scatto, corsa breve": "man spürt das Einrasten, kurzer Hub",
  "Sotto il pulsante \"{name}\" il guscio è troppo sottile: servono almeno {mm} mm.": "Unter dem Knopf \"{name}\" ist das Gehäuse zu dünn: Es braucht mindestens {mm} mm.",
  "Tra \"{a}\" e \"{b}\" c'è un tratto di bordo di circa {mm} mm senza ganci: lì le parti possono aprirsi. Allarga quel bordo (almeno 6 mm) per far posto a un gancio intermedio.": "Zwischen \"{a}\" und \"{b}\" gibt es einen etwa {mm} mm langen Randabschnitt ohne Haken: Dort können die Teile aufgehen. Verbreitere diesen Rand (mindestens 6 mm), damit ein Zwischenhaken Platz hat.",
- "Una parte stampata già montata (cerniera o pulsante) unisce parti di colori diversi": "Ein Print-in-Place-Teil (Scharnier oder Knopf) verbindet Teile in verschiedenen Farben"
+ "Una parte stampata già montata (cerniera o pulsante) unisce parti di colori diversi": "Ein Print-in-Place-Teil (Scharnier oder Knopf) verbindet Teile in verschiedenen Farben",
+ "AMS + doppio ugello": "AMS + Doppeldüse",
+ "Aperta": "Offen",
+ "Cambio utensile": "Werkzeugwechsler",
+ "Chiusa, con sportello": "Geschlossen, mit Tür",
+ "Com’è fatta?": "Wie ist er gebaut?",
+ "Cosa si muove avanti e indietro?": "Was bewegt sich vor und zurück?",
+ "Il piatto": "Die Druckplatte",
+ "Quanti colori può stampare nello stesso pezzo?": "Wie viele Farben kann er im selben Teil drucken?",
+ "sistema multicolore": "Mehrfarbsystem",
+ "Solo la testina (CoreXY)": "Nur der Druckkopf (CoreXY)"
 }

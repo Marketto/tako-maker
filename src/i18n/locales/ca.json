@@ -435,5 +435,15 @@
  "si sente lo scatto, corsa breve": "es nota l’espetec, recorregut curt",
  "Sotto il pulsante \"{name}\" il guscio è troppo sottile: servono almeno {mm} mm.": "Sota el botó \"{name}\" la carcassa és massa prima: calen almenys {mm} mm.",
  "Tra \"{a}\" e \"{b}\" c'è un tratto di bordo di circa {mm} mm senza ganci: lì le parti possono aprirsi. Allarga quel bordo (almeno 6 mm) per far posto a un gancio intermedio.": "Entre \"{a}\" i \"{b}\" hi ha un tram de vora d’uns {mm} mm sense ganxos: allà les peces es poden obrir. Eixampla aquesta vora (almenys 6 mm) per fer lloc a un ganxo intermedi.",
- "Una parte stampata già montata (cerniera o pulsante) unisce parti di colori diversi": "Una peça impresa ja muntada (frontissa o botó) uneix peces de colors diferents"
+ "Una parte stampata già montata (cerniera o pulsante) unisce parti di colori diversi": "Una peça impresa ja muntada (frontissa o botó) uneix peces de colors diferents",
+ "AMS + doppio ugello": "AMS + broquet doble",
+ "Aperta": "Oberta",
+ "Cambio utensile": "Canviador d’eines",
+ "Chiusa, con sportello": "Tancada, amb porta",
+ "Com’è fatta?": "Com és?",
+ "Cosa si muove avanti e indietro?": "Què es mou endavant i endarrere?",
+ "Il piatto": "La placa",
+ "Quanti colori può stampare nello stesso pezzo?": "Quants colors pot imprimir a la mateixa peça?",
+ "sistema multicolore": "sistema multicolor",
+ "Solo la testina (CoreXY)": "Només el capçal (CoreXY)"
 }

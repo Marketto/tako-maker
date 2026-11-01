@@ -435,5 +435,15 @@
  "si sente lo scatto, corsa breve": "osjeti se klik, kratak hod",
  "Sotto il pulsante \"{name}\" il guscio è troppo sottile: servono almeno {mm} mm.": "Ispod dugmeta \"{name}\" kućište je pretanko: treba najmanje {mm} mm.",
  "Tra \"{a}\" e \"{b}\" c'è un tratto di bordo di circa {mm} mm senza ganci: lì le parti possono aprirsi. Allarga quel bordo (almeno 6 mm) per far posto a un gancio intermedio.": "Između \"{a}\" i \"{b}\" postoji dio ruba od oko {mm} mm bez kukica: tu se dijelovi mogu razdvojiti. Proširi taj rub (najmanje 6 mm) da stane još jedna kukica.",
- "Una parte stampata già montata (cerniera o pulsante) unisce parti di colori diversi": "Dio printan već sklopljen (šarka ili dugme) spaja dijelove različitih boja"
+ "Una parte stampata già montata (cerniera o pulsante) unisce parti di colori diversi": "Dio printan već sklopljen (šarka ili dugme) spaja dijelove različitih boja",
+ "AMS + doppio ugello": "AMS + dvostruka dizna",
+ "Aperta": "Otvoren",
+ "Cambio utensile": "Izmjenjivač alata",
+ "Chiusa, con sportello": "Zatvoren, s vratima",
+ "Com’è fatta?": "Kakav je?",
+ "Cosa si muove avanti e indietro?": "Šta se pomjera naprijed-nazad?",
+ "Il piatto": "Ploča",
+ "Quanti colori può stampare nello stesso pezzo?": "Koliko boja može printati u istom dijelu?",
+ "sistema multicolore": "višebojni sistem",
+ "Solo la testina (CoreXY)": "Samo glava (CoreXY)"
 }

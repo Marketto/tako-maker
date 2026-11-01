@@ -435,5 +435,15 @@
  "si sente lo scatto, corsa breve": "カチッと感じる、ストローク短め",
  "Sotto il pulsante \"{name}\" il guscio è troppo sottile: servono almeno {mm} mm.": "ボタン「{name}」の下のケースが薄すぎます。{mm} mm 以上必要です。",
  "Tra \"{a}\" e \"{b}\" c'è un tratto di bordo di circa {mm} mm senza ganci: lì le parti possono aprirsi. Allarga quel bordo (almeno 6 mm) per far posto a un gancio intermedio.": "「{a}」と「{b}」の間に、ツメのない縁が約 {mm} mm 続いています。そこでパーツが開いてしまうかもしれません。途中にツメを入れられるよう、その縁を広げてください（6 mm 以上）。",
- "Una parte stampata già montata (cerniera o pulsante) unisce parti di colori diversi": "組み立て済みで印刷するパーツ（ヒンジまたはボタン）が、色の違うパーツをつないでいます"
+ "Una parte stampata già montata (cerniera o pulsante) unisce parti di colori diversi": "組み立て済みで印刷するパーツ（ヒンジまたはボタン）が、色の違うパーツをつないでいます",
+ "AMS + doppio ugello": "AMS + デュアルノズル",
+ "Aperta": "オープン型",
+ "Cambio utensile": "ツールチェンジャー",
+ "Chiusa, con sportello": "密閉型（扉つき）",
+ "Com’è fatta?": "どんなタイプですか？",
+ "Cosa si muove avanti e indietro?": "前後に動くのはどれ？",
+ "Il piatto": "プレート",
+ "Quanti colori può stampare nello stesso pezzo?": "同じパーツに何色まで印刷できますか？",
+ "sistema multicolore": "マルチカラーシステム",
+ "Solo la testina (CoreXY)": "プリントヘッドだけ（CoreXY）"
 }
