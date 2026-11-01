@@ -435,5 +435,15 @@
  "si sente lo scatto, corsa breve": "klik hissedilir, kısa hareket",
  "Sotto il pulsante \"{name}\" il guscio è troppo sottile: servono almeno {mm} mm.": "\"{name}\" düğmesinin altındaki gövde çok ince: en az {mm} mm gerekli.",
  "Tra \"{a}\" e \"{b}\" c'è un tratto di bordo di circa {mm} mm senza ganci: lì le parti possono aprirsi. Allarga quel bordo (almeno 6 mm) per far posto a un gancio intermedio.": "\"{a}\" ile \"{b}\" arasında yaklaşık {mm} mm kancasız bir kenar bölümü var: orada parçalar açılabilir. Ara bir kancaya yer açmak için o kenarı genişlet (en az 6 mm).",
- "Una parte stampata già montata (cerniera o pulsante) unisce parti di colori diversi": "Monte basılan bir parça (menteşe veya düğme) farklı renkteki parçaları birleştiriyor"
+ "Una parte stampata già montata (cerniera o pulsante) unisce parti di colori diversi": "Monte basılan bir parça (menteşe veya düğme) farklı renkteki parçaları birleştiriyor",
+ "AMS + doppio ugello": "AMS + çift nozül",
+ "Aperta": "Açık",
+ "Cambio utensile": "Takım değiştirici",
+ "Chiusa, con sportello": "Kapalı, kapaklı",
+ "Com’è fatta?": "Nasıl bir yazıcı?",
+ "Cosa si muove avanti e indietro?": "İleri geri ne hareket ediyor?",
+ "Il piatto": "Tabla",
+ "Quanti colori può stampare nello stesso pezzo?": "Aynı parçada kaç renk basabilir?",
+ "sistema multicolore": "çok renkli sistem",
+ "Solo la testina (CoreXY)": "Yalnızca baskı kafası (CoreXY)"
 }

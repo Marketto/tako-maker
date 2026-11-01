@@ -1,5 +1,5 @@
 import type { ProjectSession, Snapshot } from '../app/session';
-import { printerById, useStore } from '../app/store';
+import { printerOf, useStore } from '../app/store';
 import { fmtTime, STRATEGY_LABEL } from '../core/analysis/estimate';
 import type { Connection, PrintStrategy } from '../core/types';
 import { cheer } from './mascot/bus';
@@ -12,7 +12,7 @@ import { hardwareLabel, hardwareOf } from '../core/hardware';
 export function PrintPanel({ session, snap }: { session: ProjectSession; snap: Snapshot }) {
   const { setup } = useStore();
   const d = snap.project.design;
-  const printer = printerById(setup!.printerId);
+  const printer = printerOf(setup!);
   const report = snap.report;
   const download = (f: { blob: Blob; filename: string }) => {
     const url = URL.createObjectURL(f.blob);

@@ -435,5 +435,15 @@
  "si sente lo scatto, corsa breve": "du mærker klikket, kort vandring",
  "Sotto il pulsante \"{name}\" il guscio è troppo sottile: servono almeno {mm} mm.": "Under knappen \"{name}\" er kabinettet for tyndt: det skal være mindst {mm} mm.",
  "Tra \"{a}\" e \"{b}\" c'è un tratto di bordo di circa {mm} mm senza ganci: lì le parti possono aprirsi. Allarga quel bordo (almeno 6 mm) per far posto a un gancio intermedio.": "Mellem \"{a}\" og \"{b}\" er der et stykke kant på ca. {mm} mm uden kroge: der kan delene åbne sig. Gør kanten bredere (mindst 6 mm), så der er plads til en ekstra krog.",
- "Una parte stampata già montata (cerniera o pulsante) unisce parti di colori diversi": "En print-in-place-del (hængsel eller knap) forbinder dele i forskellige farver"
+ "Una parte stampata già montata (cerniera o pulsante) unisce parti di colori diversi": "En print-in-place-del (hængsel eller knap) forbinder dele i forskellige farver",
+ "AMS + doppio ugello": "AMS + dobbelt dyse",
+ "Aperta": "Åben",
+ "Cambio utensile": "Værktøjsskifter",
+ "Chiusa, con sportello": "Lukket, med låge",
+ "Com’è fatta?": "Hvordan er den bygget?",
+ "Cosa si muove avanti e indietro?": "Hvad bevæger sig frem og tilbage?",
+ "Il piatto": "Pladen",
+ "Quanti colori può stampare nello stesso pezzo?": "Hvor mange farver kan den printe i samme del?",
+ "sistema multicolore": "flerfarvesystem",
+ "Solo la testina (CoreXY)": "Kun printhovedet (CoreXY)"
 }

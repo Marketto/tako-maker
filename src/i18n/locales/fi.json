@@ -435,5 +435,15 @@
  "si sente lo scatto, corsa breve": "napsahdus tuntuu, lyhyt liike",
  "Sotto il pulsante \"{name}\" il guscio è troppo sottile: servono almeno {mm} mm.": "Painikkeen ”{name}” alla kotelo on liian ohut: tarvitaan vähintään {mm} mm.",
  "Tra \"{a}\" e \"{b}\" c'è un tratto di bordo di circa {mm} mm senza ganci: lì le parti possono aprirsi. Allarga quel bordo (almeno 6 mm) per far posto a un gancio intermedio.": "Osien ”{a}” ja ”{b}” välissä on noin {mm} mm:n reunaosuus ilman koukkuja: siitä osat voivat aueta. Levennä reunaa (vähintään 6 mm), jotta väliin mahtuu lisäkoukku.",
- "Una parte stampata già montata (cerniera o pulsante) unisce parti di colori diversi": "Valmiiksi koottuna tulostettava osa (sarana tai painike) yhdistää erivärisiä osia"
+ "Una parte stampata già montata (cerniera o pulsante) unisce parti di colori diversi": "Valmiiksi koottuna tulostettava osa (sarana tai painike) yhdistää erivärisiä osia",
+ "AMS + doppio ugello": "AMS + kaksoissuutin",
+ "Aperta": "Avoin",
+ "Cambio utensile": "Työkalunvaihtaja",
+ "Chiusa, con sportello": "Suljettu, luukulla",
+ "Com’è fatta?": "Millainen se on?",
+ "Cosa si muove avanti e indietro?": "Mikä liikkuu edestakaisin?",
+ "Il piatto": "Alusta",
+ "Quanti colori può stampare nello stesso pezzo?": "Montako väriä se voi tulostaa samaan osaan?",
+ "sistema multicolore": "monivärijärjestelmä",
+ "Solo la testina (CoreXY)": "Vain tulostuspää (CoreXY)"
 }

@@ -435,5 +435,15 @@
  "si sente lo scatto, corsa breve": "du känner klicket, kort slag",
  "Sotto il pulsante \"{name}\" il guscio è troppo sottile: servono almeno {mm} mm.": "Under knappen ”{name}” är höljet för tunt: det behövs minst {mm} mm.",
  "Tra \"{a}\" e \"{b}\" c'è un tratto di bordo di circa {mm} mm senza ganci: lì le parti possono aprirsi. Allarga quel bordo (almeno 6 mm) per far posto a un gancio intermedio.": "Mellan ”{a}” och ”{b}” finns en kantsträcka på cirka {mm} mm utan hakar: där kan delarna öppna sig. Gör kanten bredare (minst 6 mm) så att det får plats en extra hake.",
- "Una parte stampata già montata (cerniera o pulsante) unisce parti di colori diversi": "En färdigmonterad utskriven del (gångjärn eller knapp) förenar delar i olika färger"
+ "Una parte stampata già montata (cerniera o pulsante) unisce parti di colori diversi": "En färdigmonterad utskriven del (gångjärn eller knapp) förenar delar i olika färger",
+ "AMS + doppio ugello": "AMS + dubbelt munstycke",
+ "Aperta": "Öppen",
+ "Cambio utensile": "Verktygsväxlare",
+ "Chiusa, con sportello": "Sluten, med lucka",
+ "Com’è fatta?": "Hur är den byggd?",
+ "Cosa si muove avanti e indietro?": "Vad rör sig fram och tillbaka?",
+ "Il piatto": "Plattan",
+ "Quanti colori può stampare nello stesso pezzo?": "Hur många färger kan den skriva ut i samma del?",
+ "sistema multicolore": "flerfärgssystem",
+ "Solo la testina (CoreXY)": "Bara skrivhuvudet (CoreXY)"
 }

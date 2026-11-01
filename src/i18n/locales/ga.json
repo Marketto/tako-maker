@@ -435,5 +435,15 @@
  "si sente lo scatto, corsa breve": "mothaítear an clic, gluaiseacht ghearr",
  "Sotto il pulsante \"{name}\" il guscio è troppo sottile: servono almeno {mm} mm.": "Faoin gcnaipe \"{name}\" tá an cásáil róthanaí: teastaíonn {mm} mm ar a laghad.",
  "Tra \"{a}\" e \"{b}\" c'è un tratto di bordo di circa {mm} mm senza ganci: lì le parti possono aprirsi. Allarga quel bordo (almeno 6 mm) per far posto a un gancio intermedio.": "Idir \"{a}\" agus \"{b}\" tá stráice imill thart ar {mm} mm gan chrúcaí: is féidir leis na páirteanna oscailt ansin. Leathnaigh an t-imeall sin (6 mm ar a laghad) chun áit a dhéanamh do chrúca idirmheánach.",
- "Una parte stampata già montata (cerniera o pulsante) unisce parti di colori diversi": "Ceanglaíonn páirt réamhchóimeáilte phriontáilte (inse nó cnaipe) páirteanna de dhathanna éagsúla"
+ "Una parte stampata già montata (cerniera o pulsante) unisce parti di colori diversi": "Ceanglaíonn páirt réamhchóimeáilte phriontáilte (inse nó cnaipe) páirteanna de dhathanna éagsúla",
+ "AMS + doppio ugello": "AMS + soc dúbailte",
+ "Aperta": "Oscailte",
+ "Cambio utensile": "Malartóir uirlisí",
+ "Chiusa, con sportello": "Iata, le doras",
+ "Com’è fatta?": "Cén chuma atá air?",
+ "Cosa si muove avanti e indietro?": "Cad a bhogann siar agus aniar?",
+ "Il piatto": "An pláta",
+ "Quanti colori può stampare nello stesso pezzo?": "Cé mhéad dath is féidir leis a phriontáil sa pháirt chéanna?",
+ "sistema multicolore": "córas ildaite",
+ "Solo la testina (CoreXY)": "An ceann priontála amháin (CoreXY)"
 }

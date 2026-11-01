@@ -435,5 +435,15 @@
  "si sente lo scatto, corsa breve": "kliska nabaritzen da, ibilbide laburra",
  "Sotto il pulsante \"{name}\" il guscio è troppo sottile: servono almeno {mm} mm.": "\"{name}\" botoiaren azpian karkasa meheegia da: gutxienez {mm} mm behar dira.",
  "Tra \"{a}\" e \"{b}\" c'è un tratto di bordo di circa {mm} mm senza ganci: lì le parti possono aprirsi. Allarga quel bordo (almeno 6 mm) per far posto a un gancio intermedio.": "\"{a}\" eta \"{b}\" artean {mm} mm inguruko ertz-zati bat dago kakorik gabe: han piezak ireki daitezke. Zabaldu ertz hori (gutxienez 6 mm) tarteko kako batentzat lekua egiteko.",
- "Una parte stampata già montata (cerniera o pulsante) unisce parti di colori diversi": "Muntatuta inprimatutako pieza batek (bisagra edo botoia) kolore desberdinetako piezak lotzen ditu"
+ "Una parte stampata già montata (cerniera o pulsante) unisce parti di colori diversi": "Muntatuta inprimatutako pieza batek (bisagra edo botoia) kolore desberdinetako piezak lotzen ditu",
+ "AMS + doppio ugello": "AMS + tobera bikoitza",
+ "Aperta": "Irekia",
+ "Cambio utensile": "Tresna-aldagailua",
+ "Chiusa, con sportello": "Itxia, atearekin",
+ "Com’è fatta?": "Nolakoa da?",
+ "Cosa si muove avanti e indietro?": "Zer mugitzen da aurrera eta atzera?",
+ "Il piatto": "Plaka",
+ "Quanti colori può stampare nello stesso pezzo?": "Zenbat kolore inprima ditzake pieza berean?",
+ "sistema multicolore": "kolore anitzeko sistema",
+ "Solo la testina (CoreXY)": "Buru inprimatzailea bakarrik (CoreXY)"
 }
