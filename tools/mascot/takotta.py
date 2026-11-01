@@ -1,6 +1,6 @@
-"""Generatore di Taky, mascotte originale di Tako Maker (stile anime anni 2000).
+"""Generatore di Takotta, mascotte originale di Printopus (stile anime anni 2000).
 
-Uso:  python3 tools/mascot/taky.py
+Uso:  python3 tools/mascot/takotta.py
 Scrive src/ui/mascot/sprites.ts (SVG per ogni espressione) e le icone PWA in public/icons.
 Gli id interni usano il segnaposto __UID__ (sostituito a runtime) e le punte dei
 tentacoli leggono i colori dei filamenti dalle variabili CSS --tip0 … --tip6.
@@ -261,24 +261,24 @@ CSS = '''
 
 
 def svg(expr='normale', uid='n', size=400, accessories=True):
-    return f'<svg viewBox="0 0 410 400" width="{size}" height="{size * 400 // 410}" role="img" aria-label="Taky, mascotte di Tako Maker">{mascot(expr, uid, accessories)}</svg>'
+    return f'<svg viewBox="0 0 410 400" width="{size}" height="{size * 400 // 410}" role="img" aria-label="Takotta, mascotte di Printopus">{mascot(expr, uid, accessories)}</svg>'
 
 
 def scoped_css():
-    """Limita le regole CSS delle animazioni all’interno di .taky."""
+    """Limita le regole CSS delle animazioni all’interno di .takotta."""
     out = []
     for line in CSS.strip().split('\n'):
         if line.startswith('.'):
-            out.append('.taky ' + line)
+            out.append('.takotta ' + line)
         elif line.startswith('@media'):
-            out.append(line.replace('{*{', '{.taky *{'))
+            out.append(line.replace('{*{', '{.takotta *{'))
         else:
             out.append(line)
     return '\n'.join(out)
 
 
 def icon_svg(size, pad=0.0, bg='#f3ecff'):
-    """Testa di Taky per le icone PWA (niente tentacoli: leggibile anche a 48 px)."""
+    """Testa di Takotta per le icone PWA (niente tentacoli: leggibile anche a 48 px)."""
     inner = mascot('normale', 'icon', accessories=False)
     inner = inner.replace('__UID__', 'icon')
     s = 1 - 2 * pad
@@ -294,8 +294,8 @@ if __name__ == '__main__':
     squash = lambda t: re.sub(r'\s*\n\s*', '', t)
     body = squash(mascot(None, 'x'))
     faces = {m: squash(face(m)) for m in moods}
-    ts = ('// File generato da tools/mascot/taky.py: non modificarlo a mano.\n'
-          '// Taky è un personaggio originale di Tako Maker (licenza MIT come il resto del codice).\n\n'
+    ts = ('// File generato da tools/mascot/takotta.py: non modificarlo a mano.\n'
+          '// Takotta è un personaggio originale di Printopus (licenza MIT come il resto del codice).\n\n'
           "export type Mood = 'normale' | 'felice' | 'concentrata' | 'confusa' | 'pensierosa';\n\n"
           'export const VIEWBOX = \'0 0 410 400\';\n\n'
           '/** Corpo comune: il viso va al posto di <!--FACE-->. */\n'

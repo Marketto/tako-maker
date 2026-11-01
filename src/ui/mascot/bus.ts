@@ -1,6 +1,6 @@
 import type { PhraseKind } from './phrases';
 
-/* Piccolo bus di eventi per far reagire Taky (esportazione, montaggio…)
+/* Piccolo bus di eventi per far reagire Takotta (esportazione, montaggio…)
    senza legare la mascotte ai singoli componenti. */
 
 type Listener = (kind: PhraseKind) => void;

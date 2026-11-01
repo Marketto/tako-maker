@@ -1,5 +1,5 @@
 {
-  "name": "tako-maker",
+  "name": "printopus",
   "private": true,
   "version": "0.1.0",
   "description": "PWA per creare e adattare modelli 3D stampabili con l'aiuto di Claude, tenendo conto di stampante e filamenti disponibili.",

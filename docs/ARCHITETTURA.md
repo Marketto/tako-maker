@@ -29,9 +29,9 @@ src/
 │  └─ export/                 3MF (Orca/Bambu e PrusaSlicer) e STL
 ├─ data/                      stampanti, materiali, modello d'esempio
 ├─ ui/                        componenti React (wizard, home, area di lavoro, pannelli, anteprima)
-│  └─ mascot/                 Taky: sprite generati, umori, fumetto, frasi, bus di eventi
+│  └─ mascot/                 Takotta: sprite generati, umori, fumetto, frasi, bus di eventi
 └─ app/music.ts               musica di sottofondo generata con Web Audio
-tools/mascot/taky.py      generatore di Taky (sprite SVG + icone PWA)
+tools/mascot/takotta.py      generatore di Takotta (sprite SVG + icone PWA)
 ```
 
 ## Flusso di un messaggio
@@ -72,9 +72,9 @@ e non calcola tempi o costi: modifica un documento JSON piccolo e valida, il res
 per tutto ciò che non richiede l’AI: anteprima, analisi, montaggio, esportazione. Quando esce una
 nuova versione compare una barra “Aggiorna”.
 
-## Taky e atmosfera
+## Takotta e atmosfera
 
-- **Sprite**: `tools/mascot/taky.py` genera `src/ui/mascot/sprites.ts` (un corpo comune + un viso per umore, ~7 KB compressi) e le icone in `public/icons/`. Le punte dei tentacoli usano le variabili CSS `--tip0…--tip6`, impostate con i colori dei filamenti dell'utente.
+- **Sprite**: `tools/mascot/takotta.py` genera `src/ui/mascot/sprites.ts` (un corpo comune + un viso per umore, ~7 KB compressi) e le icone in `public/icons/`. Le punte dei tentacoli usano le variabili CSS `--tip0…--tip6`, impostate con i colori dei filamenti dell'utente.
 - **Umori**: `MascotDock` deriva l'espressione dallo stato del progetto (in attesa dell'AI → pensierosa, calcolo → concentrata, errore → confusa, modifica riuscita/esportazione → felice).
 - **Frasi**: `ui/mascot/phrases.ts`, scelte localmente senza ripetizioni consecutive.
 - **Musica**: `app/music.ts` sintetizza in tempo reale accordi e carillon pentatonico; parte solo dopo un gesto dell'utente e si sospende quando la scheda è nascosta.
