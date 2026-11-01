@@ -56,7 +56,7 @@ export function SettingsDialog({ onClose, onEditSetup }: { onClose: () => void; 
             <p className="muted small">Se hai pubblicato il proxy opzionale (cartella <code>proxy/</code>), la chiave resta sul server e qui serve solo l’indirizzo.</p>
             <label className="field">
               URL del proxy
-              <input className="text" placeholder="https://tako-maker-proxy.tuonome.workers.dev" value={settings.proxyUrl} onChange={(e) => store.setSettings({ proxyUrl: e.target.value.trim() })} />
+              <input className="text" placeholder="https://printopus-proxy.tuonome.workers.dev" value={settings.proxyUrl} onChange={(e) => store.setSettings({ proxyUrl: e.target.value.trim() })} />
             </label>
             <label className="field">
               Codice di accesso
@@ -93,7 +93,7 @@ export function SettingsDialog({ onClose, onEditSetup }: { onClose: () => void; 
           <h3>Atmosfera</h3>
           <label className="check">
             <input type="checkbox" checked={settings.mascotOn} onChange={(e) => store.setSettings({ mascotOn: e.target.checked })} />
-            Mostra Taky e le frasi di incitamento
+            Mostra Takotta e le frasi di incitamento
           </label>
           <label className="field">
             Volume della musica

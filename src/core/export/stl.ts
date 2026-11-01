@@ -8,7 +8,7 @@ export function buildSTL(mesh: RawMesh, name = 'modello'): Uint8Array {
   const tris = mesh.indices.length / 3;
   const buf = new ArrayBuffer(84 + tris * 50);
   const dv = new DataView(buf);
-  const header = strToU8(`Tako Maker - ${name}`.slice(0, 80));
+  const header = strToU8(`Printopus - ${name}`.slice(0, 80));
   new Uint8Array(buf, 0, 80).set(header);
   dv.setUint32(80, tris, true);
   let minZ = Infinity;

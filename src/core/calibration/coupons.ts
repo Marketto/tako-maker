@@ -190,7 +190,7 @@ export function layoutPlates(groups: { material: string; filament: Filament; cou
 
 export function readmeText(plates: PlateLayout[], kinds: TestKind[]): string {
   const lines: string[] = [
-    'CAMPIONI DI PROVA – Tako Maker',
+    'CAMPIONI DI PROVA – Printopus',
     '================================',
     '',
     'Ogni campione ha da 1 a 5 puntini in rilievo: il numero di puntini indica il valore provato.',
@@ -209,7 +209,7 @@ export function readmeText(plates: PlateLayout[], kinds: TestKind[]): string {
     }
     lines.push('');
   }
-  lines.push('Poi apri Tako Maker → scheda Stampa → Campioni di prova e indica il campione migliore:');
+  lines.push('Poi apri Printopus → scheda Stampa → Campioni di prova e indica il campione migliore:');
   lines.push('i valori scelti verranno usati per tutti i prossimi modelli con quel materiale.');
   return lines.join('\n') + '\n';
 }

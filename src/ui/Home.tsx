@@ -26,7 +26,7 @@ export function Home({ onOpen, onSettings }: { onOpen: (id: string) => void; onS
       <header className="topbar">
         <div className="brand">
           <img src={`${import.meta.env.BASE_URL}icons/icon.svg`} alt="" width={28} height={28} />
-          <span>Tako Maker</span>
+          <span>Printopus</span>
         </div>
         <div className="row gap">
           <InstallButton />

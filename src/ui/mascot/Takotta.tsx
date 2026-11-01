@@ -1,14 +1,14 @@
 import { useMemo, type CSSProperties } from 'react';
 import { BODY, FACES, MASCOT_CSS, VIEWBOX, type Mood } from './sprites';
 
-/* Taky, la mascotte. Le punte dei tentacoli prendono i colori dei
+/* Takotta, la mascotte. Le punte dei tentacoli prendono i colori dei
    filamenti dell'utente tramite le variabili CSS --tip0 … --tip6. */
 
 let injected = false;
 function injectCss() {
   if (injected || typeof document === 'undefined') return;
   const el = document.createElement('style');
-  el.dataset.taky = '';
+  el.dataset.takotta = '';
   el.textContent = MASCOT_CSS;
   document.head.appendChild(el);
   injected = true;
@@ -16,12 +16,12 @@ function injectCss() {
 
 let seq = 0;
 
-export function Taky({
+export function Takotta({
   mood = 'normale',
   size = 160,
   tips = [],
   className = '',
-  label = 'Taky, la mascotte di Tako Maker',
+  label = 'Takotta, la mascotte di Printopus',
 }: {
   mood?: Mood;
   size?: number;
@@ -39,7 +39,7 @@ export function Taky({
   }, [tips]);
   return (
     <svg
-      className={`taky ${className}`}
+      className={`takotta ${className}`}
       viewBox={VIEWBOX}
       width={size}
       height={Math.round((size * 400) / 410)}
