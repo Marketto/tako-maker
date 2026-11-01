@@ -3,7 +3,7 @@ import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import { VitePWA } from 'vite-plugin-pwa';
 
-// BASE_PATH viene impostato dalla GitHub Action (es. "/tako-maker/").
+// BASE_PATH viene impostato dalla GitHub Action (es. "/printopus/").
 // In locale resta "/".
 const base = process.env.BASE_PATH ?? '/';
 
@@ -15,8 +15,8 @@ export default defineConfig({
       registerType: 'prompt',
       includeAssets: ['icons/icon.svg', 'icons/apple-touch-icon.png'],
       manifest: {
-        name: 'Tako Maker',
-        short_name: 'Tako Maker',
+        name: 'Printopus',
+        short_name: 'Printopus',
         description:
           'Crea e adatta modelli 3D stampabili in base alla tua stampante e ai tuoi filamenti.',
         lang: 'it',

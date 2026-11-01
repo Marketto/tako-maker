@@ -21,7 +21,15 @@ L’app è pensata per un uso **personale e non commerciale** e per rispettare i
 
 - Codice: licenza MIT.
 - Dati delle stampanti: specifiche tecniche pubbliche, riportate in forma sintetica.
-- Polpetta (mascotte) e icone: personaggio e disegni originali del progetto, licenza MIT.
+- Takotta (mascotte) e icone: personaggio e disegni originali del progetto, licenza MIT.
 - Musica: generata dal codice in tempo reale, nessun brano di terzi.
 - Font M PLUS Rounded 1c: SIL Open Font License 1.1 (pacchetto `@fontsource/m-plus-rounded-1c`).
 - Nessuna chiave, token o dato personale nel codice o nella cronologia git.
+
+## Nomi: Printopus e Takotta
+
+Prima di sceglierli (novembre 2026) è stata fatta una ricerca sul web e nei registri dei marchi statunitensi (USPTO, tramite aggregatori pubblici):
+- **Printopus** (app) e **Takotta** (mascotte): nessun prodotto, app o marchio con lo stesso nome trovato.
+- Scartati: “Tako Maker” (TAKO è un marchio registrato in classe 9/42, anche per un chatbot AI) e “Taky” (marchio TAKY registrato in classe 9).
+
+Non è una consulenza legale né una ricerca completa (EUIPO/WIPO non verificati a fondo): prima di un uso commerciale conviene un controllo su [TMview](https://www.tmdn.org/tmview/) e [WIPO Global Brand Database](https://branddb.wipo.int/).
