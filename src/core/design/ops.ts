@@ -1,4 +1,4 @@
-import type { Design, Hardware, Joint, Part, ShapeNode, Vec3, PrintStrategy, Connection } from '../types';
+import type { ButtonSpec, Design, Hardware, Joint, Part, ShapeNode, Vec3, PrintStrategy, Connection } from '../types';
 
 /* Operazioni di modifica del Design. L'agente invia una lista di queste
    operazioni (tool "edit_design") invece di riscrivere tutto il documento:
@@ -7,7 +7,7 @@ import type { Design, Hardware, Joint, Part, ShapeNode, Vec3, PrintStrategy, Con
 export type DesignOp =
   | { op: 'set_meta'; name?: string; description?: string; children?: boolean; notes?: string }
   | { op: 'add_part'; part: Part }
-  | { op: 'update_part'; id: string; name?: string; filamentId?: string; shape?: ShapeNode }
+  | { op: 'update_part'; id: string; name?: string; filamentId?: string; shape?: ShapeNode; button?: Partial<ButtonSpec> | null }
   | { op: 'move_part'; id: string; at?: Vec3; rot?: Vec3 }
   | { op: 'remove_part'; id: string }
   | { op: 'add_joint'; joint: Joint }
@@ -93,6 +93,14 @@ export function validateDesign(d: Design, filamentIds?: Set<string>): void {
     if (!isVec3(j.origin)) throw new DesignError(`Il giunto "${j.id}" ha un'origine non valida`);
     if (!['x', 'y', 'z'].includes(j.axis)) throw new DesignError(`Il giunto "${j.id}" ha un asse non valido`);
   }
+  for (const p of d.parts) {
+    const b = p.button;
+    if (!b) continue;
+    if (!ids.has(b.housing) || b.housing === p.id) throw new DesignError(`Il pulsante "${p.id}" deve indicare in "housing" la parte che lo contiene`);
+    if (d.parts.find((x) => x.id === b.housing)?.button) throw new DesignError(`Il pulsante "${p.id}" non può stare dentro un altro pulsante`);
+    if (b.protrusionMm !== undefined && !(b.protrusionMm >= 0.5 && b.protrusionMm <= 6)) throw new DesignError(`Il pulsante "${p.id}" ha una sporgenza non valida (0,5-6 mm)`);
+    if (b.feel !== undefined && b.feel !== 'click' && b.feel !== 'soft') throw new DesignError(`Il pulsante "${p.id}" ha un tipo di risposta non valido`);
+  }
   const hw = d.hardware ?? [];
   if (hw.length > LIMITS.maxHardware) throw new DesignError(`Troppi elementi da acquistare (max ${LIMITS.maxHardware})`);
   const hids = new Set<string>();
@@ -131,6 +139,8 @@ export function applyOps(design: Design, ops: DesignOp[], filamentIds?: Set<stri
         if (o.name !== undefined) p.name = o.name;
         if (o.filamentId !== undefined) p.filamentId = o.filamentId;
         if (o.shape !== undefined) p.shape = o.shape;
+        if (o.button === null) delete p.button;
+        else if (o.button !== undefined) p.button = { ...p.button, ...o.button } as ButtonSpec;
         break;
       }
       case 'move_part': {

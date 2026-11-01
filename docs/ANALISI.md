@@ -22,6 +22,9 @@ Punteggio = ore + grammi di scarto / 20 + penalità (montaggio, attenzione richi
 | Strategia “parti separate” e parti a contatto | “Come vuoi unire le parti?” A incastro / Da incollare | `set_plan.connection` → perni generati |
 | Giunti senza scelta sullo scatto | “Ci sono parti mobili. Vuoi che si fermino a scatto?” (scelta per giunto se più di uno) | `update_joint.detent` |
 | Elemento da comprare a parte non ancora confermato (uno per domanda) | “Serve un elemento da comprare a parte: 4 × Magnete (6×2 mm). Va bene o cerco un’alternativa stampata?” | `update_hardware.decision`; con «alternativa stampata» parte una richiesta all’assistente (skill modifica-modello) |
+| Pulsanti senza sporgenza scelta | “Quanto devono sporgere i pulsanti?” 1 / 2 / 3 mm (con i bambini consiglia almeno 2 mm) | `update_part.button.protrusionMm` |
+| Pulsanti senza risposta scelta | “Devono fare click o essere morbidi?” | `update_part.button.feel` |
+| Pulsante di colore diverso dal guscio senza multicolore | “Usiamo lo stesso colore?” | `update_part.filamentId` |
 | Oggetto per bambini con spigoli vivi | “Arrotondo gli spigoli esterni (2 mm)?” | `radius` sui box non sottrattivi |
 
 ## Avvisi
@@ -30,6 +33,8 @@ Punteggio = ore + grammi di scarto / 20 + penalità (montaggio, attenzione richi
 - parti che non entrano nel piatto;
 - materiali che richiedono camera chiusa su stampanti aperte;
 - articolazioni stampate già montate con strategia a parti separate;
+- tratti di bordo lunghi senza ganci tra parti a incastro (oltre 1,5 volte la distanza tra i perni);
+- pulsanti che non si possono generare (guscio troppo sottile, tasto troppo piccolo, tasto non sopra il guscio);
 - elementi acquistati in oggetti per bambini (fissarli bene; magneti e pile a bottone);
 - elementi da sostituire con una soluzione stampata non ancora sostituiti.
 
