@@ -3,6 +3,7 @@
    piccole (vedi core/design/ops.ts). Specifica: docs/DESIGN-DSL.md */
 
 import type { DesignOp } from './design/ops';
+import { t } from '../i18n';
 
 export type Vec3 = [number, number, number];
 
@@ -123,7 +124,7 @@ export interface Design {
   };
 }
 
-export function emptyDesign(name = 'Nuovo modello'): Design {
+export function emptyDesign(name = t('Nuovo modello')): Design {
   return {
     version: 1,
     name,

@@ -6,6 +6,7 @@ import type { Skill } from './skills';
 import { runTool, toolsFor, type SearchResult, type ToolEnv } from './tools';
 import { systemBlocks, userContext, type ImportedMeshInfo } from './context';
 import type { AnalysisReport } from '../core/analysis';
+import { msg, t } from '../i18n';
 
 /* Ciclo agente: chiama Claude, esegue gli strumenti richiesti, ripete
    finché il modello non ha finito (o si raggiunge il limite di iterazioni).
@@ -55,11 +56,11 @@ export interface RunInput {
 }
 
 const TOOL_LABEL: Record<string, string> = {
-  web_search: 'Cerco modelli online…',
-  edit_design: 'Modifico il modello…',
-  print_report: 'Calcolo tempi e consumi…',
-  ask_user: 'Ho una domanda…',
-  show_results: 'Preparo i risultati…',
+  web_search: msg('Cerco modelli online…'),
+  edit_design: msg('Modifico il modello…'),
+  print_report: msg('Calcolo tempi e consumi…'),
+  ask_user: msg('Ho una domanda…'),
+  show_results: msg('Preparo i risultati…'),
 };
 
 export async function runAgent(input: RunInput): Promise<AgentOutcome> {
@@ -95,26 +96,26 @@ async function loop(input: RunInput, state: AgentState): Promise<AgentOutcome> {
   const texts: string[] = [];
 
   for (let turn = 0; turn < LIMITS.maxAgentTurns; turn++) {
-    input.onEvent?.({ type: 'thinking', label: turn === 0 ? 'Ci penso…' : 'Continuo…' });
+    input.onEvent?.({ type: 'thinking', label: turn === 0 ? t('Ci penso…') : t('Continuo…') });
     const res = await input.client.send(
       { tier, system, messages, tools: tools.length ? tools : undefined, max_tokens: skill.maxTokens },
       input.signal,
     );
     cost += res.costUsd;
     messages.push({ role: 'assistant', content: res.content });
-    const t = textOf(res);
-    if (t) texts.push(t);
+    const said = textOf(res);
+    if (said) texts.push(said);
 
     if (res.stop_reason === 'pause_turn') continue; // ricerca web lunga: il server chiede di proseguire
     const uses = res.content.filter((b): b is Extract<ContentBlock, { type: 'tool_use' }> => b.type === 'tool_use');
     if (!uses.length || res.stop_reason !== 'tool_use') {
-      if (res.stop_reason === 'max_tokens') texts.push('(Risposta interrotta: richiesta troppo lunga. Prova a dividerla in passi più piccoli.)');
+      if (res.stop_reason === 'max_tokens') texts.push(t('(Risposta interrotta: richiesta troppo lunga. Prova a dividerla in passi più piccoli.)'));
       return { text: texts.join('\n\n'), costUsd: cost };
     }
 
     const results: ContentBlock[] = [];
     for (const u of uses) {
-      input.onEvent?.({ type: 'tool', label: TOOL_LABEL[u.name] ?? u.name });
+      input.onEvent?.({ type: 'tool', label: TOOL_LABEL[u.name] ? t(TOOL_LABEL[u.name]) : u.name });
       const out = await runTool(u.name, u.input, input.env);
       if (out.kind === 'question') {
         return { text: texts.join('\n\n'), question: out.question, costUsd: cost, state: { ...state, messages, pendingToolUseId: u.id, partialResults: results, costUsd: cost } };
@@ -122,11 +123,11 @@ async function loop(input: RunInput, state: AgentState): Promise<AgentOutcome> {
       if (out.kind === 'results') {
         return { text: texts.join('\n\n'), results: out.results, costUsd: cost };
       }
-      if (u.name === 'edit_design' && !out.isError) input.onEvent?.({ type: 'design', label: 'Anteprima aggiornata' });
+      if (u.name === 'edit_design' && !out.isError) input.onEvent?.({ type: 'design', label: t('Anteprima aggiornata') });
       results.push({ type: 'tool_result', tool_use_id: u.id, content: out.content, is_error: out.isError });
     }
     messages.push({ role: 'user', content: results });
   }
-  texts.push('(Mi sono fermato per non consumare troppo credito. Dimmi se vuoi che continui.)');
+  texts.push(t('(Mi sono fermato per non consumare troppo credito. Dimmi se vuoi che continui.)'));
   return { text: texts.join('\n\n'), costUsd: cost };
 }

@@ -4,6 +4,7 @@ import type { PartResult } from '../geometry/evaluate';
 import { build3MF, flavorForSlicer, type ExportPart } from '../export/threemf';
 import { bedOf } from '../analysis/estimate';
 import { buildCoupons, layoutPlates, materialsToTest, neededTests, readmeText, type TestKind } from './coupons';
+import { t } from '../../i18n';
 
 /* File dei campioni di prova: un 3MF per piatto, un materiale per piatto.
    Se i piatti sono più di uno, vengono raccolti in uno zip con le istruzioni. */
@@ -22,9 +23,9 @@ export interface CalibrationFiles {
 
 export async function buildCalibrationFiles(design: Design, setup: UserSetup, printer: PrinterSpec, evaluate: Evaluate): Promise<CalibrationFiles> {
   const kinds = neededTests(design);
-  if (!kinds.length) throw new Error('Il modello non ha parti mobili né incastri da provare.');
+  if (!kinds.length) throw new Error(t('Il modello non ha parti mobili né incastri da provare.'));
   const mats = materialsToTest(design, setup);
-  if (!mats.length) throw new Error('Nessun filamento disponibile per i campioni.');
+  if (!mats.length) throw new Error(t('Nessun filamento disponibile per i campioni.'));
   const bed = bedOf(setup, printer);
   const groups = mats.map(({ material, filament }) => ({ material, filament, coupons: kinds.flatMap((k) => buildCoupons(k, material, filament, setup)) }));
   const plates = layoutPlates(groups, bed);
@@ -47,7 +48,10 @@ export async function buildCalibrationFiles(design: Design, setup: UserSetup, pr
         parts.push({ name: r.name, mesh: { positions: pos, indices: r.mesh.indices }, filament: plate.filament, extruder, group: coupon.id });
       }
     }
-    const title = `Campioni ${plate.material}${plates.filter((p) => p.material === plate.material).length > 1 ? ` – piatto ${plate.index}` : ''}`;
+    const title =
+      plates.filter((p) => p.material === plate.material).length > 1
+        ? t('Campioni {material} – piatto {n}', { material: plate.material, n: plate.index })
+        : t('Campioni {material}', { material: plate.material });
     const data = build3MF(parts, { title, flavor, strategy: 'separate', bed, keepPositions: true, extraFiles: { 'Metadata/LEGGIMI.txt': readme } });
     const slug = plate.material.toLowerCase().replace(/[^a-z0-9]+/g, '-');
     files.push({ name: `campioni-${slug}${plate.index > 1 || plates.filter((p) => p.material === plate.material).length > 1 ? `-piatto${plate.index}` : ''}.3mf`, data });

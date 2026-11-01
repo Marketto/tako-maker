@@ -1,3 +1,4 @@
+import { msg, t } from '../../i18n';
 /* Frasi di incitamento di Takotta: tutte locali, zero token.
    Ogni evento ha più frasi; non si ripete la stessa due volte di fila. */
 
@@ -15,59 +16,59 @@ export type PhraseKind =
 
 export const PHRASES: Record<PhraseKind, string[]> = {
   benvenuto: [
-    'Ciao! Sono Takotta, ti aiuto a stampare ♡',
-    'Bentornato! Ho lucidato tutti e otto i tentacoli ✦',
-    'Eccoti! Cosa costruiamo oggi?',
+    msg('Ciao! Sono Takotta, ti aiuto a stampare ♡'),
+    msg('Bentornato! Ho lucidato tutti e otto i tentacoli ✦'),
+    msg('Eccoti! Cosa costruiamo oggi?'),
   ],
   nuovo: [
-    'Un foglio bianco! Raccontami la tua idea ♪',
-    'Nuovo progetto, nuova avventura!',
-    'Dimmi cosa vuoi stampare, io prendo appunti con tutti i tentacoli!',
+    msg('Un foglio bianco! Raccontami la tua idea ♪'),
+    msg('Nuovo progetto, nuova avventura!'),
+    msg('Dimmi cosa vuoi stampare, io prendo appunti con tutti i tentacoli!'),
   ],
   pensa: [
-    'Ci penso un attimo… blub blub',
-    'Strato dopo strato, ci arriviamo!',
-    'Sto mescolando idee e filamenti ✦',
-    'Un momento, sto contando le ventose…',
+    msg('Ci penso un attimo… blub blub'),
+    msg('Strato dopo strato, ci arriviamo!'),
+    msg('Sto mescolando idee e filamenti ✦'),
+    msg('Un momento, sto contando le ventose…'),
   ],
   modifica: [
-    'Che idea carina!',
-    'Fatto! Ti piace? ♡',
-    'Sta venendo benissimo!',
-    'Wow, sei proprio un maker!',
-    'Un passo alla volta, sei bravissimo ✦',
+    msg('Che idea carina!'),
+    msg('Fatto! Ti piace? ♡'),
+    msg('Sta venendo benissimo!'),
+    msg('Wow, sei proprio un maker!'),
+    msg('Un passo alla volta, sei bravissimo ✦'),
   ],
   domanda: [
-    'Ho una domandina per te ♪',
-    'Scegli tu, io mi fido!',
-    'Mi serve il tuo parere, capo!',
+    msg('Ho una domandina per te ♪'),
+    msg('Scegli tu, io mi fido!'),
+    msg('Mi serve il tuo parere, capo!'),
   ],
   errore: [
-    'Ops! Riproviamo insieme, non è niente.',
-    'Mi si è annodato un tentacolo… riprova tra un attimo!',
-    'Anche i polpi sbagliano! Ritentiamo?',
+    msg('Ops! Riproviamo insieme, non è niente.'),
+    msg('Mi si è annodato un tentacolo… riprova tra un attimo!'),
+    msg('Anche i polpi sbagliano! Ritentiamo?'),
   ],
   export: [
-    'Pronto per lo slicer! Sei bravissimo ♡',
-    'Evviva! Ora tocca alla stampante ✦',
-    'File pronto! Non vedo l’ora di vederlo stampato!',
+    msg('Pronto per lo slicer! Sei bravissimo ♡'),
+    msg('Evviva! Ora tocca alla stampante ✦'),
+    msg('File pronto! Non vedo l’ora di vederlo stampato!'),
   ],
   montaggio: [
-    'Piano piano, un pezzo alla volta!',
-    'Clic! Che soddisfazione ♪',
-    'Ce la fai, ti guardo da qui ✦',
+    msg('Piano piano, un pezzo alla volta!'),
+    msg('Clic! Che soddisfazione ♪'),
+    msg('Ce la fai, ti guardo da qui ✦'),
   ],
   coccola: [
-    'Ehi, mi fai il solletico! ♡',
-    'Blub! ✦',
-    'Ti voglio bene anch’io!',
-    'Ancora! Ancora!',
-    'Mi sono ricordata di bere acqua. E tu?',
+    msg('Ehi, mi fai il solletico! ♡'),
+    msg('Blub! ✦'),
+    msg('Ti voglio bene anch’io!'),
+    msg('Ancora! Ancora!'),
+    msg('Mi sono ricordata di bere acqua. E tu?'),
   ],
   ozio: [
-    'Fai una pausa se ti serve, io ti aspetto ♪',
-    'Ricordati di sgranchirti un po’!',
-    'Tutto bene? Sono qui se ti serve.',
+    msg('Fai una pausa se ti serve, io ti aspetto ♪'),
+    msg('Ricordati di sgranchirti un po’!'),
+    msg('Tutto bene? Sono qui se ti serve.'),
   ],
 };
 
@@ -79,5 +80,5 @@ export function pickPhrase(kind: PhraseKind, rnd: () => number = Math.random): s
   const pool = list.length > 1 ? list.filter((p) => p !== prev) : list;
   const choice = pool[Math.floor(rnd() * pool.length) % pool.length];
   last.set(kind, choice);
-  return choice;
+  return t(choice);
 }

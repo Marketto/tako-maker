@@ -6,6 +6,7 @@ import { cheer } from './mascot/bus';
 import { confetti } from './confetti';
 import { centerValue, materialsToTest, neededTests, TEST_HOWTO, TEST_KEYS, TEST_LABEL, testValues } from '../core/calibration/coupons';
 import { isCalibrated, tolerancesFor } from '../core/calibration/tolerances';
+import { fmtNum, t } from '../i18n';
 
 export function PrintPanel({ session, snap }: { session: ProjectSession; snap: Snapshot }) {
   const { setup } = useStore();
@@ -26,16 +27,16 @@ export function PrintPanel({ session, snap }: { session: ProjectSession; snap: S
   const kinds = neededTests(d);
   const mats = setup ? materialsToTest(d, setup) : [];
 
-  if (!d.parts.length) return <div className="panel-empty muted">Qui vedrai tempi, consumi ed esportazione quando il modello sarà pronto.</div>;
+  if (!d.parts.length) return <div className="panel-empty muted">{t('Qui vedrai tempi, consumi ed esportazione quando il modello sarà pronto.')}</div>;
 
   return (
     <div className="print-panel">
       {report?.summary && <div className="summary">{report.summary}</div>}
 
-      <h3>Strategie a confronto</h3>
+      <h3>{t('Strategie a confronto')}</h3>
       <table className="estimates">
         <thead>
-          <tr><th>Come</th><th>Tempo</th><th>Filamento</th><th>Scarto</th></tr>
+          <tr><th>{t('Come')}</th><th>{t('Tempo')}</th><th>{t('Filamento')}</th><th>{t('Scarto')}</th></tr>
         </thead>
         <tbody>
           {report?.estimates.map((e) => (
@@ -44,7 +45,7 @@ export function PrintPanel({ session, snap }: { session: ProjectSession; snap: S
                 <label>
                   <input type="radio" name="strategy" checked={e.strategy === d.printPlan.strategy} disabled={!e.feasible}
                     onChange={() => session.applyLocal([{ op: 'set_plan', strategy: e.strategy as PrintStrategy }])} />
-                  {STRATEGY_LABEL[e.strategy]}
+                  {t(STRATEGY_LABEL[e.strategy])}
                 </label>
                 {!e.feasible && <div className="muted small">{e.reason}</div>}
               </td>
@@ -55,29 +56,29 @@ export function PrintPanel({ session, snap }: { session: ProjectSession; snap: S
           ))}
         </tbody>
       </table>
-      <p className="muted small">Stime indicative: lo slicer darà i valori precisi.</p>
+      <p className="muted small">{t('Stime indicative: lo slicer darà i valori precisi.')}</p>
 
       {d.printPlan.strategy === 'separate' && (
         <>
-          <h3>Unione delle parti</h3>
+          <h3>{t('Unione delle parti')}</h3>
           <div className="segmented">
             {(['snap', 'glue', 'none'] as Connection[]).map((c) => (
               <button key={c} className={d.printPlan.connection === c ? 'on' : ''} onClick={() => session.applyLocal([{ op: 'set_plan', connection: c }])}>
-                {c === 'snap' ? 'A incastro' : c === 'glue' ? 'Da incollare' : 'Nessun perno'}
+                {c === 'snap' ? t('A incastro') : c === 'glue' ? t('Da incollare') : t('Nessun perno')}
               </button>
             ))}
           </div>
         </>
       )}
 
-      <h3>Colori delle parti</h3>
+      <h3>{t('Colori delle parti')}</h3>
       <ul className="part-list">
         {d.parts.map((p) => (
           <li key={p.id}>
             <span>{p.name}</span>
-            <select value={p.filamentId ?? ''} onChange={(e) => session.applyLocal([{ op: 'update_part', id: p.id, filamentId: e.target.value }])} aria-label={`Filamento per ${p.name}`}>
+            <select value={p.filamentId ?? ''} onChange={(e) => session.applyLocal([{ op: 'update_part', id: p.id, filamentId: e.target.value }])} aria-label={t('Filamento per {name}', { name: p.name })}>
               {setup!.filaments.map((f) => (
-                <option key={f.id} value={f.id}>{f.material} {f.colorName}</option>
+                <option key={f.id} value={f.id}>{f.material} {t(f.colorName)}</option>
               ))}
             </select>
           </li>
@@ -94,9 +95,9 @@ export function PrintPanel({ session, snap }: { session: ProjectSession; snap: S
 
       {report && (report.tips.length > 0 || report.materialNotes.length > 0) && (
         <>
-          <h3>Consigli per {printer.brand} {printer.model}</h3>
+          <h3>{t('Consigli per {printer}', { printer: `${t(printer.brand)} ${t(printer.model)}` })}</h3>
           <ul className="tips-list">
-            {report.tips.map((t) => <li key={t}>{t}</li>)}
+            {report.tips.map((tip) => <li key={tip}>{tip}</li>)}
           </ul>
           {report.materialNotes.map((m) => (
             <details key={m.material} className="material-note">
@@ -104,25 +105,25 @@ export function PrintPanel({ session, snap }: { session: ProjectSession; snap: S
                 <strong>{m.material}</strong> · ugello {m.nozzleC[0]}–{m.nozzleC[1]} °C · piatto {m.bedC[0]}–{m.bedC[1]} °C
               </summary>
               <ul>
-                {m.tips.map((t) => <li key={t}>{t}</li>)}
+                {m.tips.map((tip) => <li key={tip}>{tip}</li>)}
               </ul>
             </details>
           ))}
-          <p className="muted small">Temperature indicative: segui l’etichetta della bobina e il profilo dello slicer.</p>
+          <p className="muted small">{t('Temperature indicative: segui l’etichetta della bobina e il profilo dello slicer.')}</p>
         </>
       )}
 
       {kinds.length > 0 && (
         <>
-          <h3>Campioni di prova</h3>
-          <p className="small">Stampa piccoli campioni con giochi diversi per trovare quello giusto per la tua stampante. Un piatto per materiale.</p>
-          <button className="btn" disabled={!!snap.busy} onClick={() => session.downloadCalibration()}>Scarica i campioni di prova</button>
+          <h3>{t('Campioni di prova')}</h3>
+          <p className="small">{t('Stampa piccoli campioni con giochi diversi per trovare quello giusto per la tua stampante. Un piatto per materiale.')}</p>
+          <button className="btn" disabled={!!snap.busy} onClick={() => session.downloadCalibration()}>{t('Scarica i campioni di prova')}</button>
           {mats.map(({ material }) => (
             <div key={material} className="calib">
               <div className="calib-head">
                 <strong>{material}</strong>
                 <span className={`badge ${kinds.every((k) => isCalibrated(material, setup!, TEST_KEYS[k])) ? '' : 'off'}`}>
-                  {kinds.every((k) => isCalibrated(material, setup!, TEST_KEYS[k])) ? 'calibrato' : 'valori consigliati'}
+                  {kinds.every((k) => isCalibrated(material, setup!, TEST_KEYS[k])) ? t('calibrato') : t('valori consigliati')}
                 </span>
               </div>
               {kinds.map((k) => {
@@ -130,15 +131,15 @@ export function PrintPanel({ session, snap }: { session: ProjectSession; snap: S
                 return (
                   <label key={k} className="calib-row">
                     <span>
-                      {TEST_LABEL[k]}
-                      <span className="muted small"> · {TEST_HOWTO[k]}</span>
+                      {t(TEST_LABEL[k])}
+                      <span className="muted small"> · {t(TEST_HOWTO[k])}</span>
                     </span>
                     <select
-                      aria-label={`Campione migliore ${TEST_LABEL[k]} ${material}`}
+                      aria-label={t('Campione migliore {test} {material}', { test: t(TEST_LABEL[k]), material })}
                       value={String(current)}
                       onChange={(e) => session.saveCalibration(material, k, Number(e.target.value))}
                     >
-                      {!testValues(k, material).includes(current) && <option value={String(current)}>in uso: {fmtMm(current)}</option>}
+                      {!testValues(k, material).includes(current) && <option value={String(current)}>{t('in uso: {value}', { value: fmtMm(current) })}</option>}
                       {testValues(k, material).map((v, i) => (
                         <option key={v} value={String(v)}>{'●'.repeat(i + 1)} {fmtMm(v)}</option>
                       ))}
@@ -153,18 +154,18 @@ export function PrintPanel({ session, snap }: { session: ProjectSession; snap: S
 
       {d.source && (
         <div className="attribution small">
-          Remix di <a href={d.source.url} target="_blank" rel="noreferrer">{d.source.title}</a>{d.source.author ? ` di ${d.source.author}` : ''} · {d.source.license}. L’attribuzione viene inclusa nel file esportato.
+          {t('Remix di')} <a href={d.source.url} target="_blank" rel="noreferrer">{d.source.title}</a>{d.source.author ? ` · ${d.source.author}` : ''} · {d.source.license}. {t('L’attribuzione viene inclusa nel file esportato.')}
         </div>
       )}
 
       <div className="export">
         <button className="btn primary big" disabled={!snap.parts.length} onClick={() => download(session.export3MF())}>
-          Esporta per {printer.slicer} (3MF)
+          {t('Esporta per {slicer} (3MF)', { slicer: printer.slicer })}
         </button>
-        <button className="btn" disabled={!snap.parts.length} onClick={() => download(session.exportSTL())}>STL per ogni parte (zip)</button>
+        <button className="btn" disabled={!snap.parts.length} onClick={() => download(session.exportSTL())}>{t('STL per ogni parte (zip)')}</button>
       </div>
     </div>
   );
 }
 
-const fmtMm = (v: number) => `${v.toFixed(2).replace('.', ',')} mm`;
+const fmtMm = (v: number) => `${fmtNum(v, 2)} mm`;

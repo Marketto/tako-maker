@@ -41,7 +41,17 @@ export default defineConfig({
         // Il file wasm di manifold supera il limite di default (2 MiB).
         maximumFileSizeToCacheInBytes: 6 * 1024 * 1024,
         globPatterns: ['**/*.{js,css,html,svg,png,wasm,json}'],
-        // Le chiamate all'API Claude non vanno mai in cache.
+        // Le traduzioni non si scaricano tutte all'installazione: ogni lingua
+        // entra in cache la prima volta che viene scelta.
+        globIgnores: ['**/assets/locales/**'],
+        runtimeCaching: [
+          {
+            urlPattern: /\/assets\/locales\/.*\.js$/,
+            handler: 'CacheFirst',
+            options: { cacheName: 'printopus-lingue', expiration: { maxEntries: 50 } },
+          },
+        ],
+        // Le chiamate alle API AI non vanno mai in cache.
         navigateFallbackDenylist: [/^\/v1\//],
       },
     }),
@@ -53,6 +63,11 @@ export default defineConfig({
   build: {
     target: 'es2022',
     chunkSizeWarningLimit: 1500,
+    rollupOptions: {
+      output: {
+        chunkFileNames: (c) => (c.facadeModuleId?.includes('/src/i18n/locales/') ? 'assets/locales/[name]-[hash].js' : 'assets/[name]-[hash].js'),
+      },
+    },
   },
   test: {
     environment: 'node',

@@ -27,11 +27,15 @@ src/
 │  ├─ analysis/               stime e domande automatiche → docs/ANALISI.md
 │  ├─ assembly/plan.ts        guida di montaggio
 │  └─ export/                 3MF (Orca/Bambu e PrusaSlicer) e STL
-├─ data/                      stampanti, materiali, modello d'esempio
+├─ data/                      stampanti, materiali, linee guida, modello d'esempio
+├─ i18n/                      t(), msg(), fmtNum(), elenco lingue → docs/TRADUZIONI.md
+│  ├─ source.json             tutte le frasi italiane (generato da npm run i18n:extract)
+│  └─ locales/<codice>.json   una traduzione per lingua, caricata solo se scelta
 ├─ ui/                        componenti React (wizard, home, area di lavoro, pannelli, anteprima)
 │  └─ mascot/                 Takotta: sprite generati, umori, fumetto, frasi, bus di eventi
 └─ app/music.ts               musica di sottofondo generata con Web Audio
 tools/mascot/takotta.py      generatore di Takotta (sprite SVG + icone PWA)
+tools/i18n/                  estrazione delle frasi e controllo delle traduzioni
 ```
 
 ## Flusso di un messaggio
@@ -62,7 +66,7 @@ e non calcola tempi o costi: modifica un documento JSON piccolo e valida, il res
 
 | Dove | Cosa |
 |---|---|
-| localStorage | configurazione stampante/filamenti, impostazioni, spesa del mese, chiave API (se “ricorda”) |
+| localStorage | configurazione stampante/filamenti, impostazioni (lingua inclusa), spesa del mese, chiavi API (se “ricorda”) |
 | sessionStorage | chiave API se “ricorda” è disattivato |
 | IndexedDB | progetti (design, cronologia per annulla, chat), mesh importate, cache delle ricerche (7 giorni) |
 
@@ -79,4 +83,4 @@ nuova versione compare una barra “Aggiorna”.
 - **Frasi**: `ui/mascot/phrases.ts`, scelte localmente senza ripetizioni consecutive.
 - **Musica**: `app/music.ts` sintetizza in tempo reale accordi e carillon pentatonico; parte solo dopo un gesto dell'utente e si sospende quando la scheda è nascosta.
 - **Riduci movimento**: animazioni della mascotte, coriandoli e rimbalzi si disattivano se il sistema lo richiede.
-- **Font**: M PLUS Rounded 1c (licenza OFL) incluso nel bundle, solo il sottoinsieme latino.
+- **Font**: M PLUS Rounded 1c (licenza OFL) incluso nel bundle con i sottoinsiemi latino, latino esteso, cirillico e greco; per arabo, cinese, giapponese e coreano si usano i font di sistema.

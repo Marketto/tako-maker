@@ -1,5 +1,6 @@
 import type { Design, Filament, Part, ShapeNode, Tolerances, UserSetup, Vec3 } from '../types';
 import { tolerancesFor } from './tolerances';
+import { fmtNum, msg, t } from '../../i18n';
 
 /* Campioni di prova per tarare giochi e tolleranze sulla propria stampante.
    Ogni serie ha 5 campioni con valori centrati sul consigliato per il materiale;
@@ -8,17 +9,17 @@ import { tolerancesFor } from './tolerances';
 export type TestKind = 'hinge' | 'detent' | 'snap' | 'glue';
 
 export const TEST_LABEL: Record<TestKind, string> = {
-  hinge: 'Cerniera (gioco)',
-  detent: 'Scatto',
-  snap: 'Incastro a pressione',
-  glue: 'Perno da incollare',
+  hinge: msg('Cerniera (gioco)'),
+  detent: msg('Scatto'),
+  snap: msg('Incastro a pressione'),
+  glue: msg('Perno da incollare'),
 };
 
 export const TEST_HOWTO: Record<TestKind, string> = {
-  hinge: 'Muovi le cerniere: scegli il gioco più piccolo che si sblocca e gira liscio.',
-  detent: 'Scegli lo scatto più netto che si muove ancora senza forzare troppo.',
-  snap: 'Inserisci i perni: scegli quello che entra premendo con decisione e poi non si sfila da solo.',
-  glue: 'Scegli il perno che entra a mano senza forzare, con il minimo gioco.',
+  hinge: msg('Muovi le cerniere: scegli il gioco più piccolo che si sblocca e gira liscio.'),
+  detent: msg('Scegli lo scatto più netto che si muove ancora senza forzare troppo.'),
+  snap: msg('Inserisci i perni: scegli quello che entra premendo con decisione e poi non si sfila da solo.'),
+  glue: msg('Scegli il perno che entra a mano senza forzare, con il minimo gioco.'),
 };
 
 const OFFSETS = [-0.1, -0.05, 0, 0.05, 0.1];
@@ -99,7 +100,7 @@ function dots(n: number, z: number, x0 = 3, y0 = 3): ShapeNode[] {
   return Array.from({ length: n }, (_, k) => ({ op: 'sphere', r: 1, at: [x0 + k * 3.4, y0, z] }) as ShapeNode);
 }
 
-const VALUE_LABEL = (v: number) => `${v.toFixed(2).replace('.', ',')} mm`;
+const VALUE_LABEL = (v: number) => `${fmtNum(v, 2)} mm`;
 const DOT_LABEL = (n: number) => '●'.repeat(n);
 
 function couponDesign(name: string, parts: Part[], joints: Design['joints'] = []): Design {
@@ -111,7 +112,7 @@ export function buildCoupons(kind: TestKind, material: string, filament: Filamen
   return testValues(kind, material).map((value, index) => {
     const n = index + 1;
     const tol: Tolerances = { ...base, ...applyTestValue(kind, value) };
-    const tag = `${TEST_LABEL[kind]} ${VALUE_LABEL(value)} ${DOT_LABEL(n)}`;
+    const tag = `${t(TEST_LABEL[kind])} ${VALUE_LABEL(value)} ${DOT_LABEL(n)}`;
     const id = `${material}-${kind}-${n}`;
     if (kind === 'hinge' || kind === 'detent') {
       const R = 3.5;
@@ -137,13 +138,13 @@ export function buildCoupons(kind: TestKind, material: string, filament: Filamen
     const parts: Part[] = [
       {
         id: 'a',
-        name: `${tag} – perno`,
+        name: `${tag} – ${t('perno')}`,
         filamentId: filament.id,
         shape: { op: 'union', children: [box([16, 16, 5]), { op: 'cylinder', h: 5, r: 2.5, at: [8, 8, 4] }, ...dots(n, 5)] },
       },
       {
         id: 'b',
-        name: `${tag} – foro`,
+        name: `${tag} – ${t('foro')}`,
         filamentId: filament.id,
         shape: { op: 'difference', children: [box([16, 16, 6], [22, 0, 0]), { op: 'cylinder', h: 4.6, r: 2.5 + clearance, at: [30, 8, -0.01] }, ...dots(n, 6, 25, 3)] },
       },
@@ -190,26 +191,26 @@ export function layoutPlates(groups: { material: string; filament: Filament; cou
 
 export function readmeText(plates: PlateLayout[], kinds: TestKind[]): string {
   const lines: string[] = [
-    'CAMPIONI DI PROVA – Printopus',
+    t('CAMPIONI DI PROVA – Printopus'),
     '================================',
     '',
-    'Ogni campione ha da 1 a 5 puntini in rilievo: il numero di puntini indica il valore provato.',
-    'Stampa con lo stesso profilo che userai per il modello (stesso filamento, stessa altezza strato).',
+    t('Ogni campione ha da 1 a 5 puntini in rilievo: il numero di puntini indica il valore provato.'),
+    t('Stampa con lo stesso profilo che userai per il modello (stesso filamento, stessa altezza strato).'),
     '',
   ];
   const byMat = new Map<string, PlateLayout[]>();
   for (const p of plates) byMat.set(p.material, [...(byMat.get(p.material) ?? []), p]);
   for (const [mat, ps] of byMat) {
-    lines.push(`--- ${mat} (${ps.length} piatt${ps.length === 1 ? 'o' : 'i'}) ---`);
+    lines.push(`--- ${ps.length === 1 ? t('{material} (1 piatto)', { material: mat }) : t('{material} ({n} piatti)', { material: mat, n: ps.length })} ---`);
     for (const k of kinds) {
       const cs = ps.flatMap((p) => p.items.map((i) => i.coupon)).filter((c) => c.kind === k);
       if (!cs.length) continue;
-      lines.push(`${TEST_LABEL[k]}: ${TEST_HOWTO[k]}`);
+      lines.push(`${t(TEST_LABEL[k])}: ${t(TEST_HOWTO[k])}`);
       for (const c of cs) lines.push(`  ${DOT_LABEL(c.index + 1).padEnd(6)} = ${VALUE_LABEL(c.value)}`);
     }
     lines.push('');
   }
-  lines.push('Poi apri Printopus → scheda Stampa → Campioni di prova e indica il campione migliore:');
-  lines.push('i valori scelti verranno usati per tutti i prossimi modelli con quel materiale.');
+  lines.push(t('Poi apri Printopus → scheda Stampa → Campioni di prova e indica il campione migliore:'));
+  lines.push(t('i valori scelti verranno usati per tutti i prossimi modelli con quel materiale.'));
   return lines.join('\n') + '\n';
 }

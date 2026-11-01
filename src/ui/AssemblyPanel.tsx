@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import type { Snapshot } from '../app/session';
 import { cheer } from './mascot/bus';
+import { t } from '../i18n';
 
 /* Guida di montaggio: un passo per pezzo, con animazione nel visualizzatore. */
 
@@ -31,7 +32,7 @@ export function AssemblyPanel({ snap, step, setStep, playing, setPlaying }: {
   if (!n) {
     return (
       <div className="panel-empty muted">
-        La guida di montaggio compare quando il modello è diviso in parti da stampare separatamente (scheda “Stampa” → parti separate).
+        {t('La guida di montaggio compare quando il modello è diviso in parti da stampare separatamente (scheda “Stampa” → parti separate).')}
       </div>
     );
   }
@@ -39,19 +40,19 @@ export function AssemblyPanel({ snap, step, setStep, playing, setPlaying }: {
   return (
     <div className="assembly">
       <div className="step-head">
-        <span className="badge">Passo {s.index + 1} di {n}</span>
+        <span className="badge">{t('Passo {n} di {total}', { n: s.index + 1, total: n })}</span>
         <strong>{s.partName}</strong>
       </div>
       <p className="step-text">{s.text}</p>
       {s.tips.length > 0 && (
         <ul className="tips">
-          {s.tips.map((t) => <li key={t}>{t}</li>)}
+          {s.tips.map((tip) => <li key={tip}>{tip}</li>)}
         </ul>
       )}
       <div className="step-controls">
-        <button className="btn" disabled={step === 0} onClick={() => { setPlaying(false); setStep(step - 1); }}>‹ Indietro</button>
-        <button className="btn" onClick={() => { if (step >= n - 1) setStep(0); setPlaying(!playing); }}>{playing ? 'Pausa' : step >= n - 1 ? 'Rivedi' : 'Riproduci'}</button>
-        <button className="btn primary" disabled={step >= n - 1} onClick={() => { setPlaying(false); setStep(step + 1); }}>Avanti ›</button>
+        <button className="btn" disabled={step === 0} onClick={() => { setPlaying(false); setStep(step - 1); }}>‹ {t('Indietro')}</button>
+        <button className="btn" onClick={() => { if (step >= n - 1) setStep(0); setPlaying(!playing); }}>{playing ? t('Pausa') : step >= n - 1 ? t('Rivedi') : t('Riproduci')}</button>
+        <button className="btn primary" disabled={step >= n - 1} onClick={() => { setPlaying(false); setStep(step + 1); }}>{t('Avanti')} ›</button>
       </div>
       <ol className="step-list">
         {steps.map((x, i) => (
