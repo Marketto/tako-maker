@@ -24,6 +24,8 @@ export type Settings = typeof DEFAULT_SETTINGS & {
   musicVolume: number;
   /** Mascotte e frasi di incitamento. */
   mascotOn: boolean;
+  /** Lingua scelta (codice, es. "it"); se assente si usa quella del dispositivo. */
+  language?: string;
 };
 
 interface AppState {

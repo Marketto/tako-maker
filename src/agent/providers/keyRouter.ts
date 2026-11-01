@@ -5,6 +5,7 @@ import type { Adapter, FailKind, KeyEntry } from './types';
 import { anthropicAdapter } from './anthropic';
 import { openaiAdapter } from './openai';
 import { geminiAdapter } from './gemini';
+import { msg, t } from '../../i18n';
 
 /* Router delle chiamate AI: prova le chiavi in ordine di priorità e passa alla
    successiva se una ha finito il credito, è in pausa per troppe richieste,
@@ -31,11 +32,11 @@ const STATE_KEY = 'm3d.keystate';
 const fingerprint = (k: KeyEntry) => `${k.provider}:${k.key.slice(-6)}:${k.baseUrl ?? ''}:${k.key.length}`;
 
 export const FAIL_LABEL: Record<FailKind, string> = {
-  exhausted: 'credito esaurito',
-  invalid: 'chiave non valida',
-  rate: 'in pausa (troppe richieste)',
-  temporary: 'servizio non raggiungibile',
-  fatal: 'richiesta rifiutata',
+  exhausted: msg('credito esaurito'),
+  invalid: msg('chiave non valida'),
+  rate: msg('in pausa (troppe richieste)'),
+  temporary: msg('servizio non raggiungibile'),
+  fatal: msg('richiesta rifiutata'),
 };
 
 export class KeyRouter implements AiClient {
@@ -93,14 +94,14 @@ export class KeyRouter implements AiClient {
 
   async send(req: ApiRequest, signal?: AbortSignal): Promise<ApiResponse & { costUsd: number; provider: string; keyLabel: string }> {
     if (!this.budget.canSpend()) {
-      throw new ApiError(`Hai raggiunto il tetto di spesa mensile ($${this.budget.capUsd}). Puoi alzarlo nelle impostazioni.`);
+      throw new ApiError(t('Hai raggiunto il tetto di spesa mensile (${cap}). Puoi alzarlo nelle impostazioni.', { cap: this.budget.capUsd }));
     }
     const all = this.keys();
-    if (!all.some((k) => k.enabled && (k.key || k.baseUrl))) throw new ApiError('Aggiungi almeno una chiave AI nelle impostazioni.');
+    if (!all.some((k) => k.enabled && (k.key || k.baseUrl))) throw new ApiError(t('Aggiungi almeno una chiave AI nelle impostazioni.'));
     const states = this.states();
     const failures: string[] = [];
     const candidates = all.filter((k) => this.isAvailable(k, states));
-    for (const k of all) if (!candidates.includes(k) && k.enabled && states[k.id]?.reason) failures.push(`${k.label || PROVIDERS[k.provider].label}: ${FAIL_LABEL[states[k.id].reason!]}`);
+    for (const k of all) if (!candidates.includes(k) && k.enabled && states[k.id]?.reason) failures.push(`${k.label || PROVIDERS[k.provider].label}: ${t(FAIL_LABEL[states[k.id].reason!])}`);
 
     for (const k of candidates) {
       const adapter = ADAPTERS[k.provider];
@@ -112,7 +113,7 @@ export class KeyRouter implements AiClient {
       } catch (e) {
         if ((e as Error).name === 'AbortError') throw e;
         this.mark(k, 'temporary', 'rete');
-        failures.push(`${k.label || PROVIDERS[k.provider].label}: connessione non riuscita`);
+        failures.push(`${k.label || PROVIDERS[k.provider].label}: ${t('connessione non riuscita')}`);
         continue;
       }
       let body: unknown = null;
@@ -124,7 +125,7 @@ export class KeyRouter implements AiClient {
       if (!res.ok) {
         const { kind, message } = adapter.classify(res.status, body);
         this.mark(k, kind, message);
-        failures.push(`${k.label || PROVIDERS[k.provider].label}: ${kind === 'fatal' ? message : FAIL_LABEL[kind]}`);
+        failures.push(`${k.label || PROVIDERS[k.provider].label}: ${kind === 'fatal' ? message : t(FAIL_LABEL[kind])}`);
         continue;
       }
       const parsed = adapter.parse(body);
@@ -132,6 +133,6 @@ export class KeyRouter implements AiClient {
       const costUsd = this.budget.record(model.price, parsed.usage);
       return { ...parsed, costUsd, provider: k.provider, keyLabel: k.label || PROVIDERS[k.provider].label };
     }
-    throw new ApiError(failures.length ? `Nessuna chiave AI disponibile. ${failures.join(' · ')}` : 'Nessuna chiave AI disponibile in questo momento: riprova tra poco.');
+    throw new ApiError(failures.length ? `${t('Nessuna chiave AI disponibile.')} ${failures.join(' · ')}` : t('Nessuna chiave AI disponibile in questo momento: riprova tra poco.'));
   }
 }

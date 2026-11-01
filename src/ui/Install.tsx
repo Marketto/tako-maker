@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { t } from '../i18n';
 
 /* Pulsante "Installa": usa beforeinstallprompt dove disponibile (Chrome, Edge,
    Android); su iOS mostra le istruzioni "Condividi → Aggiungi a Home". */
@@ -36,14 +37,14 @@ export function InstallButton() {
           setCan(false);
         }}
       >
-        Installa
+        {t('Installa')}
       </button>
     );
   if (isIOS())
     return (
       <>
-        <button className="btn small" onClick={() => setHelp(!help)}>Installa</button>
-        {help && <div className="popover">Tocca <strong>Condividi</strong> e poi <strong>Aggiungi alla schermata Home</strong>.</div>}
+        <button className="btn small" onClick={() => setHelp(!help)}>{t('Installa')}</button>
+        {help && <div className="popover">{t('Tocca «Condividi» e poi «Aggiungi alla schermata Home».')}</div>}
       </>
     );
   return null;

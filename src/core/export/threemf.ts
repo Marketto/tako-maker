@@ -1,6 +1,7 @@
 import { strToU8, zipSync } from 'fflate';
 import type { Attribution, Filament, PrintStrategy, Vec3 } from '../types';
 import type { RawMesh } from '../geometry/evaluate';
+import { t } from '../../i18n';
 
 /* Esportazione 3MF.
    - Formato "orca": Bambu Studio, OrcaSlicer, Creality Print, ElegooSlicer, Anycubic Slicer Next
@@ -58,10 +59,10 @@ function meshXml(m: RawMesh, offset: Vec3 = [0, 0, 0]): string {
   for (let i = 0; i < p.length; i += 3) {
     v.push(`<vertex x="${(p[i] + offset[0]).toFixed(4)}" y="${(p[i + 1] + offset[1]).toFixed(4)}" z="${(p[i + 2] + offset[2]).toFixed(4)}"/>`);
   }
-  const t: string[] = [];
+  const tris: string[] = [];
   const ix = m.indices;
-  for (let i = 0; i < ix.length; i += 3) t.push(`<triangle v1="${ix[i]}" v2="${ix[i + 1]}" v3="${ix[i + 2]}"/>`);
-  return `<mesh><vertices>${v.join('')}</vertices><triangles>${t.join('')}</triangles></mesh>`;
+  for (let i = 0; i < ix.length; i += 3) tris.push(`<triangle v1="${ix[i]}" v2="${ix[i + 1]}" v3="${ix[i + 2]}"/>`);
+  return `<mesh><vertices>${v.join('')}</vertices><triangles>${tris.join('')}</triangles></mesh>`;
 }
 
 function mergeMeshes(meshes: RawMesh[], offsets: Vec3[]): { mesh: RawMesh; triRanges: [number, number][] } {
@@ -118,7 +119,7 @@ function groupedLayout(parts: ExportPart[], bed: Vec3): Vec3[] {
 }
 
 export function build3MF(parts: ExportPart[], opt: ExportOptions): Uint8Array {
-  if (!parts.length) throw new Error('Nessuna parte da esportare');
+  if (!parts.length) throw new Error(t('Nessuna parte da esportare'));
   const separate = opt.strategy === 'separate' || !!opt.keepPositions;
   const all = bounds(parts.map((p) => p.mesh));
   const centerOffset: Vec3 = [
@@ -142,7 +143,9 @@ export function build3MF(parts: ExportPart[], opt: ExportOptions): Uint8Array {
     const a = opt.attribution;
     meta.push(`<metadata name="Designer">${esc(a.author ?? '')}</metadata>`);
     meta.push(`<metadata name="LicenseTerms">${esc(a.license)}</metadata>`);
-    meta.push(`<metadata name="Description">${esc(`Remix di "${a.title}" (${a.url})${a.author ? ` di ${a.author}` : ''}, licenza ${a.license}.`)}</metadata>`);
+    meta.push(
+      `<metadata name="Description">${esc(a.author ? t('Remix di "{title}" ({url}) di {author}, licenza {license}.', { title: a.title, url: a.url, author: a.author, license: a.license }) : t('Remix di "{title}" ({url}), licenza {license}.', { title: a.title, url: a.url, license: a.license }))}</metadata>`,
+    );
   }
 
   let resources = baseMaterials;
@@ -186,11 +189,11 @@ export function build3MF(parts: ExportPart[], opt: ExportOptions): Uint8Array {
         .join('\n')}\n</config>\n`;
     } else {
       const parentId = parts.length + 2;
-      const t = centerOffset;
+      const co = centerOffset;
       resources += `<object id="${parentId}" name="${esc(opt.title)}" type="model"><components>${parts
         .map((_, i) => `<component objectid="${i + 2}"/>`)
         .join('')}</components></object>`;
-      buildItems = `<item objectid="${parentId}" transform="1 0 0 0 1 0 0 0 1 ${t[0].toFixed(3)} ${t[1].toFixed(3)} ${t[2].toFixed(3)}"/>`;
+      buildItems = `<item objectid="${parentId}" transform="1 0 0 0 1 0 0 0 1 ${co[0].toFixed(3)} ${co[1].toFixed(3)} ${co[2].toFixed(3)}"/>`;
       config = `<?xml version="1.0" encoding="UTF-8"?>\n<config>\n<object id="${parentId}">\n<metadata key="name" value="${esc(opt.title)}"/>\n<metadata key="extruder" value="${parts[0].extruder}"/>\n${parts
         .map((p, i) => `<part id="${i + 2}" subtype="normal_part">\n<metadata key="name" value="${esc(p.name)}"/>\n<metadata key="extruder" value="${p.extruder}"/>\n</part>`)
         .join('\n')}\n</object>\n</config>\n`;
@@ -218,5 +221,13 @@ ${meta.join('\n')}
 }
 
 export function attributionText(a: Attribution): string {
-  return `Questo modello è un remix di:\n  "${a.title}"${a.author ? ` di ${a.author}` : ''}\n  ${a.url}\n  Licenza: ${a.license}\n\nRispetta i termini della licenza originale (attribuzione, uso non commerciale, condivisione allo stesso modo, se previsti).\n`;
+  return [
+    t('Questo modello è un remix di:'),
+    `  "${a.title}"${a.author ? ' ' + t('di {author}', { author: a.author }) : ''}`,
+    `  ${a.url}`,
+    '  ' + t('Licenza: {license}', { license: a.license }),
+    '',
+    t('Rispetta i termini della licenza originale (attribuzione, uso non commerciale, condivisione allo stesso modo, se previsti).'),
+    '',
+  ].join('\n');
 }
