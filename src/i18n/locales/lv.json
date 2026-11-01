@@ -400,5 +400,22 @@
  "Viola": "Violets",
  "Volume della musica": "Mūzikas skaļums",
  "Volume di stampa (mm)": "Drukas tilpums (mm)",
- "Wow, sei proprio un maker!": "Oho, tu esi īsts meistars!"
+ "Wow, sei proprio un maker!": "Oho, tu esi īsts meistars!",
+ "\"{item}\" va ancora sostituito con una soluzione stampata: chiedilo all'assistente.": "\"{item}\" vēl jāaizstāj ar drukātu risinājumu: palūdz to asistentam.",
+ "Cerca un'alternativa stampata": "Meklēt drukātu alternatīvu",
+ "confermato": "apstiprināts",
+ "Da acquistare a parte": "Jāiegādājas atsevišķi",
+ "DA ACQUISTARE A PARTE – {name}": "JĀIEGĀDĀJAS ATSEVIŠĶI – {name}",
+ "da confermare": "jāapstiprina",
+ "da sostituire": "jāaizstāj",
+ "È per bambini: fissa bene gli elementi acquistati ({items}) in modo che non si possano staccare. Magneti e pile a bottone ingeriti sono molto pericolosi.": "Tas ir bērniem: labi nostiprini iegādātās detaļas ({items}), lai tās nevarētu atdalīt. Norīti magnēti un pogas baterijas ir ļoti bīstami.",
+ "La lista viene inclusa nei file esportati (DA-ACQUISTARE.txt).": "Saraksts tiek iekļauts eksportētajos failos (DA-ACQUISTARE.txt).",
+ "Serve per: {purpose}.": "Paredzēts: {purpose}.",
+ "Serve un elemento da comprare a parte: {item}. Va bene o cerco un'alternativa stampata?": "Vajag detaļu, kas jāiegādājas atsevišķi: {item}. Der, vai meklēt drukātu alternatīvu?",
+ "Sostituisci \"{item}\" ({purpose}) con una soluzione stampata, senza elementi da comprare.": "Aizstāj \"{item}\" ({purpose}) ar drukātu risinājumu, bez pērkamām detaļām.",
+ "Sostituisci \"{item}\" con una soluzione stampata, senza elementi da comprare.": "Aizstāj \"{item}\" ar drukātu risinājumu, bez pērkamām detaļām.",
+ "Tieni a portata di mano: {items}.": "Turi pa rokai: {items}.",
+ "ugello {n0}–{n1} °C · piatto {b0}–{b1} °C": "sprausla {n0}–{n1} °C · plāksne {b0}–{b1} °C",
+ "usa l'assistente AI": "izmanto AI asistentu",
+ "Va bene, lo compro": "Labi, nopirkšu"
 }

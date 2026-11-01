@@ -400,5 +400,22 @@
  "Viola": "Lila",
  "Volume della musica": "Volum de la música",
  "Volume di stampa (mm)": "Volum d’impressió (mm)",
- "Wow, sei proprio un maker!": "Uau, ets tot un maker!"
+ "Wow, sei proprio un maker!": "Uau, ets tot un maker!",
+ "\"{item}\" va ancora sostituito con una soluzione stampata: chiedilo all'assistente.": "\"{item}\" encara s’ha de substituir per una solució impresa: demana-ho a l’assistent.",
+ "Cerca un'alternativa stampata": "Busca una alternativa impresa",
+ "confermato": "confirmat",
+ "Da acquistare a parte": "Per comprar a part",
+ "DA ACQUISTARE A PARTE – {name}": "PER COMPRAR A PART – {name}",
+ "da confermare": "per confirmar",
+ "da sostituire": "per substituir",
+ "È per bambini: fissa bene gli elementi acquistati ({items}) in modo che non si possano staccare. Magneti e pile a bottone ingeriti sono molto pericolosi.": "És per a infants: fixa bé els elements comprats ({items}) perquè no es puguin desenganxar. Els imants i les piles de botó empassats són molt perillosos.",
+ "La lista viene inclusa nei file esportati (DA-ACQUISTARE.txt).": "La llista s’inclou als fitxers exportats (DA-ACQUISTARE.txt).",
+ "Serve per: {purpose}.": "Serveix per a: {purpose}.",
+ "Serve un elemento da comprare a parte: {item}. Va bene o cerco un'alternativa stampata?": "Cal un element que s’ha de comprar a part: {item}. Et va bé o busco una alternativa impresa?",
+ "Sostituisci \"{item}\" ({purpose}) con una soluzione stampata, senza elementi da comprare.": "Substitueix \"{item}\" ({purpose}) per una solució impresa, sense elements per comprar.",
+ "Sostituisci \"{item}\" con una soluzione stampata, senza elementi da comprare.": "Substitueix \"{item}\" per una solució impresa, sense elements per comprar.",
+ "Tieni a portata di mano: {items}.": "Tingues a mà: {items}.",
+ "ugello {n0}–{n1} °C · piatto {b0}–{b1} °C": "broquet {n0}–{n1} °C · placa {b0}–{b1} °C",
+ "usa l'assistente AI": "fes servir l’assistent d’IA",
+ "Va bene, lo compro": "D’acord, el compro"
 }

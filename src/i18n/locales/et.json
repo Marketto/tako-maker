@@ -400,5 +400,22 @@
  "Viola": "Lilla",
  "Volume della musica": "Muusika helitugevus",
  "Volume di stampa (mm)": "Printimismaht (mm)",
- "Wow, sei proprio un maker!": "Vau, sa oled tõeline meisterdaja!"
+ "Wow, sei proprio un maker!": "Vau, sa oled tõeline meisterdaja!",
+ "\"{item}\" va ancora sostituito con una soluzione stampata: chiedilo all'assistente.": "„{item}“ tuleb veel asendada prinditud lahendusega: küsi assistendilt.",
+ "Cerca un'alternativa stampata": "Otsi prinditud alternatiivi",
+ "confermato": "kinnitatud",
+ "Da acquistare a parte": "Osta eraldi",
+ "DA ACQUISTARE A PARTE – {name}": "OSTA ERALDI – {name}",
+ "da confermare": "kinnitamata",
+ "da sostituire": "asendada",
+ "È per bambini: fissa bene gli elementi acquistati ({items}) in modo che non si possano staccare. Magneti e pile a bottone ingeriti sono molto pericolosi.": "See on lastele: kinnita ostetud osad ({items}) korralikult, et need lahti ei tuleks. Alla neelatud magnetid ja nööppatareid on väga ohtlikud.",
+ "La lista viene inclusa nei file esportati (DA-ACQUISTARE.txt).": "Nimekiri on eksporditud failide hulgas (DA-ACQUISTARE.txt).",
+ "Serve per: {purpose}.": "Vajalik: {purpose}.",
+ "Serve un elemento da comprare a parte: {item}. Va bene o cerco un'alternativa stampata?": "Vaja on eraldi ostetavat osa: {item}. Kas sobib või otsin prinditud alternatiivi?",
+ "Sostituisci \"{item}\" ({purpose}) con una soluzione stampata, senza elementi da comprare.": "Asenda „{item}“ ({purpose}) prinditud lahendusega, ilma ostetavate osadeta.",
+ "Sostituisci \"{item}\" con una soluzione stampata, senza elementi da comprare.": "Asenda „{item}“ prinditud lahendusega, ilma ostetavate osadeta.",
+ "Tieni a portata di mano: {items}.": "Hoia käepärast: {items}.",
+ "ugello {n0}–{n1} °C · piatto {b0}–{b1} °C": "düüs {n0}–{n1} °C · alus {b0}–{b1} °C",
+ "usa l'assistente AI": "kasuta AI-assistenti",
+ "Va bene, lo compro": "Sobib, ostan selle"
 }

@@ -400,5 +400,22 @@
  "Viola": "Vjollcë",
  "Volume della musica": "Volumi i muzikës",
  "Volume di stampa (mm)": "Vëllimi i printimit (mm)",
- "Wow, sei proprio un maker!": "Uau, je një maker i vërtetë!"
+ "Wow, sei proprio un maker!": "Uau, je një maker i vërtetë!",
+ "\"{item}\" va ancora sostituito con una soluzione stampata: chiedilo all'assistente.": "\"{item}\" duhet ende të zëvendësohet me një zgjidhje të printuar: kërkoja asistentit.",
+ "Cerca un'alternativa stampata": "Kërko një alternativë të printuar",
+ "confermato": "konfirmuar",
+ "Da acquistare a parte": "Për t'u blerë veçmas",
+ "DA ACQUISTARE A PARTE – {name}": "PËR T'U BLERË VEÇMAS – {name}",
+ "da confermare": "për t'u konfirmuar",
+ "da sostituire": "për t'u zëvendësuar",
+ "È per bambini: fissa bene gli elementi acquistati ({items}) in modo che non si possano staccare. Magneti e pile a bottone ingeriti sono molto pericolosi.": "Është për fëmijë: fiksoji mirë elementet e blera ({items}) që të mos shkëputen dot. Magnetët dhe bateritë buton të gëlltitura janë shumë të rrezikshme.",
+ "La lista viene inclusa nei file esportati (DA-ACQUISTARE.txt).": "Lista përfshihet në skedarët e eksportuar (DA-ACQUISTARE.txt).",
+ "Serve per: {purpose}.": "Shërben për: {purpose}.",
+ "Serve un elemento da comprare a parte: {item}. Va bene o cerco un'alternativa stampata?": "Duhet një element për t'u blerë veçmas: {item}. Në rregull, apo të kërkoj një alternativë të printuar?",
+ "Sostituisci \"{item}\" ({purpose}) con una soluzione stampata, senza elementi da comprare.": "Zëvendëso \"{item}\" ({purpose}) me një zgjidhje të printuar, pa elemente për t'u blerë.",
+ "Sostituisci \"{item}\" con una soluzione stampata, senza elementi da comprare.": "Zëvendëso \"{item}\" me një zgjidhje të printuar, pa elemente për t'u blerë.",
+ "Tieni a portata di mano: {items}.": "Mbaji pranë: {items}.",
+ "ugello {n0}–{n1} °C · piatto {b0}–{b1} °C": "grykë {n0}–{n1} °C · pllakë {b0}–{b1} °C",
+ "usa l'assistente AI": "përdor asistentin AI",
+ "Va bene, lo compro": "Në rregull, do ta blej"
 }

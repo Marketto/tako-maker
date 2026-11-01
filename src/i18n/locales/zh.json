@@ -400,5 +400,22 @@
  "Viola": "紫色",
  "Volume della musica": "音乐音量",
  "Volume di stampa (mm)": "打印尺寸（mm）",
- "Wow, sei proprio un maker!": "哇，你真是个创客！"
+ "Wow, sei proprio un maker!": "哇，你真是个创客！",
+ "\"{item}\" va ancora sostituito con una soluzione stampata: chiedilo all'assistente.": "“{item}”还需要换成打印方案：请让助手来处理。",
+ "Cerca un'alternativa stampata": "寻找打印替代方案",
+ "confermato": "已确认",
+ "Da acquistare a parte": "需另行购买",
+ "DA ACQUISTARE A PARTE – {name}": "需另行购买 – {name}",
+ "da confermare": "待确认",
+ "da sostituire": "待替换",
+ "È per bambini: fissa bene gli elementi acquistati ({items}) in modo che non si possano staccare. Magneti e pile a bottone ingeriti sono molto pericolosi.": "这是给儿童用的：请把购买的零件（{items}）牢牢固定，确保无法脱落。误吞磁铁和纽扣电池非常危险。",
+ "La lista viene inclusa nei file esportati (DA-ACQUISTARE.txt).": "清单会包含在导出的文件中（DA-ACQUISTARE.txt）。",
+ "Serve per: {purpose}.": "用途：{purpose}。",
+ "Serve un elemento da comprare a parte: {item}. Va bene o cerco un'alternativa stampata?": "需要一个另行购买的零件：{item}。可以吗？还是我来找一个打印替代方案？",
+ "Sostituisci \"{item}\" ({purpose}) con una soluzione stampata, senza elementi da comprare.": "把“{item}”（{purpose}）换成打印方案，不需要购买零件。",
+ "Sostituisci \"{item}\" con una soluzione stampata, senza elementi da comprare.": "把“{item}”换成打印方案，不需要购买零件。",
+ "Tieni a portata di mano: {items}.": "请准备好：{items}。",
+ "ugello {n0}–{n1} °C · piatto {b0}–{b1} °C": "喷嘴 {n0}–{n1} °C · 打印板 {b0}–{b1} °C",
+ "usa l'assistente AI": "使用 AI 助手",
+ "Va bene, lo compro": "好的，我去买"
 }

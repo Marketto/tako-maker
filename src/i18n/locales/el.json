@@ -400,5 +400,22 @@
  "Viola": "Μωβ",
  "Volume della musica": "Ένταση μουσικής",
  "Volume di stampa (mm)": "Όγκος εκτύπωσης (mm)",
- "Wow, sei proprio un maker!": "Ουάου, είσαι αληθινός maker!"
+ "Wow, sei proprio un maker!": "Ουάου, είσαι αληθινός maker!",
+ "\"{item}\" va ancora sostituito con una soluzione stampata: chiedilo all'assistente.": "Το \"{item}\" πρέπει ακόμα να αντικατασταθεί με τυπωμένη λύση: ζήτησέ το από τον βοηθό.",
+ "Cerca un'alternativa stampata": "Ψάξε τυπωμένη εναλλακτική",
+ "confermato": "επιβεβαιωμένο",
+ "Da acquistare a parte": "Αγοράζεται χωριστά",
+ "DA ACQUISTARE A PARTE – {name}": "ΑΓΟΡΑΖΕΤΑΙ ΧΩΡΙΣΤΑ – {name}",
+ "da confermare": "προς επιβεβαίωση",
+ "da sostituire": "προς αντικατάσταση",
+ "È per bambini: fissa bene gli elementi acquistati ({items}) in modo che non si possano staccare. Magneti e pile a bottone ingeriti sono molto pericolosi.": "Είναι για παιδιά: στερέωσε καλά τα αγορασμένα στοιχεία ({items}) ώστε να μην μπορούν να ξεκολλήσουν. Οι μαγνήτες και οι μπαταρίες κουμπιά είναι πολύ επικίνδυνοι αν καταποθούν.",
+ "La lista viene inclusa nei file esportati (DA-ACQUISTARE.txt).": "Η λίστα περιλαμβάνεται στα αρχεία εξαγωγής (DA-ACQUISTARE.txt).",
+ "Serve per: {purpose}.": "Χρησιμεύει για: {purpose}.",
+ "Serve un elemento da comprare a parte: {item}. Va bene o cerco un'alternativa stampata?": "Χρειάζεται ένα στοιχείο που αγοράζεται χωριστά: {item}. Είναι εντάξει ή να ψάξω τυπωμένη εναλλακτική;",
+ "Sostituisci \"{item}\" ({purpose}) con una soluzione stampata, senza elementi da comprare.": "Αντικατάστησε το \"{item}\" ({purpose}) με τυπωμένη λύση, χωρίς στοιχεία προς αγορά.",
+ "Sostituisci \"{item}\" con una soluzione stampata, senza elementi da comprare.": "Αντικατάστησε το \"{item}\" με τυπωμένη λύση, χωρίς στοιχεία προς αγορά.",
+ "Tieni a portata di mano: {items}.": "Έχε πρόχειρα: {items}.",
+ "ugello {n0}–{n1} °C · piatto {b0}–{b1} °C": "ακροφύσιο {n0}–{n1} °C · πλάκα {b0}–{b1} °C",
+ "usa l'assistente AI": "χρησιμοποίησε τον βοηθό AI",
+ "Va bene, lo compro": "Εντάξει, θα το αγοράσω"
 }

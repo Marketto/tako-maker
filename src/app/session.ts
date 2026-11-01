@@ -23,6 +23,7 @@ import type { SearchResult, ToolEnv } from '../agent/tools';
 import type { ImportedMeshInfo } from '../agent/context';
 import { cachedSearch, loadMesh, printerById, saveMesh, saveProject, store, storeSearch, uid, type ChatItem, type Project } from './store';
 import { t } from '../i18n';
+import { shoppingListText } from '../core/hardware';
 
 /* Orchestratore di un progetto aperto: collega UI, router, agente,
    geometria (worker) e analisi locali. La UI si limita a leggere lo snapshot. */
@@ -274,6 +275,18 @@ export class ProjectSession {
       return;
     }
     const ops = [...(q.baseOps ?? []), ...chosen.flatMap((o) => o.ops ?? [])];
+    const ai = chosen.find((o) => o.action === 'ask_ai' && o.prompt);
+    if (ai) {
+      if (!makeClient().isConfigured()) {
+        this.set({ error: t('Per usare l’assistente aggiungi una chiave AI (Claude, GPT o Gemini) nelle impostazioni (icona ⚙).') });
+        return;
+      }
+      const p0 = this.snap.project;
+      await this.persist({ ...p0, answered: [...p0.answered, q.key] });
+      if (ops.length) await this.applyLocal(ops);
+      await this.send(ai.prompt!, 'modifica-modello');
+      return;
+    }
     if (chosen.some((o) => o.action === 'calibration')) {
       const p0 = this.snap.project;
       await this.persist({ ...p0, answered: [...p0.answered, q.key] });
@@ -366,6 +379,11 @@ export class ProjectSession {
     await this.refresh();
   }
 
+  private shoppingFiles(dir: string): Record<string, string> {
+    const text = shoppingListText(this.snap.project.design);
+    return text ? { [`${dir}DA-ACQUISTARE.txt`]: text } : {};
+  }
+
   export3MF(): { blob: Blob; filename: string } {
     const d = this.snap.project.design;
     const data = build3MF(this.exportParts(), {
@@ -374,13 +392,14 @@ export class ProjectSession {
       strategy: d.printPlan.strategy,
       bed: bedOf(this.setup, this.printer),
       attribution: d.source,
+      extraFiles: this.shoppingFiles('Metadata/'),
     });
     return { blob: new Blob([data as BlobPart], { type: 'model/3mf' }), filename: `${slug(d.name)}.3mf` };
   }
 
   exportSTL(): { blob: Blob; filename: string } {
     const d = this.snap.project.design;
-    const data = buildSTLZip(this.exportParts(), d.source);
+    const data = buildSTLZip(this.exportParts(), d.source, this.shoppingFiles(''));
     return { blob: new Blob([data as BlobPart], { type: 'application/zip' }), filename: `${slug(d.name)}-stl.zip` };
   }
 }

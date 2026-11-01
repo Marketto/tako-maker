@@ -400,5 +400,22 @@
  "Viola": "Violetinė",
  "Volume della musica": "Muzikos garsumas",
  "Volume di stampa (mm)": "Spausdinimo tūris (mm)",
- "Wow, sei proprio un maker!": "Oho, tu tikras meistras!"
+ "Wow, sei proprio un maker!": "Oho, tu tikras meistras!",
+ "\"{item}\" va ancora sostituito con una soluzione stampata: chiedilo all'assistente.": "\"{item}\" dar reikia pakeisti spausdintu sprendimu: paprašyk asistento.",
+ "Cerca un'alternativa stampata": "Ieškoti spausdintos alternatyvos",
+ "confermato": "patvirtinta",
+ "Da acquistare a parte": "Pirkti atskirai",
+ "DA ACQUISTARE A PARTE – {name}": "PIRKTI ATSKIRAI – {name}",
+ "da confermare": "reikia patvirtinti",
+ "da sostituire": "reikia pakeisti",
+ "È per bambini: fissa bene gli elementi acquistati ({items}) in modo che non si possano staccare. Magneti e pile a bottone ingeriti sono molto pericolosi.": "Tai vaikams: gerai pritvirtink pirktas dalis ({items}), kad jų nebūtų galima atplėšti. Praryti magnetai ir tabletės formos baterijos yra labai pavojingi.",
+ "La lista viene inclusa nei file esportati (DA-ACQUISTARE.txt).": "Sąrašas įtraukiamas į eksportuotus failus (DA-ACQUISTARE.txt).",
+ "Serve per: {purpose}.": "Paskirtis: {purpose}.",
+ "Serve un elemento da comprare a parte: {item}. Va bene o cerco un'alternativa stampata?": "Reikia dalies, kurią reikia pirkti atskirai: {item}. Tinka, ar ieškoti spausdintos alternatyvos?",
+ "Sostituisci \"{item}\" ({purpose}) con una soluzione stampata, senza elementi da comprare.": "Pakeisk \"{item}\" ({purpose}) spausdintu sprendimu, be perkamų dalių.",
+ "Sostituisci \"{item}\" con una soluzione stampata, senza elementi da comprare.": "Pakeisk \"{item}\" spausdintu sprendimu, be perkamų dalių.",
+ "Tieni a portata di mano: {items}.": "Turėk po ranka: {items}.",
+ "ugello {n0}–{n1} °C · piatto {b0}–{b1} °C": "antgalis {n0}–{n1} °C · plokštė {b0}–{b1} °C",
+ "usa l'assistente AI": "naudok AI asistentą",
+ "Va bene, lo compro": "Gerai, nupirksiu"
 }

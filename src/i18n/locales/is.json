@@ -400,5 +400,22 @@
  "Viola": "Fjólublár",
  "Volume della musica": "Hljóðstyrkur tónlistar",
  "Volume di stampa (mm)": "Prentrými (mm)",
- "Wow, sei proprio un maker!": "Vá, þú ert algjör smiður!"
+ "Wow, sei proprio un maker!": "Vá, þú ert algjör smiður!",
+ "\"{item}\" va ancora sostituito con una soluzione stampata: chiedilo all'assistente.": "Enn þarf að skipta „{item}“ út fyrir prentaða lausn: spurðu aðstoðarmanninn.",
+ "Cerca un'alternativa stampata": "Leita að prentuðum valkosti",
+ "confermato": "staðfest",
+ "Da acquistare a parte": "Keypt sérstaklega",
+ "DA ACQUISTARE A PARTE – {name}": "KEYPT SÉRSTAKLEGA – {name}",
+ "da confermare": "á eftir að staðfesta",
+ "da sostituire": "á að skipta út",
+ "È per bambini: fissa bene gli elementi acquistati ({items}) in modo che non si possano staccare. Magneti e pile a bottone ingeriti sono molto pericolosi.": "Þetta er fyrir börn: festu keyptu hlutina ({items}) vel svo þeir geti ekki losnað. Gleyptir seglar og hnapparafhlöður eru mjög hættuleg.",
+ "La lista viene inclusa nei file esportati (DA-ACQUISTARE.txt).": "Listinn fylgir með útfluttu skránum (DA-ACQUISTARE.txt).",
+ "Serve per: {purpose}.": "Notað fyrir: {purpose}.",
+ "Serve un elemento da comprare a parte: {item}. Va bene o cerco un'alternativa stampata?": "Það þarf hlut sem er keyptur sérstaklega: {item}. Er það í lagi eða á ég að leita að prentuðum valkosti?",
+ "Sostituisci \"{item}\" ({purpose}) con una soluzione stampata, senza elementi da comprare.": "Skiptu „{item}“ ({purpose}) út fyrir prentaða lausn, án hluta sem þarf að kaupa.",
+ "Sostituisci \"{item}\" con una soluzione stampata, senza elementi da comprare.": "Skiptu „{item}“ út fyrir prentaða lausn, án hluta sem þarf að kaupa.",
+ "Tieni a portata di mano: {items}.": "Hafðu við höndina: {items}.",
+ "ugello {n0}–{n1} °C · piatto {b0}–{b1} °C": "stútur {n0}–{n1} °C · plata {b0}–{b1} °C",
+ "usa l'assistente AI": "notaðu AI-aðstoðarmanninn",
+ "Va bene, lo compro": "Allt í lagi, ég kaupi það"
 }

@@ -400,5 +400,22 @@
  "Viola": "Paars",
  "Volume della musica": "Muziekvolume",
  "Volume di stampa (mm)": "Printvolume (mm)",
- "Wow, sei proprio un maker!": "Wow, jij bent een echte maker!"
+ "Wow, sei proprio un maker!": "Wow, jij bent een echte maker!",
+ "\"{item}\" va ancora sostituito con una soluzione stampata: chiedilo all'assistente.": "\"{item}\" moet nog vervangen worden door een geprinte oplossing: vraag het aan de assistent.",
+ "Cerca un'alternativa stampata": "Zoek een geprint alternatief",
+ "confermato": "bevestigd",
+ "Da acquistare a parte": "Apart te kopen",
+ "DA ACQUISTARE A PARTE – {name}": "APART TE KOPEN – {name}",
+ "da confermare": "te bevestigen",
+ "da sostituire": "te vervangen",
+ "È per bambini: fissa bene gli elementi acquistati ({items}) in modo che non si possano staccare. Magneti e pile a bottone ingeriti sono molto pericolosi.": "Het is voor kinderen: zet de gekochte onderdelen ({items}) stevig vast, zodat ze niet los kunnen komen. Ingeslikte magneten en knoopcellen zijn heel gevaarlijk.",
+ "La lista viene inclusa nei file esportati (DA-ACQUISTARE.txt).": "De lijst zit bij de geëxporteerde bestanden (DA-ACQUISTARE.txt).",
+ "Serve per: {purpose}.": "Nodig voor: {purpose}.",
+ "Serve un elemento da comprare a parte: {item}. Va bene o cerco un'alternativa stampata?": "Er is een onderdeel nodig dat je apart moet kopen: {item}. Is dat goed of zal ik een geprint alternatief zoeken?",
+ "Sostituisci \"{item}\" ({purpose}) con una soluzione stampata, senza elementi da comprare.": "Vervang \"{item}\" ({purpose}) door een geprinte oplossing, zonder onderdelen om te kopen.",
+ "Sostituisci \"{item}\" con una soluzione stampata, senza elementi da comprare.": "Vervang \"{item}\" door een geprinte oplossing, zonder onderdelen om te kopen.",
+ "Tieni a portata di mano: {items}.": "Houd bij de hand: {items}.",
+ "ugello {n0}–{n1} °C · piatto {b0}–{b1} °C": "nozzle {n0}–{n1} °C · printplaat {b0}–{b1} °C",
+ "usa l'assistente AI": "gebruik de AI-assistent",
+ "Va bene, lo compro": "Prima, ik koop het"
 }

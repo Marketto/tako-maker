@@ -126,12 +126,21 @@ export type ToolOutcome =
   | { kind: 'question'; question: Question }
   | { kind: 'results'; results: SearchResult[] };
 
+/** Le scelte sugli elementi da acquistare spettano all'utente: l'AI non può impostarle. */
+function withoutUserChoices(o: DesignOp): DesignOp {
+  if (o && o.op === 'update_hardware' && o.patch && 'decision' in o.patch) {
+    const { decision: _d, ...patch } = o.patch;
+    return { ...o, patch };
+  }
+  return o;
+}
+
 export async function runTool(name: string, input: unknown, env: ToolEnv): Promise<ToolOutcome> {
   const args = (input ?? {}) as Record<string, unknown>;
   switch (name) {
     case 'edit_design': {
-      const ops = args.ops as DesignOp[];
-      if (!Array.isArray(ops) || !ops.length) return { kind: 'result', content: 'Nessuna operazione ricevuta.', isError: true };
+      const ops = Array.isArray(args.ops) ? (args.ops as DesignOp[]).map(withoutUserChoices) : [];
+      if (!ops.length) return { kind: 'result', content: 'Nessuna operazione ricevuta.', isError: true };
       let next: Design;
       try {
         next = applyOps(env.design(), ops, new Set(env.setup.filaments.map((f) => f.id)));

@@ -1,4 +1,4 @@
-import type { Design, Joint, Part, ShapeNode, Vec3, PrintStrategy, Connection } from '../types';
+import type { Design, Hardware, Joint, Part, ShapeNode, Vec3, PrintStrategy, Connection } from '../types';
 
 /* Operazioni di modifica del Design. L'agente invia una lista di queste
    operazioni (tool "edit_design") invece di riscrivere tutto il documento:
@@ -13,12 +13,16 @@ export type DesignOp =
   | { op: 'add_joint'; joint: Joint }
   | { op: 'update_joint'; id: string; patch: Partial<Omit<Joint, 'id'>> }
   | { op: 'remove_joint'; id: string }
-  | { op: 'set_plan'; strategy?: PrintStrategy; connection?: Connection };
+  | { op: 'set_plan'; strategy?: PrintStrategy; connection?: Connection }
+  | { op: 'add_hardware'; item: Hardware }
+  | { op: 'update_hardware'; id: string; patch: Partial<Omit<Hardware, 'id'>> }
+  | { op: 'remove_hardware'; id: string };
 
 export const LIMITS = {
   maxParts: 40,
   maxNodes: 600,
   maxDepth: 12,
+  maxHardware: 20,
   maxSizeMm: 1000,
   minSizeMm: 0.2,
 };
@@ -89,6 +93,16 @@ export function validateDesign(d: Design, filamentIds?: Set<string>): void {
     if (!isVec3(j.origin)) throw new DesignError(`Il giunto "${j.id}" ha un'origine non valida`);
     if (!['x', 'y', 'z'].includes(j.axis)) throw new DesignError(`Il giunto "${j.id}" ha un asse non valido`);
   }
+  const hw = d.hardware ?? [];
+  if (hw.length > LIMITS.maxHardware) throw new DesignError(`Troppi elementi da acquistare (max ${LIMITS.maxHardware})`);
+  const hids = new Set<string>();
+  for (const h of hw) {
+    if (!h.id || hids.has(h.id)) throw new DesignError(`Id elemento da acquistare duplicato o vuoto: "${h.id}"`);
+    hids.add(h.id);
+    if (typeof h.name !== 'string' || !h.name.trim()) throw new DesignError(`L'elemento "${h.id}" non ha un nome`);
+    if (!Number.isInteger(h.qty) || h.qty < 1 || h.qty > 100) throw new DesignError(`L'elemento "${h.id}" ha una quantità non valida (1-100)`);
+    if (h.decision !== undefined && h.decision !== 'buy' && h.decision !== 'printed') throw new DesignError(`L'elemento "${h.id}" ha una scelta non valida`);
+  }
 }
 
 function findIndex<T extends { id: string }>(list: T[], id: string, what: string): number {
@@ -144,6 +158,28 @@ export function applyOps(design: Design, ops: DesignOp[], filamentIds?: Set<stri
         if (o.strategy) d.printPlan.strategy = o.strategy;
         if (o.connection) d.printPlan.connection = o.connection;
         break;
+      case 'add_hardware': {
+        const list = (d.hardware ??= []);
+        if (list.some((h) => h.id === o.item?.id)) throw new DesignError(`L'elemento "${o.item.id}" esiste già`);
+        // La scelta spetta all'utente: l'app gliela chiede.
+        const { decision: _ignored, ...item } = o.item ?? ({} as Hardware);
+        list.push({ ...item, name: String(item.name ?? '').slice(0, 80), spec: item.spec?.slice(0, 60), purpose: item.purpose?.slice(0, 120) });
+        break;
+      }
+      case 'update_hardware': {
+        const list = d.hardware ?? [];
+        const h = list[findIndex(list, o.id, 'Elemento da acquistare')];
+        const before = { name: h.name, qty: h.qty, spec: h.spec };
+        Object.assign(h, o.patch);
+        // Se cambia cosa comprare, l'utente deve confermare di nuovo.
+        if (o.patch.decision === undefined && (h.name !== before.name || h.qty !== before.qty || h.spec !== before.spec)) delete h.decision;
+        break;
+      }
+      case 'remove_hardware': {
+        const list = d.hardware ?? [];
+        list.splice(findIndex(list, o.id, 'Elemento da acquistare'), 1);
+        break;
+      }
       default:
         throw new DesignError(`Operazione sconosciuta: ${JSON.stringify(o)}`);
     }

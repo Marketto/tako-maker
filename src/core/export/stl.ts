@@ -36,7 +36,7 @@ export function buildSTL(mesh: RawMesh, name = 'modello'): Uint8Array {
 }
 
 /** Zip con un STL per parte (alternativa universale al 3MF). */
-export function buildSTLZip(parts: { name: string; mesh: RawMesh }[], attribution?: Attribution): Uint8Array {
+export function buildSTLZip(parts: { name: string; mesh: RawMesh }[], attribution?: Attribution, extraFiles: Record<string, string> = {}): Uint8Array {
   const files: Record<string, Uint8Array> = {};
   const used = new Set<string>();
   for (const p of parts) {
@@ -46,5 +46,6 @@ export function buildSTLZip(parts: { name: string; mesh: RawMesh }[], attributio
     files[`${base}.stl`] = buildSTL(p.mesh, p.name);
   }
   if (attribution) files['ATTRIBUZIONE.txt'] = strToU8(attributionText(attribution));
+  for (const [name, text] of Object.entries(extraFiles)) files[name] = strToU8(text);
   return zipSync(files);
 }
