@@ -1,5 +1,5 @@
 import type { Design } from '../core/types';
-import type { ClaudeClient } from './client';
+import type { AiClient } from './client';
 import { SKILLS, type SkillName } from './skills';
 
 /* Router a due livelli:
@@ -46,7 +46,7 @@ export function routeByRules(text: string, design: Design | null, opts: { search
 export async function route(
   text: string,
   design: Design | null,
-  opts: { searchFirst: boolean; smartRouting: boolean; client: ClaudeClient | null },
+  opts: { searchFirst: boolean; smartRouting: boolean; client: AiClient | null },
 ): Promise<RouteDecision> {
   const byRules = routeByRules(text, design, opts);
   if (byRules.confidence === 'high' || !opts.smartRouting || !opts.client?.isConfigured()) return byRules;

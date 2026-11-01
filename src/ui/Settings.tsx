@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { store, useStore } from '../app/store';
 import { Budget } from '../agent/budget';
 import { MODELS } from '../agent/config';
+import { KeysEditor } from './KeysEditor';
 
 function useSpend() {
   const { settings } = useStore();
@@ -24,8 +25,7 @@ export function BudgetBadge() {
 }
 
 export function SettingsDialog({ onClose, onEditSetup }: { onClose: () => void; onEditSetup: () => void }) {
-  const { settings, apiKey } = useStore();
-  const [key, setKey] = useState(apiKey);
+  const { settings } = useStore();
   const { rec } = useSpend();
   useEffect(() => {
     const esc = (e: KeyboardEvent) => e.key === 'Escape' && onClose();
@@ -42,27 +42,12 @@ export function SettingsDialog({ onClose, onEditSetup }: { onClose: () => void; 
         </header>
 
         <section>
-          <h3>Accesso a Claude</h3>
-          <label className="field">
-            Chiave API personale
-            <input className="text" type="password" autoComplete="off" placeholder="sk-ant-…" value={key} onChange={(e) => setKey(e.target.value)} onBlur={() => store.setApiKey(key)} />
-          </label>
+          <h3>Chiavi AI</h3>
+          <KeysEditor />
           <label className="check">
             <input type="checkbox" checked={settings.rememberKey} onChange={(e) => store.setSettings({ rememberKey: e.target.checked })} />
-            Ricorda su questo dispositivo (altrimenti solo fino alla chiusura della scheda)
+            Ricorda le chiavi su questo dispositivo (altrimenti solo fino alla chiusura della scheda)
           </label>
-          <details>
-            <summary>Usa un proxy al posto della chiave</summary>
-            <p className="muted small">Se hai pubblicato il proxy opzionale (cartella <code>proxy/</code>), la chiave resta sul server e qui serve solo l’indirizzo.</p>
-            <label className="field">
-              URL del proxy
-              <input className="text" placeholder="https://printopus-proxy.tuonome.workers.dev" value={settings.proxyUrl} onChange={(e) => store.setSettings({ proxyUrl: e.target.value.trim() })} />
-            </label>
-            <label className="field">
-              Codice di accesso
-              <input className="text" type="password" value={settings.accessCode} onChange={(e) => store.setSettings({ accessCode: e.target.value })} />
-            </label>
-          </details>
         </section>
 
         <section>
@@ -77,11 +62,11 @@ export function SettingsDialog({ onClose, onEditSetup }: { onClose: () => void; 
           </label>
           <label className="check">
             <input type="checkbox" checked={settings.economy} onChange={(e) => store.setSettings({ economy: e.target.checked })} />
-            Modalità risparmio: usa sempre {MODELS.fast.label} (più economico, modelli un po’ meno curati)
+            Modalità risparmio: usa sempre il modello veloce di ogni provider (es. {MODELS.fast.label}): più economico, modelli un po’ meno curati
           </label>
           <label className="check">
             <input type="checkbox" checked={settings.smartRouting} onChange={(e) => store.setSettings({ smartRouting: e.target.checked })} />
-            Se non è chiaro cosa vuoi, lascia decidere a {MODELS.fast.label} quale assistente usare
+            Se non è chiaro cosa vuoi, lascia decidere al modello veloce quale assistente usare
           </label>
           <label className="check">
             <input type="checkbox" checked={settings.searchFirst} onChange={(e) => store.setSettings({ searchFirst: e.target.checked })} />

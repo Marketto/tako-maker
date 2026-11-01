@@ -2,7 +2,8 @@ import { describe, expect, it } from 'vitest';
 import { routeByRules } from '../src/agent/router';
 import { SKILLS } from '../src/agent/skills';
 import { Budget, costOf, type KV } from '../src/agent/budget';
-import { ClaudeClient } from '../src/agent/client';
+import { KeyRouter } from '../src/agent/providers/keyRouter';
+import { PROVIDERS } from '../src/agent/config';
 import { runAgent, resumeAgent } from '../src/agent/runner';
 import type { ToolEnv } from '../src/agent/tools';
 import { evaluateDesign } from '../src/core/geometry/evaluate';
@@ -41,12 +42,12 @@ describe('router a regole', () => {
 
 describe('costi', () => {
   it('calcola costi con cache e ricerche', () => {
-    const c = costOf('fast', { input_tokens: 1_000_000, output_tokens: 0, cache_read_input_tokens: 1_000_000, server_tool_use: { web_search_requests: 2 } });
+    const c = costOf(PROVIDERS.anthropic.models.fast.price, { input_tokens: 1_000_000, output_tokens: 0, cache_read_input_tokens: 1_000_000, server_tool_use: { web_search_requests: 2 } });
     expect(c).toBeCloseTo(0.1 + 0.01 + 0.02, 6);
   });
   it('blocca oltre il tetto mensile', () => {
     const b = new Budget(memKV(), 0.001);
-    b.record('smart', { input_tokens: 1000, output_tokens: 1000 });
+    b.record(PROVIDERS.anthropic.models.smart.price, { input_tokens: 1000, output_tokens: 1000 });
     expect(b.canSpend()).toBe(false);
   });
 });
@@ -82,7 +83,7 @@ describe('ciclo agente (API simulata)', () => {
   it('esegue edit_design e restituisce il testo finale', async () => {
     const e = await env(emptyDesign());
     const seen: unknown[] = [];
-    const client = new ClaudeClient(() => ({ apiKey: 'test' }), new Budget(memKV(), 10), fakeFetch([
+    const client = new KeyRouter(() => [{ id: 'k1', provider: 'anthropic', label: 'Test', key: 'test', enabled: true }], memKV(), new Budget(memKV(), 10), fakeFetch([
       { id: '1', stop_reason: 'tool_use', usage, content: [{ type: 'tool_use', id: 't1', name: 'edit_design', input: { ops: [{ op: 'add_part', part: { id: 'cubo', name: 'Cubo', filamentId: 'f1', shape: { op: 'box', size: [20, 20, 20] } } }] } }] },
       { id: '2', stop_reason: 'end_turn', usage, content: [{ type: 'text', text: 'Ho creato un cubo rosso.' }] },
     ], seen));
@@ -96,7 +97,7 @@ describe('ciclo agente (API simulata)', () => {
 
   it('si mette in pausa su ask_user e riprende', async () => {
     const e = await env(emptyDesign());
-    const client = new ClaudeClient(() => ({ apiKey: 'test' }), new Budget(memKV(), 10), fakeFetch([
+    const client = new KeyRouter(() => [{ id: 'k1', provider: 'anthropic', label: 'Test', key: 'test', enabled: true }], memKV(), new Budget(memKV(), 10), fakeFetch([
       { id: '1', stop_reason: 'tool_use', usage, content: [{ type: 'tool_use', id: 'q1', name: 'ask_user', input: { question: 'Grande o piccolo?', options: [{ id: 'g', label: 'Grande' }, { id: 'p', label: 'Piccolo' }] } }] },
       { id: '2', stop_reason: 'end_turn', usage, content: [{ type: 'text', text: 'Va bene, piccolo.' }] },
     ], []));
@@ -110,7 +111,7 @@ describe('ciclo agente (API simulata)', () => {
   it('restituisce un errore all’AI se le operazioni non sono valide', async () => {
     const e = await env(emptyDesign());
     const seen: unknown[] = [];
-    const client = new ClaudeClient(() => ({ apiKey: 'test' }), new Budget(memKV(), 10), fakeFetch([
+    const client = new KeyRouter(() => [{ id: 'k1', provider: 'anthropic', label: 'Test', key: 'test', enabled: true }], memKV(), new Budget(memKV(), 10), fakeFetch([
       { id: '1', stop_reason: 'tool_use', usage, content: [{ type: 'tool_use', id: 't1', name: 'edit_design', input: { ops: [{ op: 'add_part', part: { id: 'x', name: 'X', filamentId: 'inesistente', shape: { op: 'box', size: [1, 1, 1] } } }] } }] },
       { id: '2', stop_reason: 'end_turn', usage, content: [{ type: 'text', text: 'ok' }] },
     ], seen));
