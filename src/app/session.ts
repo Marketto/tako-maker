@@ -21,7 +21,7 @@ import { resumeAgent, runAgent, type AgentState, type RunInput } from '../agent/
 import { SKILLS, type SkillName } from '../agent/skills';
 import type { SearchResult, ToolEnv } from '../agent/tools';
 import type { ImportedMeshInfo } from '../agent/context';
-import { cachedSearch, loadMesh, printerById, saveMesh, saveProject, store, storeSearch, uid, type ChatItem, type Project } from './store';
+import { cachedSearch, loadMesh, printerOf, saveMesh, saveProject, store, storeSearch, uid, type ChatItem, type Project } from './store';
 import { t } from '../i18n';
 import { shoppingListText } from '../core/hardware';
 import { printedTogether } from '../core/design/links';
@@ -87,7 +87,7 @@ export class ProjectSession {
     return store.get().setup!;
   }
   private get printer() {
-    return printerById(this.setup.printerId);
+    return printerOf(this.setup);
   }
 
   /* ---------- Geometria e analisi ---------- */

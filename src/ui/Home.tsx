@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { deleteProject, listProjects, printerById, saveProject, uid, useStore, type Project } from '../app/store';
+import { deleteProject, listProjects, printerOf, saveProject, uid, useStore, type Project } from '../app/store';
 import { emptyDesign } from '../core/types';
 import { InstallButton } from './Install';
 import { MusicButton } from './MusicButton';
@@ -12,7 +12,7 @@ export function Home({ onOpen, onSettings }: { onOpen: (id: string) => void; onS
   useEffect(() => {
     void listProjects().then(setProjects);
   }, []);
-  const printer = setup ? printerById(setup.printerId) : null;
+  const printer = setup ? printerOf(setup) : null;
 
   const create = async (demo = false) => {
     const now = Date.now();
@@ -41,7 +41,7 @@ export function Home({ onOpen, onSettings }: { onOpen: (id: string) => void; onS
           <div>
             <div className="muted small">{t('La tua stampante')}</div>
             <strong>{t(printer?.brand ?? '')} {t(printer?.model ?? '')}</strong>
-            {setup?.hasMulti && printer?.multi && <span className="badge">{printer.multi.system}</span>}
+            {setup?.hasMulti && printer?.multi && <span className="badge">{t(printer.multi.system)}</span>}
           </div>
           <div className="chips">
             {setup?.filaments.map((f) => (

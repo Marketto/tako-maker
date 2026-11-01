@@ -1,7 +1,6 @@
 import { useSyncExternalStore } from 'react';
 import { get, set, del, keys } from 'idb-keyval';
-import printersData from '../data/printers.json';
-import type { Design, PrinterSpec, UserSetup } from '../core/types';
+import type { Design, UserSetup } from '../core/types';
 import type { RawMesh } from '../core/geometry/evaluate';
 import { DEFAULT_SETTINGS } from '../agent/config';
 import type { KeyEntry } from '../agent/providers/types';
@@ -13,8 +12,7 @@ import type { SearchResult } from '../agent/tools';
    - sessionStorage: chiave API se l'utente non vuole ricordarla
    - IndexedDB: progetti, mesh importate, cache delle ricerche */
 
-export const PRINTERS = printersData.printers as unknown as PrinterSpec[];
-export const printerById = (id: string) => PRINTERS.find((p) => p.id === id) ?? PRINTERS[PRINTERS.length - 1];
+export { PRINTERS, printerById, printerOf } from './printers';
 
 export type Settings = typeof DEFAULT_SETTINGS & {
   searchFirst: boolean;

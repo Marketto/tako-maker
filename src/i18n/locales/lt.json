@@ -435,5 +435,15 @@
  "si sente lo scatto, corsa breve": "jauti spragtelėjimą, trumpa eiga",
  "Sotto il pulsante \"{name}\" il guscio è troppo sottile: servono almeno {mm} mm.": "Po mygtuku \"{name}\" korpusas per plonas: reikia bent {mm} mm.",
  "Tra \"{a}\" e \"{b}\" c'è un tratto di bordo di circa {mm} mm senza ganci: lì le parti possono aprirsi. Allarga quel bordo (almeno 6 mm) per far posto a un gancio intermedio.": "Tarp \"{a}\" ir \"{b}\" yra apie {mm} mm krašto ruožas be kabliukų: ten dalys gali atsiverti. Paplatink tą kraštą (bent 6 mm), kad tilptų tarpinis kabliukas.",
- "Una parte stampata già montata (cerniera o pulsante) unisce parti di colori diversi": "Jau surinkta spausdinama dalis (vyris ar mygtukas) jungia skirtingų spalvų dalis"
+ "Una parte stampata già montata (cerniera o pulsante) unisce parti di colori diversi": "Jau surinkta spausdinama dalis (vyris ar mygtukas) jungia skirtingų spalvų dalis",
+ "AMS + doppio ugello": "AMS + dvigubas antgalis",
+ "Aperta": "Atviras",
+ "Cambio utensile": "Įrankių keitiklis",
+ "Chiusa, con sportello": "Uždaras, su durelėmis",
+ "Com’è fatta?": "Koks jis?",
+ "Cosa si muove avanti e indietro?": "Kas juda pirmyn ir atgal?",
+ "Il piatto": "Plokštė",
+ "Quanti colori può stampare nello stesso pezzo?": "Kiek spalvų jis gali spausdinti toje pačioje dalyje?",
+ "sistema multicolore": "daugiaspalvė sistema",
+ "Solo la testina (CoreXY)": "Tik spausdinimo galvutė (CoreXY)"
 }

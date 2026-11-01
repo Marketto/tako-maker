@@ -10,6 +10,8 @@ import { LanguagePicker } from './LanguagePicker';
 
 // Nomi della stampante personalizzata (da printers.json), da tradurre.
 void [msg('Altro'), msg('Stampante personalizzata')];
+// Sistemi multicolore con un nome descrittivo (gli altri sono nomi commerciali).
+void [msg('AMS + doppio ugello'), msg('Cambio utensile')];
 
 /* Prima configurazione: marca → modello → sistema multicolore → filamenti → chiave API. */
 
@@ -25,6 +27,7 @@ export function Wizard({ initial, onDone }: { initial?: UserSetup | null; onDone
   const [printerId, setPrinterId] = useState(initial?.printerId ?? '');
   const [hasMulti, setHasMulti] = useState(initial?.hasMulti ?? false);
   const [customBed, setCustomBed] = useState<Vec3>(initial?.customBed ?? [220, 220, 250]);
+  const [custom, setCustom] = useState<NonNullable<UserSetup['custom']>>(initial?.custom ?? { enclosed: false, kinematics: 'bedslinger', multiSlots: 1 });
   const [filaments, setFilaments] = useState<Filament[]>(initial?.filaments ?? []);
   const [mat, setMat] = useState('PLA');
   const printer = PRINTERS.find((p) => p.id === printerId);
@@ -39,7 +42,14 @@ export function Wizard({ initial, onDone }: { initial?: UserSetup | null; onDone
   };
 
   const finish = () => {
-    const setup: UserSetup = { printerId, hasMulti: !!printer?.multi && hasMulti, filaments, customBed: printerId === 'custom' ? customBed : undefined };
+    const isCustom = printerId === 'custom';
+    const setup: UserSetup = {
+      printerId,
+      hasMulti: isCustom ? custom.multiSlots > 1 : !!printer?.multi && hasMulti,
+      filaments,
+      customBed: isCustom ? customBed : undefined,
+      custom: isCustom ? custom : undefined,
+    };
     store.setSetup(setup);
     onDone?.();
   };
@@ -91,7 +101,7 @@ export function Wizard({ initial, onDone }: { initial?: UserSetup | null; onDone
               <button key={p.id} className={`choice row ${printerId === p.id ? 'selected' : ''}`} onClick={() => setPrinterId(p.id)}>
                 <strong>{t(p.model)}</strong>
                 <span className="muted">
-                  {p.id === 'custom' ? t('Inserisci le misure') : `${p.bed.join('×')} mm${p.multi ? ` · ${t('compatibile {system}', { system: p.multi.system })}` : ''}${p.enclosed ? ` · ${t('chiusa')}` : ''}`}
+                  {p.id === 'custom' ? t('Inserisci le misure') : `${p.bed.join('×')} mm${p.multi ? ` · ${t('compatibile {system}', { system: t(p.multi.system) })}` : ''}${p.enclosed ? ` · ${t('chiusa')}` : ''}`}
                 </span>
               </button>
             ))}
@@ -105,6 +115,22 @@ export function Wizard({ initial, onDone }: { initial?: UserSetup | null; onDone
                     onChange={(e) => setCustomBed(customBed.map((x, k) => (k === i ? Number(e.target.value) : x)) as Vec3)} />
                 ))}
               </div>
+              <label>{t('Com’è fatta?')}</label>
+              <div className="segmented">
+                <button className={!custom.enclosed ? 'on' : ''} onClick={() => setCustom({ ...custom, enclosed: false })}>{t('Aperta')}</button>
+                <button className={custom.enclosed ? 'on' : ''} onClick={() => setCustom({ ...custom, enclosed: true })}>{t('Chiusa, con sportello')}</button>
+              </div>
+              <label>{t('Cosa si muove avanti e indietro?')}</label>
+              <div className="segmented">
+                <button className={custom.kinematics === 'bedslinger' ? 'on' : ''} onClick={() => setCustom({ ...custom, kinematics: 'bedslinger' })}>{t('Il piatto')}</button>
+                <button className={custom.kinematics === 'corexy' ? 'on' : ''} onClick={() => setCustom({ ...custom, kinematics: 'corexy' })}>{t('Solo la testina (CoreXY)')}</button>
+              </div>
+              <label>{t('Quanti colori può stampare nello stesso pezzo?')}</label>
+              <div className="segmented">
+                {[1, 2, 4, 5, 8].map((n) => (
+                  <button key={n} className={custom.multiSlots === n ? 'on' : ''} onClick={() => setCustom({ ...custom, multiSlots: n })}>{n}</button>
+                ))}
+              </div>
             </div>
           )}
           <Nav back={back} next={printerId ? next : undefined} />
@@ -113,7 +139,7 @@ export function Wizard({ initial, onDone }: { initial?: UserSetup | null; onDone
 
       {step === 'multi' && printer?.multi && (
         <section className="wizard-card">
-          <h2>{t('Hai il sistema {system}?', { system: printer.multi.system })}</h2>
+          <h2>{t('Hai il sistema {system}?', { system: t(printer.multi.system) })}</h2>
           <p className="muted">{t('Permette di stampare fino a {n} colori nello stesso pezzo.', { n: printer.multi.slots })}</p>
           <div className="choice-grid two">
             <button className={`choice ${hasMulti ? 'selected' : ''}`} onClick={() => { setHasMulti(true); next(); }}>{t('Sì, ce l’ho')}</button>

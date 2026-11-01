@@ -435,5 +435,15 @@
  "si sente lo scatto, corsa breve": "se nota el chasquido, recorrido corto",
  "Sotto il pulsante \"{name}\" il guscio è troppo sottile: servono almeno {mm} mm.": "Bajo el botón \"{name}\" la carcasa es demasiado delgada: necesita al menos {mm} mm.",
  "Tra \"{a}\" e \"{b}\" c'è un tratto di bordo di circa {mm} mm senza ganci: lì le parti possono aprirsi. Allarga quel bordo (almeno 6 mm) per far posto a un gancio intermedio.": "Entre \"{a}\" y \"{b}\" hay un tramo de borde de unos {mm} mm sin ganchos: ahí las piezas pueden abrirse. Ensancha ese borde (al menos 6 mm) para dejar sitio a un gancho intermedio.",
- "Una parte stampata già montata (cerniera o pulsante) unisce parti di colori diversi": "Una pieza impresa ya montada (bisagra o botón) une piezas de colores distintos"
+ "Una parte stampata già montata (cerniera o pulsante) unisce parti di colori diversi": "Una pieza impresa ya montada (bisagra o botón) une piezas de colores distintos",
+ "AMS + doppio ugello": "AMS + doble boquilla",
+ "Aperta": "Abierta",
+ "Cambio utensile": "Cambiador de herramientas",
+ "Chiusa, con sportello": "Cerrada, con puerta",
+ "Com’è fatta?": "¿Cómo es?",
+ "Cosa si muove avanti e indietro?": "¿Qué se mueve hacia delante y hacia atrás?",
+ "Il piatto": "La cama",
+ "Quanti colori può stampare nello stesso pezzo?": "¿Cuántos colores puede imprimir en la misma pieza?",
+ "sistema multicolore": "sistema multicolor",
+ "Solo la testina (CoreXY)": "Solo el cabezal (CoreXY)"
 }

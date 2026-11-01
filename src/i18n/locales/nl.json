@@ -435,5 +435,15 @@
  "si sente lo scatto, corsa breve": "je voelt de klik, korte slag",
  "Sotto il pulsante \"{name}\" il guscio è troppo sottile: servono almeno {mm} mm.": "Onder de knop \"{name}\" is de behuizing te dun: er is minstens {mm} mm nodig.",
  "Tra \"{a}\" e \"{b}\" c'è un tratto di bordo di circa {mm} mm senza ganci: lì le parti possono aprirsi. Allarga quel bordo (almeno 6 mm) per far posto a un gancio intermedio.": "Tussen \"{a}\" en \"{b}\" zit een stuk rand van ongeveer {mm} mm zonder haken: daar kunnen de delen opengaan. Maak die rand breder (minstens 6 mm) om plaats te maken voor een tussenhaak.",
- "Una parte stampata già montata (cerniera o pulsante) unisce parti di colori diversi": "Een print-in-place-deel (scharnier of knop) verbindt delen met verschillende kleuren"
+ "Una parte stampata già montata (cerniera o pulsante) unisce parti di colori diversi": "Een print-in-place-deel (scharnier of knop) verbindt delen met verschillende kleuren",
+ "AMS + doppio ugello": "AMS + dubbele nozzle",
+ "Aperta": "Open",
+ "Cambio utensile": "Toolwisselaar",
+ "Chiusa, con sportello": "Gesloten, met deurtje",
+ "Com’è fatta?": "Hoe ziet hij eruit?",
+ "Cosa si muove avanti e indietro?": "Wat beweegt heen en weer?",
+ "Il piatto": "De plaat",
+ "Quanti colori può stampare nello stesso pezzo?": "Hoeveel kleuren kan hij in hetzelfde onderdeel printen?",
+ "sistema multicolore": "meerkleurensysteem",
+ "Solo la testina (CoreXY)": "Alleen de printkop (CoreXY)"
 }

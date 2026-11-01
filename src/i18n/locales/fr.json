@@ -435,5 +435,15 @@
  "si sente lo scatto, corsa breve": "on sent le déclic, course courte",
  "Sotto il pulsante \"{name}\" il guscio è troppo sottile: servono almeno {mm} mm.": "Sous le bouton \"{name}\", le boîtier est trop fin : il faut au moins {mm} mm.",
  "Tra \"{a}\" e \"{b}\" c'è un tratto di bordo di circa {mm} mm senza ganci: lì le parti possono aprirsi. Allarga quel bordo (almeno 6 mm) per far posto a un gancio intermedio.": "Entre \"{a}\" et \"{b}\", il y a une portion de bord d’environ {mm} mm sans crochets : les pièces peuvent s’ouvrir à cet endroit. Élargis ce bord (au moins 6 mm) pour faire de la place à un crochet intermédiaire.",
- "Una parte stampata già montata (cerniera o pulsante) unisce parti di colori diversi": "Une pièce imprimée déjà assemblée (charnière ou bouton) relie des pièces de couleurs différentes"
+ "Una parte stampata già montata (cerniera o pulsante) unisce parti di colori diversi": "Une pièce imprimée déjà assemblée (charnière ou bouton) relie des pièces de couleurs différentes",
+ "AMS + doppio ugello": "AMS + double buse",
+ "Aperta": "Ouverte",
+ "Cambio utensile": "Changeur d’outils",
+ "Chiusa, con sportello": "Fermée, avec une porte",
+ "Com’è fatta?": "Elle est comment ?",
+ "Cosa si muove avanti e indietro?": "Qu’est-ce qui bouge d’avant en arrière ?",
+ "Il piatto": "Le plateau",
+ "Quanti colori può stampare nello stesso pezzo?": "Combien de couleurs peut-elle imprimer dans la même pièce ?",
+ "sistema multicolore": "système multicolore",
+ "Solo la testina (CoreXY)": "Seulement la tête (CoreXY)"
 }

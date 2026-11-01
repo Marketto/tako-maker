@@ -435,5 +435,15 @@
  "si sente lo scatto, corsa breve": "rwyt ti'n teimlo'r clic, symudiad byr",
  "Sotto il pulsante \"{name}\" il guscio è troppo sottile: servono almeno {mm} mm.": "O dan y botwm \"{name}\" mae'r casin yn rhy denau: mae angen o leiaf {mm} mm.",
  "Tra \"{a}\" e \"{b}\" c'è un tratto di bordo di circa {mm} mm senza ganci: lì le parti possono aprirsi. Allarga quel bordo (almeno 6 mm) per far posto a un gancio intermedio.": "Rhwng \"{a}\" a \"{b}\" mae darn o ymyl tua {mm} mm heb fachau: gall y rhannau agor yno. Lleda'r ymyl honno (o leiaf 6 mm) i wneud lle i fachyn canol.",
- "Una parte stampata già montata (cerniera o pulsante) unisce parti di colori diversi": "Mae rhan wedi'i hargraffu yn ei lle (colfach neu fotwm) yn uno rhannau o liwiau gwahanol"
+ "Una parte stampata già montata (cerniera o pulsante) unisce parti di colori diversi": "Mae rhan wedi'i hargraffu yn ei lle (colfach neu fotwm) yn uno rhannau o liwiau gwahanol",
+ "AMS + doppio ugello": "AMS + ffroenell ddwbl",
+ "Aperta": "Agored",
+ "Cambio utensile": "Newidiwr offer",
+ "Chiusa, con sportello": "Caeedig, gyda drws",
+ "Com’è fatta?": "Sut un yw e?",
+ "Cosa si muove avanti e indietro?": "Beth sy’n symud yn ôl ac ymlaen?",
+ "Il piatto": "Y plât",
+ "Quanti colori può stampare nello stesso pezzo?": "Sawl lliw all e eu hargraffu yn yr un darn?",
+ "sistema multicolore": "system amryliw",
+ "Solo la testina (CoreXY)": "Dim ond y pen argraffu (CoreXY)"
 }

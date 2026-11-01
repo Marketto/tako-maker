@@ -435,5 +435,15 @@
  "si sente lo scatto, corsa breve": "se simte clicul, cursă scurtă",
  "Sotto il pulsante \"{name}\" il guscio è troppo sottile: servono almeno {mm} mm.": "Sub butonul \"{name}\" carcasa e prea subțire: e nevoie de cel puțin {mm} mm.",
  "Tra \"{a}\" e \"{b}\" c'è un tratto di bordo di circa {mm} mm senza ganci: lì le parti possono aprirsi. Allarga quel bordo (almeno 6 mm) per far posto a un gancio intermedio.": "Între \"{a}\" și \"{b}\" există o porțiune de margine de circa {mm} mm fără cârlige: acolo piesele se pot deschide. Lărgește marginea aceea (cel puțin 6 mm) ca să faci loc unui cârlig intermediar.",
- "Una parte stampata già montata (cerniera o pulsante) unisce parti di colori diversi": "O piesă imprimată deja asamblată (balama sau buton) unește piese de culori diferite"
+ "Una parte stampata già montata (cerniera o pulsante) unisce parti di colori diversi": "O piesă imprimată deja asamblată (balama sau buton) unește piese de culori diferite",
+ "AMS + doppio ugello": "AMS + duză dublă",
+ "Aperta": "Deschisă",
+ "Cambio utensile": "Schimbător de scule",
+ "Chiusa, con sportello": "Închisă, cu ușă",
+ "Com’è fatta?": "Cum arată?",
+ "Cosa si muove avanti e indietro?": "Ce se mișcă înainte și înapoi?",
+ "Il piatto": "Placa",
+ "Quanti colori può stampare nello stesso pezzo?": "Câte culori poate imprima în aceeași piesă?",
+ "sistema multicolore": "sistem multicolor",
+ "Solo la testina (CoreXY)": "Doar capul de imprimare (CoreXY)"
 }

@@ -435,5 +435,15 @@
  "si sente lo scatto, corsa breve": "you feel the click, short travel",
  "Sotto il pulsante \"{name}\" il guscio è troppo sottile: servono almeno {mm} mm.": "Under the button \"{name}\" the housing is too thin: it needs at least {mm} mm.",
  "Tra \"{a}\" e \"{b}\" c'è un tratto di bordo di circa {mm} mm senza ganci: lì le parti possono aprirsi. Allarga quel bordo (almeno 6 mm) per far posto a un gancio intermedio.": "Between \"{a}\" and \"{b}\" there's a stretch of edge about {mm} mm long with no hooks: the parts may open up there. Widen that edge (at least 6 mm) to make room for an intermediate hook.",
- "Una parte stampata già montata (cerniera o pulsante) unisce parti di colori diversi": "A print-in-place part (hinge or button) joins parts of different colors"
+ "Una parte stampata già montata (cerniera o pulsante) unisce parti di colori diversi": "A print-in-place part (hinge or button) joins parts of different colors",
+ "AMS + doppio ugello": "AMS + dual nozzle",
+ "Aperta": "Open",
+ "Cambio utensile": "Tool changer",
+ "Chiusa, con sportello": "Enclosed, with a door",
+ "Com’è fatta?": "What kind is it?",
+ "Cosa si muove avanti e indietro?": "What moves back and forth?",
+ "Il piatto": "The plate",
+ "Quanti colori può stampare nello stesso pezzo?": "How many colors can it print in the same part?",
+ "sistema multicolore": "multicolor system",
+ "Solo la testina (CoreXY)": "Only the print head (CoreXY)"
 }
