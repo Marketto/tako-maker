@@ -3,6 +3,9 @@ import type { DesignOp } from '../design/ops';
 import { walkShape } from '../design/ops';
 import { findContacts } from '../geometry/evaluate';
 import { material } from '../../data/materials';
+import { bondsPoorly, guideline, minWall } from '../../data/guidelines';
+import { materialsToTest, neededTests, TEST_KEYS, TEST_LABEL } from '../calibration/coupons';
+import { isCalibrated } from '../calibration/tolerances';
 import { bedOf, estimateStrategies, fitsBed, fmtTime, STRATEGY_LABEL, type PartStat, type StrategyEstimate } from './estimate';
 
 /* Controlli deterministici eseguiti dopo OGNI modifica, senza chiamare l'AI:
@@ -17,6 +20,10 @@ export interface AnalysisReport {
   recommended?: StrategyEstimate;
   questions: Question[];
   warnings: string[];
+  /** Consigli di buona pratica (meno urgenti degli avvisi). */
+  tips: string[];
+  /** Indicazioni per ogni materiale usato. */
+  materialNotes: { material: string; nozzleC: [number, number]; bedC: [number, number]; tips: string[] }[];
   summary: string;
 }
 
@@ -232,11 +239,95 @@ export function analyze(
   }
   for (const p of design.parts) if (p.filamentId && !filById.has(p.filamentId)) warnings.push(`La parte "${p.name}" usa un filamento che non hai più.`);
 
+  /* ---- Campioni di prova per giunti e incastri ---- */
+  const kinds = neededTests(design);
+  if (kinds.length && parts.length) {
+    const mats = materialsToTest(design, setup);
+    const todo = mats.filter((m) => kinds.some((k) => !isCalibrated(m.material, setup, TEST_KEYS[k])));
+    const key = `calib:${kinds.join(',')}:${todo.map((m) => m.material).join(',')}`;
+    if (todo.length && !answered.has(key)) {
+      questions.push({
+        id: key,
+        key,
+        source: 'analysis',
+        text: 'Ci sono parti mobili o incastri: vuoi stampare prima dei campioni di prova per trovare il gioco giusto per la tua stampante?',
+        detail: `Prove: ${kinds.map((k) => TEST_LABEL[k].toLowerCase()).join(', ')} · materiali: ${todo.map((m) => m.material).join(', ')}. Pochi minuti di stampa, poi scegli il campione migliore.`,
+        options: [
+          { id: 'yes', label: 'Sì, prepara i campioni', hint: 'un piatto per materiale', action: 'calibration' },
+          { id: 'no', label: 'No, uso i valori consigliati' },
+        ],
+      });
+    }
+  }
+
+  /* ---- Linee guida per stampante e materiali ---- */
+  const tips: string[] = [];
+  const nozzle = setup.nozzle ?? printer.nozzle ?? 0.4;
+  const wall = minWall(nozzle, design.intendedUse.children);
+  const partMat = (id: string) => filById.get(design.parts.find((x) => x.id === id)?.filamentId ?? '')?.material ?? 'PLA';
+  const thin: string[] = [];
+  for (const p of design.parts) {
+    walkShape(p.shape, (node, ctx) => {
+      if (node.op === 'box' && !ctx.subtractive && Math.min(...node.size) < wall - 0.01) thin.push(`${p.name} (${Math.min(...node.size)} mm)`);
+    });
+  }
+  if (thin.length) warnings.push(`Elementi più sottili del consigliato (${wall.toString().replace('.', ',')} mm con ugello ${nozzle} mm${design.intendedUse.children ? ', per bambini' : ''}): ${[...new Set(thin)].slice(0, 3).join(', ')}${thin.length > 3 ? '…' : ''}.`);
+
+  const tall: string[] = [];
+  for (const p of parts) {
+    const sz = [0, 1, 2].map((k) => p.bbox.max[k] - p.bbox.min[k]);
+    const name = design.parts.find((x) => x.id === p.id)?.name ?? p.id;
+    const g = guideline(partMat(p.id));
+    const foot = Math.min(sz[0], sz[1]);
+    if (printer.kinematics === 'bedslinger' && sz[2] > 60 && sz[2] / Math.max(foot, 1) > 3) tall.push(`"${name}"`);
+    if (g.warps && Math.max(sz[0], sz[1]) > 100) tips.push(`"${name}" è grande in ${partMat(p.id)}: aggiungi un brim per evitare che gli angoli si sollevino.`);
+  }
+
+  if (tall.length) {
+    warnings.push(`${tall.join(', ')} ${tall.length === 1 ? 'è alto e stretto' : 'sono alti e stretti'}: sulle stampanti a piatto mobile possono oscillare. Usa un brim o stampali coricati.`);
+  }
+
+  const articulated = design.joints.filter((j) => j.type !== 'slider');
+  for (const j of articulated) {
+    const name = design.parts.find((x) => x.id === j.partB)?.name ?? j.partB;
+    if (j.axis === 'z' && j.type === 'hinge') warnings.push(`La cerniera di "${name}" ha l'asse verticale: stampata già montata funziona meglio con l'asse parallelo al piatto.`);
+    if ([j.partA, j.partB].some((id) => partMat(id) === 'TPU')) warnings.push(`La cerniera di "${name}" è in TPU: è flessibile, meglio PLA o PETG per le parti rigide.`);
+  }
+
+  const usesSnap = (design.printPlan.strategy === 'separate' && design.printPlan.connection === 'snap') || articulated.some((j) => j.detent?.enabled);
+  if (usesSnap) {
+    const weak = [...new Set(design.parts.map((p) => partMat(p.id)))].filter((m) => !guideline(m).goodForSnap && m !== 'TPU');
+    const hasPetg = setup.filaments.some((f) => guideline(f.material).goodForSnap);
+    if (weak.length) tips.push(`Incastri e scatti in ${weak.join(', ')} possono rompersi con l'uso: ${hasPetg ? 'per le parti che si muovono spesso usa il PETG che hai.' : 'se puoi, per quelle parti usa PETG.'}`);
+  }
+
+  const fits = usesSnap || articulated.length > 0 || (design.printPlan.strategy === 'separate' && design.printPlan.connection !== 'none');
+  for (const m of usedMaterials) {
+    const g = guideline(m);
+    if (fits && g.shrinkPct > 0.4) tips.push(`${m} ritira circa lo ${g.shrinkPct.toString().replace('.', ',')}%: per i pezzi da incastrare compensa la scala nello slicer (o fai i campioni di prova).`);
+  }
+
+  // Materiali che non aderiscono tra loro, stampati a contatto
+  if (design.printPlan.strategy !== 'separate') {
+    const contacts = findContacts(parts.map((p) => ({ id: p.id, box: p.contactBox ?? p.bbox })));
+    const bad = new Set<string>();
+    for (const c of contacts) {
+      const a = partMat(c.a), b = partMat(c.b);
+      if (bondsPoorly(a, b)) bad.add([a, b].sort().join(' e '));
+    }
+    for (const pair of bad) warnings.push(`${pair} aderiscono male tra loro: stampati a contatto le parti possono staccarsi. Usa lo stesso materiale o stampale separate.`);
+  }
+
+  const materialNotes = [...usedMaterials].map((m) => {
+    const g = guideline(m);
+    return { material: m, nozzleC: g.nozzleC, bedC: g.bedC, tips: g.tips };
+  });
+
   const summary = recommended
     ? `Consigliato: ${STRATEGY_LABEL[recommended.strategy]} · ${fmtTime(recommended.timeS)} · ${recommended.filamentG.toFixed(0)} g${recommended.wasteG >= 1 ? ` (+${recommended.wasteG.toFixed(0)} g scarto)` : ''}`
     : parts.length
       ? 'Nessuna strategia di stampa possibile con la configurazione attuale.'
       : '';
 
-  return { estimates, recommended, questions, warnings, summary };
+  return { estimates, recommended, questions, warnings, tips, materialNotes, summary };
 }

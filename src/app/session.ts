@@ -1,6 +1,10 @@
 import { analyze, type AnalysisReport } from '../core/analysis';
 import { applyOps, type DesignOp } from '../core/design/ops';
 import { evaluateInWorker } from '../core/geometry/engine';
+import { tolerancesByPart } from '../core/calibration/tolerances';
+import { buildCalibrationFiles, type CalibrationFiles } from '../core/calibration/export';
+import { applyTestValue, type TestKind } from '../core/calibration/coupons';
+import { downloadBlob } from './download';
 import type { PartResult, RawMesh } from '../core/geometry/evaluate';
 import { importModelFile } from '../core/geometry/import';
 import { planAssembly, type AssemblyPlan } from '../core/assembly/plan';
@@ -85,7 +89,7 @@ export class ProjectSession {
   /* ---------- Geometria e analisi ---------- */
 
   private async evaluate(d: Design) {
-    const r = await evaluateInWorker(d, this.meshes);
+    const r = await evaluateInWorker(d, this.meshes, tolerancesByPart(d, this.setup));
     return r;
   }
 
@@ -268,6 +272,12 @@ export class ProjectSession {
       return;
     }
     const ops = [...(q.baseOps ?? []), ...chosen.flatMap((o) => o.ops ?? [])];
+    if (chosen.some((o) => o.action === 'calibration')) {
+      const p0 = this.snap.project;
+      await this.persist({ ...p0, answered: [...p0.answered, q.key] });
+      await this.downloadCalibration();
+      return;
+    }
     const p = this.snap.project;
     await this.persist({ ...p, answered: [...p.answered, q.key] });
     if (ops.length) await this.applyLocal(ops);
@@ -316,6 +326,41 @@ export class ProjectSession {
       const f = fil.find((x) => x.id === p.filamentId);
       return { name: p.name, mesh: p.mesh, filament: f, extruder: f ? fil.indexOf(f) + 1 : 1, group: groups.get(p.id) };
     });
+  }
+
+  /** Genera e scarica i campioni di prova (un piatto per materiale). */
+  async downloadCalibration(): Promise<CalibrationFiles | null> {
+    this.set({ busy: 'Preparo i campioni di prova…', error: null });
+    try {
+      const files = await buildCalibrationFiles(this.snap.project.design, this.setup, this.printer, async (d, tol) => (await evaluateInWorker(d, {}, tol)).parts);
+      downloadBlob(new Blob([files.data as BlobPart], { type: files.mime }), files.filename);
+      await this.pushChat({
+        role: 'assistant',
+        text:
+          `Ecco i campioni di prova: ${files.plates} piatt${files.plates === 1 ? 'o' : 'i'} (${files.materials.join(', ')}). ` +
+          'Ogni campione ha da 1 a 5 puntini: dopo la stampa prova quale funziona meglio e indicalo nella scheda Stampa → Campioni di prova.\n\n' +
+          files.readme
+            .split('\n')
+            .filter((l) => /^ {2}●|^---|: /.test(l) && !/^Poi|^CAMPIONI/.test(l))
+            .slice(0, 16)
+            .join('\n'),
+      });
+      return files;
+    } catch (e) {
+      this.set({ error: (e as Error).message });
+      return null;
+    } finally {
+      this.set({ busy: null });
+    }
+  }
+
+  /** Salva la tolleranza scelta dopo aver provato i campioni e ricalcola il modello. */
+  async saveCalibration(material: string, kind: TestKind, value: number) {
+    const setup = this.setup;
+    const tolerances = { ...(setup.tolerances ?? {}) };
+    tolerances[material] = { ...(tolerances[material] ?? {}), ...applyTestValue(kind, value) };
+    store.setSetup({ ...setup, tolerances });
+    await this.refresh();
   }
 
   export3MF(): { blob: Blob; filename: string } {
