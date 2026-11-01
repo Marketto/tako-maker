@@ -24,6 +24,7 @@ Funziona su telefono, tablet e computer. Tutti i dati restano sul dispositivo.
 - **Esportazione 3MF** per Bambu Studio, OrcaSlicer, Creality Print, ElegooSlicer, Anycubic Slicer Next e PrusaSlicer (colori/estrusori assegnati quando lo slicer li legge), oppure **STL per ogni parte**.
 - **Takotta, la mascotte**: un polpo kawaii in stile anime anni 2000 che cambia espressione mentre lavori (pensa, si concentra, si confonde, festeggia), dice frasi di incitamento e ha le punte dei tentacoli dei colori dei tuoi filamenti. Toccala per una coccola.
 - **Musica rilassante** generata dal browser (accordi morbidi e carillon), spenta di default, con volume regolabile.
+- **Più provider AI**: Claude, GPT e Gemini, anche più chiavi per provider con una priorità; se una chiave finisce il credito, va in pausa o non risponde, l'app passa automaticamente alla successiva.
 - **Spesa sotto controllo**: contatore dei costi, tetto mensile, modalità risparmio, cache delle ricerche.
 
 Senza chiave puoi già provare il **modello d’esempio**: analisi, scatti, montaggio ed esportazione non usano l’API.

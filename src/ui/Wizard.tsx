@@ -1,9 +1,10 @@
 import { useMemo, useState } from 'react';
-import { PRINTERS, store, uid } from '../app/store';
+import { PRINTERS, store, uid, useStore } from '../app/store';
 import { COMMON_COLORS, MATERIALS } from '../data/materials';
 import type { Filament, UserSetup, Vec3 } from '../core/types';
 import { Takotta } from './mascot/Takotta';
 import { MusicButton } from './MusicButton';
+import { KeysEditor } from './KeysEditor';
 
 /* Prima configurazione: marca → modello → sistema multicolore → filamenti → chiave API. */
 
@@ -11,6 +12,8 @@ type Step = 'welcome' | 'brand' | 'model' | 'multi' | 'filaments' | 'key';
 
 export function Wizard({ initial, onDone }: { initial?: UserSetup | null; onDone?: () => void }) {
   const [step, setStep] = useState<Step>(initial ? 'brand' : 'welcome');
+  const { keys } = useStore();
+  const hasKey = keys.some((k) => k.enabled && (k.key || k.baseUrl));
   const brands = useMemo(() => [...new Set(PRINTERS.map((p) => p.brand))], []);
   const initPrinter = PRINTERS.find((p) => p.id === initial?.printerId);
   const [brand, setBrand] = useState(initPrinter?.brand ?? '');
@@ -19,7 +22,6 @@ export function Wizard({ initial, onDone }: { initial?: UserSetup | null; onDone
   const [customBed, setCustomBed] = useState<Vec3>(initial?.customBed ?? [220, 220, 250]);
   const [filaments, setFilaments] = useState<Filament[]>(initial?.filaments ?? []);
   const [mat, setMat] = useState('PLA');
-  const [key, setKey] = useState(store.get().apiKey);
   const printer = PRINTERS.find((p) => p.id === printerId);
   const steps: Step[] = ['brand', 'model', ...(printer?.multi ? (['multi'] as Step[]) : []), 'filaments', 'key'];
   const idx = steps.indexOf(step);
@@ -34,7 +36,6 @@ export function Wizard({ initial, onDone }: { initial?: UserSetup | null; onDone
   const finish = () => {
     const setup: UserSetup = { printerId, hasMulti: !!printer?.multi && hasMulti, filaments, customBed: printerId === 'custom' ? customBed : undefined };
     store.setSetup(setup);
-    if (key !== store.get().apiKey) store.setApiKey(key);
     onDone?.();
   };
 
@@ -157,14 +158,14 @@ export function Wizard({ initial, onDone }: { initial?: UserSetup | null; onDone
 
       {step === 'key' && (
         <section className="wizard-card">
-          <h2>Chiave API di Claude</h2>
+          <h2>Chiavi AI</h2>
           <p className="muted">
-            Serve per l’assistente. Resta solo su questo dispositivo e viene inviata soltanto ad Anthropic. Puoi crearla su{' '}
-            <a href="https://platform.claude.com/settings/keys" target="_blank" rel="noreferrer">platform.claude.com</a>. Puoi anche aggiungerla dopo, dalle impostazioni.
+            Servono per l’assistente. Puoi usare <strong>Claude</strong>, <strong>GPT</strong> o <strong>Gemini</strong>, anche più di una chiave: se una finisce il credito l’app passa alla successiva.
+            Restano solo su questo dispositivo. Puoi aggiungerle anche dopo, dalle impostazioni.
           </p>
-          <input className="text" type="password" autoComplete="off" placeholder="sk-ant-…" value={key} onChange={(e) => setKey(e.target.value)} />
-          <p className="tip">Consiglio: nella console imposta un limite di spesa sulla chiave, per stare tranquillo.</p>
-          <Nav back={back} next={finish} nextLabel={key ? 'Fine' : 'Salta per ora'} />
+          <KeysEditor compact />
+          <p className="tip">Consiglio: nella console di ogni provider imposta un limite di spesa sulla chiave.</p>
+          <Nav back={back} next={finish} nextLabel={hasKey ? 'Fine' : 'Salta per ora'} />
         </section>
       )}
     </div>

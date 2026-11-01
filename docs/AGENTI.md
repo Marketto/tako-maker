@@ -67,3 +67,26 @@ Le domande delle user story (strategia multicolore/separata, incastro/colla, sca
 sono generate da `core/analysis` dopo ogni modifica. Ogni opzione porta con sé le operazioni DSL da
 applicare: rispondere costa zero token. Ogni domanda ha una chiave stabile e non viene riproposta
 finché il modello non cambia in modo rilevante.
+
+## Provider e router delle chiavi (`src/agent/providers/`)
+
+L'app funziona con **Claude**, **GPT** (OpenAI) e **Gemini** (Google). L'utente può inserire più chiavi,
+anche dello stesso provider, e ordinarle per priorità.
+
+- **Formato interno**: quello della Messages API di Claude (`agent/client.ts`). Gli adattatori traducono:
+  - `anthropic.ts`: diretto (o tramite il proxy opzionale), con prompt caching esplicito;
+  - `openai.ts`: Responses API: `instructions`, `function_call` / `function_call_output`, ricerca `web_search`; cache automatica;
+  - `gemini.ts`: `generateContent`: ruolo `model`, `functionCall` / `functionResponse` con la **firma del ragionamento** conservata, `googleSearch`; schema ridotto al sottoinsieme supportato; cache implicita.
+- **KeyRouter** (`keyRouter.ts`): prova le chiavi in ordine. Se una risponde con errore:
+
+| Errore | Effetto |
+|---|---|
+| credito/quota esauriti | pausa di 24 ore (o “Riprova” nelle impostazioni) |
+| chiave non valida | esclusa finché non viene modificata |
+| troppe richieste | pausa di 60 secondi |
+| servizio sovraccarico o rete | pausa di 20 secondi |
+| richiesta rifiutata | si prova la chiave successiva |
+
+  e passa subito alla successiva. Se nessuna funziona, il messaggio elenca il motivo per ciascuna.
+- **Modelli per livello** (`config.ts → PROVIDERS`): ogni provider ha un modello veloce e uno intelligente; le skill scelgono il livello, il router il provider.
+- **Costi**: ogni risposta viene conteggiata con i prezzi del provider e del modello effettivamente usati.

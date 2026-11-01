@@ -71,7 +71,7 @@ export const TOOL_DEFS: Record<string, ToolDef | ServerTool> = {
     input_schema: {
       type: 'object',
       properties: {
-        ops: { type: 'array', items: { type: 'object' }, description: 'Operazioni: set_meta, add_part, update_part, move_part, remove_part, add_joint, update_joint, remove_joint, set_plan' },
+        ops: { type: 'array', items: { type: 'object', properties: { op: { type: 'string', description: 'Nome dell’operazione' } }, required: ['op'] }, description: 'Operazioni: set_meta, add_part, update_part, move_part, remove_part, add_joint, update_joint, remove_joint, set_plan' },
         summary: { type: 'string', description: 'Descrizione brevissima della modifica, per la cronologia (es. "schermo più grande")' },
       },
       required: ['ops'],

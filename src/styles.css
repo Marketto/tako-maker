@@ -341,3 +341,20 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
 .badge.off { background: var(--surface-2); color: var(--muted); }
 .calib-row { display: flex; flex-direction: column; gap: 0.3rem; font-size: 0.92rem; }
 .calib-row select { border: 2px solid var(--line); border-radius: 12px; padding: 0.45rem; background: var(--surface); min-height: 42px; }
+
+/* ---------- Chiavi AI ---------- */
+.keys { display: flex; flex-direction: column; gap: 0.6rem; }
+.key-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0.6rem; }
+.key-item { border: 2px solid var(--line); border-radius: 16px; padding: 0.6rem 0.7rem; display: flex; flex-direction: column; gap: 0.45rem; background: var(--surface); }
+.key-item.bad { border-color: color-mix(in srgb, var(--danger) 45%, var(--line)); }
+.key-head { display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; }
+.key-head select { border: 2px solid var(--line); border-radius: 12px; padding: 0.4rem; background: var(--surface); min-height: 40px; font-weight: 700; }
+.key-prio { width: 28px; height: 28px; border-radius: 50%; background: var(--brand); color: var(--brand-ink); display: grid; place-items: center; font-weight: 800; font-size: 0.85rem; flex: none; }
+.key-status { font-size: 0.8rem; font-weight: 700; border-radius: 999px; padding: 0.1rem 0.55rem; background: var(--surface-2); color: var(--muted); }
+.key-status.good { background: var(--brand-soft); color: var(--brand); }
+.key-status.bad { background: #fde8e6; color: var(--danger); }
+.key-fields { display: grid; grid-template-columns: 1fr 2fr; gap: 0.4rem; }
+@media (max-width: 520px) { .key-fields { grid-template-columns: 1fr; } }
+.key-actions { display: flex; align-items: center; gap: 0.3rem; flex-wrap: wrap; }
+.key-actions .check { margin: 0; }
+.spacer { flex: 1; }
