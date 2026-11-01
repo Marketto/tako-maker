@@ -6,7 +6,7 @@ import { MusicButton } from './MusicButton';
 import { demoDesign } from '../data/demo';
 
 export function Home({ onOpen, onSettings }: { onOpen: (id: string) => void; onSettings: () => void }) {
-  const { setup, apiKey, settings } = useStore();
+  const { setup, keys } = useStore();
   const [projects, setProjects] = useState<Project[] | null>(null);
   useEffect(() => {
     void listProjects().then(setProjects);
@@ -49,8 +49,8 @@ export function Home({ onOpen, onSettings }: { onOpen: (id: string) => void; onS
           </div>
         </section>
 
-        {!apiKey && !settings.proxyUrl && (
-          <button className="notice" onClick={onSettings}>Aggiungi la chiave API per usare l’assistente →</button>
+        {!keys.some((k) => k.enabled && (k.key || k.baseUrl)) && (
+          <button className="notice" onClick={onSettings}>Aggiungi una chiave AI (Claude, GPT o Gemini) per usare l’assistente →</button>
         )}
 
         <button className="new-project" onClick={() => create()}>

@@ -17,7 +17,9 @@ potrebbe essere consumato da altri.
 
 Per questo l’app offre due modalità.
 
-### A. Chiave personale nel browser (predefinita)
+### A. Chiavi personali nel browser (predefinito)
+
+Nelle impostazioni si possono aggiungere chiavi di **Claude** ([console](https://platform.claude.com/settings/keys)), **OpenAI** ([chiavi](https://platform.openai.com/api-keys)) e **Gemini** ([AI Studio](https://aistudio.google.com/apikey)), in ordine di priorità.
 
 Ogni utente inserisce la propria chiave nelle impostazioni. Resta nel `localStorage` (o solo nella
 sessione) del suo dispositivo e viene inviata soltanto a `api.anthropic.com`, con l’header

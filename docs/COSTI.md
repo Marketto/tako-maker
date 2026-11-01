@@ -9,6 +9,15 @@ Prezzi usati dal contatore (USD per milione di token, `src/agent/config.ts`, da
 | Claude Sonnet 5.5 | 2 | 10 | 2,50 | 0,10 |
 | Ricerca web | $10 ogni 1000 ricerche + token dei risultati |
 
+### Altri provider
+
+| Provider | Veloce | Intelligente | Ricerca web |
+|---|---|---|---|
+| OpenAI | GPT-6 Luna: 0,10 / 0,50 (cache 0,01) | GPT-6.1 Sol: 2 / 10 (cache 0,10) | $10 ogni 1000 |
+| Gemini | 3.5 Flash-Lite: 0,30 / 2,50 (cache 0,03) | 3.8 Flash: 0,75 / 3,75 (cache 0,075) fino al 31/12/2026 | 5000 gratis/mese, poi $14 ogni 1000 |
+
+OpenAI e Gemini usano la cache dei prompt in automatico: la struttura dei prompt (parti fisse prima, variabili dopo) funziona anche con loro.
+
 ## Cosa fa l’app per risparmiare
 
 1. **Router a regole**: quasi tutti i messaggi vengono instradati senza chiamate.

@@ -1,5 +1,5 @@
 import type { Question } from '../core/types';
-import type { ApiResponse, ClaudeClient, ContentBlock, Message } from './client';
+import type { AiClient, ApiResponse, ContentBlock, Message } from './client';
 import { withCache } from './client';
 import { LIMITS, type ModelTier } from './config';
 import type { Skill } from './skills';
@@ -45,7 +45,7 @@ export interface RunInput {
   text: string;
   history: ChatTurn[];
   env: ToolEnv;
-  client: ClaudeClient;
+  client: AiClient;
   economy: boolean;
   meshes: ImportedMeshInfo[];
   report?: AnalysisReport;
