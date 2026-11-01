@@ -26,6 +26,7 @@ src/
 │  ├─ geometry/               valutazione CSG, cerniere, scatti, perni, import STL/3MF, worker
 │  ├─ analysis/               stime e domande automatiche → docs/ANALISI.md
 │  ├─ assembly/plan.ts        guida di montaggio
+│  ├─ hardware/               elementi da comprare a parte: etichette e lista della spesa
 │  └─ export/                 3MF (Orca/Bambu e PrusaSlicer) e STL
 ├─ data/                      stampanti, materiali, linee guida, modello d'esempio
 ├─ i18n/                      t(), msg(), fmtNum(), elenco lingue → docs/TRADUZIONI.md

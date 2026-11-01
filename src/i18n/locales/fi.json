@@ -400,5 +400,22 @@
  "Viola": "Violetti",
  "Volume della musica": "Musiikin äänenvoimakkuus",
  "Volume di stampa (mm)": "Tulostustilavuus (mm)",
- "Wow, sei proprio un maker!": "Vau, olet oikea tekijä!"
+ "Wow, sei proprio un maker!": "Vau, olet oikea tekijä!",
+ "\"{item}\" va ancora sostituito con una soluzione stampata: chiedilo all'assistente.": "”{item}” pitää vielä korvata tulostetulla ratkaisulla: kysy avustajalta.",
+ "Cerca un'alternativa stampata": "Etsi tulostettava vaihtoehto",
+ "confermato": "vahvistettu",
+ "Da acquistare a parte": "Ostettava erikseen",
+ "DA ACQUISTARE A PARTE – {name}": "OSTETTAVA ERIKSEEN – {name}",
+ "da confermare": "vahvistamatta",
+ "da sostituire": "korvattava",
+ "È per bambini: fissa bene gli elementi acquistati ({items}) in modo che non si possano staccare. Magneti e pile a bottone ingeriti sono molto pericolosi.": "Tämä on lapsille: kiinnitä ostetut osat ({items}) hyvin, jotta ne eivät voi irrota. Nielaistut magneetit ja nappiparistot ovat hyvin vaarallisia.",
+ "La lista viene inclusa nei file esportati (DA-ACQUISTARE.txt).": "Lista sisältyy vietyihin tiedostoihin (DA-ACQUISTARE.txt).",
+ "Serve per: {purpose}.": "Tarvitaan: {purpose}.",
+ "Serve un elemento da comprare a parte: {item}. Va bene o cerco un'alternativa stampata?": "Tarvitaan erikseen ostettava osa: {item}. Sopiiko, vai etsinkö tulostettavan vaihtoehdon?",
+ "Sostituisci \"{item}\" ({purpose}) con una soluzione stampata, senza elementi da comprare.": "Korvaa ”{item}” ({purpose}) tulostetulla ratkaisulla ilman ostettavia osia.",
+ "Sostituisci \"{item}\" con una soluzione stampata, senza elementi da comprare.": "Korvaa ”{item}” tulostetulla ratkaisulla ilman ostettavia osia.",
+ "Tieni a portata di mano: {items}.": "Pidä käden ulottuvilla: {items}.",
+ "ugello {n0}–{n1} °C · piatto {b0}–{b1} °C": "suutin {n0}–{n1} °C · alusta {b0}–{b1} °C",
+ "usa l'assistente AI": "käytä tekoälyavustajaa",
+ "Va bene, lo compro": "Selvä, ostan sen"
 }

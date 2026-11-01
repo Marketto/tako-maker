@@ -400,5 +400,22 @@
  "Viola": "Fioletowy",
  "Volume della musica": "Głośność muzyki",
  "Volume di stampa (mm)": "Obszar roboczy (mm)",
- "Wow, sei proprio un maker!": "Wow, z ciebie prawdziwy maker!"
+ "Wow, sei proprio un maker!": "Wow, z ciebie prawdziwy maker!",
+ "\"{item}\" va ancora sostituito con una soluzione stampata: chiedilo all'assistente.": "\"{item}\" trzeba jeszcze zastąpić rozwiązaniem drukowanym: poproś o to asystenta.",
+ "Cerca un'alternativa stampata": "Poszukaj drukowanej alternatywy",
+ "confermato": "potwierdzone",
+ "Da acquistare a parte": "Do kupienia osobno",
+ "DA ACQUISTARE A PARTE – {name}": "DO KUPIENIA OSOBNO – {name}",
+ "da confermare": "do potwierdzenia",
+ "da sostituire": "do zastąpienia",
+ "È per bambini: fissa bene gli elementi acquistati ({items}) in modo che non si possano staccare. Magneti e pile a bottone ingeriti sono molto pericolosi.": "To dla dzieci: dobrze zamocuj kupione elementy ({items}), tak aby nie dało się ich oderwać. Połknięte magnesy i baterie guzikowe są bardzo niebezpieczne.",
+ "La lista viene inclusa nei file esportati (DA-ACQUISTARE.txt).": "Lista jest dołączana do eksportowanych plików (DA-ACQUISTARE.txt).",
+ "Serve per: {purpose}.": "Potrzebne do: {purpose}.",
+ "Serve un elemento da comprare a parte: {item}. Va bene o cerco un'alternativa stampata?": "Potrzebny jest element do kupienia osobno: {item}. Może być, czy poszukać drukowanej alternatywy?",
+ "Sostituisci \"{item}\" ({purpose}) con una soluzione stampata, senza elementi da comprare.": "Zastąp \"{item}\" ({purpose}) rozwiązaniem drukowanym, bez elementów do kupienia.",
+ "Sostituisci \"{item}\" con una soluzione stampata, senza elementi da comprare.": "Zastąp \"{item}\" rozwiązaniem drukowanym, bez elementów do kupienia.",
+ "Tieni a portata di mano: {items}.": "Miej pod ręką: {items}.",
+ "ugello {n0}–{n1} °C · piatto {b0}–{b1} °C": "dysza {n0}–{n1} °C · stół {b0}–{b1} °C",
+ "usa l'assistente AI": "użyj asystenta AI",
+ "Va bene, lo compro": "W porządku, kupię"
 }

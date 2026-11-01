@@ -400,5 +400,22 @@
  "Viola": "Lila",
  "Volume della musica": "Zene hangereje",
  "Volume di stampa (mm)": "Nyomtatási térfogat (mm)",
- "Wow, sei proprio un maker!": "Hű, igazi maker vagy!"
+ "Wow, sei proprio un maker!": "Hű, igazi maker vagy!",
+ "\"{item}\" va ancora sostituito con una soluzione stampata: chiedilo all'assistente.": "Ezt még nyomtatott megoldásra kell cserélni: \"{item}\". Kérd meg rá az asszisztenst.",
+ "Cerca un'alternativa stampata": "Nyomtatott alternatíva keresése",
+ "confermato": "megerősítve",
+ "Da acquistare a parte": "Külön kell megvenni",
+ "DA ACQUISTARE A PARTE – {name}": "KÜLÖN KELL MEGVENNI – {name}",
+ "da confermare": "megerősítendő",
+ "da sostituire": "cserélendő",
+ "È per bambini: fissa bene gli elementi acquistati ({items}) in modo che non si possano staccare. Magneti e pile a bottone ingeriti sono molto pericolosi.": "Gyerekeknek készül: a vásárolt elemeket ({items}) rögzítsd jól, hogy ne lehessen leszedni őket. A lenyelt mágnesek és gombelemek nagyon veszélyesek.",
+ "La lista viene inclusa nei file esportati (DA-ACQUISTARE.txt).": "A lista bekerül az exportált fájlokba (DA-ACQUISTARE.txt).",
+ "Serve per: {purpose}.": "Szerepe: {purpose}.",
+ "Serve un elemento da comprare a parte: {item}. Va bene o cerco un'alternativa stampata?": "Kell egy külön megvásárolandó elem: {item}. Rendben van, vagy keressek nyomtatott alternatívát?",
+ "Sostituisci \"{item}\" ({purpose}) con una soluzione stampata, senza elementi da comprare.": "Cseréld le ezt: \"{item}\" ({purpose}) nyomtatott megoldásra, megvásárolandó elemek nélkül.",
+ "Sostituisci \"{item}\" con una soluzione stampata, senza elementi da comprare.": "Cseréld le ezt: \"{item}\" nyomtatott megoldásra, megvásárolandó elemek nélkül.",
+ "Tieni a portata di mano: {items}.": "Legyen kéznél: {items}.",
+ "ugello {n0}–{n1} °C · piatto {b0}–{b1} °C": "fúvóka {n0}–{n1} °C · tálca {b0}–{b1} °C",
+ "usa l'assistente AI": "használd az AI-asszisztenst",
+ "Va bene, lo compro": "Rendben, megveszem"
 }

@@ -400,5 +400,22 @@
  "Viola": "紫",
  "Volume della musica": "音楽の音量",
  "Volume di stampa (mm)": "造形サイズ（mm）",
- "Wow, sei proprio un maker!": "わあ、立派なメイカーですね！"
+ "Wow, sei proprio un maker!": "わあ、立派なメイカーですね！",
+ "\"{item}\" va ancora sostituito con una soluzione stampata: chiedilo all'assistente.": "「{item}」はまだ印刷パーツに置き換える必要があります。アシスタントに頼んでください。",
+ "Cerca un'alternativa stampata": "印刷できる代わりを探す",
+ "confermato": "確認済み",
+ "Da acquistare a parte": "別途購入",
+ "DA ACQUISTARE A PARTE – {name}": "別途購入 – {name}",
+ "da confermare": "要確認",
+ "da sostituire": "要置き換え",
+ "È per bambini: fissa bene gli elementi acquistati ({items}) in modo che non si possano staccare. Magneti e pile a bottone ingeriti sono molto pericolosi.": "子ども向けです：購入パーツ（{items}）は外れないようにしっかり固定してください。磁石やボタン電池の誤飲はとても危険です。",
+ "La lista viene inclusa nei file esportati (DA-ACQUISTARE.txt).": "リストはエクスポートしたファイルに含まれます（DA-ACQUISTARE.txt）。",
+ "Serve per: {purpose}.": "用途：{purpose}。",
+ "Serve un elemento da comprare a parte: {item}. Va bene o cerco un'alternativa stampata?": "別途購入が必要なパーツがあります：{item}。このままでいいですか？それとも印刷できる代わりを探しますか？",
+ "Sostituisci \"{item}\" ({purpose}) con una soluzione stampata, senza elementi da comprare.": "「{item}」（{purpose}）を、購入パーツを使わない印刷の方法に置き換えてください。",
+ "Sostituisci \"{item}\" con una soluzione stampata, senza elementi da comprare.": "「{item}」を、購入パーツを使わない印刷の方法に置き換えてください。",
+ "Tieni a portata di mano: {items}.": "手元に用意しておきましょう：{items}。",
+ "ugello {n0}–{n1} °C · piatto {b0}–{b1} °C": "ノズル {n0}–{n1} °C · プレート {b0}–{b1} °C",
+ "usa l'assistente AI": "AI アシスタントを使う",
+ "Va bene, lo compro": "OK、購入します"
 }

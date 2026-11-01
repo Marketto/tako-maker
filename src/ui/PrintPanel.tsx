@@ -7,6 +7,7 @@ import { confetti } from './confetti';
 import { centerValue, materialsToTest, neededTests, TEST_HOWTO, TEST_KEYS, TEST_LABEL, testValues } from '../core/calibration/coupons';
 import { isCalibrated, tolerancesFor } from '../core/calibration/tolerances';
 import { fmtNum, t } from '../i18n';
+import { hardwareLabel, hardwareOf } from '../core/hardware';
 
 export function PrintPanel({ session, snap }: { session: ProjectSession; snap: Snapshot }) {
   const { setup } = useStore();
@@ -85,6 +86,26 @@ export function PrintPanel({ session, snap }: { session: ProjectSession; snap: S
         ))}
       </ul>
 
+      {hardwareOf(snap.project.design).length > 0 && (
+        <>
+          <h3>{t('Da acquistare a parte')}</h3>
+          <ul className="hardware-list">
+            {hardwareOf(snap.project.design).map((h) => (
+              <li key={h.id}>
+                <span>
+                  <strong>{hardwareLabel(h)}</strong>
+                  {h.purpose && <span className="muted small"> · {h.purpose}</span>}
+                </span>
+                <span className={`badge ${h.decision === 'buy' ? '' : 'off'}`}>
+                  {h.decision === 'buy' ? t('confermato') : h.decision === 'printed' ? t('da sostituire') : t('da confermare')}
+                </span>
+              </li>
+            ))}
+          </ul>
+          <p className="muted small">{t('La lista viene inclusa nei file esportati (DA-ACQUISTARE.txt).')}</p>
+        </>
+      )}
+
       {(report?.warnings.length ?? 0) + snap.geometryErrors.length > 0 && (
         <div className="warnings">
           {[...snap.geometryErrors, ...(report?.warnings ?? [])].map((w, i) => (
@@ -102,7 +123,7 @@ export function PrintPanel({ session, snap }: { session: ProjectSession; snap: S
           {report.materialNotes.map((m) => (
             <details key={m.material} className="material-note">
               <summary>
-                <strong>{m.material}</strong> · ugello {m.nozzleC[0]}–{m.nozzleC[1]} °C · piatto {m.bedC[0]}–{m.bedC[1]} °C
+                <strong>{m.material}</strong> · {t('ugello {n0}–{n1} °C · piatto {b0}–{b1} °C', { n0: m.nozzleC[0], n1: m.nozzleC[1], b0: m.bedC[0], b1: m.bedC[1] })}
               </summary>
               <ul>
                 {m.tips.map((tip) => <li key={tip}>{tip}</li>)}

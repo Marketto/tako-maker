@@ -8,6 +8,7 @@ import { materialsToTest, neededTests, TEST_KEYS, TEST_LABEL } from '../calibrat
 import { isCalibrated } from '../calibration/tolerances';
 import { bedOf, estimateStrategies, fitsBed, fmtTime, STRATEGY_LABEL, type PartStat, type StrategyEstimate } from './estimate';
 import { fmtNum, t } from '../../i18n';
+import { hardwareLabel, hardwareOf, toBuy } from '../hardware';
 
 /* Controlli deterministici eseguiti dopo OGNI modifica, senza chiamare l'AI:
    - strategia di stampa (multicolore / parti separate / cambio a quota)
@@ -113,6 +114,47 @@ export function analyze(
         ],
       });
     }
+  }
+
+  /* ---- Elementi da comprare a parte: conferma per ognuno ---- */
+  for (const h of hardwareOf(design)) {
+    const item = hardwareLabel(h);
+    if (h.decision === 'printed') {
+      warnings.push(t('"{item}" va ancora sostituito con una soluzione stampata: chiedilo all\'assistente.', { item }));
+      continue;
+    }
+    if (h.decision === 'buy') continue;
+    const key = `hardware:${h.id}:${item}`;
+    if (answered.has(key)) continue;
+    questions.push({
+      id: key,
+      key,
+      source: 'analysis',
+      text: t('Serve un elemento da comprare a parte: {item}. Va bene o cerco un\'alternativa stampata?', { item }),
+      detail: h.purpose ? t('Serve per: {purpose}.', { purpose: h.purpose }) : undefined,
+      options: [
+        { id: 'buy', label: t('Va bene, lo compro'), ops: [{ op: 'update_hardware', id: h.id, patch: { decision: 'buy' } }] },
+        {
+          id: 'printed',
+          label: t('Cerca un\'alternativa stampata'),
+          hint: t('usa l\'assistente AI'),
+          ops: [{ op: 'update_hardware', id: h.id, patch: { decision: 'printed' } }],
+          action: 'ask_ai',
+          prompt: h.purpose
+            ? t('Sostituisci "{item}" ({purpose}) con una soluzione stampata, senza elementi da comprare.', { item, purpose: h.purpose })
+            : t('Sostituisci "{item}" con una soluzione stampata, senza elementi da comprare.', { item }),
+        },
+      ],
+    });
+  }
+  if (design.intendedUse.children) {
+    const small = toBuy(design);
+    if (small.length)
+      warnings.push(
+        t('È per bambini: fissa bene gli elementi acquistati ({items}) in modo che non si possano staccare. Magneti e pile a bottone ingeriti sono molto pericolosi.', {
+          items: small.map((h) => h.name).join(', '),
+        }),
+      );
   }
 
   /* ---- Cerniere tra parti di colori diversi senza multicolore ---- */

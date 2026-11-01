@@ -21,6 +21,7 @@ Punteggio = ore + grammi di scarto / 20 + penalità (montaggio, attenzione richi
 | La strategia migliore è diversa da quella attuale | “Conviene passare a …?” con il confronto dei numeri | `set_plan.strategy` |
 | Strategia “parti separate” e parti a contatto | “Come vuoi unire le parti?” A incastro / Da incollare | `set_plan.connection` → perni generati |
 | Giunti senza scelta sullo scatto | “Ci sono parti mobili. Vuoi che si fermino a scatto?” (scelta per giunto se più di uno) | `update_joint.detent` |
+| Elemento da comprare a parte non ancora confermato (uno per domanda) | “Serve un elemento da comprare a parte: 4 × Magnete (6×2 mm). Va bene o cerco un’alternativa stampata?” | `update_hardware.decision`; con «alternativa stampata» parte una richiesta all’assistente (skill modifica-modello) |
 | Oggetto per bambini con spigoli vivi | “Arrotondo gli spigoli esterni (2 mm)?” | `radius` sui box non sottrattivi |
 
 ## Avvisi
@@ -28,7 +29,9 @@ Punteggio = ore + grammi di scarto / 20 + penalità (montaggio, attenzione richi
 - parti piccole (prova del cilindro “small parts”, Ø 31,7 mm) staccabili, per bambini sotto i 3 anni;
 - parti che non entrano nel piatto;
 - materiali che richiedono camera chiusa su stampanti aperte;
-- articolazioni stampate già montate con strategia a parti separate.
+- articolazioni stampate già montate con strategia a parti separate;
+- elementi acquistati in oggetti per bambini (fissarli bene; magneti e pile a bottone);
+- elementi da sostituire con una soluzione stampata non ancora sostituiti.
 
 ## Guida di montaggio (`core/assembly/plan.ts`)
 

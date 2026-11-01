@@ -400,5 +400,22 @@
  "Viola": "Purple",
  "Volume della musica": "Music volume",
  "Volume di stampa (mm)": "Build volume (mm)",
- "Wow, sei proprio un maker!": "Wow, you're a real maker!"
+ "Wow, sei proprio un maker!": "Wow, you're a real maker!",
+ "\"{item}\" va ancora sostituito con una soluzione stampata: chiedilo all'assistente.": "\"{item}\" still needs to be replaced with a printed solution: ask the assistant.",
+ "Cerca un'alternativa stampata": "Look for a printed alternative",
+ "confermato": "confirmed",
+ "Da acquistare a parte": "To buy separately",
+ "DA ACQUISTARE A PARTE – {name}": "TO BUY SEPARATELY – {name}",
+ "da confermare": "to confirm",
+ "da sostituire": "to replace",
+ "È per bambini: fissa bene gli elementi acquistati ({items}) in modo che non si possano staccare. Magneti e pile a bottone ingeriti sono molto pericolosi.": "It’s for children: fix the bought parts ({items}) firmly so they can’t come off. Swallowed magnets and button batteries are very dangerous.",
+ "La lista viene inclusa nei file esportati (DA-ACQUISTARE.txt).": "The list is included in the exported files (DA-ACQUISTARE.txt).",
+ "Serve per: {purpose}.": "Needed for: {purpose}.",
+ "Serve un elemento da comprare a parte: {item}. Va bene o cerco un'alternativa stampata?": "You need a part to buy separately: {item}. Is that OK, or shall I look for a printed alternative?",
+ "Sostituisci \"{item}\" ({purpose}) con una soluzione stampata, senza elementi da comprare.": "Replace \"{item}\" ({purpose}) with a printed solution, with no parts to buy.",
+ "Sostituisci \"{item}\" con una soluzione stampata, senza elementi da comprare.": "Replace \"{item}\" with a printed solution, with no parts to buy.",
+ "Tieni a portata di mano: {items}.": "Keep at hand: {items}.",
+ "ugello {n0}–{n1} °C · piatto {b0}–{b1} °C": "nozzle {n0}–{n1} °C · bed {b0}–{b1} °C",
+ "usa l'assistente AI": "use the AI assistant",
+ "Va bene, lo compro": "OK, I’ll buy it"
 }

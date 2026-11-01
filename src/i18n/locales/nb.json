@@ -400,5 +400,22 @@
  "Viola": "Lilla",
  "Volume della musica": "Musikkvolum",
  "Volume di stampa (mm)": "Byggevolum (mm)",
- "Wow, sei proprio un maker!": "Wow, du er en ekte maker!"
+ "Wow, sei proprio un maker!": "Wow, du er en ekte maker!",
+ "\"{item}\" va ancora sostituito con una soluzione stampata: chiedilo all'assistente.": "«{item}» må fortsatt erstattes med en utskrevet løsning: spør assistenten.",
+ "Cerca un'alternativa stampata": "Finn et utskrevet alternativ",
+ "confermato": "bekreftet",
+ "Da acquistare a parte": "Kjøpes separat",
+ "DA ACQUISTARE A PARTE – {name}": "KJØPES SEPARAT – {name}",
+ "da confermare": "må bekreftes",
+ "da sostituire": "må erstattes",
+ "È per bambini: fissa bene gli elementi acquistati ({items}) in modo che non si possano staccare. Magneti e pile a bottone ingeriti sono molto pericolosi.": "Det er for barn: fest de kjøpte delene ({items}) godt så de ikke kan løsne. Svelgede magneter og knappcellebatterier er svært farlige.",
+ "La lista viene inclusa nei file esportati (DA-ACQUISTARE.txt).": "Listen følger med i de eksporterte filene (DA-ACQUISTARE.txt).",
+ "Serve per: {purpose}.": "Trengs til: {purpose}.",
+ "Serve un elemento da comprare a parte: {item}. Va bene o cerco un'alternativa stampata?": "Det trengs en del som må kjøpes separat: {item}. Er det greit, eller skal jeg finne et utskrevet alternativ?",
+ "Sostituisci \"{item}\" ({purpose}) con una soluzione stampata, senza elementi da comprare.": "Erstatt «{item}» ({purpose}) med en utskrevet løsning, uten deler som må kjøpes.",
+ "Sostituisci \"{item}\" con una soluzione stampata, senza elementi da comprare.": "Erstatt «{item}» med en utskrevet løsning, uten deler som må kjøpes.",
+ "Tieni a portata di mano: {items}.": "Ha klart: {items}.",
+ "ugello {n0}–{n1} °C · piatto {b0}–{b1} °C": "dyse {n0}–{n1} °C · plate {b0}–{b1} °C",
+ "usa l'assistente AI": "bruk AI-assistenten",
+ "Va bene, lo compro": "Greit, jeg kjøper den"
 }

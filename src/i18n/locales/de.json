@@ -400,5 +400,22 @@
  "Viola": "Lila",
  "Volume della musica": "Musiklautstärke",
  "Volume di stampa (mm)": "Bauraum (mm)",
- "Wow, sei proprio un maker!": "Wow, du bist ein echter Maker!"
+ "Wow, sei proprio un maker!": "Wow, du bist ein echter Maker!",
+ "\"{item}\" va ancora sostituito con una soluzione stampata: chiedilo all'assistente.": "\"{item}\" muss noch durch eine gedruckte Lösung ersetzt werden: Frag den Assistenten.",
+ "Cerca un'alternativa stampata": "Gedruckte Alternative suchen",
+ "confermato": "bestätigt",
+ "Da acquistare a parte": "Separat zu kaufen",
+ "DA ACQUISTARE A PARTE – {name}": "SEPARAT ZU KAUFEN – {name}",
+ "da confermare": "zu bestätigen",
+ "da sostituire": "zu ersetzen",
+ "È per bambini: fissa bene gli elementi acquistati ({items}) in modo che non si possano staccare. Magneti e pile a bottone ingeriti sono molto pericolosi.": "Es ist für Kinder: Befestige die gekauften Teile ({items}) gut, damit sie sich nicht lösen können. Verschluckte Magnete und Knopfzellen sind sehr gefährlich.",
+ "La lista viene inclusa nei file esportati (DA-ACQUISTARE.txt).": "Die Liste ist in den exportierten Dateien enthalten (DA-ACQUISTARE.txt).",
+ "Serve per: {purpose}.": "Wird gebraucht für: {purpose}.",
+ "Serve un elemento da comprare a parte: {item}. Va bene o cerco un'alternativa stampata?": "Du brauchst ein Teil, das separat gekauft werden muss: {item}. Ist das okay oder soll ich eine gedruckte Alternative suchen?",
+ "Sostituisci \"{item}\" ({purpose}) con una soluzione stampata, senza elementi da comprare.": "Ersetze \"{item}\" ({purpose}) durch eine gedruckte Lösung, ohne Teile zum Kaufen.",
+ "Sostituisci \"{item}\" con una soluzione stampata, senza elementi da comprare.": "Ersetze \"{item}\" durch eine gedruckte Lösung, ohne Teile zum Kaufen.",
+ "Tieni a portata di mano: {items}.": "Halte bereit: {items}.",
+ "ugello {n0}–{n1} °C · piatto {b0}–{b1} °C": "Düse {n0}–{n1} °C · Druckplatte {b0}–{b1} °C",
+ "usa l'assistente AI": "nutze den KI-Assistenten",
+ "Va bene, lo compro": "Okay, ich kaufe es"
 }

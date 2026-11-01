@@ -400,5 +400,22 @@
  "Viola": "Corcra",
  "Volume della musica": "Airde fuaime an cheoil",
  "Volume di stampa (mm)": "Toirt phriontála (mm)",
- "Wow, sei proprio un maker!": "Wow, is déantóir den scoth thú!"
+ "Wow, sei proprio un maker!": "Wow, is déantóir den scoth thú!",
+ "\"{item}\" va ancora sostituito con una soluzione stampata: chiedilo all'assistente.": "Caithfear \"{item}\" a athsholáthar fós le réiteach priontáilte: iarr ar an gcúntóir é.",
+ "Cerca un'alternativa stampata": "Lorg rogha eile phriontáilte",
+ "confermato": "deimhnithe",
+ "Da acquistare a parte": "Le ceannach ar leith",
+ "DA ACQUISTARE A PARTE – {name}": "LE CEANNACH AR LEITH – {name}",
+ "da confermare": "le deimhniú",
+ "da sostituire": "le hathsholáthar",
+ "È per bambini: fissa bene gli elementi acquistati ({items}) in modo che non si possano staccare. Magneti e pile a bottone ingeriti sono molto pericolosi.": "Is do pháistí é: daingnigh na páirteanna ceannaithe ({items}) go maith ionas nach féidir leo teacht scaoilte. Is an-chontúirteach iad maighnéid agus cadhnraí cnaipe a shlogtar.",
+ "La lista viene inclusa nei file esportati (DA-ACQUISTARE.txt).": "Tá an liosta sna comhaid easpórtáilte (DA-ACQUISTARE.txt).",
+ "Serve per: {purpose}.": "Le haghaidh: {purpose}.",
+ "Serve un elemento da comprare a parte: {item}. Va bene o cerco un'alternativa stampata?": "Tá páirt ag teastáil atá le ceannach ar leith: {item}. An bhfuil sé sin ceart go leor, nó an lorgóidh mé rogha eile phriontáilte?",
+ "Sostituisci \"{item}\" ({purpose}) con una soluzione stampata, senza elementi da comprare.": "Cuir réiteach priontáilte in ionad \"{item}\" ({purpose}), gan aon pháirteanna le ceannach.",
+ "Sostituisci \"{item}\" con una soluzione stampata, senza elementi da comprare.": "Cuir réiteach priontáilte in ionad \"{item}\", gan aon pháirteanna le ceannach.",
+ "Tieni a portata di mano: {items}.": "Bíodh siad seo ar láimh agat: {items}.",
+ "ugello {n0}–{n1} °C · piatto {b0}–{b1} °C": "soc {n0}–{n1} °C · pláta {b0}–{b1} °C",
+ "usa l'assistente AI": "úsáid an cúntóir AI",
+ "Va bene, lo compro": "Ceart go leor, ceannóidh mé é"
 }
