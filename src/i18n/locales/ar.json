@@ -400,5 +400,22 @@
  "Viola": "بنفسجي",
  "Volume della musica": "مستوى صوت الموسيقى",
  "Volume di stampa (mm)": "حجم الطباعة (mm)",
- "Wow, sei proprio un maker!": "واو، أنت صانع حقيقي!"
+ "Wow, sei proprio un maker!": "واو، أنت صانع حقيقي!",
+ "\"{item}\" va ancora sostituito con una soluzione stampata: chiedilo all'assistente.": "لا يزال يجب استبدال \"{item}\" بحل مطبوع: اطلب ذلك من المساعد.",
+ "Cerca un'alternativa stampata": "ابحث عن بديل مطبوع",
+ "confermato": "مؤكَّد",
+ "Da acquistare a parte": "يُشترى بشكل منفصل",
+ "DA ACQUISTARE A PARTE – {name}": "يُشترى بشكل منفصل – {name}",
+ "da confermare": "بانتظار التأكيد",
+ "da sostituire": "يجب استبداله",
+ "È per bambini: fissa bene gli elementi acquistati ({items}) in modo che non si possano staccare. Magneti e pile a bottone ingeriti sono molto pericolosi.": "إنه للأطفال: ثبّت العناصر المشتراة ({items}) جيدًا بحيث لا يمكن نزعها. ابتلاع المغانط وبطاريات الأزرار خطير جدًا.",
+ "La lista viene inclusa nei file esportati (DA-ACQUISTARE.txt).": "تُضمَّن القائمة في الملفات المُصدَّرة (DA-ACQUISTARE.txt).",
+ "Serve per: {purpose}.": "الغرض: {purpose}.",
+ "Serve un elemento da comprare a parte: {item}. Va bene o cerco un'alternativa stampata?": "يلزم عنصر يُشترى بشكل منفصل: {item}. هل هذا مناسب أم أبحث عن بديل مطبوع؟",
+ "Sostituisci \"{item}\" ({purpose}) con una soluzione stampata, senza elementi da comprare.": "استبدل \"{item}\" ({purpose}) بحل مطبوع، من دون عناصر للشراء.",
+ "Sostituisci \"{item}\" con una soluzione stampata, senza elementi da comprare.": "استبدل \"{item}\" بحل مطبوع، من دون عناصر للشراء.",
+ "Tieni a portata di mano: {items}.": "جهّز بالقرب منك: {items}.",
+ "ugello {n0}–{n1} °C · piatto {b0}–{b1} °C": "الفوهة {n0}–{n1} °C · اللوح {b0}–{b1} °C",
+ "usa l'assistente AI": "استخدم مساعد AI",
+ "Va bene, lo compro": "حسنًا، سأشتريه"
 }

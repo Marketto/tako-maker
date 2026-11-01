@@ -400,5 +400,22 @@
  "Viola": "Mof",
  "Volume della musica": "Musekslautstäerkt",
  "Volume di stampa (mm)": "Bauraum (mm)",
- "Wow, sei proprio un maker!": "Wow, du bass e richtege Maker!"
+ "Wow, sei proprio un maker!": "Wow, du bass e richtege Maker!",
+ "\"{item}\" va ancora sostituito con una soluzione stampata: chiedilo all'assistente.": "\"{item}\" muss nach duerch eng gedréckte Léisung ersat ginn: fro den Assistent.",
+ "Cerca un'alternativa stampata": "Gedréckt Alternativ sichen",
+ "confermato": "confirméiert",
+ "Da acquistare a parte": "Separat ze kafen",
+ "DA ACQUISTARE A PARTE – {name}": "SEPARAT ZE KAFEN – {name}",
+ "da confermare": "ze confirméieren",
+ "da sostituire": "ze ersetzen",
+ "È per bambini: fissa bene gli elementi acquistati ({items}) in modo che non si possano staccare. Magneti e pile a bottone ingeriti sono molto pericolosi.": "Et ass fir Kanner: befestég déi kaaft Deeler ({items}) gutt, sou datt se sech net léise kënnen. Verschléckte Magnéiten a Knappbatterien si ganz geféierlech.",
+ "La lista viene inclusa nei file esportati (DA-ACQUISTARE.txt).": "D’Lëscht ass an den exportéierte Fichieren dobäi (DA-ACQUISTARE.txt).",
+ "Serve per: {purpose}.": "Gebraucht fir: {purpose}.",
+ "Serve un elemento da comprare a parte: {item}. Va bene o cerco un'alternativa stampata?": "Et gëtt en Deel gebraucht, deen s du separat kafe muss: {item}. Ass dat ok oder soll ech eng gedréckt Alternativ sichen?",
+ "Sostituisci \"{item}\" ({purpose}) con una soluzione stampata, senza elementi da comprare.": "Ersetz \"{item}\" ({purpose}) duerch eng gedréckte Léisung, ouni Deeler fir ze kafen.",
+ "Sostituisci \"{item}\" con una soluzione stampata, senza elementi da comprare.": "Ersetz \"{item}\" duerch eng gedréckte Léisung, ouni Deeler fir ze kafen.",
+ "Tieni a portata di mano: {items}.": "Hal prett: {items}.",
+ "ugello {n0}–{n1} °C · piatto {b0}–{b1} °C": "Düs {n0}–{n1} °C · Plack {b0}–{b1} °C",
+ "usa l'assistente AI": "benotz den KI-Assistent",
+ "Va bene, lo compro": "Ok, ech kafen et"
 }

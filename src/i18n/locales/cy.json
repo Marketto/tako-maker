@@ -400,5 +400,22 @@
  "Viola": "Porffor",
  "Volume della musica": "Sain y gerddoriaeth",
  "Volume di stampa (mm)": "Cyfaint argraffu (mm)",
- "Wow, sei proprio un maker!": "Waw, rwyt ti'n wneuthurwr go iawn!"
+ "Wow, sei proprio un maker!": "Waw, rwyt ti'n wneuthurwr go iawn!",
+ "\"{item}\" va ancora sostituito con una soluzione stampata: chiedilo all'assistente.": "Mae angen newid \"{item}\" o hyd am ateb wedi'i argraffu: gofynna i'r cynorthwyydd.",
+ "Cerca un'alternativa stampata": "Chwilio am ddewis arall wedi'i argraffu",
+ "confermato": "wedi'i gadarnhau",
+ "Da acquistare a parte": "I'w brynu ar wahân",
+ "DA ACQUISTARE A PARTE – {name}": "I'W BRYNU AR WAHÂN – {name}",
+ "da confermare": "i'w gadarnhau",
+ "da sostituire": "i'w newid",
+ "È per bambini: fissa bene gli elementi acquistati ({items}) in modo che non si possano staccare. Magneti e pile a bottone ingeriti sono molto pericolosi.": "Mae ar gyfer plant: gosoda'r darnau a brynwyd ({items}) yn sownd fel na allan nhw ddod yn rhydd. Mae magnetau a batris botwm sy'n cael eu llyncu yn beryglus iawn.",
+ "La lista viene inclusa nei file esportati (DA-ACQUISTARE.txt).": "Mae'r rhestr wedi'i chynnwys yn y ffeiliau a allforiwyd (DA-ACQUISTARE.txt).",
+ "Serve per: {purpose}.": "Ar gyfer: {purpose}.",
+ "Serve un elemento da comprare a parte: {item}. Va bene o cerco un'alternativa stampata?": "Mae angen darn i'w brynu ar wahân: {item}. Ydy hynny'n iawn, neu a ddylwn i chwilio am ddewis arall wedi'i argraffu?",
+ "Sostituisci \"{item}\" ({purpose}) con una soluzione stampata, senza elementi da comprare.": "Rho ateb wedi'i argraffu yn lle \"{item}\" ({purpose}), heb ddarnau i'w prynu.",
+ "Sostituisci \"{item}\" con una soluzione stampata, senza elementi da comprare.": "Rho ateb wedi'i argraffu yn lle \"{item}\", heb ddarnau i'w prynu.",
+ "Tieni a portata di mano: {items}.": "Cadwa wrth law: {items}.",
+ "ugello {n0}–{n1} °C · piatto {b0}–{b1} °C": "ffroenell {n0}–{n1} °C · plât {b0}–{b1} °C",
+ "usa l'assistente AI": "defnyddia'r cynorthwyydd AI",
+ "Va bene, lo compro": "Iawn, fe'i pryna i"
 }

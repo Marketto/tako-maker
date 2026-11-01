@@ -400,5 +400,22 @@
  "Viola": "Ljubičasta",
  "Volume della musica": "Jačina muzike",
  "Volume di stampa (mm)": "Radni volumen (mm)",
- "Wow, sei proprio un maker!": "Vau, ti si pravi maker!"
+ "Wow, sei proprio un maker!": "Vau, ti si pravi maker!",
+ "\"{item}\" va ancora sostituito con una soluzione stampata: chiedilo all'assistente.": "\"{item}\" još treba zamijeniti printanim rješenjem: zamoli asistenta.",
+ "Cerca un'alternativa stampata": "Potraži printanu alternativu",
+ "confermato": "potvrđeno",
+ "Da acquistare a parte": "Kupuje se posebno",
+ "DA ACQUISTARE A PARTE – {name}": "KUPUJE SE POSEBNO – {name}",
+ "da confermare": "za potvrdu",
+ "da sostituire": "za zamjenu",
+ "È per bambini: fissa bene gli elementi acquistati ({items}) in modo che non si possano staccare. Magneti e pile a bottone ingeriti sono molto pericolosi.": "Namijenjeno je djeci: kupljene dijelove ({items}) dobro učvrsti da se ne mogu odvojiti. Progutani magneti i dugmaste baterije su vrlo opasni.",
+ "La lista viene inclusa nei file esportati (DA-ACQUISTARE.txt).": "Spisak je uključen u izvezene fajlove (DA-ACQUISTARE.txt).",
+ "Serve per: {purpose}.": "Služi za: {purpose}.",
+ "Serve un elemento da comprare a parte: {item}. Va bene o cerco un'alternativa stampata?": "Treba dio koji se kupuje posebno: {item}. Je li u redu ili da potražim printanu alternativu?",
+ "Sostituisci \"{item}\" ({purpose}) con una soluzione stampata, senza elementi da comprare.": "Zamijeni \"{item}\" ({purpose}) printanim rješenjem, bez dijelova za kupovinu.",
+ "Sostituisci \"{item}\" con una soluzione stampata, senza elementi da comprare.": "Zamijeni \"{item}\" printanim rješenjem, bez dijelova za kupovinu.",
+ "Tieni a portata di mano: {items}.": "Imaj pri ruci: {items}.",
+ "ugello {n0}–{n1} °C · piatto {b0}–{b1} °C": "dizna {n0}–{n1} °C · ploča {b0}–{b1} °C",
+ "usa l'assistente AI": "koristi AI asistenta",
+ "Va bene, lo compro": "U redu, kupit ću"
 }

@@ -400,5 +400,22 @@
  "Viola": "Morado",
  "Volume della musica": "Volumen de la música",
  "Volume di stampa (mm)": "Volumen de impresión (mm)",
- "Wow, sei proprio un maker!": "¡Guau, eres todo un maker!"
+ "Wow, sei proprio un maker!": "¡Guau, eres todo un maker!",
+ "\"{item}\" va ancora sostituito con una soluzione stampata: chiedilo all'assistente.": "\"{item}\" todavía hay que sustituirlo por una solución impresa: pídeselo al asistente.",
+ "Cerca un'alternativa stampata": "Buscar una alternativa impresa",
+ "confermato": "confirmado",
+ "Da acquistare a parte": "Para comprar aparte",
+ "DA ACQUISTARE A PARTE – {name}": "PARA COMPRAR APARTE – {name}",
+ "da confermare": "por confirmar",
+ "da sostituire": "por sustituir",
+ "È per bambini: fissa bene gli elementi acquistati ({items}) in modo che non si possano staccare. Magneti e pile a bottone ingeriti sono molto pericolosi.": "Es para niños: fija bien los elementos comprados ({items}) para que no se puedan soltar. Los imanes y las pilas de botón ingeridos son muy peligrosos.",
+ "La lista viene inclusa nei file esportati (DA-ACQUISTARE.txt).": "La lista se incluye en los archivos exportados (DA-ACQUISTARE.txt).",
+ "Serve per: {purpose}.": "Sirve para: {purpose}.",
+ "Serve un elemento da comprare a parte: {item}. Va bene o cerco un'alternativa stampata?": "Hace falta un elemento que se compra aparte: {item}. ¿Te parece bien o busco una alternativa impresa?",
+ "Sostituisci \"{item}\" ({purpose}) con una soluzione stampata, senza elementi da comprare.": "Sustituye \"{item}\" ({purpose}) por una solución impresa, sin elementos que comprar.",
+ "Sostituisci \"{item}\" con una soluzione stampata, senza elementi da comprare.": "Sustituye \"{item}\" por una solución impresa, sin elementos que comprar.",
+ "Tieni a portata di mano: {items}.": "Ten a mano: {items}.",
+ "ugello {n0}–{n1} °C · piatto {b0}–{b1} °C": "boquilla {n0}–{n1} °C · cama {b0}–{b1} °C",
+ "usa l'assistente AI": "usa el asistente de IA",
+ "Va bene, lo compro": "Vale, lo compro"
 }

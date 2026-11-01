@@ -400,5 +400,22 @@
  "Viola": "Mov",
  "Volume della musica": "Volumul muzicii",
  "Volume di stampa (mm)": "Volum de imprimare (mm)",
- "Wow, sei proprio un maker!": "Uau, chiar ești un maker!"
+ "Wow, sei proprio un maker!": "Uau, chiar ești un maker!",
+ "\"{item}\" va ancora sostituito con una soluzione stampata: chiedilo all'assistente.": "\"{item}\" trebuie încă înlocuit cu o soluție imprimată: cere-i asistentului.",
+ "Cerca un'alternativa stampata": "Caută o alternativă imprimată",
+ "confermato": "confirmat",
+ "Da acquistare a parte": "De cumpărat separat",
+ "DA ACQUISTARE A PARTE – {name}": "DE CUMPĂRAT SEPARAT – {name}",
+ "da confermare": "de confirmat",
+ "da sostituire": "de înlocuit",
+ "È per bambini: fissa bene gli elementi acquistati ({items}) in modo che non si possano staccare. Magneti e pile a bottone ingeriti sono molto pericolosi.": "E pentru copii: fixează bine piesele cumpărate ({items}) ca să nu se poată desprinde. Magneții și bateriile pastilă înghițite sunt foarte periculoase.",
+ "La lista viene inclusa nei file esportati (DA-ACQUISTARE.txt).": "Lista e inclusă în fișierele exportate (DA-ACQUISTARE.txt).",
+ "Serve per: {purpose}.": "Folosește la: {purpose}.",
+ "Serve un elemento da comprare a parte: {item}. Va bene o cerco un'alternativa stampata?": "E nevoie de o piesă de cumpărat separat: {item}. E în regulă sau caut o alternativă imprimată?",
+ "Sostituisci \"{item}\" ({purpose}) con una soluzione stampata, senza elementi da comprare.": "Înlocuiește \"{item}\" ({purpose}) cu o soluție imprimată, fără piese de cumpărat.",
+ "Sostituisci \"{item}\" con una soluzione stampata, senza elementi da comprare.": "Înlocuiește \"{item}\" cu o soluție imprimată, fără piese de cumpărat.",
+ "Tieni a portata di mano: {items}.": "Ține la îndemână: {items}.",
+ "ugello {n0}–{n1} °C · piatto {b0}–{b1} °C": "duză {n0}–{n1} °C · placă {b0}–{b1} °C",
+ "usa l'assistente AI": "folosește asistentul AI",
+ "Va bene, lo compro": "Bine, îl cumpăr"
 }

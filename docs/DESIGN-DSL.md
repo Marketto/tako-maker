@@ -29,9 +29,24 @@ Il modello è un documento JSON (`Design` in `src/core/types.ts`). La specifica 
 ## Operazioni (`src/core/design/ops.ts`)
 
 `set_meta`, `add_part`, `update_part`, `move_part`, `remove_part`, `add_joint`, `update_joint`,
-`remove_joint`, `set_plan`. Sono **atomiche**: si applicano a una copia, poi si valida tutto
+`remove_joint`, `set_plan`, `add_hardware`, `update_hardware`, `remove_hardware`. Sono **atomiche**: si applicano a una copia, poi si valida tutto
 (id unici, filamenti esistenti, misure tra 0,2 e 1000 mm, max 40 parti e 600 nodi, profondità max 12).
 Se qualcosa non va, il design resta invariato e l’AI riceve il messaggio d’errore.
+
+## Elementi da comprare a parte (`hardware`)
+
+```json
+{ "id": "magneti", "name": "Magnete al neodimio", "qty": 4, "spec": "6×2 mm", "purpose": "chiusura del coperchio" }
+```
+
+L'AI dichiara così tutto ciò che non si stampa (viti, magneti, molle, cuscinetti, pile…). Il campo
+`decision` lo imposta **solo l'utente** (l'app lo toglie dalle operazioni dell'AI):
+
+- assente → l'app chiede, per ogni elemento, «Va bene, lo compro» o «Cerca un'alternativa stampata»;
+- `buy` → resta nella lista «Da acquistare a parte» e nel file `DA-ACQUISTARE.txt` allegato all'esportazione;
+- `printed` → l'assistente riceve la richiesta di sostituirlo con una soluzione stampata e poi lo rimuove.
+
+Se l'AI cambia nome, quantità o misure di un elemento, la conferma viene richiesta di nuovo. Max 20 elementi, quantità 1-100.
 
 ## Geometria generata automaticamente (`src/core/geometry/evaluate.ts`)
 
