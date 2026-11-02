@@ -32,6 +32,8 @@ export interface PrinterSpec {
   kinematics?: 'corexy' | 'bedslinger';
   /** Diametro ugello di serie (mm). */
   nozzle?: number;
+  /** Passo tra i piatti nel progetto dello slicer (Bambu Studio e derivati), misurato su un file reale. */
+  plateStride?: [number, number];
 }
 
 /** Giochi e tolleranze usati per cerniere, scatti e perni (mm). */

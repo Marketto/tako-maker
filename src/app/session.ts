@@ -642,6 +642,7 @@ export class ProjectSession {
       strategy: d.printPlan.strategy,
       bed: bedOf(this.setup, this.printer),
       keepFree: plateKeepFree(d, this.setup, this.printer),
+      plateStride: this.printer.plateStride,
       attribution: d.source,
       extraFiles: this.shoppingFiles('Metadata/'),
     });
