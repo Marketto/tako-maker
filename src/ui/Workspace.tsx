@@ -19,13 +19,17 @@ export function Workspace({ projectId, onBack, onSettings }: { projectId: string
   const [failed, setFailed] = useState(false);
   useEffect(() => {
     let alive = true;
+    let opened: ProjectSession | null = null;
     void loadProject(projectId).then(async (p) => {
       if (!p) return setFailed(true);
       const s = await ProjectSession.open(p);
+      opened = s;
       if (alive) setSession(s);
+      else s.dispose();
     });
     return () => {
       alive = false;
+      opened?.dispose();
     };
   }, [projectId]);
   if (failed) return <div className="center-msg">{t('Progetto non trovato.')} <button className="link" onClick={onBack}>{t('Torna indietro')}</button></div>;

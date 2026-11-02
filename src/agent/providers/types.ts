@@ -11,6 +11,8 @@ export interface KeyEntry {
   /** Solo Claude: proxy compatibile (es. Cloudflare Worker) al posto della chiave. */
   baseUrl?: string;
   accessCode?: string;
+  /** Piano gratuito (es. Gemini da Google AI Studio): nessun costo, non conta nella spesa. */
+  free?: boolean;
 }
 
 /** Come reagire a un errore di una chiave. */

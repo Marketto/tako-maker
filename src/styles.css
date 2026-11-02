@@ -492,3 +492,21 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
 .speech { border-color: var(--grape); box-shadow: 3px 3px 0 var(--bubble); }
 .speech::after { border-color: var(--grape); }
 .dot.tower { background: repeating-linear-gradient(135deg, var(--bubble) 0 3px, color-mix(in srgb, var(--bubble) 25%, transparent) 3px 6px); border-color: var(--bubble); }
+
+/* Modi dell'assistente */
+.free-guide { border: 2px solid color-mix(in srgb, var(--mint) 55%, var(--line)); background: color-mix(in srgb, var(--mint) 10%, var(--surface)); border-radius: 16px; padding: 0.7rem 0.8rem; display: flex; flex-direction: column; gap: 0.4rem; }
+.free-guide ol { margin: 0; padding-inline-start: 1.2rem; display: flex; flex-direction: column; gap: 0.25rem; font-size: 0.92rem; }
+.free-guide .btn { align-self: flex-start; }
+.key-status.free { background: color-mix(in srgb, var(--mint) 22%, var(--surface)); color: var(--ink); }
+.manual { border: 2px solid var(--zone); background: var(--zone-soft); border-radius: var(--radius); padding: 0.8rem; display: flex; flex-direction: column; gap: 0.5rem; box-shadow: 0 4px 0 color-mix(in srgb, var(--zone) 55%, transparent); }
+.manual-steps { margin: 0; padding-inline-start: 1.2rem; display: flex; flex-direction: column; gap: 0.8rem; }
+.manual-steps li { display: flex; flex-direction: column; gap: 0.45rem; }
+.manual-prompt { font-size: 0.78rem; font-family: ui-monospace, monospace; }
+.connector { border-top: 2px solid var(--line); background: var(--surface); padding: 0.8rem 0.9rem calc(0.8rem + var(--safe-bottom)); display: flex; flex-direction: column; gap: 0.6rem; max-height: 55%; overflow: auto; }
+.connector-code { display: flex; flex-direction: column; align-items: flex-start; }
+.connector-code strong { font-size: 1.6rem; letter-spacing: 0.08em; font-variant-numeric: tabular-nums; color: var(--grape); text-shadow: 2px 2px 0 var(--lemon); }
+.connector-url { word-break: break-all; font-size: 0.8rem; padding: 0.3rem 0.5rem; border-radius: 8px; }
+.ai-modes { display: flex; flex-direction: column; gap: 0.6rem; }
+.ai-mode-list { max-height: none; margin: 0.3rem 0; }
+.ai-mode-head { display: flex; align-items: center; gap: 0.3rem; flex-wrap: wrap; font-weight: 800; }
+.ai-mode-head .badge { margin: 0; }
