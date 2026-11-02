@@ -507,5 +507,13 @@
  "Solo la prima volta: in Claude apri Impostazioni → Connettori → «Aggiungi connettore personalizzato» e incolla questo indirizzo:": "最初の1回だけ：Claude で［設定］→［コネクタ］→「カスタムコネクタを追加」を開き、このアドレスを貼り付けてください：",
  "Torna qui, premi il pulsante qui sotto e incolla la chiave.": "ここに戻って、下のボタンを押し、キーを貼り付けてください。",
  "Tutto automatico nell’app. Gratis con una chiave Gemini (con un limite al giorno) o a pagamento con Claude, GPT o Gemini.": "すべてアプリ内で自動。Gemini キーなら無料（1日の上限あり）、Claude・GPT・Gemini なら有料です。",
- "Usa Printopus con il codice {code}.": "コード {code} で Printopus を使ってください。"
+ "Usa Printopus con il codice {code}.": "コード {code} で Printopus を使ってください。",
+ "{names} appoggia sul piatto solo {area} mm²: durante la stampa può staccarsi o oscillare. Ho aggiunto un brim di {brim} mm nel file per lo slicer; se è alta e sottile, tienila con i supporti o stampala coricata.": "{names}はベッドとの接地面が {area} mm² しかないため、印刷中に剥がれたり揺れたりすることがあります。スライサー用のファイルに {brim} mm のブリムを追加しました。背が高く細い場合は、サポートで支えるか、寝かせて印刷してください。",
+ "{names} appoggiano sul piatto solo per {area} mm²: durante la stampa possono staccarsi o oscillare. Ho aggiunto un brim di {brim} mm nel file per lo slicer; se sono alte e sottili, tienile con i supporti o stampale coricate.": "{names}はベッドとの接地面が {area} mm² しかないため、印刷中に剥がれたり揺れたりすることがあります。スライサー用のファイルに {brim} mm のブリムを追加しました。背が高く細い場合は、サポートで支えるか、寝かせて印刷してください。",
+ "{names} non poggia sul piatto: nella stampa va sostenuto dai supporti (li ho attivati nel file per lo slicer).": "{names}はベッドに接していません。印刷時はサポートで支える必要があります（スライサー用のファイルでサポートを有効にしました）。",
+ "{names} non poggiano sul piatto: nella stampa vanno sostenuti dai supporti (li ho attivati nel file per lo slicer).": "{names}はベッドに接していません。印刷時はサポートで支える必要があります（スライサー用のファイルでサポートを有効にしました）。",
+ "{names}: circa {area} cm² di sporgenze oltre {deg}°. Ho attivato i supporti ad albero nel file per lo slicer (i ponti fino a {bridge} mm si stampano anche senza).": "{names}：{deg}° を超えるオーバーハングが約 {area} cm² あります。スライサー用のファイルでツリーサポートを有効にしました（{bridge} mm までのブリッジはサポートなしでも印刷できます）。",
+ "Hai sia {a} che {b}: con un sistema multicolore potresti stampare l'interfaccia dei supporti di {names} in {b}, che non si attacca al {a} e si stacca facilmente.": "{a} と {b} の両方がありますね。マルチカラーシステムがあれば、{names}のサポート接触面を {b} で印刷できます。{a} にくっつかず、簡単に外せます。",
+ "Hai sia {a} che {b}: per i supporti di {names} uso il {b} come interfaccia, così si staccano puliti (non si attacca al {a}). L'ho impostato nel file per lo slicer: Supporti → Filamento per l'interfaccia.": "{a} と {b} の両方がありますね。{names}のサポートには {b} を接触面に使うので、きれいに外せます（{a} にはくっつきません）。スライサー用のファイルで設定済みです：サポート → サポート/ラフト接触面のフィラメント。",
+ "Per i supporti di {names} (in PETG) non uso il PLA: con un solo ugello, negli strati in cui si alternano i due materiali la temperatura scende e il PETG vicino diventa fragile e si può dividere. Meglio supporti in PETG con un piccolo distacco.": "{names}（PETG）のサポートには PLA を使いません：ノズルが1つだと、2つの素材が交互になる層で温度が下がり、近くの PETG がもろくなって割れることがあります。小さめのすき間をあけた PETG のサポートがおすすめです。"
 }

@@ -507,5 +507,13 @@
  "Solo la prima volta: in Claude apri Impostazioni → Connettori → «Aggiungi connettore personalizzato» e incolla questo indirizzo:": "仅第一次：在 Claude 中打开 设置 → 连接器 → “添加自定义连接器”，然后粘贴此地址：",
  "Torna qui, premi il pulsante qui sotto e incolla la chiave.": "回到这里，点击下面的按钮并粘贴密钥。",
  "Tutto automatico nell’app. Gratis con una chiave Gemini (con un limite al giorno) o a pagamento con Claude, GPT o Gemini.": "全部在应用内自动完成。使用 Gemini 密钥免费（每天有限额），或使用 Claude、GPT 或 Gemini 付费。",
- "Usa Printopus con il codice {code}.": "请用代码 {code} 使用 Printopus。"
+ "Usa Printopus con il codice {code}.": "请用代码 {code} 使用 Printopus。",
+ "{names} appoggia sul piatto solo {area} mm²: durante la stampa può staccarsi o oscillare. Ho aggiunto un brim di {brim} mm nel file per lo slicer; se è alta e sottile, tienila con i supporti o stampala coricata.": "{names}与热床的接触面积只有 {area} mm²：打印时可能脱落或晃动。我已在切片文件中加了 {brim} mm 的 brim；如果它又高又细，请用支撑固定，或平放打印。",
+ "{names} appoggiano sul piatto solo per {area} mm²: durante la stampa possono staccarsi o oscillare. Ho aggiunto un brim di {brim} mm nel file per lo slicer; se sono alte e sottili, tienile con i supporti o stampale coricate.": "{names}与热床的接触面积只有 {area} mm²：打印时可能脱落或晃动。我已在切片文件中加了 {brim} mm 的 brim；如果它们又高又细，请用支撑固定，或平放打印。",
+ "{names} non poggia sul piatto: nella stampa va sostenuto dai supporti (li ho attivati nel file per lo slicer).": "{names}没有贴在热床上：打印时需要支撑托住（我已在切片文件中开启了支撑）。",
+ "{names} non poggiano sul piatto: nella stampa vanno sostenuti dai supporti (li ho attivati nel file per lo slicer).": "{names}没有贴在热床上：打印时需要支撑托住（我已在切片文件中开启了支撑）。",
+ "{names}: circa {area} cm² di sporgenze oltre {deg}°. Ho attivato i supporti ad albero nel file per lo slicer (i ponti fino a {bridge} mm si stampano anche senza).": "{names}：约 {area} cm² 的悬垂超过 {deg}°。我已在切片文件中开启树状支撑（{bridge} mm 以内的桥接不加支撑也能打印）。",
+ "Hai sia {a} che {b}: con un sistema multicolore potresti stampare l'interfaccia dei supporti di {names} in {b}, che non si attacca al {a} e si stacca facilmente.": "你同时有 {a} 和 {b}：如果有多色系统，可以用 {b} 打印{names}的支撑接触面，它不会粘在 {a} 上，很容易取下。",
+ "Hai sia {a} che {b}: per i supporti di {names} uso il {b} come interfaccia, così si staccano puliti (non si attacca al {a}). L'ho impostato nel file per lo slicer: Supporti → Filamento per l'interfaccia.": "你同时有 {a} 和 {b}：{names}的支撑我用 {b} 作为接触面，这样能干净地取下（它不会粘在 {a} 上）。已在切片文件中设置：支撑 → 支撑/筏层界面耗材。",
+ "Per i supporti di {names} (in PETG) non uso il PLA: con un solo ugello, negli strati in cui si alternano i due materiali la temperatura scende e il PETG vicino diventa fragile e si può dividere. Meglio supporti in PETG con un piccolo distacco.": "{names}（PETG）的支撑我不用 PLA：只有一个喷嘴时，两种材料交替的层里温度会下降，旁边的 PETG 会变脆，可能裂开。最好用 PETG 支撑，并留一点小间隙。"
 }

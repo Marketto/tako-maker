@@ -21,6 +21,33 @@ export interface ExportPart {
   extruder: number;
   /** Parti con lo stesso gruppo restano montate tra loro anche se si stampa separato (cerniere). */
   group?: string;
+  /** Impostazioni di stampa calcolate dall'analisi (supporti, brim, interfaccia dei supporti). */
+  print?: { supports: boolean; brim: number; interfaceExtruder?: number };
+}
+
+type PrintSettings = NonNullable<ExportPart['print']>;
+
+/** Unione delle impostazioni di più parti stampate come un unico oggetto. */
+function mergePrint(list: (PrintSettings | undefined)[]): PrintSettings | undefined {
+  const xs = list.filter(Boolean) as PrintSettings[];
+  if (!xs.length) return undefined;
+  return { supports: xs.some((x) => x.supports), brim: Math.max(...xs.map((x) => x.brim)), interfaceExtruder: xs.find((x) => x.interfaceExtruder)?.interfaceExtruder };
+}
+
+/** Metadati per oggetto letti dallo slicer (le chiavi sconosciute vengono ignorate). */
+function printMeta(flavor: SlicerFlavor, s: PrintSettings | undefined): string {
+  if (!s) return '';
+  const kv: [string, string][] = [];
+  if (flavor === 'orca') {
+    if (s.supports) kv.push(['enable_support', '1'], ['support_type', 'tree(auto)']);
+    if (s.supports && s.interfaceExtruder) kv.push(['support_interface_filament', String(s.interfaceExtruder)]);
+    if (s.brim > 0) kv.push(['brim_type', 'outer_only'], ['brim_width', String(s.brim)]);
+    return kv.map(([k, v]) => `\n<metadata key="${k}" value="${v}"/>`).join('');
+  }
+  if (s.supports) kv.push(['support_material', '1'], ['support_material_auto', '1'], ['support_material_style', 'organic']);
+  if (s.supports && s.interfaceExtruder) kv.push(['support_material_interface_extruder', String(s.interfaceExtruder)]);
+  if (s.brim > 0) kv.push(['brim_width', String(s.brim)]);
+  return kv.map(([k, v]) => `\n<metadata type="object" key="${k}" value="${v}"/>`).join('');
 }
 
 export interface ExportOptions {
@@ -169,7 +196,7 @@ export function build3MF(parts: ExportPart[], opt: ExportOptions): Uint8Array {
     const { mesh, triRanges } = mergeMeshes(parts.map((p) => p.mesh), offsets);
     resources += `<object id="2" name="${esc(opt.title)}" type="model">${meshXml(mesh)}</object>`;
     buildItems = `<item objectid="2"/>`;
-    config = `<?xml version="1.0" encoding="UTF-8"?>\n<config>\n<object id="2" instances_count="1">\n<metadata type="object" key="name" value="${esc(opt.title)}"/>\n${parts
+    config = `<?xml version="1.0" encoding="UTF-8"?>\n<config>\n<object id="2" instances_count="1">\n<metadata type="object" key="name" value="${esc(opt.title)}"/>${printMeta('prusa', mergePrint(parts.map((p) => p.print)))}\n${parts
       .map(
         (p, i) =>
           `<volume firstid="${triRanges[i][0]}" lastid="${triRanges[i][1]}">\n<metadata type="volume" key="name" value="${esc(p.name)}"/>\n<metadata type="volume" key="extruder" value="${p.extruder}"/>\n</volume>`,
@@ -184,7 +211,7 @@ export function build3MF(parts: ExportPart[], opt: ExportOptions): Uint8Array {
     config = `<?xml version="1.0" encoding="UTF-8"?>\n<config>\n${parts
       .map((p, i) => {
         const tris = p.mesh.indices.length / 3;
-        return `<object id="${i + 2}" instances_count="1">\n<metadata type="object" key="name" value="${esc(p.name)}"/>\n<metadata type="object" key="extruder" value="${p.extruder}"/>\n<volume firstid="0" lastid="${tris - 1}">\n<metadata type="volume" key="extruder" value="${p.extruder}"/>\n</volume>\n</object>`;
+        return `<object id="${i + 2}" instances_count="1">\n<metadata type="object" key="name" value="${esc(p.name)}"/>\n<metadata type="object" key="extruder" value="${p.extruder}"/>${printMeta('prusa', p.print)}\n<volume firstid="0" lastid="${tris - 1}">\n<metadata type="volume" key="extruder" value="${p.extruder}"/>\n</volume>\n</object>`;
       })
       .join('\n')}\n</config>\n`;
     files['Metadata/Slic3r_PE_model.config'] = strToU8(config);
@@ -196,7 +223,7 @@ export function build3MF(parts: ExportPart[], opt: ExportOptions): Uint8Array {
     if (separate) {
       parts.forEach((_, i) => (buildItems += `<item objectid="${i + 2}"/>`));
       config = `<?xml version="1.0" encoding="UTF-8"?>\n<config>\n${parts
-        .map((p, i) => `<object id="${i + 2}">\n<metadata key="name" value="${esc(p.name)}"/>\n<metadata key="extruder" value="${p.extruder}"/>\n</object>`)
+        .map((p, i) => `<object id="${i + 2}">\n<metadata key="name" value="${esc(p.name)}"/>\n<metadata key="extruder" value="${p.extruder}"/>${printMeta('orca', p.print)}\n</object>`)
         .join('\n')}\n</config>\n`;
     } else {
       const parentId = parts.length + 2;
@@ -205,7 +232,7 @@ export function build3MF(parts: ExportPart[], opt: ExportOptions): Uint8Array {
         .map((_, i) => `<component objectid="${i + 2}"/>`)
         .join('')}</components></object>`;
       buildItems = `<item objectid="${parentId}" transform="1 0 0 0 1 0 0 0 1 ${co[0].toFixed(3)} ${co[1].toFixed(3)} ${co[2].toFixed(3)}"/>`;
-      config = `<?xml version="1.0" encoding="UTF-8"?>\n<config>\n<object id="${parentId}">\n<metadata key="name" value="${esc(opt.title)}"/>\n<metadata key="extruder" value="${parts[0].extruder}"/>\n${parts
+      config = `<?xml version="1.0" encoding="UTF-8"?>\n<config>\n<object id="${parentId}">\n<metadata key="name" value="${esc(opt.title)}"/>\n<metadata key="extruder" value="${parts[0].extruder}"/>${printMeta('orca', mergePrint(parts.map((p) => p.print)))}\n${parts
         .map((p, i) => `<part id="${i + 2}" subtype="normal_part">\n<metadata key="name" value="${esc(p.name)}"/>\n<metadata key="extruder" value="${p.extruder}"/>\n</part>`)
         .join('\n')}\n</object>\n</config>\n`;
     }
