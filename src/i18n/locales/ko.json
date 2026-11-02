@@ -507,5 +507,12 @@
  "Solo la prima volta: in Claude apri Impostazioni → Connettori → «Aggiungi connettore personalizzato» e incolla questo indirizzo:": "처음 한 번만: Claude에서 설정 → 커넥터 → “맞춤 커넥터 추가”를 열고 이 주소를 붙여 넣으세요:",
  "Torna qui, premi il pulsante qui sotto e incolla la chiave.": "여기로 돌아와 아래 버튼을 누르고 키를 붙여 넣으세요.",
  "Tutto automatico nell’app. Gratis con una chiave Gemini (con un limite al giorno) o a pagamento con Claude, GPT o Gemini.": "모든 것이 앱 안에서 자동으로. Gemini 키로 무료(하루 한도 있음) 또는 Claude, GPT, Gemini로 유료.",
- "Usa Printopus con il codice {code}.": "코드 {code}로 Printopus를 사용해 주세요."
+ "Usa Printopus con il codice {code}.": "코드 {code}로 Printopus를 사용해 주세요.",
+ "{names} appoggia sul piatto solo {area} mm²: durante la stampa può staccarsi o oscillare. Ho aggiunto un brim di {brim} mm nel file per lo slicer; se è alta e sottile, tienila con i supporti o stampala coricata.": "{names} 부품은 베드에 닿는 면적이 {area} mm²뿐이라 출력 중에 떨어지거나 흔들릴 수 있어요. 슬라이서용 파일에 {brim} mm 브림을 추가했어요. 높고 가늘다면 서포트로 받치거나 눕혀서 출력하세요.",
+ "{names} appoggiano sul piatto solo per {area} mm²: durante la stampa possono staccarsi o oscillare. Ho aggiunto un brim di {brim} mm nel file per lo slicer; se sono alte e sottili, tienile con i supporti o stampale coricate.": "{names} 부품은 베드에 닿는 면적이 {area} mm²뿐이라 출력 중에 떨어지거나 흔들릴 수 있어요. 슬라이서용 파일에 {brim} mm 브림을 추가했어요. 높고 가늘다면 서포트로 받치거나 눕혀서 출력하세요.",
+ "{names} non poggia sul piatto: nella stampa va sostenuto dai supporti (li ho attivati nel file per lo slicer).": "{names} 부품은 베드에 닿지 않아요. 출력할 때 서포트로 받쳐야 해요(슬라이서용 파일에서 서포트를 켜 두었어요).",
+ "{names} non poggiano sul piatto: nella stampa vanno sostenuti dai supporti (li ho attivati nel file per lo slicer).": "{names} 부품은 베드에 닿지 않아요. 출력할 때 서포트로 받쳐야 해요(슬라이서용 파일에서 서포트를 켜 두었어요).",
+ "{names}: circa {area} cm² di sporgenze oltre {deg}°. Ho attivato i supporti ad albero nel file per lo slicer (i ponti fino a {bridge} mm si stampano anche senza).": "{names}: {deg}°를 넘는 오버행이 약 {area} cm² 있어요. 슬라이서용 파일에서 트리 서포트를 켜 두었어요({bridge} mm까지의 브리지는 서포트 없이도 출력돼요).",
+ "Hai sia {a} che {b}: con un sistema multicolore potresti stampare l'interfaccia dei supporti di {names} in {b}, che non si attacca al {a} e si stacca facilmente.": "{a}와 {b}가 모두 있네요. 멀티컬러 시스템이 있다면 {names}의 서포트 접촉면을 {b}로 출력할 수 있어요. {a}에 붙지 않아서 쉽게 떨어져요.",
+ "Hai sia {a} che {b}: per i supporti di {names} uso il {b} come interfaccia, così si staccano puliti (non si attacca al {a}). L'ho impostato nel file per lo slicer: Supporti → Filamento per l'interfaccia.": "{a}와 {b}가 모두 있네요. {names}의 서포트에는 {b}를 접촉면으로 써서 깔끔하게 떨어지게 했어요({a}에 붙지 않거든요). 슬라이서용 파일에 설정해 두었어요: 서포트 → 서포트/래프트 접촉면 필라멘트."
 }

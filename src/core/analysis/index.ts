@@ -1,10 +1,10 @@
 import type { Design, PrinterSpec, Question, ShapeNode, UserSetup, Vec3 } from '../types';
 import type { DesignOp } from '../design/ops';
 import { walkShape } from '../design/ops';
-import { findContacts, PEG_SPACING, type ButtonReport, type ConnectorReport, type OverlapReport } from '../geometry/evaluate';
+import { findContacts, overhangBeyond, PEG_SPACING, type PrintStats, type BodyStats, type ButtonReport, type ConnectorReport, type OverlapReport } from '../geometry/evaluate';
 import { printedTogether } from '../design/links';
 import { material } from '../../data/materials';
-import { bondsPoorly, guideline, minWall } from '../../data/guidelines';
+import { bondsPoorly, guideline, MAX_SLENDERNESS, MIN_CONTACT_MM2, minWall, SMALL_PART_BRIM_MM, SUPPORT_MIN_AREA_MM2, supportInterfaceFor } from '../../data/guidelines';
 import { materialsToTest, neededTests, TEST_KEYS, TEST_LABEL } from '../calibration/coupons';
 import { isCalibrated } from '../calibration/tolerances';
 import { bedOf, estimateStrategies, fitsBed, fmtTime, STRATEGY_LABEL, type PartStat, type StrategyEstimate } from './estimate';
@@ -19,6 +19,14 @@ import { plateKeepFree } from '../plate';
    - uso da parte di bambini → spigoli arrotondati, parti piccole
    - dimensioni rispetto al piatto, compatibilità materiali */
 
+export interface PrintHint {
+  supports: boolean;
+  /** Brim in mm (0 = nessuno). */
+  brim: number;
+  /** Filamento per l'interfaccia dei supporti (materiale che non aderisce al pezzo). */
+  interfaceFilamentId?: string;
+}
+
 export interface AnalysisReport {
   estimates: StrategyEstimate[];
   recommended?: StrategyEstimate;
@@ -29,6 +37,8 @@ export interface AnalysisReport {
   /** Indicazioni per ogni materiale usato. */
   materialNotes: { material: string; nozzleC: [number, number]; bedC: [number, number]; tips: string[] }[];
   summary: string;
+  /** Impostazioni di stampa per parte da scrivere nel file per lo slicer (supporti, brim, interfaccia). */
+  printHints: Record<string, PrintHint>;
 }
 
 const CHILD_RADIUS = 2;
@@ -75,7 +85,7 @@ export function analyze(
   setup: UserSetup,
   printer: PrinterSpec,
   answered: Set<string>,
-  extras: { connectors?: ConnectorReport[]; overlaps?: OverlapReport[]; buttons?: ButtonReport[] } = {},
+  extras: { connectors?: ConnectorReport[]; overlaps?: OverlapReport[]; buttons?: ButtonReport[]; printStats?: PrintStats } = {},
 ): AnalysisReport {
   const questions: Question[] = [];
   const warnings: string[] = [];
@@ -567,6 +577,94 @@ export function analyze(
     }
   }
 
+  /* ---- Supporti e adesione al piatto ---- */
+  const printHints: Record<string, PrintHint> = {};
+  if (extras.printStats) {
+    const together = design.printPlan.strategy !== 'separate';
+    // Le parti stampate già montate (cerniere, pulsanti) escono insieme anche con le parti separate.
+    const linkedIds = new Set(linked.flat());
+    const raw: { ids: string[]; s: BodyStats }[] = together
+      ? extras.printStats.together.map((b) => ({ ids: b.partIds, s: b }))
+      : [
+          ...Object.entries(extras.printStats.parts)
+            .filter(([id]) => !linkedIds.has(id))
+            .map(([id, s]) => ({ ids: [id], s })),
+          ...extras.printStats.together.filter((b) => b.partIds.some((id) => linkedIds.has(id))).map((b) => ({ ids: b.partIds, s: b })),
+        ];
+    // Blocchi che contengono le stesse parti (es. una nocca staccata) diventano un unico corpo.
+    const bodies: { ids: string[]; s: BodyStats }[] = [];
+    for (const b of raw) {
+      const hit = bodies.find((x) => x.ids.some((id) => b.ids.includes(id)));
+      if (!hit) {
+        bodies.push({ ids: [...b.ids], s: { ...b.s, overhang: [...b.s.overhang] } });
+        continue;
+      }
+      for (const id of b.ids) if (!hit.ids.includes(id)) hit.ids.push(id);
+      hit.s = {
+        contactArea: hit.s.contactArea + b.s.contactArea,
+        overhang: hit.s.overhang.map((a, i) => a + b.s.overhang[i]),
+        height: Math.max(hit.s.height, b.s.height),
+        floating: hit.s.floating || b.s.floating,
+      };
+    }
+    const ownedMaterials = setup.filaments.map((f) => f.material);
+    const canSwap = !!printer.multi && setup.hasMulti;
+    for (const { ids, s } of bodies) {
+      if (!ids.length) continue;
+      const names = ids.map((id) => `"${pname(id)}"`).join(', ');
+      const mats = [...new Set(ids.map((id) => partMat(id)))];
+      const deg = Math.min(...mats.map((m) => guideline(m).overhangDeg));
+      const bridge = Math.min(...mats.map((m) => guideline(m).bridgeMm));
+      const over = overhangBeyond(s, deg);
+      const supports = s.floating || over > SUPPORT_MIN_AREA_MM2;
+      const side = Math.sqrt(Math.max(s.contactArea, 1));
+      const unstable = !s.floating && (s.contactArea < MIN_CONTACT_MM2 || s.height > MAX_SLENDERNESS * side);
+      let interfaceFilamentId: string | undefined;
+      if (supports && mats.length === 1) {
+        const partner = supportInterfaceFor(mats[0], ownedMaterials);
+        if (partner && canSwap) interfaceFilamentId = setup.filaments.find((f) => f.material === partner)?.id;
+        if (partner)
+          tips.push(
+            canSwap
+              ? t('Hai sia {a} che {b}: per i supporti di {names} uso il {b} come interfaccia, così si staccano puliti (non si attacca al {a}). L\'ho impostato nel file per lo slicer: Supporti → Filamento per l\'interfaccia.', { a: mats[0], b: partner, names })
+              : t('Hai sia {a} che {b}: con un sistema multicolore potresti stampare l\'interfaccia dei supporti di {names} in {b}, che non si attacca al {a} e si stacca facilmente.', { a: mats[0], b: partner, names }),
+          );
+      }
+      if (s.floating)
+        warnings.push(
+          ids.length === 1
+            ? t('{names} non poggia sul piatto: nella stampa va sostenuto dai supporti (li ho attivati nel file per lo slicer).', { names })
+            : t('{names} non poggiano sul piatto: nella stampa vanno sostenuti dai supporti (li ho attivati nel file per lo slicer).', { names }),
+        );
+      else if (supports)
+        tips.push(
+          t('{names}: circa {area} cm² di sporgenze oltre {deg}°. Ho attivato i supporti ad albero nel file per lo slicer (i ponti fino a {bridge} mm si stampano anche senza).', {
+            names,
+            area: fmtNum(over / 100, 1),
+            deg,
+            bridge,
+          }),
+        );
+      if (unstable && ids.length > 1)
+        warnings.push(
+          t('{names} appoggiano sul piatto solo per {area} mm²: durante la stampa possono staccarsi o oscillare. Ho aggiunto un brim di {brim} mm nel file per lo slicer; se sono alte e sottili, tienile con i supporti o stampale coricate.', {
+            names,
+            area: Math.round(s.contactArea),
+            brim: SMALL_PART_BRIM_MM,
+          }),
+        );
+      else if (unstable)
+        warnings.push(
+          t('{names} appoggia sul piatto solo {area} mm²: durante la stampa può staccarsi o oscillare. Ho aggiunto un brim di {brim} mm nel file per lo slicer; se è alta e sottile, tienila con i supporti o stampala coricata.', {
+            names,
+            area: Math.round(s.contactArea),
+            brim: SMALL_PART_BRIM_MM,
+          }),
+        );
+      for (const id of ids) printHints[id] = { supports, brim: unstable ? SMALL_PART_BRIM_MM : 0, interfaceFilamentId };
+    }
+  }
+
   // Torre di spurgo: zona lasciata libera sul piatto
   const zone = plateKeepFree(design, setup, printer);
   if (zone)
@@ -592,5 +690,5 @@ export function analyze(
       ? t('Nessuna strategia di stampa possibile con la configurazione attuale.')
       : '';
 
-  return { estimates, recommended, questions, warnings, tips, materialNotes, summary };
+  return { estimates, recommended, questions, warnings, tips, materialNotes, summary, printHints };
 }
