@@ -13,6 +13,8 @@ export interface MultiMaterialSystem {
   optional: boolean;
   purgeMm3: number;
   changeS: number;
+  /** Più ugelli, ognuno alla propria temperatura (doppio ugello, cambio utensile). */
+  multiNozzle?: boolean;
   /** Torre di spurgo predefinita dello slicer (angolo anteriore sinistro, mm); null = nessuna torre; assente = valori della famiglia di slicer. */
   tower?: { x: number; y: number; w: number; d: number; brim: number } | null;
 }

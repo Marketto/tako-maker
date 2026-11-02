@@ -4,7 +4,7 @@ import { walkShape } from '../design/ops';
 import { findContacts, overhangBeyond, PEG_SPACING, type PrintStats, type BodyStats, type ButtonReport, type ConnectorReport, type OverlapReport } from '../geometry/evaluate';
 import { printedTogether } from '../design/links';
 import { material } from '../../data/materials';
-import { bondsPoorly, guideline, MAX_SLENDERNESS, MIN_CONTACT_MM2, minWall, SMALL_PART_BRIM_MM, SUPPORT_MIN_AREA_MM2, supportInterfaceFor } from '../../data/guidelines';
+import { bondsPoorly, guideline, MAX_SLENDERNESS, MIN_CONTACT_MM2, minWall, SMALL_PART_BRIM_MM, SUPPORT_MIN_AREA_MM2, supportInterfaceFor, plaSupportWeakensPetg } from '../../data/guidelines';
 import { materialsToTest, neededTests, TEST_KEYS, TEST_LABEL } from '../calibration/coupons';
 import { isCalibrated } from '../calibration/tolerances';
 import { bedOf, estimateStrategies, fitsBed, fmtTime, STRATEGY_LABEL, type PartStat, type StrategyEstimate } from './estimate';
@@ -621,7 +621,10 @@ export function analyze(
       const unstable = !s.floating && (s.contactArea < MIN_CONTACT_MM2 || s.height > MAX_SLENDERNESS * side);
       let interfaceFilamentId: string | undefined;
       if (supports && mats.length === 1) {
-        const partner = supportInterfaceFor(mats[0], ownedMaterials);
+        const multiNozzle = !!printer.multi?.multiNozzle;
+        const partner = supportInterfaceFor(mats[0], ownedMaterials, multiNozzle);
+        if (!partner && plaSupportWeakensPetg(mats[0], ownedMaterials, multiNozzle))
+          tips.push(t('Per i supporti di {names} (in PETG) non uso il PLA: con un solo ugello, negli strati in cui si alternano i due materiali la temperatura scende e il PETG vicino diventa fragile e si può dividere. Meglio supporti in PETG con un piccolo distacco.', { names }));
         if (partner && canSwap) interfaceFilamentId = setup.filaments.find((f) => f.material === partner)?.id;
         if (partner)
           tips.push(

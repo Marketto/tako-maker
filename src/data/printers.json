@@ -1,5 +1,5 @@
 {
-  "_nota": "Dati indicativi raccolti da schede tecniche pubbliche (aggiornati a novembre 2026): volumi in mm, flusso tipico in mm3/s per PLA; spurgo e tempi di cambio colore sono stime. Verificare sempre sul sito del produttore. Correzioni benvenute via pull request. Torre di spurgo (multi.tower): posizione iniziale e misure predefinite dello slicer ufficiale per 4 colori (angolo anteriore sinistro, mm); null = lo slicer di solito non la usa.",
+  "_nota": "Dati indicativi raccolti da schede tecniche pubbliche (aggiornati a novembre 2026): volumi in mm, flusso tipico in mm3/s per PLA; spurgo e tempi di cambio colore sono stime. Verificare sempre sul sito del produttore. Correzioni benvenute via pull request. Torre di spurgo (multi.tower): posizione iniziale e misure predefinite dello slicer ufficiale per 4 colori (angolo anteriore sinistro, mm); null = lo slicer di solito non la usa. multi.multiNozzle: più ugelli, ognuno alla propria temperatura (doppio ugello o cambio utensile).",
   "printers": [
     {
       "id": "bambu-a1",
@@ -141,7 +141,8 @@
           "w": 38,
           "d": 38,
           "brim": 4
-        }
+        },
+        "multiNozzle": true
       },
       "kinematics": "corexy",
       "nozzle": 0.4
@@ -315,7 +316,8 @@
           "w": 38,
           "d": 38,
           "brim": 4
-        }
+        },
+        "multiNozzle": true
       },
       "kinematics": "corexy",
       "nozzle": 0.4
@@ -383,7 +385,8 @@
         "optional": false,
         "purgeMm3": 30,
         "changeS": 12,
-        "tower": null
+        "tower": null,
+        "multiNozzle": true
       },
       "kinematics": "corexy",
       "nozzle": 0.4
@@ -457,7 +460,8 @@
           "w": 15,
           "d": 60,
           "brim": 3
-        }
+        },
+        "multiNozzle": true
       },
       "kinematics": "corexy",
       "nozzle": 0.4
@@ -724,7 +728,8 @@
           "w": 26,
           "d": 26,
           "brim": 3
-        }
+        },
+        "multiNozzle": true
       },
       "kinematics": "corexy",
       "nozzle": 0.4
@@ -1236,7 +1241,8 @@
           "w": 31.6,
           "d": 31.6,
           "brim": 3
-        }
+        },
+        "multiNozzle": true
       },
       "kinematics": "corexy",
       "nozzle": 0.4
@@ -1265,7 +1271,8 @@
           "w": 31.6,
           "d": 31.6,
           "brim": 3
-        }
+        },
+        "multiNozzle": true
       },
       "kinematics": "corexy",
       "nozzle": 0.4
@@ -1374,7 +1381,8 @@
           "w": 39.8,
           "d": 39.8,
           "brim": 5
-        }
+        },
+        "multiNozzle": true
       },
       "kinematics": "corexy",
       "nozzle": 0.4
