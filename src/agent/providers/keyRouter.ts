@@ -31,6 +31,8 @@ export interface KeyState {
 const STATE_KEY = 'm3d.keystate';
 const fingerprint = (k: KeyEntry) => `${k.provider}:${k.key.slice(-6)}:${k.baseUrl ?? ''}:${k.key.length}`;
 
+const FREE_PRICE = { input: 0, output: 0, cacheWrite: 0, cacheRead: 0, search: 0 };
+
 export const FAIL_LABEL: Record<FailKind, string> = {
   exhausted: msg('credito esaurito'),
   invalid: msg('chiave non valida'),
@@ -93,9 +95,7 @@ export class KeyRouter implements AiClient {
   }
 
   async send(req: ApiRequest, signal?: AbortSignal): Promise<ApiResponse & { costUsd: number; provider: string; keyLabel: string }> {
-    if (!this.budget.canSpend()) {
-      throw new ApiError(t('Hai raggiunto il tetto di spesa mensile (${cap}). Puoi alzarlo nelle impostazioni.', { cap: this.budget.capUsd }));
-    }
+    const capMsg = t('Hai raggiunto il tetto di spesa mensile (${cap}). Puoi alzarlo nelle impostazioni.', { cap: this.budget.capUsd });
     const all = this.keys();
     if (!all.some((k) => k.enabled && (k.key || k.baseUrl))) throw new ApiError(t('Aggiungi almeno una chiave AI nelle impostazioni.'));
     const states = this.states();
@@ -104,6 +104,11 @@ export class KeyRouter implements AiClient {
     for (const k of all) if (!candidates.includes(k) && k.enabled && states[k.id]?.reason) failures.push(`${k.label || PROVIDERS[k.provider].label}: ${t(FAIL_LABEL[states[k.id].reason!])}`);
 
     for (const k of candidates) {
+      // Il tetto di spesa vale solo per le chiavi a pagamento.
+      if (!k.free && !this.budget.canSpend()) {
+        failures.push(capMsg);
+        continue;
+      }
       const adapter = ADAPTERS[k.provider];
       const model = PROVIDERS[k.provider].models[req.tier];
       const call = adapter.build(req, model.id, k);
@@ -130,9 +135,10 @@ export class KeyRouter implements AiClient {
       }
       const parsed = adapter.parse(body);
       this.ok(k);
-      const costUsd = this.budget.record(model.price, parsed.usage);
+      const costUsd = this.budget.record(k.free ? FREE_PRICE : model.price, parsed.usage);
       return { ...parsed, costUsd, provider: k.provider, keyLabel: k.label || PROVIDERS[k.provider].label };
     }
+    if (failures.length === 1 && failures[0] === capMsg) throw new ApiError(capMsg);
     throw new ApiError(failures.length ? `${t('Nessuna chiave AI disponibile.')} ${failures.join(' · ')}` : t('Nessuna chiave AI disponibile in questo momento: riprova tra poco.'));
   }
 }

@@ -114,6 +114,22 @@ describe('router delle chiavi', () => {
     }) as unknown as typeof fetch;
   }
 
+  it('chiave gratuita: costo zero e nessun blocco dal tetto di spesa', async () => {
+    const budget = new Budget(memKV(), 0.000001);
+    budget.record({ input: 1, output: 1, cacheWrite: 0, cacheRead: 0, search: 0 }, { input_tokens: 1000, output_tokens: 1000 });
+    const okGemini = { candidates: [{ content: { parts: [{ text: 'ciao' }] }, finishReason: 'STOP' }], usageMetadata: { promptTokenCount: 100, candidatesTokenCount: 10 } };
+    const paid = key('anthropic', 'a1');
+    const free = { ...key('gemini', 'g1'), free: true };
+    const urls: string[] = [];
+    const r = new KeyRouter(() => [paid, free], memKV(), budget, fetchSeq([[200, okGemini]], urls));
+    const res = await r.send({ ...req, tools: [] });
+    expect(res.keyLabel).toBe('g1');
+    expect(res.costUsd).toBe(0);
+    expect(urls).toHaveLength(1);
+    const onlyPaid = new KeyRouter(() => [paid], memKV(), budget, fetchSeq([], []));
+    await expect(onlyPaid.send({ ...req, tools: [] })).rejects.toThrow(/tetto di spesa/);
+  });
+
   it('passa alla chiave successiva se il credito è finito, e la mette in pausa', async () => {
     const urls: string[] = [];
     const kv = memKV();

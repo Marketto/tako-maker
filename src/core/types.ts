@@ -191,5 +191,5 @@ export interface Question {
   multi?: boolean;
   /** Applicate prima delle opzioni scelte (es. "disattiva tutti gli scatti"). */
   baseOps?: DesignOp[];
-  source: 'analysis' | 'agent';
+  source: 'analysis' | 'agent' | 'manual';
 }
