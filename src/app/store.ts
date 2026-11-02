@@ -14,6 +14,8 @@ import type { SearchResult } from '../agent/tools';
 
 export { PRINTERS, printerById, printerOf } from './printers';
 
+export type AiMode = 'api' | 'manual' | 'connector';
+
 export type Settings = typeof DEFAULT_SETTINGS & {
   searchFirst: boolean;
   rememberKey: boolean;
@@ -22,6 +24,10 @@ export type Settings = typeof DEFAULT_SETTINGS & {
   musicVolume: number;
   /** Mascotte e frasi di incitamento. */
   mascotOn: boolean;
+  /** Come lavora l'assistente: chiavi API, copia e incolla con una chat, connettore per Claude. */
+  aiMode: AiMode;
+  /** Indirizzo del connettore MCP (se diverso da quello pubblicato con l'app). */
+  connectorUrl?: string;
   /** Lingua scelta (codice, es. "it"); se assente si usa quella del dispositivo. */
   language?: string;
 };
@@ -44,7 +50,7 @@ function load(): AppState {
     }
   };
   const saved = parse<Partial<Settings> & { proxyUrl?: string; accessCode?: string }>(LS.settings) ?? {};
-  const settings = { ...DEFAULT_SETTINGS, searchFirst: true, rememberKey: true, musicOn: false, musicVolume: 0.4, mascotOn: true, ...saved };
+  const settings = { ...DEFAULT_SETTINGS, searchFirst: true, rememberKey: true, musicOn: false, musicVolume: 0.4, mascotOn: true, aiMode: 'api' as AiMode, ...saved };
   let keys: KeyEntry[] = [];
   try {
     keys = JSON.parse(localStorage.getItem(LS.keys) ?? sessionStorage.getItem(LS.keys) ?? '[]');
@@ -117,6 +123,8 @@ export interface Project {
   answered: string[];
   meshIds: string[];
   reference?: SearchResult;
+  /** Collegamento alla chat tramite connettore: codice, versione sincronizzata, note già mostrate. */
+  connector?: { code: string; v: number; notesAt: number };
   createdAt: number;
   updatedAt: number;
 }

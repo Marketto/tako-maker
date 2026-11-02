@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { store, useStore } from '../app/store';
 import { Budget } from '../agent/budget';
 import { MODELS } from '../agent/config';
-import { KeysEditor } from './KeysEditor';
+import { AiModePicker } from './AiModePicker';
 import { t } from '../i18n';
 import { LanguagePicker } from './LanguagePicker';
 
@@ -44,14 +44,11 @@ export function SettingsDialog({ onClose, onEditSetup }: { onClose: () => void; 
         </header>
 
         <section>
-          <h3>{t('Chiavi AI')}</h3>
-          <KeysEditor />
-          <label className="check">
-            <input type="checkbox" checked={settings.rememberKey} onChange={(e) => store.setSettings({ rememberKey: e.target.checked })} />
-            {t('Ricorda le chiavi su questo dispositivo (altrimenti solo fino alla chiusura della scheda)')}
-          </label>
+          <h3>{t('Assistente AI')}</h3>
+          <AiModePicker />
         </section>
 
+        {settings.aiMode === 'api' && (
         <section>
           <h3>{t('Spesa')}</h3>
           <div className="spend">
@@ -75,6 +72,7 @@ export function SettingsDialog({ onClose, onEditSetup }: { onClose: () => void; 
             {t('Per un nuovo modello cerca prima online modelli gratuiti')}
           </label>
         </section>
+        )}
 
         <section>
           <h3>{t('Lingua e atmosfera')}</h3>

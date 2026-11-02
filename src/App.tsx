@@ -5,6 +5,7 @@ import { Wizard } from './ui/Wizard';
 import { Home } from './ui/Home';
 import { Workspace } from './ui/Workspace';
 import { SettingsDialog } from './ui/Settings';
+import { ConnectRoute } from './ui/ConnectRoute';
 
 /* Navigazione minimale basata sull'hash (#/p/<id>), compatibile con GitHub Pages. */
 
@@ -33,9 +34,12 @@ export function App() {
   if (!setup || editSetup) return <Wizard initial={setup} onDone={() => setEditSetup(false)} />;
 
   const projectId = hash.match(/^#\/p\/(\w+)/)?.[1];
+  const linkCode = hash.match(/^#\/collega\/([A-Za-z0-9-]+)/)?.[1];
   return (
     <>
-      {projectId ? (
+      {linkCode ? (
+        <ConnectRoute code={linkCode} onOpen={(id) => go(`/p/${id}`)} onFail={() => go('')} />
+      ) : projectId ? (
         <Workspace key={projectId} projectId={projectId} onBack={() => go('')} onSettings={() => setSettings(true)} />
       ) : (
         <Home onOpen={(id) => go(`/p/${id}`)} onSettings={() => setSettings(true)} />

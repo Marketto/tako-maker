@@ -4,7 +4,7 @@ import { COMMON_COLORS, MATERIALS } from '../data/materials';
 import type { Filament, UserSetup, Vec3 } from '../core/types';
 import { Takotta } from './mascot/Takotta';
 import { MusicButton } from './MusicButton';
-import { KeysEditor } from './KeysEditor';
+import { AiModePicker } from './AiModePicker';
 import { msg, t } from '../i18n';
 import { LanguagePicker } from './LanguagePicker';
 
@@ -19,7 +19,7 @@ type Step = 'welcome' | 'brand' | 'model' | 'multi' | 'filaments' | 'key';
 
 export function Wizard({ initial, onDone }: { initial?: UserSetup | null; onDone?: () => void }) {
   const [step, setStep] = useState<Step>(initial ? 'brand' : 'welcome');
-  const { keys } = useStore();
+  const { keys, settings } = useStore();
   const hasKey = keys.some((k) => k.enabled && (k.key || k.baseUrl));
   const brands = useMemo(() => [...new Set(PRINTERS.map((p) => p.brand))], []);
   const initPrinter = PRINTERS.find((p) => p.id === initial?.printerId);
@@ -190,13 +190,10 @@ export function Wizard({ initial, onDone }: { initial?: UserSetup | null; onDone
 
       {step === 'key' && (
         <section className="wizard-card">
-          <h2>{t('Chiavi AI')}</h2>
-          <p className="muted">
-            {t('Servono per l’assistente. Puoi usare Claude, GPT o Gemini, anche più di una chiave: se una finisce il credito l’app passa alla successiva. Restano solo su questo dispositivo. Puoi aggiungerle anche dopo, dalle impostazioni.')}
-          </p>
-          <KeysEditor compact />
-          <p className="tip">{t('Consiglio: nella console di ogni provider imposta un limite di spesa sulla chiave.')}</p>
-          <Nav back={back} next={finish} nextLabel={hasKey ? t('Fine') : t('Salta per ora')} />
+          <h2>{t('Come vuoi usare l’assistente?')}</h2>
+          <p className="muted">{t('L’assistente crea e modifica i modelli quando glielo chiedi. Puoi cambiare scelta quando vuoi dalle impostazioni.')}</p>
+          <AiModePicker compact />
+          <Nav back={back} next={finish} nextLabel={settings.aiMode !== 'api' || hasKey ? t('Fine') : t('Salta per ora')} />
         </section>
       )}
     </div>

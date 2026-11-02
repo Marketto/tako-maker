@@ -19,6 +19,7 @@ src/
 │  ├─ tools.ts                definizioni ed esecuzione degli strumenti
 │  ├─ context.ts              prompt di sistema a blocchi (cache) + contesto variabile
 │  ├─ runner.ts               ciclo agente con pausa/ripresa
+│  ├─ manual.ts               modalità copia e incolla (richiesta e lettura della risposta)
 │  └─ prompts/                prompt condiviso e specifica DSL inviata al modello
 ├─ core/                      logica pura, testata senza browser
 │  ├─ types.ts                Design, Part, Joint, Question…
@@ -32,10 +33,12 @@ src/
 ├─ i18n/                      t(), msg(), fmtNum(), elenco lingue → docs/TRADUZIONI.md
 │  ├─ source.json             tutte le frasi italiane (generato da npm run i18n:extract)
 │  └─ locales/<codice>.json   una traduzione per lingua, caricata solo se scelta
+├─ connector/                 server MCP e stato condiviso con la chat → docs/CONNETTORE.md
 ├─ ui/                        componenti React (wizard, home, area di lavoro, pannelli, anteprima)
 │  └─ mascot/                 Takotta: sprite generati, umori, fumetto, frasi, bus di eventi
 └─ app/music.ts               musica di sottofondo generata con Web Audio
 tools/mascot/takotta.py      generatore di Takotta (sprite SVG + icone PWA)
+connector/                   configurazione e build del Worker del connettore (wrangler)
 tools/i18n/                  estrazione delle frasi e controllo delle traduzioni
 ```
 
