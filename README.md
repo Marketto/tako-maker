@@ -67,6 +67,7 @@ e per l’alternativa opzionale con un proxy che la tiene sul server.
 | [docs/LICENZE-E-DIRITTI.md](docs/LICENZE-E-DIRITTI.md) | Licenze dei modelli, attribuzione, cosa fa e non fa l’app |
 | [docs/TRADUZIONI.md](docs/TRADUZIONI.md) | Come funzionano le lingue e come aggiungere o correggere una traduzione |
 | [docs/CONNETTORE.md](docs/CONNETTORE.md) | Assistente senza API a consumo: Gemini gratuito, copia e incolla, connettore MCP per Claude |
+| [docs/3MF.md](docs/3MF.md) | Formato dei file 3MF per gli slicer (Bambu Studio e derivati, PrusaSlicer), con il riferimento di Anycubic Slicer Next |
 | [docs/DEPLOY.md](docs/DEPLOY.md) | GitHub Pages, chiavi, proxy opzionale |
 | [CLAUDE.md](CLAUDE.md) | Istruzioni per chi sviluppa il progetto con Claude Code |
 

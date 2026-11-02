@@ -44,8 +44,11 @@ describe('torre di spurgo', () => {
       ],
       { title: 'T', flavor: 'orca', strategy: 'multicolor', bed: p.bed, keepFree: zone },
     );
-    const model = strFromU8(unzipSync(data)['3D/3dmodel.model']);
-    const xs = [...model.matchAll(/x="([-\d.]+)" y="([-\d.]+)"/g)].map((m) => [Number(m[1]), Number(m[2])]);
+    const zip = unzipSync(data);
+    const model = strFromU8(zip['3D/3dmodel.model']);
+    const objects = Object.keys(zip).filter((k) => k.startsWith('3D/Objects/')).map((k) => strFromU8(zip[k])).join('');
+    const xs = [...objects.matchAll(/x="([-\d.]+)" y="([-\d.]+)"/g)].map((m) => [Number(m[1]), Number(m[2])]);
+    expect(xs.length).toBeGreaterThan(0);
     // Le coordinate sono relative al centro dell'oggetto con la traslazione nel build item: controlla dal transform.
     const tr = model.match(/transform="1 0 0 0 1 0 0 0 1 ([-\d.]+) ([-\d.]+)/);
     const ox = tr ? Number(tr[1]) : 0;
