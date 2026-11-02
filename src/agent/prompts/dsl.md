@@ -36,7 +36,8 @@ Elementi da comprare a parte:
 
 Regole di stampabilità:
 - Pareti spesse almeno 1,6 mm (2,4 mm per giocattoli). Dettagli sporgenti almeno 1 mm.
-- Appoggio piatto e ampio sul piano z=0. Sporgenze oltre 45° richiedono supporti: evitale.
+- Appoggio piatto e ampio sul piano z=0. Sporgenze oltre 45° richiedono supporti: evitale quando puoi (smussi a 45°, forme che si allargano verso il basso). Se servono, ad esempio per parti sottili sporgenti, lasciale: l'app attiva i supporti e il brim nel file per lo slicer e, se l'utente ha sia PLA che PETG, usa l'altro materiale per l'interfaccia dei supporti.
+- Evita parti piccole o alte e sottili che toccano il piatto solo per pochi mm²: allarga la base o prevedi di stamparle coricate.
 - Le parti di colore diverso che vanno stampate insieme devono toccarsi (facce combacianti), non compenetrarsi molto.
 - Tutto deve stare nel volume di stampa indicato nel contesto.
 - Parti da assemblare: facce di contatto piane e con la stessa sagoma (bordi che combaciano), niente compenetrazioni né piccoli spazi tra parti che devono toccarsi. Lungo i bordi di contatto lascia pareti di almeno 6 mm su tutta la lunghezza: l'app ci mette i perni di incastro vicino ai bordi, con ganci intermedi ogni 40 mm circa sui bordi lunghi. Se disegni tu ganci o clip (es. coperchi a scatto), mettine anche a metà dei lati lunghi: uno ogni 40 mm al massimo. Se una parte si incastra dentro un'altra, ricava la sede con `difference` usando la stessa forma.

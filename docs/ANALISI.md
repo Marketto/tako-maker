@@ -117,3 +117,27 @@ slicer della stampante la mette di solito:
 
 Bambu Studio può spostare la torre vicino agli oggetti quando si dispone il piatto: le coordinate sono
 il punto di partenza degli slicer, non una garanzia.
+
+## Supporti e adesione al piatto
+
+Dopo ogni modifica il Worker della geometria misura, per ogni corpo come verrebbe stampato
+(`bodyStats` in `core/geometry/evaluate.ts`):
+
+- l'**area d'appoggio** sul piatto;
+- le **sporgenze**: area delle facce rivolte verso il basso, per angolo dalla verticale;
+- se il corpo **non tocca il piatto**.
+
+Quale corpo si misura dipende dalla strategia:
+- **stampa unica o multicolore**: i blocchi del modello montato;
+- **parti separate**: ogni parte da sola, tranne quelle stampate già montate (cerniere, pulsanti), che restano insieme.
+
+Con le soglie di `src/data/guidelines.ts` l'analisi decide:
+
+| Caso | Cosa fa l'app |
+|---|---|
+| Sporgenze oltre l'angolo massimo del materiale (> 15 mm²) o corpo sospeso | supporti ad albero attivati nel 3MF (`enable_support`, `support_type` per Bambu/Orca; `support_material` per PrusaSlicer) e consiglio |
+| Appoggio < 40 mm² o pezzo snello (altezza > 6 × lato d'appoggio) | brim di 5 mm nel 3MF e avviso |
+| Supporti su un pezzo in PLA e l'utente ha anche PETG (o viceversa) | interfaccia dei supporti nel materiale opposto (non aderisce, si stacca pulita): impostata nel 3MF se c'è un sistema multicolore (`support_interface_filament` / `support_material_interface_extruder`), altrimenti solo consigliata |
+
+Le impostazioni sono scritte per oggetto: gli slicer che non le riconoscono le ignorano. Se l'utente cambia il profilo,
+restano comunque modificabili nello slicer.
