@@ -31,7 +31,9 @@ export function Wizard({ initial, onDone }: { initial?: UserSetup | null; onDone
   const [filaments, setFilaments] = useState<Filament[]>(initial?.filaments ?? []);
   const [mat, setMat] = useState('PLA');
   const printer = PRINTERS.find((p) => p.id === printerId);
-  const steps: Step[] = ['brand', 'model', ...(printer?.multi ? (['multi'] as Step[]) : []), 'filaments', 'key'];
+  // Il sistema multicolore integrato (non opzionale) non si chiede: c'è sempre.
+  const askMulti = !!printer?.multi && printer.multi.optional;
+  const steps: Step[] = ['brand', 'model', ...(askMulti ? (['multi'] as Step[]) : []), 'filaments', 'key'];
   const idx = steps.indexOf(step);
   const next = () => setStep(steps[Math.min(idx + 1, steps.length - 1)]);
   const back = () => setStep(idx <= 0 ? 'welcome' : steps[idx - 1]);
@@ -45,7 +47,7 @@ export function Wizard({ initial, onDone }: { initial?: UserSetup | null; onDone
     const isCustom = printerId === 'custom';
     const setup: UserSetup = {
       printerId,
-      hasMulti: isCustom ? custom.multiSlots > 1 : !!printer?.multi && hasMulti,
+      hasMulti: isCustom ? custom.multiSlots > 1 : !!printer?.multi && (!printer.multi.optional || hasMulti),
       filaments,
       customBed: isCustom ? customBed : undefined,
       custom: isCustom ? custom : undefined,
