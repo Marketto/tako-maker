@@ -1,6 +1,7 @@
 import type { Filament, PrinterSpec, PrintStrategy, UserSetup, Vec3 } from '../types';
 import { material } from '../../data/materials';
 import { msg, t } from '../../i18n';
+import { fitsWithTower, towerZone } from '../plate/primeTower';
 
 /* Stime volutamente semplici e trasparenti (vedi docs/ANALISI.md).
    Servono a confrontare le strategie tra loro, non a sostituire lo slicer. */
@@ -140,6 +141,7 @@ export function estimateStrategies(parts: PartStat[], setup: UserSetup, printer:
     else if (k > multi.slots) reason = t('Servono {k} colori, {system} ne gestisce {slots}', { k, system: multi.system, slots: multi.slots });
     else if (usedIds.some((id) => fil.get(id) && !material(fil.get(id)!.material).multiFriendly)) reason = t('Uno dei materiali non è adatto al sistema multicolore');
     else if (!assembledFits) reason = t('Il modello montato non entra nel piatto');
+    else if (!fitsWithTower(sizeOf(unionBox(parts)), bed, towerZone(printer, k, bed))) reason = t('Il modello e la torre di spurgo non entrano insieme nel piatto');
     const changes = colorChangesPerPrint(parts);
     const purge = multi ? changes * multi.purgeMm3 : 0;
     out.push(mk({ strategy: 'multicolor', feasible: !reason, reason, timeS: baseTime + changes * (multi?.changeS ?? 0), filamentG: totalG, wasteG: avgDensityG(purge), plates: 1, colorChanges: changes, needsAssembly: false }));

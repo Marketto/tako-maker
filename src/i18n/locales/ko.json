@@ -445,5 +445,8 @@
  "Il piatto": "플레이트",
  "Quanti colori può stampare nello stesso pezzo?": "한 부품에 몇 가지 색을 출력할 수 있나요?",
  "sistema multicolore": "멀티컬러 시스템",
- "Solo la testina (CoreXY)": "프린트 헤드만 (CoreXY)"
+ "Solo la testina (CoreXY)": "프린트 헤드만 (CoreXY)",
+ "Il modello e la torre di spurgo non entrano insieme nel piatto": "모델과 프라임 타워가 함께 플레이트에 들어가지 않아요",
+ "Torre di spurgo": "프라임 타워",
+ "Torre di spurgo: ho lasciato libera la zona {x1}–{x2} × {y1}–{y2} mm, dove {slicer} la mette di solito (nell'anteprima è il riquadro a righe). Se la sposti nello slicer, tienila lontana dal modello.": "프라임 타워: {slicer}가 보통 두는 {x1}–{x2} × {y1}–{y2} mm 영역을 비워 두었어요(미리보기에서 줄무늬 사각형이에요). 슬라이서에서 옮긴다면 모델에서 멀리 두세요."
 }

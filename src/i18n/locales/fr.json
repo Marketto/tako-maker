@@ -445,5 +445,8 @@
  "Il piatto": "Le plateau",
  "Quanti colori può stampare nello stesso pezzo?": "Combien de couleurs peut-elle imprimer dans la même pièce ?",
  "sistema multicolore": "système multicolore",
- "Solo la testina (CoreXY)": "Seulement la tête (CoreXY)"
+ "Solo la testina (CoreXY)": "Seulement la tête (CoreXY)",
+ "Il modello e la torre di spurgo non entrano insieme nel piatto": "Le modèle et la tour de purge ne tiennent pas ensemble sur le plateau",
+ "Torre di spurgo": "Tour de purge",
+ "Torre di spurgo: ho lasciato libera la zona {x1}–{x2} × {y1}–{y2} mm, dove {slicer} la mette di solito (nell'anteprima è il riquadro a righe). Se la sposti nello slicer, tienila lontana dal modello.": "Tour de purge : j’ai laissé libre la zone {x1}–{x2} × {y1}–{y2} mm, où {slicer} la place d’habitude (dans l’aperçu, c’est le rectangle rayé). Si tu la déplaces dans le slicer, garde-la loin du modèle."
 }

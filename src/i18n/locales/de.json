@@ -445,5 +445,8 @@
  "Il piatto": "Die Druckplatte",
  "Quanti colori può stampare nello stesso pezzo?": "Wie viele Farben kann er im selben Teil drucken?",
  "sistema multicolore": "Mehrfarbsystem",
- "Solo la testina (CoreXY)": "Nur der Druckkopf (CoreXY)"
+ "Solo la testina (CoreXY)": "Nur der Druckkopf (CoreXY)",
+ "Il modello e la torre di spurgo non entrano insieme nel piatto": "Das Modell und der Reinigungsturm passen nicht zusammen auf die Druckplatte",
+ "Torre di spurgo": "Reinigungsturm",
+ "Torre di spurgo: ho lasciato libera la zona {x1}–{x2} × {y1}–{y2} mm, dove {slicer} la mette di solito (nell'anteprima è il riquadro a righe). Se la sposti nello slicer, tienila lontana dal modello.": "Reinigungsturm: Ich habe den Bereich {x1}–{x2} × {y1}–{y2} mm freigelassen, wo {slicer} ihn normalerweise platziert (in der Vorschau ist es das gestreifte Rechteck). Wenn du ihn im Slicer verschiebst, halte ihn vom Modell fern."
 }

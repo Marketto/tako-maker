@@ -445,5 +445,8 @@
  "Il piatto": "Стіл",
  "Quanti colori può stampare nello stesso pezzo?": "Скільки кольорів він може надрукувати в одній деталі?",
  "sistema multicolore": "багатоколірна система",
- "Solo la testina (CoreXY)": "Лише друкуюча головка (CoreXY)"
+ "Solo la testina (CoreXY)": "Лише друкуюча головка (CoreXY)",
+ "Il modello e la torre di spurgo non entrano insieme nel piatto": "Модель і чорнова вежа не вміщуються на стіл разом",
+ "Torre di spurgo": "Чорнова вежа",
+ "Torre di spurgo: ho lasciato libera la zona {x1}–{x2} × {y1}–{y2} mm, dove {slicer} la mette di solito (nell'anteprima è il riquadro a righe). Se la sposti nello slicer, tienila lontana dal modello.": "Чорнова вежа: я залишив вільною зону {x1}–{x2} × {y1}–{y2} mm, куди {slicer} зазвичай її ставить (у превʼю це смугастий прямокутник). Якщо пересунеш її в слайсері, тримай її подалі від моделі."
 }

@@ -445,5 +445,8 @@
  "Il piatto": "Plokštė",
  "Quanti colori può stampare nello stesso pezzo?": "Kiek spalvų jis gali spausdinti toje pačioje dalyje?",
  "sistema multicolore": "daugiaspalvė sistema",
- "Solo la testina (CoreXY)": "Tik spausdinimo galvutė (CoreXY)"
+ "Solo la testina (CoreXY)": "Tik spausdinimo galvutė (CoreXY)",
+ "Il modello e la torre di spurgo non entrano insieme nel piatto": "Modelis ir valymo bokštas kartu netelpa į plokštę",
+ "Torre di spurgo": "Valymo bokštas",
+ "Torre di spurgo: ho lasciato libera la zona {x1}–{x2} × {y1}–{y2} mm, dove {slicer} la mette di solito (nell'anteprima è il riquadro a righe). Se la sposti nello slicer, tienila lontana dal modello.": "Valymo bokštas: palikau laisvą sritį {x1}–{x2} × {y1}–{y2} mm, kur {slicer} paprastai jį deda (peržiūroje tai dryžuotas stačiakampis). Jei perkelsi jį pjaustyklėje, laikyk jį atokiau nuo modelio."
 }

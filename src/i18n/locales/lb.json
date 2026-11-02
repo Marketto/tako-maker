@@ -445,5 +445,8 @@
  "Il piatto": "D’Plack",
  "Quanti colori può stampare nello stesso pezzo?": "Wéi vill Faarwen kann en am selwechten Deel drécken?",
  "sistema multicolore": "Méifaarwesystem",
- "Solo la testina (CoreXY)": "Nëmmen den Dréckkapp (CoreXY)"
+ "Solo la testina (CoreXY)": "Nëmmen den Dréckkapp (CoreXY)",
+ "Il modello e la torre di spurgo non entrano insieme nel piatto": "De Modell an de Reinigungstuerm passen net zesummen op d'Plack",
+ "Torre di spurgo": "Reinigungstuerm",
+ "Torre di spurgo: ho lasciato libera la zona {x1}–{x2} × {y1}–{y2} mm, dove {slicer} la mette di solito (nell'anteprima è il riquadro a righe). Se la sposti nello slicer, tienila lontana dal modello.": "Reinigungstuerm: Ech hunn d'Zon {x1}–{x2} × {y1}–{y2} mm fräi gelooss, wou {slicer} en normalerweis hisetzt (an der Virschau ass et dat gesträiften Rechteck). Wann s du en am Slicer verréckels, hal en ewech vum Modell."
 }

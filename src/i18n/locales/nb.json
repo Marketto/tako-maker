@@ -445,5 +445,8 @@
  "Il piatto": "Platen",
  "Quanti colori può stampare nello stesso pezzo?": "Hvor mange farger kan den skrive ut i samme del?",
  "sistema multicolore": "flerfargesystem",
- "Solo la testina (CoreXY)": "Bare skrivehodet (CoreXY)"
+ "Solo la testina (CoreXY)": "Bare skrivehodet (CoreXY)",
+ "Il modello e la torre di spurgo non entrano insieme nel piatto": "Modellen og rensetårnet får ikke plass på platen samtidig",
+ "Torre di spurgo": "Rensetårn",
+ "Torre di spurgo: ho lasciato libera la zona {x1}–{x2} × {y1}–{y2} mm, dove {slicer} la mette di solito (nell'anteprima è il riquadro a righe). Se la sposti nello slicer, tienila lontana dal modello.": "Rensetårn: Jeg har holdt området {x1}–{x2} × {y1}–{y2} mm ledig, der {slicer} vanligvis plasserer det (i forhåndsvisningen er det det stripete rektangelet). Hvis du flytter det i sliceren, hold det unna modellen."
 }

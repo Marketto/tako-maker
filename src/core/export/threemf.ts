@@ -2,6 +2,7 @@ import { strToU8, zipSync } from 'fflate';
 import type { Attribution, Filament, PrintStrategy, Vec3 } from '../types';
 import type { RawMesh } from '../geometry/evaluate';
 import { t } from '../../i18n';
+import { overlaps, placeAvoiding, type Rect } from '../plate/primeTower';
 
 /* Esportazione 3MF.
    - Formato "orca": Bambu Studio, OrcaSlicer, Creality Print, ElegooSlicer, Anycubic Slicer Next
@@ -30,6 +31,8 @@ export interface ExportOptions {
   attribution?: Attribution;
   /** Le parti sono già posizionate in coordinate del piatto: non spostarle (oggetti separati). */
   keepPositions?: boolean;
+  /** Zona del piatto da lasciare libera (torre di spurgo). */
+  keepFree?: Rect | null;
   /** File di testo aggiuntivi nel pacchetto (es. istruzioni). */
   extraFiles?: Record<string, string>;
 }
@@ -85,17 +88,25 @@ function mergeMeshes(meshes: RawMesh[], offsets: Vec3[]): { mesh: RawMesh; triRa
 }
 
 /** Dispone le parti sul piatto in righe, ognuna appoggiata a z=0. */
-export function layoutOnBed(meshes: RawMesh[], bed: Vec3, gap = 6): Vec3[] {
+export function layoutOnBed(meshes: RawMesh[], bed: Vec3, gap = 6, keepFree: Rect | null = null): Vec3[] {
   const offsets: Vec3[] = [];
   let x = gap, y = gap, rowH = 0;
   for (const m of meshes) {
     const b = bounds([m]);
     const w = b.max[0] - b.min[0];
     const h = b.max[1] - b.min[1];
-    if (x + w > bed[0] - gap && x > gap) {
-      x = gap;
-      y += rowH + gap;
-      rowH = 0;
+    for (let guard = 0; guard < 200; guard++) {
+      if (x + w > bed[0] - gap && x > gap) {
+        x = gap;
+        y += rowH + gap;
+        rowH = 0;
+      }
+      // Salta la zona della torre di spurgo
+      if (keepFree && overlaps({ x, y, w, d: h }, keepFree)) {
+        x = keepFree.x + keepFree.w + gap;
+        continue;
+      }
+      break;
     }
     offsets.push([x - b.min[0], y - b.min[1], -b.min[2]]);
     x += w + gap;
@@ -105,7 +116,7 @@ export function layoutOnBed(meshes: RawMesh[], bed: Vec3, gap = 6): Vec3[] {
 }
 
 /** Layout separato, ma le parti dello stesso gruppo mantengono la posizione relativa. */
-function groupedLayout(parts: ExportPart[], bed: Vec3): Vec3[] {
+function groupedLayout(parts: ExportPart[], bed: Vec3, keepFree: Rect | null = null): Vec3[] {
   const keys = parts.map((p, i) => p.group ?? `#${i}`);
   const uniq = [...new Set(keys)];
   const groupMeshes = uniq.map((k) => {
@@ -114,7 +125,7 @@ function groupedLayout(parts: ExportPart[], bed: Vec3): Vec3[] {
     // Mesh fittizia con solo i due estremi: basta per il layout.
     return { positions: new Float32Array([...b.min, ...b.max]), indices: new Uint32Array() };
   });
-  const offs = layoutOnBed(groupMeshes, bed);
+  const offs = layoutOnBed(groupMeshes, bed, 6, keepFree);
   return keys.map((k) => offs[uniq.indexOf(k)]);
 }
 
@@ -122,12 +133,12 @@ export function build3MF(parts: ExportPart[], opt: ExportOptions): Uint8Array {
   if (!parts.length) throw new Error(t('Nessuna parte da esportare'));
   const separate = opt.strategy === 'separate' || !!opt.keepPositions;
   const all = bounds(parts.map((p) => p.mesh));
-  const centerOffset: Vec3 = [
-    opt.bed[0] / 2 - (all.min[0] + all.max[0]) / 2,
-    opt.bed[1] / 2 - (all.min[1] + all.max[1]) / 2,
-    -all.min[2],
-  ];
-  const offsets: Vec3[] = opt.keepPositions ? parts.map(() => [0, 0, 0]) : separate ? groupedLayout(parts, opt.bed) : parts.map(() => centerOffset);
+  // Modello unico: al centro del piatto, oppure accanto alla zona della torre di spurgo.
+  const spot = placeAvoiding(all.max[0] - all.min[0], all.max[1] - all.min[1], opt.bed, opt.keepFree ?? null);
+  const centerOffset: Vec3 = spot
+    ? [spot.x - all.min[0], spot.y - all.min[1], -all.min[2]]
+    : [opt.bed[0] / 2 - (all.min[0] + all.max[0]) / 2, opt.bed[1] / 2 - (all.min[1] + all.max[1]) / 2, -all.min[2]];
+  const offsets: Vec3[] = opt.keepPositions ? parts.map(() => [0, 0, 0]) : separate ? groupedLayout(parts, opt.bed, opt.keepFree ?? null) : parts.map(() => centerOffset);
 
   const colors = parts.map((p) => p.filament?.hex ?? '#cccccc');
   const baseMaterials = `<basematerials id="1">${parts

@@ -445,5 +445,8 @@
  "Il piatto": "Tabla",
  "Quanti colori può stampare nello stesso pezzo?": "Aynı parçada kaç renk basabilir?",
  "sistema multicolore": "çok renkli sistem",
- "Solo la testina (CoreXY)": "Yalnızca baskı kafası (CoreXY)"
+ "Solo la testina (CoreXY)": "Yalnızca baskı kafası (CoreXY)",
+ "Il modello e la torre di spurgo non entrano insieme nel piatto": "Model ve temizleme kulesi tablaya birlikte sığmıyor",
+ "Torre di spurgo": "Temizleme kulesi",
+ "Torre di spurgo: ho lasciato libera la zona {x1}–{x2} × {y1}–{y2} mm, dove {slicer} la mette di solito (nell'anteprima è il riquadro a righe). Se la sposti nello slicer, tienila lontana dal modello.": "Temizleme kulesi: {slicer} onu genelde {x1}–{x2} × {y1}–{y2} mm alanına koyduğu için orayı boş bıraktım (önizlemede çizgili dikdörtgen). Slicer'da yerini değiştirirsen modelden uzak tut."
 }

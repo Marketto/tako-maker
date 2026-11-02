@@ -10,6 +10,7 @@ import { BudgetBadge } from './Settings';
 import { MusicButton } from './MusicButton';
 import { MascotDock } from './mascot/MascotDock';
 import { t } from '../i18n';
+import { plateKeepFree } from '../core/plate';
 
 type Tab = 'chat' | 'print' | 'assembly';
 
@@ -40,6 +41,8 @@ function WorkspaceInner({ session, onBack, onSettings }: { session: ProjectSessi
   const [playing, setPlaying] = useState(false);
   const printer = printerOf(setup!);
   const bed = bedOf(setup!, printer);
+  // La zona della torre si mostra quando l'anteprima coincide con il piatto (stampa multicolore unica).
+  const keepFree = snap.project.design.printPlan.strategy === 'multicolor' ? plateKeepFree(snap.project.design, setup!, printer) : null;
 
   const colors = useMemo(() => {
     const byId = new Map(setup!.filaments.map((f) => [f.id, f.hex]));
@@ -77,7 +80,7 @@ function WorkspaceInner({ session, onBack, onSettings }: { session: ProjectSessi
 
       <div className="ws-body">
         <div className="ws-viewer">
-          <Viewer3D parts={snap.parts} colors={colors} bed={bed} assembly={assemblyView} />
+          <Viewer3D parts={snap.parts} colors={colors} bed={bed} assembly={assemblyView} keepFree={keepFree} />
           {!snap.parts.length && <div className="viewer-hint">{t('L’anteprima 3D comparirà qui')}</div>}
           {settings.mascotOn && <MascotDock snap={snap} tips={tips} compact={compact} />}
           {snap.parts.length > 0 && (
@@ -85,6 +88,7 @@ function WorkspaceInner({ session, onBack, onSettings }: { session: ProjectSessi
               {snap.parts.map((p) => (
                 <span key={p.id}><span className="dot" style={{ background: colors[p.id] }} />{p.name}</span>
               ))}
+              {keepFree && <span><span className="dot tower" />{t('Torre di spurgo')}</span>}
             </div>
           )}
         </div>

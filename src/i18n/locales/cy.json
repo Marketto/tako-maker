@@ -445,5 +445,8 @@
  "Il piatto": "Y plât",
  "Quanti colori può stampare nello stesso pezzo?": "Sawl lliw all e eu hargraffu yn yr un darn?",
  "sistema multicolore": "system amryliw",
- "Solo la testina (CoreXY)": "Dim ond y pen argraffu (CoreXY)"
+ "Solo la testina (CoreXY)": "Dim ond y pen argraffu (CoreXY)",
+ "Il modello e la torre di spurgo non entrano insieme nel piatto": "Dydy'r model a'r tŵr glanhau ddim yn ffitio ar y plât gyda'i gilydd",
+ "Torre di spurgo": "Tŵr glanhau",
+ "Torre di spurgo: ho lasciato libera la zona {x1}–{x2} × {y1}–{y2} mm, dove {slicer} la mette di solito (nell'anteprima è il riquadro a righe). Se la sposti nello slicer, tienila lontana dal modello.": "Tŵr glanhau: dw i wedi gadael yr ardal {x1}–{x2} × {y1}–{y2} mm yn rhydd, lle mae {slicer} fel arfer yn ei roi (yn y rhagolwg, dyma'r petryal streipiog). Os byddi di'n ei symud yn y slicer, cadwa fe draw o'r model."
 }

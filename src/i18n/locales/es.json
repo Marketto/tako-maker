@@ -445,5 +445,8 @@
  "Il piatto": "La cama",
  "Quanti colori può stampare nello stesso pezzo?": "¿Cuántos colores puede imprimir en la misma pieza?",
  "sistema multicolore": "sistema multicolor",
- "Solo la testina (CoreXY)": "Solo el cabezal (CoreXY)"
+ "Solo la testina (CoreXY)": "Solo el cabezal (CoreXY)",
+ "Il modello e la torre di spurgo non entrano insieme nel piatto": "El modelo y la torre de purga no caben juntos en la cama",
+ "Torre di spurgo": "Torre de purga",
+ "Torre di spurgo: ho lasciato libera la zona {x1}–{x2} × {y1}–{y2} mm, dove {slicer} la mette di solito (nell'anteprima è il riquadro a righe). Se la sposti nello slicer, tienila lontana dal modello.": "Torre de purga: he dejado libre la zona {x1}–{x2} × {y1}–{y2} mm, donde {slicer} suele ponerla (en la vista previa es el rectángulo a rayas). Si la mueves en el slicer, mantenla lejos del modelo."
 }

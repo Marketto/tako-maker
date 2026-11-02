@@ -99,3 +99,21 @@ Dopo ogni modifica, per le parti che vanno montate:
 4. ogni perno è verificato: il foro deve stare tutto nel materiale della parte superiore e il perno poggiare sul pieno.
 
 Se non c'è spazio per due perni l'app avvisa (un solo perno lascia ruotare il pezzo) e indica lo spessore di parete necessario.
+
+## Torre di spurgo (`src/core/plate/`)
+
+Quando lo stesso piatto contiene più colori (stampa multicolore unica, o parti separate di colori
+diversi esportate insieme) lo slicer stampa una torre di spurgo. L'app lascia libera la zona dove lo
+slicer della stampante la mette di solito:
+
+- **Dati:** `multi.tower` in `src/data/printers.json`.
+  - Posizione iniziale e misure tratte dal codice e dai profili degli slicer ufficiali, per 4 colori.
+  - `null` se lo slicer di solito non la usa (es. CORE One INDX, AD5X).
+  - Se assente, si usano i valori della famiglia di slicer (`TOWER_DEFAULTS`).
+- **Dimensioni:** la torre cresce con il numero di colori: quelle quadrate in lato, quella di PrusaSlicer in profondità. Alla zona si aggiungono brim e 5 mm di margine.
+- **Disposizione:** il modello resta al centro se non tocca la zona, altrimenti si sposta accanto, il più vicino possibile al centro (`placeAvoiding`). Con le parti separate il riempimento a righe salta la zona.
+- **Stima:** la stampa multicolore risulta impossibile se modello e torre non entrano insieme nel piatto.
+- **Anteprima:** la zona compare come riquadro rosa a righe; nella scheda Stampa un consiglio ne riporta le coordinate.
+
+Bambu Studio può spostare la torre vicino agli oggetti quando si dispone il piatto: le coordinate sono
+il punto di partenza degli slicer, non una garanzia.
