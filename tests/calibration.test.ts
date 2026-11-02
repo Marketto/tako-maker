@@ -64,10 +64,20 @@ describe('campioni di prova', () => {
     expect(small.filter((p) => p.material === 'PLA').length).toBeGreaterThan(1);
     for (const p of small) for (const it of p.items) expect(it.offset[1] + it.coupon.size[1]).toBeLessThanOrEqual(90);
   });
-  it('produce uno zip con un 3MF per materiale e le istruzioni', async () => {
+  it('Bambu Studio e derivati: un solo 3MF con un piatto per materiale', async () => {
+    const d = toyLaptop();
+    d.parts[2].filamentId = 'f1';
+    const files = await buildCalibrationFiles(d, setup, printer('bambu-a1'), evalFn);
+    expect(files.filename).toBe('campioni-di-prova.3mf');
+    expect(files.plates).toBe(2);
+    const cfg = strFromU8(unzipSync(files.data)['Metadata/model_settings.config']);
+    expect(cfg.match(/<plate>/g)).toHaveLength(2);
+    expect(cfg).toMatch(/Cerniera/);
+  });
+  it('PrusaSlicer: uno zip con un 3MF per materiale e le istruzioni', async () => {
     const d = toyLaptop();
     d.parts[2].filamentId = 'f1'; // schermo in PLA, base in PETG → due materiali
-    const files = await buildCalibrationFiles(d, setup, printer('bambu-a1'), evalFn);
+    const files = await buildCalibrationFiles(d, setup, printer('prusa-mk4s'), evalFn);
     expect(files.materials.sort()).toEqual(['PETG', 'PLA']);
     expect(files.filename).toBe('campioni-di-prova.zip');
     const zip = unzipSync(files.data);
@@ -79,7 +89,7 @@ describe('campioni di prova', () => {
   it('un solo materiale → un solo 3MF', async () => {
     const d = toyLaptop();
     d.parts.forEach((p) => (p.filamentId = 'f1'));
-    const files = await buildCalibrationFiles(d, setup, printer('bambu-a1'), evalFn);
+    const files = await buildCalibrationFiles(d, setup, printer('prusa-mk4s'), evalFn);
     expect(files.filename).toBe('campioni-pla.3mf');
     expect(materialsToTest(d, setup).map((m) => m.material)).toEqual(['PLA']);
   });

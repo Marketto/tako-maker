@@ -6,8 +6,9 @@ import { bedOf } from '../analysis/estimate';
 import { buildCoupons, layoutPlates, materialsToTest, neededTests, readmeText, type TestKind } from './coupons';
 import { t } from '../../i18n';
 
-/* File dei campioni di prova: un 3MF per piatto, un materiale per piatto.
-   Se i piatti sono più di uno, vengono raccolti in uno zip con le istruzioni. */
+/* File dei campioni di prova: un piatto per materiale (più piatti se non ci stanno).
+   - Bambu Studio e derivati (Anycubic, Orca, Creality…): un solo 3MF con tutti i piatti.
+   - PrusaSlicer (senza piatti multipli): un 3MF per piatto, raccolti in uno zip con le istruzioni. */
 
 export type Evaluate = (design: Design, tolByPart: Record<string, Tolerances>) => Promise<PartResult[]>;
 
@@ -33,7 +34,8 @@ export async function buildCalibrationFiles(design: Design, setup: UserSetup, pr
   const flavor = flavorForSlicer(printer.slicer);
 
   const files: { name: string; data: Uint8Array }[] = [];
-  for (const plate of plates) {
+  const all: ExportPart[] = [];
+  for (const [pi, plate] of plates.entries()) {
     const parts: ExportPart[] = [];
     const extruder = setup.filaments.indexOf(plate.filament) + 1 || 1;
     for (const { coupon, offset } of plate.items) {
@@ -45,9 +47,11 @@ export async function buildCalibrationFiles(design: Design, setup: UserSetup, pr
           pos[i + 1] += offset[1];
           pos[i + 2] += offset[2];
         }
-        parts.push({ name: r.name, mesh: { positions: pos, indices: r.mesh.indices }, filament: plate.filament, extruder, group: coupon.id });
+        parts.push({ name: r.name, mesh: { positions: pos, indices: r.mesh.indices }, filament: plate.filament, extruder, group: coupon.id, plate: pi + 1 });
       }
     }
+    all.push(...parts);
+    if (flavor === 'orca') continue;
     const title =
       plates.filter((p) => p.material === plate.material).length > 1
         ? t('Campioni {material} – piatto {n}', { material: plate.material, n: plate.index })
@@ -58,6 +62,10 @@ export async function buildCalibrationFiles(design: Design, setup: UserSetup, pr
   }
 
   const materials = mats.map((m) => m.material);
+  if (flavor === 'orca') {
+    const data = build3MF(all, { title: t('Campioni di prova'), flavor, strategy: 'separate', bed, keepPositions: true, plateStride: printer.plateStride, extraFiles: { 'Metadata/LEGGIMI.txt': readme } });
+    return { filename: 'campioni-di-prova.3mf', data, mime: 'model/3mf', readme, plates: plates.length, materials, kinds };
+  }
   if (files.length === 1) {
     return { filename: files[0].name, data: files[0].data, mime: 'model/3mf', readme, plates: 1, materials, kinds };
   }
