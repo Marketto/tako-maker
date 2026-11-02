@@ -347,6 +347,7 @@
  "Passo {n} di {total}": "Passo {n} di {total}",
  "Pausa": "Pausa",
  "Per i bambini è meglio che sporgano almeno 2 mm: si trovano e si premono più facilmente.": "Per i bambini è meglio che sporgano almeno 2 mm: si trovano e si premono più facilmente.",
+ "Per i supporti di {names} (in PETG) non uso il PLA: con un solo ugello, negli strati in cui si alternano i due materiali la temperatura scende e il PETG vicino diventa fragile e si può dividere. Meglio supporti in PETG con un piccolo distacco.": "Per i supporti di {names} (in PETG) non uso il PLA: con un solo ugello, negli strati in cui si alternano i due materiali la temperatura scende e il PETG vicino diventa fragile e si può dividere. Meglio supporti in PETG con un piccolo distacco.",
  "Per un nuovo modello cerca prima online modelli gratuiti": "Per un nuovo modello cerca prima online modelli gratuiti",
  "Per usare l’assistente scegli come collegarlo nelle impostazioni (⚙): chiave Gemini gratuita, copia e incolla con la tua chat, connettore per Claude o chiave a pagamento.": "Per usare l’assistente scegli come collegarlo nelle impostazioni (⚙): chiave Gemini gratuita, copia e incolla con la tua chat, connettore per Claude o chiave a pagamento.",
  "Permette di stampare fino a {n} colori nello stesso pezzo.": "Permette di stampare fino a {n} colori nello stesso pezzo.",

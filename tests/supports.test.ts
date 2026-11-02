@@ -48,7 +48,9 @@ describe('supporti e adesione al piatto', () => {
     expect(rep.printHints.t.supports).toBe(true);
     expect(rep.printHints.t.interfaceFilamentId).toBe("f2");
     expect(rep.tips.join(' ')).toMatch(/PETG come interfaccia/);
-    expect(supportInterfaceFor('PETG', ['PLA-Silk', 'PETG'])).toBe('PLA-Silk');
+    expect(supportInterfaceFor('PETG', ['PLA-Silk', 'PETG'], true)).toBe('PLA-Silk');
+    // Ugello singolo: niente PLA sotto il PETG (il PETG diventerebbe fragile)
+    expect(supportInterfaceFor('PETG', ['PLA', 'PETG'])).toBeUndefined();
     expect(supportInterfaceFor('ABS', ['PLA', 'PETG'])).toBeUndefined();
   });
 
@@ -86,5 +88,19 @@ describe('supporti e adesione al piatto', () => {
     const prusa = strFromU8(unzipSync(build3MF(parts, { title: 'T', flavor: 'prusa', strategy: 'single', bed: [250, 210, 220] }))['Metadata/Slic3r_PE_model.config']);
     expect(prusa).toContain('key="support_material" value="1"');
     expect(prusa).toContain('key="support_material_interface_extruder" value="2"');
+  });
+});
+
+describe('supporti per pezzi in PETG', () => {
+  it('con un solo ugello non usa il PLA e spiega perché', async () => {
+    const w = await manifold();
+    const petgTee = { ...tee, filamentId: 'f2' };
+    const d = design([petgTee]);
+    const r = evaluateDesign(w, d);
+    const rep = analyze(d, r.parts, plaPetg, printer('bambu-a1'), new Set(), r);
+    expect(rep.printHints.t.interfaceFilamentId).toBeUndefined();
+    expect(rep.tips.join(' ')).toMatch(/non uso il PLA/);
+    const dual = analyze(d, r.parts, plaPetg, printer('bambu-h2d'), new Set(), r);
+    expect(dual.printHints.t.interfaceFilamentId).toBe('f1');
   });
 });

@@ -137,7 +137,8 @@ Con le soglie di `src/data/guidelines.ts` l'analisi decide:
 |---|---|
 | Sporgenze oltre l'angolo massimo del materiale (> 15 mm²) o corpo sospeso | supporti ad albero attivati nel 3MF (`enable_support`, `support_type` per Bambu/Orca; `support_material` per PrusaSlicer) e consiglio |
 | Appoggio < 40 mm² o pezzo snello (altezza > 6 × lato d'appoggio) | brim di 5 mm nel 3MF e avviso |
-| Supporti su un pezzo in PLA e l'utente ha anche PETG (o viceversa) | interfaccia dei supporti nel materiale opposto (non aderisce, si stacca pulita): impostata nel 3MF se c'è un sistema multicolore (`support_interface_filament` / `support_material_interface_extruder`), altrimenti solo consigliata |
+| Supporti su un pezzo in PLA e l'utente ha anche PETG | interfaccia dei supporti nel materiale opposto (non aderisce, si stacca pulita): impostata nel 3MF se c'è un sistema multicolore (`support_interface_filament` / `support_material_interface_extruder`), altrimenti solo consigliata |
+| Supporti su un pezzo in PETG e l'utente ha anche PLA | interfaccia in PLA **solo** con più ugelli (doppio ugello, cambio utensile: `multi.multiNozzle`). Con un ugello solo (AMS, ACE, CFS…) negli strati in cui si alternano i materiali la temperatura scende e il PETG vicino ai supporti si salda male e si divide: l'app usa supporti in PETG e lo spiega |
 
 Le impostazioni sono scritte per oggetto: gli slicer che non le riconoscono le ignorano. Se l'utente cambia il profilo,
 restano comunque modificabili nello slicer.
