@@ -57,6 +57,8 @@ export interface UserSetup {
   nozzle?: number;
   /** Tolleranze calibrate con i campioni di prova, per materiale (es. "PLA"). */
   tolerances?: Record<string, Partial<Tolerances>>;
+  /** Caratteristiche della stampante personalizzata (printerId "custom"). */
+  custom?: { enclosed: boolean; kinematics: 'corexy' | 'bedslinger'; multiSlots: number };
 }
 
 /* ---------- Design DSL ---------- */

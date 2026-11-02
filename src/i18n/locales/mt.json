@@ -435,5 +435,15 @@
  "si sente lo scatto, corsa breve": "tinħass il-klikk, moviment qasir",
  "Sotto il pulsante \"{name}\" il guscio è troppo sottile: servono almeno {mm} mm.": "Taħt il-buttuna \"{name}\" il-qoxra hija rqiqa wisq: iridu mill-inqas {mm} mm.",
  "Tra \"{a}\" e \"{b}\" c'è un tratto di bordo di circa {mm} mm senza ganci: lì le parti possono aprirsi. Allarga quel bordo (almeno 6 mm) per far posto a un gancio intermedio.": "Bejn \"{a}\" u \"{b}\" hemm biċċa tarf ta' madwar {mm} mm bla ganċijiet: hemmhekk il-partijiet jistgħu jinfetħu. Wessa' dak it-tarf (mill-inqas 6 mm) biex tagħmel post għal ganċ intermedju.",
- "Una parte stampata già montata (cerniera o pulsante) unisce parti di colori diversi": "Parti stampata diġà mmuntata (ċappetta jew buttuna) tgħaqqad partijiet ta' kuluri differenti"
+ "Una parte stampata già montata (cerniera o pulsante) unisce parti di colori diversi": "Parti stampata diġà mmuntata (ċappetta jew buttuna) tgħaqqad partijiet ta' kuluri differenti",
+ "AMS + doppio ugello": "AMS + nozzle doppju",
+ "Aperta": "Miftuħ",
+ "Cambio utensile": "Bdil tal-għodda",
+ "Chiusa, con sportello": "Magħluq, b’bieb",
+ "Com’è fatta?": "Kif inhu?",
+ "Cosa si muove avanti e indietro?": "X’jiċċaqlaq ’il quddiem u lura?",
+ "Il piatto": "Il-pjanċa",
+ "Quanti colori può stampare nello stesso pezzo?": "Kemm-il kulur jista’ jistampa fl-istess biċċa?",
+ "sistema multicolore": "sistema b’ħafna kuluri",
+ "Solo la testina (CoreXY)": "Ir-ras biss (CoreXY)"
 }

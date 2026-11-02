@@ -435,5 +435,15 @@
  "si sente lo scatto, corsa breve": "відчувається клацання, короткий хід",
  "Sotto il pulsante \"{name}\" il guscio è troppo sottile: servono almeno {mm} mm.": "Під кнопкою \"{name}\" корпус затонкий: потрібно щонайменше {mm} mm.",
  "Tra \"{a}\" e \"{b}\" c'è un tratto di bordo di circa {mm} mm senza ganci: lì le parti possono aprirsi. Allarga quel bordo (almeno 6 mm) per far posto a un gancio intermedio.": "Між \"{a}\" і \"{b}\" є ділянка краю близько {mm} mm без защіпок: там деталі можуть розійтися. Розшир цей край (щонайменше 6 mm), щоб помістилася проміжна защіпка.",
- "Una parte stampata già montata (cerniera o pulsante) unisce parti di colori diversi": "Деталь, надрукована у зборі (петля чи кнопка), зʼєднує деталі різних кольорів"
+ "Una parte stampata già montata (cerniera o pulsante) unisce parti di colori diversi": "Деталь, надрукована у зборі (петля чи кнопка), зʼєднує деталі різних кольорів",
+ "AMS + doppio ugello": "AMS + подвійне сопло",
+ "Aperta": "Відкритий",
+ "Cambio utensile": "Зміна інструмента",
+ "Chiusa, con sportello": "Закритий, із дверцятами",
+ "Com’è fatta?": "Який він?",
+ "Cosa si muove avanti e indietro?": "Що рухається вперед-назад?",
+ "Il piatto": "Стіл",
+ "Quanti colori può stampare nello stesso pezzo?": "Скільки кольорів він може надрукувати в одній деталі?",
+ "sistema multicolore": "багатоколірна система",
+ "Solo la testina (CoreXY)": "Лише друкуюча головка (CoreXY)"
 }

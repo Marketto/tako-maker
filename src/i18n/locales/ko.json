@@ -435,5 +435,15 @@
  "si sente lo scatto, corsa breve": "딸깍 느낌, 짧은 스트로크",
  "Sotto il pulsante \"{name}\" il guscio è troppo sottile: servono almeno {mm} mm.": "“{name}” 버튼 아래 외장이 너무 얇아요. {mm} mm 이상 필요해요.",
  "Tra \"{a}\" e \"{b}\" c'è un tratto di bordo di circa {mm} mm senza ganci: lì le parti possono aprirsi. Allarga quel bordo (almeno 6 mm) per far posto a un gancio intermedio.": "“{a}”, “{b}” 사이에 걸쇠 없는 가장자리가 약 {mm} mm 이어져 있어요. 그 부분이 벌어질 수 있어요. 중간 걸쇠를 넣을 수 있게 그 가장자리를 넓혀 주세요(6 mm 이상).",
- "Una parte stampata già montata (cerniera o pulsante) unisce parti di colori diversi": "조립된 채로 출력하는 부품(힌지 또는 버튼)이 서로 다른 색의 부품을 잇고 있어요"
+ "Una parte stampata già montata (cerniera o pulsante) unisce parti di colori diversi": "조립된 채로 출력하는 부품(힌지 또는 버튼)이 서로 다른 색의 부품을 잇고 있어요",
+ "AMS + doppio ugello": "AMS + 듀얼 노즐",
+ "Aperta": "개방형",
+ "Cambio utensile": "툴 체인저",
+ "Chiusa, con sportello": "밀폐형, 문 있음",
+ "Com’è fatta?": "어떤 형태인가요?",
+ "Cosa si muove avanti e indietro?": "앞뒤로 움직이는 건 뭔가요?",
+ "Il piatto": "플레이트",
+ "Quanti colori può stampare nello stesso pezzo?": "한 부품에 몇 가지 색을 출력할 수 있나요?",
+ "sistema multicolore": "멀티컬러 시스템",
+ "Solo la testina (CoreXY)": "프린트 헤드만 (CoreXY)"
 }

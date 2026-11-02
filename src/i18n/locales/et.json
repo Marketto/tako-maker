@@ -435,5 +435,15 @@
  "si sente lo scatto, corsa breve": "klõps on tunda, lühike käik",
  "Sotto il pulsante \"{name}\" il guscio è troppo sottile: servono almeno {mm} mm.": "Nupu „{name}“ all on korpus liiga õhuke: vaja on vähemalt {mm} mm.",
  "Tra \"{a}\" e \"{b}\" c'è un tratto di bordo di circa {mm} mm senza ganci: lì le parti possono aprirsi. Allarga quel bordo (almeno 6 mm) per far posto a un gancio intermedio.": "Osade „{a}“ ja „{b}“ vahel on umbes {mm} mm pikkune servalõik ilma konksudeta: seal võivad osad lahti minna. Laienda seda serva (vähemalt 6 mm), et mahuks vahekonks.",
- "Una parte stampata già montata (cerniera o pulsante) unisce parti di colori diversi": "Kokkupandult prinditav osa (hing või nupp) ühendab eri värvi osi"
+ "Una parte stampata già montata (cerniera o pulsante) unisce parti di colori diversi": "Kokkupandult prinditav osa (hing või nupp) ühendab eri värvi osi",
+ "AMS + doppio ugello": "AMS + topeltdüüs",
+ "Aperta": "Avatud",
+ "Cambio utensile": "Tööriistavahetaja",
+ "Chiusa, con sportello": "Suletud, uksega",
+ "Com’è fatta?": "Milline see on?",
+ "Cosa si muove avanti e indietro?": "Mis liigub edasi-tagasi?",
+ "Il piatto": "Alus",
+ "Quanti colori può stampare nello stesso pezzo?": "Mitu värvi saab see samasse detaili prindida?",
+ "sistema multicolore": "mitmevärvisüsteem",
+ "Solo la testina (CoreXY)": "Ainult prindipea (CoreXY)"
 }

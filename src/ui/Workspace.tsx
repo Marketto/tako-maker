@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState, useSyncExternalStore } from 'react';
 import { ProjectSession } from '../app/session';
-import { loadProject, printerById, useStore } from '../app/store';
+import { loadProject, printerOf, useStore } from '../app/store';
 import { bedOf } from '../core/analysis/estimate';
 import { Viewer3D } from './Viewer3D';
 import { ChatPanel } from './ChatPanel';
@@ -38,7 +38,7 @@ function WorkspaceInner({ session, onBack, onSettings }: { session: ProjectSessi
   const [tab, setTab] = useState<Tab>('chat');
   const [step, setStep] = useState(0);
   const [playing, setPlaying] = useState(false);
-  const printer = printerById(setup!.printerId);
+  const printer = printerOf(setup!);
   const bed = bedOf(setup!, printer);
 
   const colors = useMemo(() => {

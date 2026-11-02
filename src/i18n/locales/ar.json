@@ -435,5 +435,15 @@
  "si sente lo scatto, corsa breve": "تُحَسّ النقرة، مشوار قصير",
  "Sotto il pulsante \"{name}\" il guscio è troppo sottile: servono almeno {mm} mm.": "تحت الزر \"{name}\" الغلاف رقيق جدًا: يلزم {mm} mm على الأقل.",
  "Tra \"{a}\" e \"{b}\" c'è un tratto di bordo di circa {mm} mm senza ganci: lì le parti possono aprirsi. Allarga quel bordo (almeno 6 mm) per far posto a un gancio intermedio.": "بين \"{a}\" و\"{b}\" جزء من الحافة طوله نحو {mm} mm بلا خطافات: قد تنفتح الأجزاء هناك. وسّع تلك الحافة (6 mm على الأقل) ليتسع لخطاف وسطي.",
- "Una parte stampata già montata (cerniera o pulsante) unisce parti di colori diversi": "جزء مطبوع مركّبًا (مفصّلة أو زر) يربط أجزاءً بألوان مختلفة"
+ "Una parte stampata già montata (cerniera o pulsante) unisce parti di colori diversi": "جزء مطبوع مركّبًا (مفصّلة أو زر) يربط أجزاءً بألوان مختلفة",
+ "AMS + doppio ugello": "AMS + فوهة مزدوجة",
+ "Aperta": "مفتوحة",
+ "Cambio utensile": "مبدّل الأدوات",
+ "Chiusa, con sportello": "مغلقة، بباب",
+ "Com’è fatta?": "كيف هي؟",
+ "Cosa si muove avanti e indietro?": "ما الذي يتحرك إلى الأمام والخلف؟",
+ "Il piatto": "اللوح",
+ "Quanti colori può stampare nello stesso pezzo?": "كم لونًا يمكنها أن تطبع في القطعة نفسها؟",
+ "sistema multicolore": "نظام متعدد الألوان",
+ "Solo la testina (CoreXY)": "رأس الطباعة فقط (CoreXY)"
 }

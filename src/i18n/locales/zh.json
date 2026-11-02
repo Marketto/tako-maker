@@ -435,5 +435,15 @@
  "si sente lo scatto, corsa breve": "有明显咔哒感，行程短",
  "Sotto il pulsante \"{name}\" il guscio è troppo sottile: servono almeno {mm} mm.": "按钮“{name}”下方的外壳太薄：至少需要 {mm} mm。",
  "Tra \"{a}\" e \"{b}\" c'è un tratto di bordo di circa {mm} mm senza ganci: lì le parti possono aprirsi. Allarga quel bordo (almeno 6 mm) per far posto a un gancio intermedio.": "“{a}”和“{b}”之间有一段约 {mm} mm 的边缘没有卡扣：那里的部件可能会张开。把这段边缘加宽（至少 6 mm），以便放一个中间卡扣。",
- "Una parte stampata già montata (cerniera o pulsante) unisce parti di colori diversi": "一体打印的部件（铰链或按钮）连接了不同颜色的部件"
+ "Una parte stampata già montata (cerniera o pulsante) unisce parti di colori diversi": "一体打印的部件（铰链或按钮）连接了不同颜色的部件",
+ "AMS + doppio ugello": "AMS + 双喷嘴",
+ "Aperta": "开放式",
+ "Cambio utensile": "换刀系统",
+ "Chiusa, con sportello": "封闭式，带门",
+ "Com’è fatta?": "它是什么样的？",
+ "Cosa si muove avanti e indietro?": "前后移动的是什么？",
+ "Il piatto": "打印板",
+ "Quanti colori può stampare nello stesso pezzo?": "同一个零件里能打印几种颜色？",
+ "sistema multicolore": "多色系统",
+ "Solo la testina (CoreXY)": "只有打印头（CoreXY）"
 }

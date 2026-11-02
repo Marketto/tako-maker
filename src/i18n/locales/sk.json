@@ -435,5 +435,15 @@
  "si sente lo scatto, corsa breve": "cítiš cvaknutie, krátky zdvih",
  "Sotto il pulsante \"{name}\" il guscio è troppo sottile: servono almeno {mm} mm.": "Pod tlačidlom \"{name}\" je kryt príliš tenký: treba aspoň {mm} mm.",
  "Tra \"{a}\" e \"{b}\" c'è un tratto di bordo di circa {mm} mm senza ganci: lì le parti possono aprirsi. Allarga quel bordo (almeno 6 mm) per far posto a un gancio intermedio.": "Medzi \"{a}\" a \"{b}\" je úsek okraja asi {mm} mm bez háčikov: tam sa diely môžu roztvoriť. Rozšír ten okraj (aspoň 6 mm), aby sa tam zmestil ďalší háčik.",
- "Una parte stampata già montata (cerniera o pulsante) unisce parti di colori diversi": "Diel tlačený vcelku (pánt alebo tlačidlo) spája diely rôznych farieb"
+ "Una parte stampata già montata (cerniera o pulsante) unisce parti di colori diversi": "Diel tlačený vcelku (pánt alebo tlačidlo) spája diely rôznych farieb",
+ "AMS + doppio ugello": "AMS + dvojitá tryska",
+ "Aperta": "Otvorená",
+ "Cambio utensile": "Menič nástrojov",
+ "Chiusa, con sportello": "Uzavretá, s dvierkami",
+ "Com’è fatta?": "Ako vyzerá?",
+ "Cosa si muove avanti e indietro?": "Čo sa hýbe dopredu a dozadu?",
+ "Il piatto": "Podložka",
+ "Quanti colori può stampare nello stesso pezzo?": "Koľko farieb dokáže vytlačiť v jednom diele?",
+ "sistema multicolore": "viacfarebný systém",
+ "Solo la testina (CoreXY)": "Len tlačová hlava (CoreXY)"
 }

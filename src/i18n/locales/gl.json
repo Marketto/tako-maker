@@ -435,5 +435,15 @@
  "si sente lo scatto, corsa breve": "nótase o estalido, percorrido curto",
  "Sotto il pulsante \"{name}\" il guscio è troppo sottile: servono almeno {mm} mm.": "Baixo o botón \"{name}\" a carcasa é demasiado delgada: precísanse polo menos {mm} mm.",
  "Tra \"{a}\" e \"{b}\" c'è un tratto di bordo di circa {mm} mm senza ganci: lì le parti possono aprirsi. Allarga quel bordo (almeno 6 mm) per far posto a un gancio intermedio.": "Entre \"{a}\" e \"{b}\" hai un treito de bordo de arredor de {mm} mm sen ganchos: aí as pezas poden abrirse. Ensancha ese bordo (polo menos 6 mm) para deixar sitio a un gancho intermedio.",
- "Una parte stampata già montata (cerniera o pulsante) unisce parti di colori diversi": "Unha peza impresa xa montada (bisagra ou botón) une pezas de cores diferentes"
+ "Una parte stampata già montata (cerniera o pulsante) unisce parti di colori diversi": "Unha peza impresa xa montada (bisagra ou botón) une pezas de cores diferentes",
+ "AMS + doppio ugello": "AMS + boquilla dobre",
+ "Aperta": "Aberta",
+ "Cambio utensile": "Cambiador de ferramentas",
+ "Chiusa, con sportello": "Pechada, con porta",
+ "Com’è fatta?": "Como é?",
+ "Cosa si muove avanti e indietro?": "Que se move cara adiante e cara atrás?",
+ "Il piatto": "A cama",
+ "Quanti colori può stampare nello stesso pezzo?": "Cantas cores pode imprimir na mesma peza?",
+ "sistema multicolore": "sistema multicor",
+ "Solo la testina (CoreXY)": "Só o cabezal (CoreXY)"
 }
