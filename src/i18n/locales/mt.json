@@ -445,5 +445,8 @@
  "Il piatto": "Il-pjanċa",
  "Quanti colori può stampare nello stesso pezzo?": "Kemm-il kulur jista’ jistampa fl-istess biċċa?",
  "sistema multicolore": "sistema b’ħafna kuluri",
- "Solo la testina (CoreXY)": "Ir-ras biss (CoreXY)"
+ "Solo la testina (CoreXY)": "Ir-ras biss (CoreXY)",
+ "Il modello e la torre di spurgo non entrano insieme nel piatto": "Il-mudell u t-torri tal-purga ma jidħlux flimkien fil-pjanċa",
+ "Torre di spurgo": "Torri tal-purga",
+ "Torre di spurgo: ho lasciato libera la zona {x1}–{x2} × {y1}–{y2} mm, dove {slicer} la mette di solito (nell'anteprima è il riquadro a righe). Se la sposti nello slicer, tienila lontana dal modello.": "Torri tal-purga: ħallejt ħielsa ż-żona {x1}–{x2} × {y1}–{y2} mm, fejn {slicer} normalment ipoġġih (fil-preview huwa r-rettangolu bl-istrixxi). Jekk iċċaqalqu fis-slicer, żommu 'l bogħod mill-mudell."
 }

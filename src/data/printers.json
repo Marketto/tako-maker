@@ -1,5 +1,5 @@
 {
-  "_nota": "Dati indicativi raccolti da schede tecniche pubbliche (aggiornati a novembre 2026): volumi in mm, flusso tipico in mm3/s per PLA; spurgo e tempi di cambio colore sono stime. Verificare sempre sul sito del produttore. Correzioni benvenute via pull request.",
+  "_nota": "Dati indicativi raccolti da schede tecniche pubbliche (aggiornati a novembre 2026): volumi in mm, flusso tipico in mm3/s per PLA; spurgo e tempi di cambio colore sono stime. Verificare sempre sul sito del produttore. Correzioni benvenute via pull request. Torre di spurgo (multi.tower): posizione iniziale e misure predefinite dello slicer ufficiale per 4 colori (angolo anteriore sinistro, mm); null = lo slicer di solito non la usa.",
   "printers": [
     {
       "id": "bambu-a1",
@@ -18,7 +18,14 @@
         "slots": 4,
         "optional": true,
         "purgeMm3": 400,
-        "changeS": 45
+        "changeS": 45,
+        "tower": {
+          "x": 15,
+          "y": 209.4,
+          "w": 31.6,
+          "d": 31.6,
+          "brim": 3
+        }
       },
       "kinematics": "bedslinger",
       "nozzle": 0.4
@@ -40,7 +47,14 @@
         "slots": 4,
         "optional": true,
         "purgeMm3": 400,
-        "changeS": 45
+        "changeS": 45,
+        "tower": {
+          "x": 15,
+          "y": 133.4,
+          "w": 31.6,
+          "d": 31.6,
+          "brim": 3
+        }
       },
       "kinematics": "bedslinger",
       "nozzle": 0.4
@@ -62,7 +76,14 @@
         "slots": 4,
         "optional": true,
         "purgeMm3": 400,
-        "changeS": 45
+        "changeS": 45,
+        "tower": {
+          "x": 15,
+          "y": 160,
+          "w": 31.6,
+          "d": 31.6,
+          "brim": 4
+        }
       },
       "kinematics": "bedslinger",
       "nozzle": 0.4
@@ -84,7 +105,14 @@
         "slots": 4,
         "optional": true,
         "purgeMm3": 120,
-        "changeS": 30
+        "changeS": 30,
+        "tower": {
+          "x": 165,
+          "y": 250,
+          "w": 38,
+          "d": 38,
+          "brim": 4
+        }
       },
       "kinematics": "corexy",
       "nozzle": 0.4
@@ -106,7 +134,14 @@
         "slots": 4,
         "optional": true,
         "purgeMm3": 250,
-        "changeS": 35
+        "changeS": 35,
+        "tower": {
+          "x": 165,
+          "y": 250,
+          "w": 38,
+          "d": 38,
+          "brim": 4
+        }
       },
       "kinematics": "corexy",
       "nozzle": 0.4
@@ -128,7 +163,14 @@
         "slots": 4,
         "optional": true,
         "purgeMm3": 400,
-        "changeS": 45
+        "changeS": 45,
+        "tower": {
+          "x": 165,
+          "y": 250,
+          "w": 31.6,
+          "d": 31.6,
+          "brim": 3
+        }
       },
       "kinematics": "corexy",
       "nozzle": 0.4
@@ -150,7 +192,14 @@
         "slots": 4,
         "optional": true,
         "purgeMm3": 400,
-        "changeS": 45
+        "changeS": 45,
+        "tower": {
+          "x": 165,
+          "y": 209.4,
+          "w": 31.6,
+          "d": 31.6,
+          "brim": 3
+        }
       },
       "kinematics": "corexy",
       "nozzle": 0.4
@@ -172,7 +221,14 @@
         "slots": 4,
         "optional": true,
         "purgeMm3": 400,
-        "changeS": 45
+        "changeS": 45,
+        "tower": {
+          "x": 165,
+          "y": 209.4,
+          "w": 31.6,
+          "d": 31.6,
+          "brim": 3
+        }
       },
       "kinematics": "corexy",
       "nozzle": 0.4
@@ -194,7 +250,14 @@
         "slots": 4,
         "optional": true,
         "purgeMm3": 400,
-        "changeS": 45
+        "changeS": 45,
+        "tower": {
+          "x": 165,
+          "y": 209.4,
+          "w": 31.6,
+          "d": 31.6,
+          "brim": 3
+        }
       },
       "kinematics": "corexy",
       "nozzle": 0.4
@@ -216,7 +279,14 @@
         "slots": 4,
         "optional": true,
         "purgeMm3": 400,
-        "changeS": 45
+        "changeS": 45,
+        "tower": {
+          "x": 165,
+          "y": 209.4,
+          "w": 31.6,
+          "d": 31.6,
+          "brim": 3
+        }
       },
       "kinematics": "corexy",
       "nozzle": 0.4
@@ -238,7 +308,14 @@
         "slots": 4,
         "optional": true,
         "purgeMm3": 250,
-        "changeS": 35
+        "changeS": 35,
+        "tower": {
+          "x": 165,
+          "y": 203,
+          "w": 38,
+          "d": 38,
+          "brim": 4
+        }
       },
       "kinematics": "corexy",
       "nozzle": 0.4
@@ -260,7 +337,14 @@
         "slots": 5,
         "optional": true,
         "purgeMm3": 300,
-        "changeS": 50
+        "changeS": 50,
+        "tower": {
+          "x": 170,
+          "y": 140,
+          "w": 60,
+          "d": 45,
+          "brim": 2
+        }
       },
       "kinematics": "corexy",
       "nozzle": 0.4
@@ -298,7 +382,8 @@
         "slots": 4,
         "optional": false,
         "purgeMm3": 30,
-        "changeS": 12
+        "changeS": 12,
+        "tower": null
       },
       "kinematics": "corexy",
       "nozzle": 0.4
@@ -336,7 +421,14 @@
         "slots": 5,
         "optional": true,
         "purgeMm3": 300,
-        "changeS": 50
+        "changeS": 50,
+        "tower": {
+          "x": 170,
+          "y": 140,
+          "w": 60,
+          "d": 45,
+          "brim": 2
+        }
       },
       "kinematics": "bedslinger",
       "nozzle": 0.4
@@ -358,7 +450,14 @@
         "slots": 5,
         "optional": true,
         "purgeMm3": 60,
-        "changeS": 15
+        "changeS": 15,
+        "tower": {
+          "x": 155,
+          "y": 140,
+          "w": 15,
+          "d": 60,
+          "brim": 3
+        }
       },
       "kinematics": "corexy",
       "nozzle": 0.4
@@ -396,7 +495,14 @@
         "slots": 4,
         "optional": true,
         "purgeMm3": 450,
-        "changeS": 55
+        "changeS": 55,
+        "tower": {
+          "x": 184,
+          "y": 345,
+          "w": 26,
+          "d": 26,
+          "brim": 3
+        }
       },
       "kinematics": "bedslinger",
       "nozzle": 0.4
@@ -418,7 +524,14 @@
         "slots": 4,
         "optional": true,
         "purgeMm3": 450,
-        "changeS": 55
+        "changeS": 55,
+        "tower": {
+          "x": 15,
+          "y": 110,
+          "w": 26,
+          "d": 26,
+          "brim": 3
+        }
       },
       "kinematics": "bedslinger",
       "nozzle": 0.4
@@ -456,7 +569,14 @@
         "slots": 4,
         "optional": true,
         "purgeMm3": 400,
-        "changeS": 50
+        "changeS": 50,
+        "tower": {
+          "x": 9,
+          "y": 185,
+          "w": 26,
+          "d": 26,
+          "brim": 3
+        }
       },
       "kinematics": "bedslinger",
       "nozzle": 0.4
@@ -510,7 +630,14 @@
         "slots": 4,
         "optional": true,
         "purgeMm3": 400,
-        "changeS": 50
+        "changeS": 50,
+        "tower": {
+          "x": 110,
+          "y": 225,
+          "w": 26,
+          "d": 26,
+          "brim": 3
+        }
       },
       "kinematics": "corexy",
       "nozzle": 0.4
@@ -532,7 +659,14 @@
         "slots": 4,
         "optional": true,
         "purgeMm3": 400,
-        "changeS": 50
+        "changeS": 50,
+        "tower": {
+          "x": 155,
+          "y": 315,
+          "w": 26,
+          "d": 26,
+          "brim": 3
+        }
       },
       "kinematics": "corexy",
       "nozzle": 0.4
@@ -554,7 +688,14 @@
         "slots": 4,
         "optional": true,
         "purgeMm3": 450,
-        "changeS": 50
+        "changeS": 50,
+        "tower": {
+          "x": 130,
+          "y": 265,
+          "w": 26,
+          "d": 26,
+          "brim": 3
+        }
       },
       "kinematics": "corexy",
       "nozzle": 0.4
@@ -576,7 +717,14 @@
         "slots": 4,
         "optional": false,
         "purgeMm3": 60,
-        "changeS": 15
+        "changeS": 15,
+        "tower": {
+          "x": 110,
+          "y": 225,
+          "w": 26,
+          "d": 26,
+          "brim": 3
+        }
       },
       "kinematics": "corexy",
       "nozzle": 0.4
@@ -598,7 +746,14 @@
         "slots": 4,
         "optional": true,
         "purgeMm3": 450,
-        "changeS": 55
+        "changeS": 55,
+        "tower": {
+          "x": 110,
+          "y": 225,
+          "w": 26,
+          "d": 26,
+          "brim": 3
+        }
       },
       "kinematics": "bedslinger",
       "nozzle": 0.4
@@ -620,7 +775,14 @@
         "slots": 4,
         "optional": true,
         "purgeMm3": 400,
-        "changeS": 50
+        "changeS": 50,
+        "tower": {
+          "x": 165,
+          "y": 214.5,
+          "w": 37.5,
+          "d": 37.5,
+          "brim": 3
+        }
       },
       "kinematics": "corexy",
       "nozzle": 0.4
@@ -658,7 +820,14 @@
         "slots": 4,
         "optional": true,
         "purgeMm3": 400,
-        "changeS": 50
+        "changeS": 50,
+        "tower": {
+          "x": 165,
+          "y": 214.5,
+          "w": 37.5,
+          "d": 37.5,
+          "brim": 3
+        }
       },
       "kinematics": "corexy",
       "nozzle": 0.4
@@ -744,7 +913,14 @@
         "slots": 4,
         "optional": true,
         "purgeMm3": 450,
-        "changeS": 55
+        "changeS": 55,
+        "tower": {
+          "x": 20,
+          "y": 193.7,
+          "w": 41.2,
+          "d": 41.2,
+          "brim": 5
+        }
       },
       "kinematics": "bedslinger",
       "nozzle": 0.4
@@ -766,7 +942,14 @@
         "slots": 4,
         "optional": true,
         "purgeMm3": 450,
-        "changeS": 55
+        "changeS": 55,
+        "tower": {
+          "x": 20,
+          "y": 250,
+          "w": 28.9,
+          "d": 28.9,
+          "brim": 5
+        }
       },
       "kinematics": "bedslinger",
       "nozzle": 0.4
@@ -788,7 +971,14 @@
         "slots": 4,
         "optional": true,
         "purgeMm3": 450,
-        "changeS": 55
+        "changeS": 55,
+        "tower": {
+          "x": 20,
+          "y": 211.1,
+          "w": 28.9,
+          "d": 28.9,
+          "brim": 5
+        }
       },
       "kinematics": "bedslinger",
       "nozzle": 0.4
@@ -810,7 +1000,14 @@
         "slots": 4,
         "optional": true,
         "purgeMm3": 400,
-        "changeS": 50
+        "changeS": 50,
+        "tower": {
+          "x": 165,
+          "y": 205.3,
+          "w": 24.6,
+          "d": 24.6,
+          "brim": 5
+        }
       },
       "kinematics": "corexy",
       "nozzle": 0.4
@@ -832,7 +1029,14 @@
         "slots": 4,
         "optional": true,
         "purgeMm3": 400,
-        "changeS": 50
+        "changeS": 50,
+        "tower": {
+          "x": 165,
+          "y": 250,
+          "w": 28.9,
+          "d": 28.9,
+          "brim": 5
+        }
       },
       "kinematics": "corexy",
       "nozzle": 0.4
@@ -854,7 +1058,14 @@
         "slots": 4,
         "optional": false,
         "purgeMm3": 250,
-        "changeS": 35
+        "changeS": 35,
+        "tower": {
+          "x": 20,
+          "y": 211.1,
+          "w": 28.9,
+          "d": 28.9,
+          "brim": 5
+        }
       },
       "kinematics": "bedslinger",
       "nozzle": 0.4
@@ -876,7 +1087,14 @@
         "slots": 4,
         "optional": true,
         "purgeMm3": 400,
-        "changeS": 50
+        "changeS": 50,
+        "tower": {
+          "x": 234,
+          "y": 312,
+          "w": 37.5,
+          "d": 37.5,
+          "brim": 3
+        }
       },
       "kinematics": "corexy",
       "nozzle": 0.4
@@ -898,7 +1116,14 @@
         "slots": 4,
         "optional": true,
         "purgeMm3": 400,
-        "changeS": 50
+        "changeS": 50,
+        "tower": {
+          "x": 183,
+          "y": 250,
+          "w": 37.5,
+          "d": 37.5,
+          "brim": 3
+        }
       },
       "kinematics": "corexy",
       "nozzle": 0.4
@@ -920,7 +1145,14 @@
         "slots": 4,
         "optional": true,
         "purgeMm3": 400,
-        "changeS": 50
+        "changeS": 50,
+        "tower": {
+          "x": 165,
+          "y": 217.5,
+          "w": 37.5,
+          "d": 37.5,
+          "brim": 3
+        }
       },
       "kinematics": "corexy",
       "nozzle": 0.4
@@ -942,7 +1174,8 @@
         "slots": 4,
         "optional": false,
         "purgeMm3": 350,
-        "changeS": 50
+        "changeS": 50,
+        "tower": null
       },
       "kinematics": "corexy",
       "nozzle": 0.4
@@ -996,7 +1229,14 @@
         "slots": 4,
         "optional": false,
         "purgeMm3": 60,
-        "changeS": 22
+        "changeS": 22,
+        "tower": {
+          "x": 165,
+          "y": 206.2,
+          "w": 31.6,
+          "d": 31.6,
+          "brim": 3
+        }
       },
       "kinematics": "corexy",
       "nozzle": 0.4
@@ -1018,7 +1258,14 @@
         "slots": 4,
         "optional": false,
         "purgeMm3": 60,
-        "changeS": 22
+        "changeS": 22,
+        "tower": {
+          "x": 165,
+          "y": 206.2,
+          "w": 31.6,
+          "d": 31.6,
+          "brim": 3
+        }
       },
       "kinematics": "corexy",
       "nozzle": 0.4
@@ -1120,7 +1367,14 @@
         "slots": 4,
         "optional": false,
         "purgeMm3": 60,
-        "changeS": 12
+        "changeS": 12,
+        "tower": {
+          "x": 13,
+          "y": 214.5,
+          "w": 39.8,
+          "d": 39.8,
+          "brim": 5
+        }
       },
       "kinematics": "corexy",
       "nozzle": 0.4

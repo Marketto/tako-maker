@@ -445,5 +445,8 @@
  "Il piatto": "Pllaka",
  "Quanti colori può stampare nello stesso pezzo?": "Sa ngjyra mund të printojë në të njëjtën pjesë?",
  "sistema multicolore": "sistem shumëngjyrësh",
- "Solo la testina (CoreXY)": "Vetëm koka (CoreXY)"
+ "Solo la testina (CoreXY)": "Vetëm koka (CoreXY)",
+ "Il modello e la torre di spurgo non entrano insieme nel piatto": "Modeli dhe kulla e pastrimit nuk nxënë bashkë në pllakë",
+ "Torre di spurgo": "Kulla e pastrimit",
+ "Torre di spurgo: ho lasciato libera la zona {x1}–{x2} × {y1}–{y2} mm, dove {slicer} la mette di solito (nell'anteprima è il riquadro a righe). Se la sposti nello slicer, tienila lontana dal modello.": "Kulla e pastrimit: e lashë të lirë zonën {x1}–{x2} × {y1}–{y2} mm, ku {slicer} zakonisht e vendos (në pamje është drejtkëndëshi me vija). Nëse e lëviz në slicer, mbaje larg modelit."
 }

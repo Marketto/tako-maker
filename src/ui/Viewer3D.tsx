@@ -5,6 +5,7 @@ import type { PartResult } from '../core/geometry/evaluate';
 import type { AssemblyStep } from '../core/assembly/plan';
 import type { Vec3 } from '../core/types';
 import { t } from '../i18n';
+import { placeAvoiding, type Rect } from '../core/plate/primeTower';
 
 /* Anteprima 3D: rotazione (un dito / tasto sinistro), zoom (pizzico / rotellina),
    spostamento (due dita / tasto destro). In modalità montaggio anima il pezzo
@@ -15,6 +16,8 @@ interface Props {
   colors: Record<string, string>;
   bed: Vec3;
   assembly?: { steps: AssemblyStep[]; step: number } | null;
+  /** Zona del piatto lasciata libera per la torre di spurgo. */
+  keepFree?: Rect | null;
 }
 
 interface SceneRefs {
@@ -31,7 +34,7 @@ interface SceneRefs {
 
 const ANIM_MS = 1100;
 
-export function Viewer3D({ parts, colors, bed, assembly }: Props) {
+export function Viewer3D({ parts, colors, bed, assembly, keepFree = null }: Props) {
   const host = useRef<HTMLDivElement>(null);
   const refs = useRef<SceneRefs | null>(null);
 
@@ -107,7 +110,33 @@ export function Viewer3D({ parts, colors, bed, assembly }: Props) {
     const plate = new THREE.Mesh(new THREE.PlaneGeometry(bx, by), new THREE.MeshBasicMaterial({ color: 0xebe6da, transparent: true, opacity: 0.6 }));
     plate.position.set(bx / 2, by / 2, -0.1);
     r.bed.add(plate, grid);
-  }, [bed]);
+    if (keepFree) {
+      // Zona della torre di spurgo: riquadro a righe rosa
+      const c = document.createElement('canvas');
+      c.width = c.height = 64;
+      const g = c.getContext('2d');
+      if (g) {
+        g.fillStyle = 'rgba(255,79,160,0.22)';
+        g.fillRect(0, 0, 64, 64);
+        g.strokeStyle = 'rgba(255,79,160,0.85)';
+        g.lineWidth = 8;
+        for (let k = -64; k < 128; k += 22) {
+          g.beginPath();
+          g.moveTo(k, 64);
+          g.lineTo(k + 64, 0);
+          g.stroke();
+        }
+      }
+      const tex = new THREE.CanvasTexture(c);
+      tex.wrapS = tex.wrapT = THREE.RepeatWrapping;
+      tex.repeat.set(keepFree.w / 16, keepFree.d / 16);
+      const zone = new THREE.Mesh(new THREE.PlaneGeometry(keepFree.w, keepFree.d), new THREE.MeshBasicMaterial({ map: tex, transparent: true, depthWrite: false }));
+      zone.position.set(keepFree.x + keepFree.w / 2, keepFree.y + keepFree.d / 2, 0.02);
+      const edge = new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.BoxGeometry(keepFree.w, keepFree.d, 0.01)), new THREE.LineBasicMaterial({ color: 0xff4fa0 }));
+      edge.position.copy(zone.position);
+      r.bed.add(zone, edge);
+    }
+  }, [bed, keepFree?.x, keepFree?.y, keepFree?.w, keepFree?.d]);
 
   // Mesh delle parti
   useEffect(() => {
@@ -134,9 +163,11 @@ export function Viewer3D({ parts, colors, bed, assembly }: Props) {
       g.computeBoundingBox();
       box.union(g.boundingBox!);
     }
-    // Centra il modello sul piatto (solo visualizzazione).
+    // Come nel file esportato: al centro del piatto o accanto alla torre di spurgo.
     const c = box.getCenter(new THREE.Vector3());
-    r.group.position.set(bed[0] / 2 - c.x, bed[1] / 2 - c.y, -box.min.z);
+    const spot = placeAvoiding(box.max.x - box.min.x, box.max.y - box.min.y, bed, keepFree);
+    if (spot) r.group.position.set(spot.x - box.min.x, spot.y - box.min.y, -box.min.z);
+    else r.group.position.set(bed[0] / 2 - c.x, bed[1] / 2 - c.y, -box.min.z);
 
     const size = box.getSize(new THREE.Vector3());
     const fitKey = size.toArray().map((v) => Math.round(v / 10)).join(',');
@@ -150,7 +181,7 @@ export function Viewer3D({ parts, colors, bed, assembly }: Props) {
       r.camera.far = dist * 10;
       r.camera.updateProjectionMatrix();
     }
-  }, [parts, colors, bed]);
+  }, [parts, colors, bed, keepFree?.x, keepFree?.y, keepFree?.w, keepFree?.d]);
 
   // Montaggio
   useEffect(() => {

@@ -445,5 +445,8 @@
  "Il piatto": "Podložka",
  "Quanti colori può stampare nello stesso pezzo?": "Koľko farieb dokáže vytlačiť v jednom diele?",
  "sistema multicolore": "viacfarebný systém",
- "Solo la testina (CoreXY)": "Len tlačová hlava (CoreXY)"
+ "Solo la testina (CoreXY)": "Len tlačová hlava (CoreXY)",
+ "Il modello e la torre di spurgo non entrano insieme nel piatto": "Model a čistiaca veža sa na podložku nezmestia naraz",
+ "Torre di spurgo": "Čistiaca veža",
+ "Torre di spurgo: ho lasciato libera la zona {x1}–{x2} × {y1}–{y2} mm, dove {slicer} la mette di solito (nell'anteprima è il riquadro a righe). Se la sposti nello slicer, tienila lontana dal modello.": "Čistiaca veža: nechal som voľnú oblasť {x1}–{x2} × {y1}–{y2} mm, kam ju {slicer} zvyčajne umiestňuje (v náhľade je to pruhovaný obdĺžnik). Ak ju v sliceri presunieš, drž ju ďalej od modelu."
 }

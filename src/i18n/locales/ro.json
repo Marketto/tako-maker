@@ -445,5 +445,8 @@
  "Il piatto": "Placa",
  "Quanti colori può stampare nello stesso pezzo?": "Câte culori poate imprima în aceeași piesă?",
  "sistema multicolore": "sistem multicolor",
- "Solo la testina (CoreXY)": "Doar capul de imprimare (CoreXY)"
+ "Solo la testina (CoreXY)": "Doar capul de imprimare (CoreXY)",
+ "Il modello e la torre di spurgo non entrano insieme nel piatto": "Modelul și turnul de curățare nu încap împreună pe placă",
+ "Torre di spurgo": "Turn de curățare",
+ "Torre di spurgo: ho lasciato libera la zona {x1}–{x2} × {y1}–{y2} mm, dove {slicer} la mette di solito (nell'anteprima è il riquadro a righe). Se la sposti nello slicer, tienila lontana dal modello.": "Turn de curățare: am lăsat liberă zona {x1}–{x2} × {y1}–{y2} mm, unde {slicer} îl pune de obicei (în previzualizare este dreptunghiul cu dungi). Dacă îl muți în slicer, ține-l departe de model."
 }
