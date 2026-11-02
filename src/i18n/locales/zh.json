@@ -445,5 +445,8 @@
  "Il piatto": "打印板",
  "Quanti colori può stampare nello stesso pezzo?": "同一个零件里能打印几种颜色？",
  "sistema multicolore": "多色系统",
- "Solo la testina (CoreXY)": "只有打印头（CoreXY）"
+ "Solo la testina (CoreXY)": "只有打印头（CoreXY）",
+ "Il modello e la torre di spurgo non entrano insieme nel piatto": "模型和擦拭塔无法同时放进打印板",
+ "Torre di spurgo": "擦拭塔",
+ "Torre di spurgo: ho lasciato libera la zona {x1}–{x2} × {y1}–{y2} mm, dove {slicer} la mette di solito (nell'anteprima è il riquadro a righe). Se la sposti nello slicer, tienila lontana dal modello.": "擦拭塔：我空出了 {x1}–{x2} × {y1}–{y2} mm 区域，{slicer} 通常把它放在这里（预览中是带条纹的矩形）。如果你在切片软件中移动它，请让它远离模型。"
 }

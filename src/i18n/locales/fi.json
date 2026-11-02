@@ -445,5 +445,8 @@
  "Il piatto": "Alusta",
  "Quanti colori può stampare nello stesso pezzo?": "Montako väriä se voi tulostaa samaan osaan?",
  "sistema multicolore": "monivärijärjestelmä",
- "Solo la testina (CoreXY)": "Vain tulostuspää (CoreXY)"
+ "Solo la testina (CoreXY)": "Vain tulostuspää (CoreXY)",
+ "Il modello e la torre di spurgo non entrano insieme nel piatto": "Malli ja esitäyttötorni eivät mahdu alustalle yhtä aikaa",
+ "Torre di spurgo": "Esitäyttötorni",
+ "Torre di spurgo: ho lasciato libera la zona {x1}–{x2} × {y1}–{y2} mm, dove {slicer} la mette di solito (nell'anteprima è il riquadro a righe). Se la sposti nello slicer, tienila lontana dal modello.": "Esitäyttötorni: jätin alueen {x1}–{x2} × {y1}–{y2} mm vapaaksi, koska {slicer} sijoittaa sen yleensä siihen (esikatselussa se on raidallinen suorakulmio). Jos siirrät sitä slicerissä, pidä se kaukana mallista."
 }

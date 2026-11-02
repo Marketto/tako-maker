@@ -445,5 +445,8 @@
  "Il piatto": "Platan",
  "Quanti colori può stampare nello stesso pezzo?": "Hversu marga liti getur hann prentað í sama hlut?",
  "sistema multicolore": "marglitakerfi",
- "Solo la testina (CoreXY)": "Aðeins prenthausinn (CoreXY)"
+ "Solo la testina (CoreXY)": "Aðeins prenthausinn (CoreXY)",
+ "Il modello e la torre di spurgo non entrano insieme nel piatto": "Líkanið og hreinsiturninn komast ekki saman fyrir á plötunni",
+ "Torre di spurgo": "Hreinsiturn",
+ "Torre di spurgo: ho lasciato libera la zona {x1}–{x2} × {y1}–{y2} mm, dove {slicer} la mette di solito (nell'anteprima è il riquadro a righe). Se la sposti nello slicer, tienila lontana dal modello.": "Hreinsiturn: ég skildi svæðið {x1}–{x2} × {y1}–{y2} mm eftir autt, þar sem {slicer} setur hann venjulega (í forskoðuninni er það röndótti ferhyrningurinn). Ef þú færir hann í slicernum, hafðu hann fjarri líkaninu."
 }

@@ -445,5 +445,8 @@
  "Il piatto": "Η πλάκα",
  "Quanti colori può stampare nello stesso pezzo?": "Πόσα χρώματα μπορεί να τυπώσει στο ίδιο κομμάτι;",
  "sistema multicolore": "πολύχρωμο σύστημα",
- "Solo la testina (CoreXY)": "Μόνο η κεφαλή (CoreXY)"
+ "Solo la testina (CoreXY)": "Μόνο η κεφαλή (CoreXY)",
+ "Il modello e la torre di spurgo non entrano insieme nel piatto": "Το μοντέλο και ο πύργος καθαρισμού δεν χωράνε μαζί στην πλάκα",
+ "Torre di spurgo": "Πύργος καθαρισμού",
+ "Torre di spurgo: ho lasciato libera la zona {x1}–{x2} × {y1}–{y2} mm, dove {slicer} la mette di solito (nell'anteprima è il riquadro a righe). Se la sposti nello slicer, tienila lontana dal modello.": "Πύργος καθαρισμού: άφησα ελεύθερη την περιοχή {x1}–{x2} × {y1}–{y2} mm, όπου συνήθως τον βάζει το {slicer} (στην προεπισκόπηση είναι το ριγέ ορθογώνιο). Αν τον μετακινήσεις στο slicer, κράτα τον μακριά από το μοντέλο."
 }

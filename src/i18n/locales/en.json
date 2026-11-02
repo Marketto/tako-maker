@@ -445,5 +445,8 @@
  "Il piatto": "The plate",
  "Quanti colori può stampare nello stesso pezzo?": "How many colors can it print in the same part?",
  "sistema multicolore": "multicolor system",
- "Solo la testina (CoreXY)": "Only the print head (CoreXY)"
+ "Solo la testina (CoreXY)": "Only the print head (CoreXY)",
+ "Il modello e la torre di spurgo non entrano insieme nel piatto": "The model and the prime tower don't fit on the plate together",
+ "Torre di spurgo": "Prime tower",
+ "Torre di spurgo: ho lasciato libera la zona {x1}–{x2} × {y1}–{y2} mm, dove {slicer} la mette di solito (nell'anteprima è il riquadro a righe). Se la sposti nello slicer, tienila lontana dal modello.": "Prime tower: I left the area {x1}–{x2} × {y1}–{y2} mm free, where {slicer} usually puts it (in the preview it's the striped rectangle). If you move it in the slicer, keep it away from the model."
 }
