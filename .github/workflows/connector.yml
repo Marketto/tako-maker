@@ -1,0 +1,49 @@
+name: Connettore per la chat (Cloudflare Worker)
+
+# Pubblica il server MCP di Printopus solo se sono configurati i secret di Cloudflare
+# e la variabile CONNECTOR_KV_ID (vedi docs/CONNETTORE.md). Altrimenti il job viene saltato.
+
+on:
+  push:
+    branches: [main]
+    paths: ['src/**', 'connector/**', '.github/workflows/connector.yml']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  deploy-connector:
+    runs-on: ubuntu-latest
+    env:
+      HAS_CF: ${{ secrets.CLOUDFLARE_API_TOKEN != '' && vars.CONNECTOR_KV_ID != '' }}
+    steps:
+      - name: Configurazione mancante
+        if: env.HAS_CF != 'true'
+        run: echo "Connettore non pubblicato: servono il secret CLOUDFLARE_API_TOKEN, CLOUDFLARE_ACCOUNT_ID e la variabile CONNECTOR_KV_ID (è facoltativo)."
+      - uses: actions/checkout@v4
+        if: env.HAS_CF == 'true'
+      - uses: actions/setup-node@v4
+        if: env.HAS_CF == 'true'
+        with:
+          node-version: 22
+          cache: npm
+      - if: env.HAS_CF == 'true'
+        run: npm ci
+      - if: env.HAS_CF == 'true'
+        run: npm run build:connettore
+      - name: Imposta KV e indirizzi
+        if: env.HAS_CF == 'true'
+        working-directory: connector
+        run: |
+          sed -i "s/SOSTITUISCI_CON_ID_DEL_KV/${{ vars.CONNECTOR_KV_ID }}/" wrangler.toml
+          APP="https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/"
+          sed -i "s#^APP_URL = .*#APP_URL = \"$APP\"#" wrangler.toml
+          sed -i "s#^ALLOWED_ORIGIN = .*#ALLOWED_ORIGIN = \"https://${{ github.repository_owner }}.github.io\"#" wrangler.toml
+      - name: Pubblica il Worker
+        if: env.HAS_CF == 'true'
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          workingDirectory: connector

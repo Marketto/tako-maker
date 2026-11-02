@@ -26,13 +26,16 @@ export function KeysEditor({ compact = false }: { compact?: boolean }) {
     [next[i], next[j]] = [next[j], next[i]];
     store.setKeys(next);
   };
-  const add = (provider: ProviderId) => {
+  const add = (provider: ProviderId, free = false) => {
     const n = keys.filter((k) => k.provider === provider).length + 1;
-    store.setKeys([...keys, { id: uid(), provider, label: `${PROVIDERS[provider].label.split(' ')[0]}${n > 1 ? ` ${n}` : ''}`, key: '', enabled: true }]);
+    const label = free ? t('Gemini gratuito') : `${PROVIDERS[provider].label.split(' ')[0]}${n > 1 ? ` ${n}` : ''}`;
+    store.setKeys([...keys, { id: uid(), provider, label, key: '', enabled: true, free: free || undefined }]);
   };
+  const hasFree = keys.some((k) => k.free);
 
   return (
     <div className="keys">
+      {!hasFree && <FreeGeminiGuide onAdd={() => add('gemini', true)} />}
       {keys.length === 0 && <p className="muted small">{t('Nessuna chiave. Aggiungine almeno una: puoi usare Claude, GPT o Gemini, anche più di una.')}</p>}
       <ol className="key-list">
         {keys.map((k, i) => {
@@ -51,6 +54,7 @@ export function KeysEditor({ compact = false }: { compact?: boolean }) {
                   ))}
                 </select>
                 <span className={`key-status ${tone}`}>{status}</span>
+                {k.free && <span className="key-status free">{t('gratis')}</span>}
                 {st?.reason && !available && (
                   <button className="link small" onClick={() => { router.reset(k.id); refresh((n) => n + 1); }}>{t('Riprova')}</button>
                 )}
@@ -73,6 +77,12 @@ export function KeysEditor({ compact = false }: { compact?: boolean }) {
                   <input type="checkbox" checked={k.enabled} onChange={(e) => update(k.id, { enabled: e.target.checked })} />
                   {t('Attiva')}
                 </label>
+                {k.provider === 'gemini' && (
+                  <label className="check small">
+                    <input type="checkbox" checked={!!k.free} onChange={(e) => update(k.id, { free: e.target.checked || undefined })} />
+                    {t('Piano gratuito')}
+                  </label>
+                )}
                 <a className="small" href={info.keyUrl} target="_blank" rel="noreferrer">{t('Crea una chiave')}</a>
                 <span className="spacer" />
                 <button className="icon-btn" aria-label={t('Sposta su (più priorità)')} disabled={i === 0} onClick={() => move(i, -1)}>↑</button>
@@ -91,6 +101,27 @@ export function KeysEditor({ compact = false }: { compact?: boolean }) {
       {!compact && keys.length > 1 && (
         <p className="muted small">{t('L’app usa la prima chiave disponibile; se finisce il credito, è in pausa o non risponde passa automaticamente alla successiva.')}</p>
       )}
+    </div>
+  );
+}
+
+/** Guida per ottenere una chiave Gemini gratuita da Google AI Studio. */
+export function FreeGeminiGuide({ onAdd }: { onAdd: () => void }) {
+  return (
+    <div className="free-guide">
+      <strong>{t('Gratis con Gemini')}</strong>
+      <ol>
+        <li>
+          {t('Apri Google AI Studio e accedi con il tuo account Google:')}{' '}
+          <a href={PROVIDERS.gemini.keyUrl} target="_blank" rel="noreferrer">aistudio.google.com/apikey</a>
+        </li>
+        <li>{t('Premi “Create API key” (crea chiave API) e copiala.')}</li>
+        <li>{t('Torna qui, premi il pulsante qui sotto e incolla la chiave.')}</li>
+      </ol>
+      <p className="muted small">
+        {t('Il piano gratuito ha un limite di richieste al giorno: se lo superi, l’app aspetta o passa a un’altra chiave. Google può usare i testi inviati per migliorare i suoi prodotti: non scrivere dati personali.')}
+      </p>
+      <button className="btn small primary" onClick={onAdd}>{t('Aggiungi la chiave gratuita')}</button>
     </div>
   );
 }

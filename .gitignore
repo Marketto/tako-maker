@@ -9,3 +9,5 @@ coverage/
 .DS_Store
 .wrangler/
 proxy/.dev.vars
+connector/dist
+.wrangler

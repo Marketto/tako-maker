@@ -16,16 +16,19 @@ import { Budget } from '../agent/budget';
 import type { AiClient } from '../agent/client';
 import { KeyRouter } from '../agent/providers/keyRouter';
 import { LIMITS } from '../agent/config';
-import { route } from '../agent/router';
+import { route, routeByRules } from '../agent/router';
 import { resumeAgent, runAgent, type AgentState, type RunInput } from '../agent/runner';
 import { SKILLS, type SkillName } from '../agent/skills';
-import type { SearchResult, ToolEnv } from '../agent/tools';
+import { runTool, type SearchResult, type ToolEnv } from '../agent/tools';
 import type { ImportedMeshInfo } from '../agent/context';
 import { cachedSearch, loadMesh, printerOf, saveMesh, saveProject, store, storeSearch, uid, type ChatItem, type Project } from './store';
-import { t } from '../i18n';
+import { localeInfo, t } from '../i18n';
 import { shoppingListText } from '../core/hardware';
 import { printedTogether } from '../core/design/links';
 import { plateKeepFree } from '../core/plate';
+import { buildManualPrompt, correctionPrompt, parseManualReply } from '../agent/manual';
+import { createSession, getSession, putSession } from './connector';
+import type { ConnectorState } from '../connector/state';
 
 /* Orchestratore di un progetto aperto: collega UI, router, agente,
    geometria (worker) e analisi locali. La UI si limita a leggere lo snapshot. */
@@ -40,6 +43,17 @@ export interface Snapshot {
   busy: string | null;
   error: string | null;
   meshInfo: ImportedMeshInfo[];
+  /** Modalità copia e incolla: richiesta pronta da copiare nella chat. */
+  manual: ManualRequest | null;
+}
+
+export interface ManualRequest {
+  prompt: string;
+  skill: SkillName;
+  /** Testo della richiesta originale (per le domande di seguito). */
+  text: string;
+  /** true se è una richiesta di correzione dopo una risposta non valida. */
+  correction?: boolean;
 }
 
 let router: KeyRouter | null = null;
@@ -57,11 +71,12 @@ export class ProjectSession {
   private listeners = new Set<() => void>();
   private meshes: Record<string, RawMesh> = {};
   private pendingAgent: { question: Question; state: AgentState } | null = null;
+  private pendingManual: { question: Question; skill: SkillName; text: string } | null = null;
   private abort: AbortController | null = null;
   private evalSeq = 0;
 
   private constructor(project: Project) {
-    this.snap = { project, parts: [], geometryErrors: [], report: null, assembly: null, questions: [], busy: null, error: null, meshInfo: [] };
+    this.snap = { project, parts: [], geometryErrors: [], report: null, assembly: null, questions: [], busy: null, error: null, meshInfo: [], manual: null };
   }
 
   static async open(project: Project): Promise<ProjectSession> {
@@ -71,6 +86,7 @@ export class ProjectSession {
       if (m) s.meshes[id] = m.mesh;
     }
     await s.refresh();
+    if (project.connector && store.get().settings.aiMode === 'connector') s.startSync();
     return s;
   }
 
@@ -102,7 +118,7 @@ export class ProjectSession {
     const seq = ++this.evalSeq;
     const d = this.snap.project.design;
     if (!d.parts.length) {
-      this.set({ parts: [], report: null, assembly: null, questions: this.pendingAgent ? [this.pendingAgent.question] : [], geometryErrors: [] });
+      this.set({ parts: [], report: null, assembly: null, questions: this.pendingQuestions(), geometryErrors: [] });
       return;
     }
     try {
@@ -121,16 +137,143 @@ export class ProjectSession {
         report,
         assembly,
         meshInfo,
-        questions: [...(this.pendingAgent ? [this.pendingAgent.question] : []), ...report.questions],
+        questions: [...this.pendingQuestions(), ...report.questions],
       });
     } catch (e) {
       this.set({ error: t('Errore nel calcolo della geometria: {error}', { error: (e as Error).message }) });
     }
   }
 
+  private pendingQuestions(): Question[] {
+    return [...(this.pendingAgent ? [this.pendingAgent.question] : []), ...(this.pendingManual ? [this.pendingManual.question] : [])];
+  }
+
   private async persist(project: Project) {
     this.set({ project });
     await saveProject(project);
+    if (project.connector && this.syncSig(project) !== this.lastSynced) this.schedulePush();
+  }
+
+  /* ---------- Connettore: la chat dell'utente (es. Claude) fa da assistente ---------- */
+
+  private syncTimer: ReturnType<typeof setInterval> | null = null;
+  private pushTimer: ReturnType<typeof setTimeout> | null = null;
+  private lastSynced = '';
+  private syncing = false;
+
+  private syncSig(p: Project) {
+    return JSON.stringify([p.design, p.answered]);
+  }
+
+  private connectorState() {
+    const p = this.snap.project;
+    const info = localeInfo();
+    return { setup: this.setup, printer: this.printer, design: p.design, answered: p.answered, language: info.code, languageName: info.english };
+  }
+
+  /** Crea la sessione condivisa e restituisce il codice da dare alla chat. */
+  async connect() {
+    this.set({ busy: t('Preparo il collegamento…'), error: null });
+    try {
+      const { code, v } = await createSession(this.connectorState());
+      this.lastSynced = this.syncSig(this.snap.project);
+      await this.persist({ ...this.snap.project, connector: { code, v, notesAt: Date.now() } });
+      this.startSync();
+    } catch (e) {
+      this.set({ error: t('Non riesco a raggiungere il connettore: {error}', { error: (e as Error).message }) });
+    } finally {
+      this.set({ busy: null });
+    }
+  }
+
+  async disconnect() {
+    this.stopSync();
+    const { connector: _c, ...rest } = this.snap.project;
+    await this.persist(rest);
+  }
+
+  startSync() {
+    if (this.syncTimer || !this.snap.project.connector) return;
+    this.lastSynced = this.syncSig(this.snap.project);
+    this.syncTimer = setInterval(() => void this.pull(), 4000);
+    void this.pull();
+  }
+
+  stopSync() {
+    if (this.syncTimer) clearInterval(this.syncTimer);
+    if (this.pushTimer) clearTimeout(this.pushTimer);
+    this.syncTimer = this.pushTimer = null;
+  }
+
+  dispose() {
+    this.stopSync();
+  }
+
+  /** Legge lo stato condiviso e applica le modifiche arrivate dalla chat. */
+  async pull() {
+    const c = this.snap.project.connector;
+    if (!c || this.syncing || (typeof document !== 'undefined' && document.hidden)) return;
+    this.syncing = true;
+    try {
+      const remote = await getSession(c.code);
+      if (!remote) {
+        this.stopSync();
+        this.set({ error: t('Il collegamento con la chat è scaduto: premi «Collega alla chat» per crearne uno nuovo.') });
+        return;
+      }
+      if (remote.v > c.v) await this.applyRemote(remote);
+    } catch {
+      /* rete assente: si riprova al prossimo giro */
+    } finally {
+      this.syncing = false;
+    }
+  }
+
+  private async applyRemote(remote: ConnectorState) {
+    const p = this.snap.project;
+    const c = p.connector!;
+    const notes = remote.notes.filter((n) => n.at > c.notesAt);
+    const chat = [...p.chat, ...notes.map((n) => ({ id: uid(), role: n.role, text: n.text, results: n.results, costUsd: 0 }))];
+    const changed = JSON.stringify(remote.design) !== JSON.stringify(p.design);
+    const next: Project = {
+      ...p,
+      design: remote.design,
+      name: remote.design.name || p.name,
+      undo: changed ? [...p.undo, p.design].slice(-20) : p.undo,
+      answered: remote.answered,
+      chat,
+      connector: { code: c.code, v: remote.v, notesAt: Math.max(c.notesAt, ...remote.notes.map((n) => n.at)) },
+    };
+    this.lastSynced = this.syncSig(next);
+    await this.persist(next);
+    if (changed || notes.length) await this.refresh();
+  }
+
+  private schedulePush() {
+    if (this.pushTimer) clearTimeout(this.pushTimer);
+    this.pushTimer = setTimeout(() => void this.push(), 600);
+  }
+
+  /** Manda alla chat le modifiche fatte nell'app (risposte alle domande, colori, annulla…). */
+  private async push() {
+    const p = this.snap.project;
+    const c = p.connector;
+    if (!c || this.syncSig(p) === this.lastSynced) return;
+    try {
+      const state: ConnectorState = { ...this.connectorState(), v: c.v, updatedAt: 0, notes: [] };
+      const r = await putSession(c.code, c.v, state);
+      if ('conflict' in r) {
+        await this.applyRemote(r.conflict);
+        this.set({ error: t('Nel frattempo la chat ha cambiato il modello: ho caricato la versione più recente.') });
+        return;
+      }
+      this.lastSynced = this.syncSig(p);
+      const now = this.snap.project;
+      this.set({ project: { ...now, connector: { ...now.connector!, v: r.v } } });
+      await saveProject(this.snap.project);
+    } catch {
+      this.schedulePush();
+    }
   }
 
   private async commitDesign(design: Design) {
@@ -201,11 +344,12 @@ export class ProjectSession {
     text = text.trim();
     if (!text || this.snap.busy) return;
     this.set({ error: null });
+    if (store.get().settings.aiMode === 'manual') return this.prepareManual(text, force);
     const history = this.snap.project.chat.map((c) => ({ role: c.role, text: c.text })).filter((t) => t.text);
     await this.pushChat({ role: 'user', text });
     const client = makeClient();
     if (!client.isConfigured()) {
-      this.set({ error: t('Per usare l’assistente aggiungi una chiave AI (Claude, GPT o Gemini) nelle impostazioni (icona ⚙).') });
+      this.set({ error: t('Per usare l’assistente scegli come collegarlo nelle impostazioni (⚙): chiave Gemini gratuita, copia e incolla con la tua chat, connettore per Claude o chiave a pagamento.') });
       return;
     }
     this.set({ busy: t('Capisco cosa ti serve…') });
@@ -256,9 +400,101 @@ export class ProjectSession {
     this.abort?.abort();
   }
 
+  /* ---------- Copia e incolla con una chat qualsiasi ---------- */
+
+  /** Prepara la richiesta da copiare (nessuna chiamata API). */
+  async prepareManual(text: string, force?: SkillName, pushUser = true) {
+    const s = store.get().settings;
+    const design = this.snap.project.design;
+    const decision = force ? { skill: force, hints: {} as { children?: boolean } } : routeByRules(text, design, { searchFirst: s.searchFirst });
+    if (decision.hints.children && !design.intendedUse.children) await this.applyLocal([{ op: 'set_meta', children: true }]);
+    const history = this.snap.project.chat.map((c) => ({ role: c.role, text: c.text })).filter((x) => x.text);
+    if (pushUser) await this.pushChat({ role: 'user', text });
+    if (decision.skill === 'cerca-modelli') {
+      const cached = await cachedSearch(text, LIMITS.searchCacheDays);
+      if (cached) {
+        await this.pushChat({ role: 'assistant', text: t('Ecco i modelli trovati (ricerca già fatta di recente, nessun costo):'), results: cached, skill: decision.skill, costUsd: 0 });
+        return;
+      }
+    }
+    const prompt = buildManualPrompt({
+      skill: SKILLS[decision.skill],
+      setup: this.setup,
+      printer: this.printer,
+      design: this.snap.project.design,
+      report: this.snap.report ?? undefined,
+      meshes: this.snap.meshInfo,
+      reference: this.snap.project.reference,
+      history,
+      text,
+    });
+    this.set({ manual: { prompt, skill: decision.skill, text } });
+  }
+
+  cancelManual() {
+    this.set({ manual: null, error: null });
+  }
+
+  /** Applica la risposta incollata dalla chat. */
+  async applyManual(reply: string) {
+    const m = this.snap.manual;
+    if (!m) return;
+    this.set({ error: null });
+    let parsed;
+    try {
+      parsed = parseManualReply(reply);
+    } catch (e) {
+      this.set({ error: (e as Error).message });
+      return;
+    }
+    if (parsed.ops?.length && SKILLS[m.skill].tools.includes('edit_design')) {
+      this.set({ busy: t('Modifico il modello…') });
+      try {
+        const out = await runTool('edit_design', { ops: parsed.ops, summary: parsed.summary }, this.env());
+        if (out.kind === 'result' && out.isError) {
+          this.set({ manual: { ...m, prompt: correctionPrompt(out.content), correction: true }, error: t('La risposta non si può applicare: copia la richiesta di correzione e incolla di nuovo la risposta.') });
+          return;
+        }
+      } finally {
+        this.set({ busy: null });
+      }
+    }
+    this.set({ manual: null });
+    if (parsed.results) {
+      if (parsed.results.length) await storeSearch(m.text, parsed.results);
+      await this.pushChat({
+        role: 'assistant',
+        text: parsed.message || (parsed.results.length ? t('Ecco cosa ho trovato. Scegline uno oppure chiedimi di crearlo da zero.') : t('Non ho trovato modelli con licenza adatta. Vuoi che lo crei da zero?')),
+        results: parsed.results,
+        skill: m.skill,
+        costUsd: 0,
+      });
+    } else if (parsed.message || !parsed.question) {
+      await this.pushChat({ role: 'assistant', text: parsed.message || t('Fatto.'), skill: m.skill, costUsd: 0 });
+    }
+    if (parsed.question) {
+      const q = parsed.question;
+      this.pendingManual = {
+        skill: m.skill,
+        text: m.text,
+        question: { id: `manual:${Date.now()}`, key: `manual:${q.question}`, text: q.question, options: q.options, multi: q.multi, source: 'manual' },
+      };
+    }
+    await this.refresh();
+  }
+
   /** Risposta a una domanda (analisi locale = zero token, agente = riprende il ciclo). */
   async answer(q: Question, selected: string[]) {
     const chosen = q.options.filter((o) => selected.includes(o.id));
+    if (q.source === 'manual' && this.pendingManual?.question.id === q.id) {
+      const pending = this.pendingManual;
+      this.pendingManual = null;
+      const label = chosen.map((o) => o.label).join(', ') || t('nessuna preferenza');
+      await this.pushChat({ role: 'user', text: label });
+      await this.prepareManual(`${pending.text}\n\nAlla tua domanda «${q.text}» l'utente ha risposto: ${label}`, pending.skill, false);
+      await this.refresh();
+      return;
+    }
     if (q.source === 'agent' && this.pendingAgent?.question.id === q.id) {
       const pending = this.pendingAgent;
       this.pendingAgent = null;
@@ -279,8 +515,17 @@ export class ProjectSession {
     const ops = [...(q.baseOps ?? []), ...chosen.flatMap((o) => o.ops ?? [])];
     const ai = chosen.find((o) => o.action === 'ask_ai' && o.prompt);
     if (ai) {
+      const mode = store.get().settings.aiMode;
+      if (mode !== 'api') {
+        const p0 = this.snap.project;
+        await this.persist({ ...p0, answered: [...p0.answered, q.key] });
+        if (ops.length) await this.applyLocal(ops);
+        if (mode === 'manual') await this.prepareManual(ai.prompt!, 'modifica-modello');
+        else await this.pushChat({ role: 'assistant', text: t('Chiedilo alla chat collegata: «{request}»', { request: ai.prompt! }) });
+        return;
+      }
       if (!makeClient().isConfigured()) {
-        this.set({ error: t('Per usare l’assistente aggiungi una chiave AI (Claude, GPT o Gemini) nelle impostazioni (icona ⚙).') });
+        this.set({ error: t('Per usare l’assistente scegli come collegarlo nelle impostazioni (⚙): chiave Gemini gratuita, copia e incolla con la tua chat, connettore per Claude o chiave a pagamento.') });
         return;
       }
       const p0 = this.snap.project;
