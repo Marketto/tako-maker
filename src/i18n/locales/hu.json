@@ -435,5 +435,15 @@
  "si sente lo scatto, corsa breve": "érezhető kattanás, rövid út",
  "Sotto il pulsante \"{name}\" il guscio è troppo sottile: servono almeno {mm} mm.": "\"{name}\" gomb alatt túl vékony a ház: legalább {mm} mm kell.",
  "Tra \"{a}\" e \"{b}\" c'è un tratto di bordo di circa {mm} mm senza ganci: lì le parti possono aprirsi. Allarga quel bordo (almeno 6 mm) per far posto a un gancio intermedio.": "\"{a}\" és \"{b}\" között van egy kb. {mm} mm-es peremszakasz pattintós rögzítő nélkül: ott szétnyílhatnak az alkatrészek. Szélesítsd ki azt a peremet (legalább 6 mm), hogy elférjen egy köztes rögzítő.",
- "Una parte stampata già montata (cerniera o pulsante) unisce parti di colori diversi": "Egy összeszerelve nyomtatott alkatrész (zsanér vagy gomb) különböző színű alkatrészeket köt össze"
+ "Una parte stampata già montata (cerniera o pulsante) unisce parti di colori diversi": "Egy összeszerelve nyomtatott alkatrész (zsanér vagy gomb) különböző színű alkatrészeket köt össze",
+ "AMS + doppio ugello": "AMS + dupla fúvóka",
+ "Aperta": "Nyitott",
+ "Cambio utensile": "Szerszámváltó",
+ "Chiusa, con sportello": "Zárt, ajtóval",
+ "Com’è fatta?": "Milyen?",
+ "Cosa si muove avanti e indietro?": "Mi mozog előre-hátra?",
+ "Il piatto": "A tálca",
+ "Quanti colori può stampare nello stesso pezzo?": "Hány színt tud nyomtatni ugyanabba a darabba?",
+ "sistema multicolore": "többszínű rendszer",
+ "Solo la testina (CoreXY)": "Csak a nyomtatófej (CoreXY)"
 }

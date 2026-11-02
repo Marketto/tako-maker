@@ -435,5 +435,15 @@
  "si sente lo scatto, corsa breve": "czuć wyraźny przeskok, krótki skok",
  "Sotto il pulsante \"{name}\" il guscio è troppo sottile: servono almeno {mm} mm.": "Pod przyciskiem \"{name}\" obudowa jest za cienka: potrzeba co najmniej {mm} mm.",
  "Tra \"{a}\" e \"{b}\" c'è un tratto di bordo di circa {mm} mm senza ganci: lì le parti possono aprirsi. Allarga quel bordo (almeno 6 mm) per far posto a un gancio intermedio.": "Między \"{a}\" i \"{b}\" jest odcinek krawędzi o długości ok. {mm} mm bez zatrzasków: tam części mogą się rozchodzić. Poszerz tę krawędź (co najmniej 6 mm), żeby zmieścić dodatkowy zatrzask.",
- "Una parte stampata già montata (cerniera o pulsante) unisce parti di colori diversi": "Część drukowana w całości (zawias lub przycisk) łączy części w różnych kolorach"
+ "Una parte stampata già montata (cerniera o pulsante) unisce parti di colori diversi": "Część drukowana w całości (zawias lub przycisk) łączy części w różnych kolorach",
+ "AMS + doppio ugello": "AMS + podwójna dysza",
+ "Aperta": "Otwarta",
+ "Cambio utensile": "Zmieniacz narzędzi",
+ "Chiusa, con sportello": "Zamknięta, z drzwiczkami",
+ "Com’è fatta?": "Jak jest zbudowana?",
+ "Cosa si muove avanti e indietro?": "Co porusza się w przód i w tył?",
+ "Il piatto": "Płyta",
+ "Quanti colori può stampare nello stesso pezzo?": "Ile kolorów może wydrukować w jednej części?",
+ "sistema multicolore": "system wielokolorowy",
+ "Solo la testina (CoreXY)": "Tylko głowica (CoreXY)"
 }

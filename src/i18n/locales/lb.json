@@ -435,5 +435,15 @@
  "si sente lo scatto, corsa breve": "et spiert een den Klick, kuerze Wee",
  "Sotto il pulsante \"{name}\" il guscio è troppo sottile: servono almeno {mm} mm.": "Ënnert dem Knapp \"{name}\" ass d'Gehäis ze dënn: et brauch op d'mannst {mm} mm.",
  "Tra \"{a}\" e \"{b}\" c'è un tratto di bordo di circa {mm} mm senza ganci: lì le parti possono aprirsi. Allarga quel bordo (almeno 6 mm) per far posto a un gancio intermedio.": "Tëscht \"{a}\" an \"{b}\" gëtt et e Stéck Rand vun ongeféier {mm} mm ouni Haken: do kënnen d'Deeler opgoen. Maach dee Rand méi breet (op d'mannst 6 mm), fir Plaz fir en Zwëschenhaken ze maachen.",
- "Una parte stampata già montata (cerniera o pulsante) unisce parti di colori diversi": "En Deel, deen als Print-in-Place gedréckt gëtt (Scharnéier oder Knapp), verbënnt Deeler a verschiddene Faarwen"
+ "Una parte stampata già montata (cerniera o pulsante) unisce parti di colori diversi": "En Deel, deen als Print-in-Place gedréckt gëtt (Scharnéier oder Knapp), verbënnt Deeler a verschiddene Faarwen",
+ "AMS + doppio ugello": "AMS + duebel Düs",
+ "Aperta": "Op",
+ "Cambio utensile": "Werkzeugwiessler",
+ "Chiusa, con sportello": "Zou, mat Dier",
+ "Com’è fatta?": "Wéi gesäit en aus?",
+ "Cosa si muove avanti e indietro?": "Wat beweegt sech hin an hier?",
+ "Il piatto": "D’Plack",
+ "Quanti colori può stampare nello stesso pezzo?": "Wéi vill Faarwen kann en am selwechten Deel drécken?",
+ "sistema multicolore": "Méifaarwesystem",
+ "Solo la testina (CoreXY)": "Nëmmen den Dréckkapp (CoreXY)"
 }
