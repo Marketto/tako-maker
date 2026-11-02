@@ -20,7 +20,7 @@ jobs:
     steps:
       - name: Configurazione mancante
         if: env.HAS_CF != 'true'
-        run: echo "Connettore non pubblicato: servono il secret CLOUDFLARE_API_TOKEN, CLOUDFLARE_ACCOUNT_ID e la variabile CONNECTOR_KV_ID (è facoltativo)."
+        run: echo "Connettore non pubblicato - servono i secret CLOUDFLARE_API_TOKEN e CLOUDFLARE_ACCOUNT_ID e la variabile CONNECTOR_KV_ID (facoltativo)."
       - uses: actions/checkout@v4
         if: env.HAS_CF == 'true'
       - uses: actions/setup-node@v4
