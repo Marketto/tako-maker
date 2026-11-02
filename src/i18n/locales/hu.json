@@ -445,5 +445,8 @@
  "Il piatto": "A tálca",
  "Quanti colori può stampare nello stesso pezzo?": "Hány színt tud nyomtatni ugyanabba a darabba?",
  "sistema multicolore": "többszínű rendszer",
- "Solo la testina (CoreXY)": "Csak a nyomtatófej (CoreXY)"
+ "Solo la testina (CoreXY)": "Csak a nyomtatófej (CoreXY)",
+ "Il modello e la torre di spurgo non entrano insieme nel piatto": "A modell és a törlőtorony együtt nem fér el a tálcán",
+ "Torre di spurgo": "Törlőtorony",
+ "Torre di spurgo: ho lasciato libera la zona {x1}–{x2} × {y1}–{y2} mm, dove {slicer} la mette di solito (nell'anteprima è il riquadro a righe). Se la sposti nello slicer, tienila lontana dal modello.": "Törlőtorony: szabadon hagytam a(z) {x1}–{x2} × {y1}–{y2} mm területet, ahová a(z) {slicer} általában teszi (az előnézetben ez a csíkos téglalap). Ha a slicerben áthelyezed, tartsd távol a modelltől."
 }

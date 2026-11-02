@@ -445,5 +445,8 @@
  "Il piatto": "Alus",
  "Quanti colori può stampare nello stesso pezzo?": "Mitu värvi saab see samasse detaili prindida?",
  "sistema multicolore": "mitmevärvisüsteem",
- "Solo la testina (CoreXY)": "Ainult prindipea (CoreXY)"
+ "Solo la testina (CoreXY)": "Ainult prindipea (CoreXY)",
+ "Il modello e la torre di spurgo non entrano insieme nel piatto": "Mudel ja puhastustorn ei mahu koos alusele",
+ "Torre di spurgo": "Puhastustorn",
+ "Torre di spurgo: ho lasciato libera la zona {x1}–{x2} × {y1}–{y2} mm, dove {slicer} la mette di solito (nell'anteprima è il riquadro a righe). Se la sposti nello slicer, tienila lontana dal modello.": "Puhastustorn: jätsin ala {x1}–{x2} × {y1}–{y2} mm vabaks, kuhu {slicer} selle tavaliselt paigutab (eelvaates on see triibuline ristkülik). Kui liigutad seda slicer'is, hoia see mudelist eemal."
 }

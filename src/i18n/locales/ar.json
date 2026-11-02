@@ -445,5 +445,8 @@
  "Il piatto": "اللوح",
  "Quanti colori può stampare nello stesso pezzo?": "كم لونًا يمكنها أن تطبع في القطعة نفسها؟",
  "sistema multicolore": "نظام متعدد الألوان",
- "Solo la testina (CoreXY)": "رأس الطباعة فقط (CoreXY)"
+ "Solo la testina (CoreXY)": "رأس الطباعة فقط (CoreXY)",
+ "Il modello e la torre di spurgo non entrano insieme nel piatto": "لا يتسع النموذج وبرج التنظيف معًا على اللوح",
+ "Torre di spurgo": "برج التنظيف",
+ "Torre di spurgo: ho lasciato libera la zona {x1}–{x2} × {y1}–{y2} mm, dove {slicer} la mette di solito (nell'anteprima è il riquadro a righe). Se la sposti nello slicer, tienila lontana dal modello.": "برج التنظيف: تركتُ المنطقة {x1}–{x2} × {y1}–{y2} mm فارغة، حيث يضعه {slicer} عادةً (في المعاينة هو المستطيل المخطط). إذا نقلته في السلايسر، فأبقِه بعيدًا عن النموذج."
 }

@@ -445,5 +445,8 @@
  "Il piatto": "An pláta",
  "Quanti colori può stampare nello stesso pezzo?": "Cé mhéad dath is féidir leis a phriontáil sa pháirt chéanna?",
  "sistema multicolore": "córas ildaite",
- "Solo la testina (CoreXY)": "An ceann priontála amháin (CoreXY)"
+ "Solo la testina (CoreXY)": "An ceann priontála amháin (CoreXY)",
+ "Il modello e la torre di spurgo non entrano insieme nel piatto": "Ní luíonn an tsamhail agus an túr glanta le chéile ar an bpláta",
+ "Torre di spurgo": "Túr glanta",
+ "Torre di spurgo: ho lasciato libera la zona {x1}–{x2} × {y1}–{y2} mm, dove {slicer} la mette di solito (nell'anteprima è il riquadro a righe). Se la sposti nello slicer, tienila lontana dal modello.": "Túr glanta: d'fhág mé an limistéar {x1}–{x2} × {y1}–{y2} mm saor, áit a gcuireann {slicer} é de ghnáth (sa réamhamharc is é an dronuilleog stríocach é). Má bhogann tú é sa slicer, coinnigh i bhfad ón tsamhail é."
 }

@@ -25,6 +25,7 @@ import { cachedSearch, loadMesh, printerOf, saveMesh, saveProject, store, storeS
 import { t } from '../i18n';
 import { shoppingListText } from '../core/hardware';
 import { printedTogether } from '../core/design/links';
+import { plateKeepFree } from '../core/plate';
 
 /* Orchestratore di un progetto aperto: collega UI, router, agente,
    geometria (worker) e analisi locali. La UI si limita a leggere lo snapshot. */
@@ -392,6 +393,7 @@ export class ProjectSession {
       flavor: flavorForSlicer(this.printer.slicer),
       strategy: d.printPlan.strategy,
       bed: bedOf(this.setup, this.printer),
+      keepFree: plateKeepFree(d, this.setup, this.printer),
       attribution: d.source,
       extraFiles: this.shoppingFiles('Metadata/'),
     });

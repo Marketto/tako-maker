@@ -445,5 +445,8 @@
  "Il piatto": "Plaka",
  "Quanti colori può stampare nello stesso pezzo?": "Zenbat kolore inprima ditzake pieza berean?",
  "sistema multicolore": "kolore anitzeko sistema",
- "Solo la testina (CoreXY)": "Buru inprimatzailea bakarrik (CoreXY)"
+ "Solo la testina (CoreXY)": "Buru inprimatzailea bakarrik (CoreXY)",
+ "Il modello e la torre di spurgo non entrano insieme nel piatto": "Eredua eta purga-dorrea ez dira batera sartzen plakan",
+ "Torre di spurgo": "Purga-dorrea",
+ "Torre di spurgo: ho lasciato libera la zona {x1}–{x2} × {y1}–{y2} mm, dove {slicer} la mette di solito (nell'anteprima è il riquadro a righe). Se la sposti nello slicer, tienila lontana dal modello.": "Purga-dorrea: {x1}–{x2} × {y1}–{y2} mm eremua libre utzi dut, {slicer}-ek normalean bertan jartzen baitu (aurrebistan marradun laukizuzena da). Slicerrean mugitzen baduzu, urrun eduki eredutik."
 }

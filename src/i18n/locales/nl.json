@@ -445,5 +445,8 @@
  "Il piatto": "De plaat",
  "Quanti colori può stampare nello stesso pezzo?": "Hoeveel kleuren kan hij in hetzelfde onderdeel printen?",
  "sistema multicolore": "meerkleurensysteem",
- "Solo la testina (CoreXY)": "Alleen de printkop (CoreXY)"
+ "Solo la testina (CoreXY)": "Alleen de printkop (CoreXY)",
+ "Il modello e la torre di spurgo non entrano insieme nel piatto": "Het model en de primetoren passen niet samen op de printplaat",
+ "Torre di spurgo": "Primetoren",
+ "Torre di spurgo: ho lasciato libera la zona {x1}–{x2} × {y1}–{y2} mm, dove {slicer} la mette di solito (nell'anteprima è il riquadro a righe). Se la sposti nello slicer, tienila lontana dal modello.": "Primetoren: ik heb het gebied {x1}–{x2} × {y1}–{y2} mm vrijgelaten, waar {slicer} hem meestal neerzet (in de preview is het de gestreepte rechthoek). Als je hem in de slicer verplaatst, houd hem dan uit de buurt van het model."
 }

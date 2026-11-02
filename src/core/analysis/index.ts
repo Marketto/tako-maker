@@ -10,6 +10,7 @@ import { isCalibrated } from '../calibration/tolerances';
 import { bedOf, estimateStrategies, fitsBed, fmtTime, STRATEGY_LABEL, type PartStat, type StrategyEstimate } from './estimate';
 import { fmtNum, t } from '../../i18n';
 import { hardwareLabel, hardwareOf, toBuy } from '../hardware';
+import { plateKeepFree } from '../plate';
 
 /* Controlli deterministici eseguiti dopo OGNI modifica, senza chiamare l'AI:
    - strategia di stampa (multicolore / parti separate / cambio a quota)
@@ -565,6 +566,19 @@ export function analyze(
       warnings.push(t('{a} e {b} aderiscono male tra loro: stampati a contatto le parti possono staccarsi. Usa lo stesso materiale o stampale separate.', { a, b }));
     }
   }
+
+  // Torre di spurgo: zona lasciata libera sul piatto
+  const zone = plateKeepFree(design, setup, printer);
+  if (zone)
+    tips.push(
+      t('Torre di spurgo: ho lasciato libera la zona {x1}–{x2} × {y1}–{y2} mm, dove {slicer} la mette di solito (nell\'anteprima è il riquadro a righe). Se la sposti nello slicer, tienila lontana dal modello.', {
+        x1: Math.round(zone.x),
+        x2: Math.round(zone.x + zone.w),
+        y1: Math.round(zone.y),
+        y2: Math.round(zone.y + zone.d),
+        slicer: printer.slicer,
+      }),
+    );
 
   const materialNotes = [...usedMaterials].map((m) => {
     const g = guideline(m);

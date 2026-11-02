@@ -445,5 +445,8 @@
  "Il piatto": "Płyta",
  "Quanti colori può stampare nello stesso pezzo?": "Ile kolorów może wydrukować w jednej części?",
  "sistema multicolore": "system wielokolorowy",
- "Solo la testina (CoreXY)": "Tylko głowica (CoreXY)"
+ "Solo la testina (CoreXY)": "Tylko głowica (CoreXY)",
+ "Il modello e la torre di spurgo non entrano insieme nel piatto": "Model i wieża czyszcząca nie mieszczą się razem na stole",
+ "Torre di spurgo": "Wieża czyszcząca",
+ "Torre di spurgo: ho lasciato libera la zona {x1}–{x2} × {y1}–{y2} mm, dove {slicer} la mette di solito (nell'anteprima è il riquadro a righe). Se la sposti nello slicer, tienila lontana dal modello.": "Wieża czyszcząca: zostawiłem wolny obszar {x1}–{x2} × {y1}–{y2} mm, gdzie {slicer} zwykle ją umieszcza (w podglądzie to prostokąt w paski). Jeśli przesuniesz ją w slicerze, trzymaj ją z dala od modelu."
 }

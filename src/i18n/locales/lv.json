@@ -445,5 +445,8 @@
  "Il piatto": "Plāksne",
  "Quanti colori può stampare nello stesso pezzo?": "Cik krāsas tas var drukāt vienā detaļā?",
  "sistema multicolore": "daudzkrāsu sistēma",
- "Solo la testina (CoreXY)": "Tikai drukas galviņa (CoreXY)"
+ "Solo la testina (CoreXY)": "Tikai drukas galviņa (CoreXY)",
+ "Il modello e la torre di spurgo non entrano insieme nel piatto": "Modelis un tīrīšanas tornis kopā neietilpst plāksnē",
+ "Torre di spurgo": "Tīrīšanas tornis",
+ "Torre di spurgo: ho lasciato libera la zona {x1}–{x2} × {y1}–{y2} mm, dove {slicer} la mette di solito (nell'anteprima è il riquadro a righe). Se la sposti nello slicer, tienila lontana dal modello.": "Tīrīšanas tornis: atstāju brīvu zonu {x1}–{x2} × {y1}–{y2} mm, kur {slicer} to parasti novieto (priekšskatījumā tas ir svītrainais taisnstūris). Ja to pārvieto sleiserī, turi to tālāk no modeļa."
 }
