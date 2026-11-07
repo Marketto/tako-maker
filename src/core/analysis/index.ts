@@ -591,7 +591,10 @@ export function analyze(
           ...Object.entries(extras.printStats.parts)
             .filter(([id]) => !linkedIds.has(id))
             .map(([id, s]) => ({ ids: [id], s })),
-          ...extras.printStats.together.filter((b) => b.partIds.some((id) => linkedIds.has(id))).map((b) => ({ ids: b.partIds, s: b })),
+          // Nel modello montato i blocchi includono anche le parti separate che li toccano: quelle si misurano da sole.
+          ...extras.printStats.together
+            .filter((b) => b.partIds.some((id) => linkedIds.has(id)))
+            .map((b) => ({ ids: b.partIds.filter((id) => linkedIds.has(id)), s: b })),
         ];
     // Blocchi che contengono le stesse parti (es. una nocca staccata) diventano un unico corpo.
     const bodies: { ids: string[]; s: BodyStats }[] = [];

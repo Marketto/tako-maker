@@ -5,7 +5,7 @@ import { analyze } from '../src/core/analysis';
 import { build3MF } from '../src/core/export/threemf';
 import { supportInterfaceFor } from '../src/data/guidelines';
 import type { Design, Part, UserSetup } from '../src/core/types';
-import { manifold, printer, setup } from './fixtures';
+import { manifold, printer, setup, toyLaptop } from './fixtures';
 
 const plaPetg: UserSetup = {
   ...setup,
@@ -102,5 +102,18 @@ describe('supporti per pezzi in PETG', () => {
     expect(rep.tips.join(' ')).toMatch(/non uso il PLA/);
     const dual = analyze(d, r.parts, plaPetg, printer('bambu-h2d'), new Set(), r);
     expect(dual.printHints.t.interfaceFilamentId).toBe('f1');
+  });
+
+  it('con le parti separate non mescola i pezzi staccati con il gruppo della cerniera', async () => {
+    const d = toyLaptop();
+    d.printPlan.strategy = 'separate';
+    const w = await manifold();
+    const r = evaluateDesign(w, d);
+    const rep = analyze(d, r.parts, setup, printer('bambu-a1'), new Set(), r);
+    // I tasti si stampano da soli: niente orecchie della base (che è grande e piatta)
+    expect(rep.printHints.keys.ears).toBeUndefined();
+    expect(rep.printHints.base.ears).toBe(true);
+    // Lo schermo, stampato montato sulla cerniera, è sospeso: servono i supporti
+    expect(rep.printHints.screen.supports).toBe(true);
   });
 });
