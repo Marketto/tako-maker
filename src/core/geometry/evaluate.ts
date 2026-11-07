@@ -66,6 +66,68 @@ export interface EvalResult {
   overlaps: OverlapReport[];
   /** Pulsanti generati (o il motivo per cui non è stato possibile). */
   buttons: ButtonReport[];
+  /** Appoggio sul piatto e sporgenze, per i supporti. */
+  printStats: PrintStats;
+}
+
+/** Appoggio e sporgenze di un corpo, come verrebbe stampato (appoggiato alla quota più bassa). */
+export interface BodyStats {
+  /** Area a contatto con il piatto (mm²). */
+  contactArea: number;
+  /** Area delle facce rivolte verso il basso sopra il piatto, per angolo dalla verticale (fasce di 5°: 0-5°, 5-10°…, 85-90°). */
+  overhang: number[];
+  /** Altezza del corpo (mm). */
+  height: number;
+  /** true se il corpo non tocca il piatto (sospeso sopra altre parti o in aria). */
+  floating: boolean;
+}
+
+export interface PrintStats {
+  /** Ogni parte stampata da sola (parti separate). */
+  parts: Record<string, BodyStats>;
+  /** Il modello montato (stampa unica o multicolore): un elemento per ogni blocco separato, con le parti che contiene. */
+  together: (BodyStats & { partIds: string[] })[];
+}
+
+const BUCKETS = 18;
+
+/** Calcola appoggio e sporgenze dai triangoli; bedZ è la quota del piatto. */
+export function bodyStats(raw: RawMesh, bedZ: number): BodyStats {
+  const p = raw.positions;
+  const ix = raw.indices;
+  const overhang = new Array<number>(BUCKETS).fill(0);
+  let contactArea = 0;
+  let minZ = Infinity, maxZ = -Infinity;
+  for (let i = 2; i < p.length; i += 3) {
+    minZ = Math.min(minZ, p[i]);
+    maxZ = Math.max(maxZ, p[i]);
+  }
+  for (let t = 0; t < ix.length; t += 3) {
+    const a = ix[t] * 3, b = ix[t + 1] * 3, c = ix[t + 2] * 3;
+    const ux = p[b] - p[a], uy = p[b + 1] - p[a + 1], uz = p[b + 2] - p[a + 2];
+    const vx = p[c] - p[a], vy = p[c + 1] - p[a + 1], vz = p[c + 2] - p[a + 2];
+    const nx = uy * vz - uz * vy, ny = uz * vx - ux * vz, nz = ux * vy - uy * vx;
+    const len = Math.hypot(nx, ny, nz);
+    if (len < 1e-9) continue;
+    const area = len / 2;
+    const z = nz / len;
+    if (z >= -0.02) continue;
+    const top = Math.max(p[a + 2], p[b + 2], p[c + 2]);
+    if (z < -0.99 && top < bedZ + 0.05) {
+      contactArea += area;
+      continue;
+    }
+    const cz = (p[a + 2] + p[b + 2] + p[c + 2]) / 3;
+    if (cz < bedZ + 0.3) continue;
+    const deg = (Math.asin(Math.min(1, -z)) * 180) / Math.PI;
+    overhang[Math.min(BUCKETS - 1, Math.floor(deg / 5))] += area;
+  }
+  return { contactArea, overhang, height: maxZ - bedZ, floating: minZ > bedZ + 0.05 };
+}
+
+/** Area di sporgenza oltre l'angolo indicato (gradi dalla verticale). */
+export function overhangBeyond(s: BodyStats, deg: number): number {
+  return s.overhang.reduce((sum, a, i) => (i * 5 + 2.5 > deg ? sum + a : sum), 0);
 }
 
 /** Tolleranze di base (le effettive dipendono dal materiale: core/calibration/tolerances.ts). */
@@ -628,6 +690,7 @@ export function evaluateDesign(
     }
 
   const parts: PartResult[] = [];
+  const finals = new Map<string, Manifold>();
   for (const p of design.parts) {
     const raw = rawFallback.get(p.id);
     if (raw) {
@@ -649,6 +712,7 @@ export function evaluateDesign(
     const mesh = m.getMesh();
     const bb = m.boundingBox() as Box;
     const cb = base.get(p.id)!.boundingBox() as Box;
+    finals.set(p.id, m);
     parts.push({
       id: p.id,
       name: p.name,
@@ -661,8 +725,46 @@ export function evaluateDesign(
       warnings: warnings.get(p.id)!,
     });
   }
+  // Appoggio e sporgenze: ogni parte da sola e il modello montato (blocchi separati)
+  const printStats: PrintStats = { parts: {}, together: [] };
+  for (const r of parts) {
+    if (!r.manifold) continue;
+    printStats.parts[r.id] = bodyStats(r.mesh, r.bbox.min[2]);
+  }
+  try {
+    const list = [...finals.entries()];
+    if (list.length) {
+      const all = list.length === 1 ? list[0][1] : ctx.keep(w.Manifold.union(list.map(([, m]) => m)));
+      const bedZ = (all.boundingBox() as Box).min[2];
+      for (const comp of all.decompose()) {
+        ctx.keep(comp);
+        const cm = comp.getMesh();
+        const cbb = comp.boundingBox() as Box;
+        const partIds = list
+          .filter(([, m]) => {
+            const b = m.boundingBox() as Box;
+            return [0, 1, 2].every((k) => b.min[k] < cbb.max[k] + 0.01 && cbb.min[k] < b.max[k] + 0.01) && ctx.keep(m.intersect(comp)).volume() > 0.01;
+          })
+          .map(([id]) => id);
+        // Pezzo staccato di una parte (es. una nocca): si attribuisce alla parte più vicina.
+        if (!partIds.length) {
+          const c = [0, 1, 2].map((k) => (cbb.min[k] + cbb.max[k]) / 2);
+          const near = list
+            .map(([id, m]) => {
+              const b = m.boundingBox() as Box;
+              return { id, d: Math.hypot(...[0, 1, 2].map((k) => Math.max(b.min[k] - c[k], 0, c[k] - b.max[k]))) };
+            })
+            .sort((a, b) => a.d - b.d)[0];
+          if (near) partIds.push(near.id);
+        }
+        printStats.together.push({ partIds, ...bodyStats(positionsOnly(cm.vertProperties, cm.numProp, cm.triVerts), bedZ) });
+      }
+    }
+  } catch (e) {
+    errors.push(`Analisi dei supporti: ${(e as Error).message}`);
+  }
   ctx.dispose();
-  return { parts, errors, connectors, overlaps, buttons };
+  return { parts, errors, connectors, overlaps, buttons, printStats };
 }
 
 function positionsOnly(vp: Float32Array, numProp: number, tri: Uint32Array): RawMesh {

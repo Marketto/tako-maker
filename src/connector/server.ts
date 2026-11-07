@@ -165,7 +165,7 @@ async function load(args: Json, deps: ServerDeps): Promise<{ code: string; state
 async function computeReport(state: ConnectorState, design: Design, deps: ServerDeps) {
   const w = await deps.manifold();
   const r = evaluateDesign(w, design, {}, tolerancesByPart(design, state.setup));
-  const report = analyze(design, r.parts, state.setup, state.printer, new Set(state.answered), { connectors: r.connectors, overlaps: r.overlaps, buttons: r.buttons });
+  const report = analyze(design, r.parts, state.setup, state.printer, new Set(state.answered), { connectors: r.connectors, overlaps: r.overlaps, buttons: r.buttons, printStats: r.printStats });
   return { r, report };
 }
 
@@ -178,7 +178,7 @@ function env(state: ConnectorState, deps: ServerDeps, onCommit: (d: Design) => v
     evaluate: async (d) => {
       const w = await deps.manifold();
       const r = evaluateDesign(w, d, {}, tolerancesByPart(d, state.setup));
-      return { parts: r.parts, errors: r.errors, connectors: r.connectors, overlaps: r.overlaps, buttons: r.buttons };
+      return { parts: r.parts, errors: r.errors, connectors: r.connectors, overlaps: r.overlaps, buttons: r.buttons, printStats: r.printStats };
     },
     analyze: (d, parts, extras) => analyze(d, parts, state.setup, state.printer, new Set(state.answered), extras),
   };

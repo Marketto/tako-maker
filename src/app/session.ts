@@ -124,7 +124,7 @@ export class ProjectSession {
     try {
       const r = await this.evaluate(d);
       if (seq !== this.evalSeq) return; // nel frattempo è arrivata una modifica più recente
-      const report = analyze(d, r.parts, this.setup, this.printer, new Set(this.snap.project.answered), { connectors: r.connectors, overlaps: r.overlaps, buttons: r.buttons });
+      const report = analyze(d, r.parts, this.setup, this.printer, new Set(this.snap.project.answered), { connectors: r.connectors, overlaps: r.overlaps, buttons: r.buttons, printStats: r.printStats });
       const assembly = d.printPlan.strategy === 'separate' ? planAssembly(d, r.parts.map((p) => ({ id: p.id, box: p.contactBox })), d.printPlan.connection, r.connectors) : null;
       const meshInfo = this.snap.project.meshIds.map((id) => {
         const part = r.parts.find((p) => d.parts.find((x) => x.id === p.id)?.shape.op === 'mesh' && (d.parts.find((x) => x.id === p.id)!.shape as { ref: string }).ref === id);
@@ -319,7 +319,7 @@ export class ProjectSession {
       printer: this.printer,
       evaluate: async (d) => {
         const r = await this.evaluate(d);
-        return { parts: r.parts, errors: r.errors, connectors: r.connectors, overlaps: r.overlaps, buttons: r.buttons };
+        return { parts: r.parts, errors: r.errors, connectors: r.connectors, overlaps: r.overlaps, buttons: r.buttons, printStats: r.printStats };
       },
       analyze: (d, parts, extras) => analyze(d, parts, this.setup, this.printer, new Set(this.snap.project.answered), extras),
     };
@@ -586,7 +586,10 @@ export class ProjectSession {
     const groups = jointGroups(this.snap.project.design);
     return this.snap.parts.map((p) => {
       const f = fil.find((x) => x.id === p.filamentId);
-      return { name: p.name, mesh: p.mesh, filament: f, extruder: f ? fil.indexOf(f) + 1 : 1, group: groups.get(p.id) };
+      const h = this.snap.report?.printHints[p.id];
+      const iface = h?.interfaceFilamentId ? fil.findIndex((x) => x.id === h.interfaceFilamentId) + 1 : 0;
+      const print = h ? { supports: h.supports, brim: h.brim, interfaceExtruder: iface || undefined } : undefined;
+      return { name: p.name, mesh: p.mesh, filament: f, extruder: f ? fil.indexOf(f) + 1 : 1, group: groups.get(p.id), print };
     });
   }
 

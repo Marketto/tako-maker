@@ -109,3 +109,39 @@ export function bondsPoorly(a: string, b: string): boolean {
   if (fa === fb) return false;
   return POOR_BOND.some(([x, y]) => (x === fa && y === fb) || (x === fb && y === fa));
 }
+
+/* ---------- Supporti e adesione al piatto ---------- */
+
+/** Sotto questa area d'appoggio (mm²) un pezzo può staccarsi dal piatto durante la stampa. */
+export const MIN_CONTACT_MM2 = 40;
+/** Un pezzo più alto di questo multiplo del lato d'appoggio è instabile (snello). */
+export const MAX_SLENDERNESS = 6;
+/** Sporgenze oltre questa area (mm²) richiedono supporti. */
+export const SUPPORT_MIN_AREA_MM2 = 15;
+/** Brim consigliato per fissare pezzi piccoli o snelli (mm). */
+export const SMALL_PART_BRIM_MM = 5;
+
+/** Coppie di materiali che si staccano facilmente l'uno dall'altro: ottime come interfaccia dei supporti. */
+const SUPPORT_PARTNER: Record<string, string> = { PLA: 'PETG', PETG: 'PLA' };
+
+/**
+ * Materiale da usare per l'interfaccia dei supporti di un pezzo: quello "opposto" tra PLA e PETG,
+ * se l'utente lo possiede (non aderisce al pezzo, quindi i supporti si staccano puliti).
+ *
+ * Attenzione ai pezzi in PETG con supporti in PLA su stampanti a ugello singolo (es. Kobra X, AMS):
+ * negli strati in cui si alternano i due materiali l'ugello scende alla temperatura del PLA e il
+ * PETG vicino si salda male tra strato e strato, diventando fragile (si divide). In quel caso il
+ * PLA si usa solo con più ugelli, ognuno alla sua temperatura.
+ */
+export function supportInterfaceFor(material: string, available: string[], multiNozzle = false): string | undefined {
+  const fam = family(material);
+  const partner = SUPPORT_PARTNER[fam];
+  if (!partner) return undefined;
+  if (fam === 'PETG' && !multiNozzle) return undefined;
+  return available.find((m) => family(m) === partner);
+}
+
+/** true se il PLA nei supporti indebolirebbe un pezzo in PETG (ugello singolo). */
+export function plaSupportWeakensPetg(material: string, available: string[], multiNozzle: boolean): boolean {
+  return family(material) === 'PETG' && !multiNozzle && available.some((m) => family(m) === 'PLA');
+}
