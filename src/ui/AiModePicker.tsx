@@ -52,6 +52,7 @@ export function AiModePicker({ compact = false }: { compact?: boolean }) {
               ? t('In un progetto premi «Collega alla chat»: l’app ti mostra l’indirizzo da aggiungere in Claude (una volta sola) e il codice da scrivere in chat.')
               : t('Il connettore per la chat non è configurato in questa versione dell’app.')}
           </p>
+          {!connectorBase() && <p className="muted small">{t('Chi pubblica l’app può attivarlo (vedi docs/CONNETTORE.md), oppure puoi indicare l’indirizzo di un connettore nelle impostazioni.')}</p>}
           {!compact && (
             <details>
               <summary className="small">{t('Indirizzo del connettore (avanzato)')}</summary>
