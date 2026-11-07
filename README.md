@@ -63,6 +63,7 @@ e per l’alternativa opzionale con un proxy che la tiene sul server.
 | [docs/AGENTI.md](docs/AGENTI.md) | Router, skill, strumenti e ciclo agente |
 | [docs/DESIGN-DSL.md](docs/DESIGN-DSL.md) | Formato JSON del modello e operazioni di modifica |
 | [docs/ANALISI.md](docs/ANALISI.md) | Stime di tempo e scarto, domande automatiche, montaggio |
+| [docs/CATALOGO.md](docs/CATALOGO.md) | Catalogo dei dettagli provati in stampa: molle, cerniere, scatti, supporti, imbarcamento… |
 | [docs/COSTI.md](docs/COSTI.md) | Come l’app risparmia credito API, con stime per operazione |
 | [docs/LICENZE-E-DIRITTI.md](docs/LICENZE-E-DIRITTI.md) | Licenze dei modelli, attribuzione, cosa fa e non fa l’app |
 | [docs/TRADUZIONI.md](docs/TRADUZIONI.md) | Come funzionano le lingue e come aggiungere o correggere una traduzione |

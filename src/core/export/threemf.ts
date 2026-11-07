@@ -25,7 +25,7 @@ export interface ExportPart {
   /** Piatto (1 = primo) quando le posizioni sono già decise (keepPositions), es. campioni di prova. */
   plate?: number;
   /** Impostazioni di stampa calcolate dall'analisi (supporti, brim, interfaccia dei supporti). */
-  print?: { supports: boolean; brim: number; interfaceExtruder?: number };
+  print?: { supports: boolean; brim: number; interfaceExtruder?: number; ears?: boolean };
 }
 
 type PrintSettings = NonNullable<ExportPart['print']>;
@@ -34,7 +34,7 @@ type PrintSettings = NonNullable<ExportPart['print']>;
 function mergePrint(list: (PrintSettings | undefined)[]): PrintSettings | undefined {
   const xs = list.filter(Boolean) as PrintSettings[];
   if (!xs.length) return undefined;
-  return { supports: xs.some((x) => x.supports), brim: Math.max(...xs.map((x) => x.brim)), interfaceExtruder: xs.find((x) => x.interfaceExtruder)?.interfaceExtruder };
+  return { supports: xs.some((x) => x.supports), brim: Math.max(...xs.map((x) => x.brim)), interfaceExtruder: xs.find((x) => x.interfaceExtruder)?.interfaceExtruder, ears: xs.some((x) => x.ears) };
 }
 
 /** Metadati per oggetto letti dallo slicer (le chiavi sconosciute vengono ignorate). */
@@ -44,7 +44,8 @@ function printMeta(flavor: SlicerFlavor, s: PrintSettings | undefined): string {
   if (flavor === 'orca') {
     if (s.supports) kv.push(['enable_support', '1'], ['support_type', 'tree(auto)']);
     if (s.supports && s.interfaceExtruder) kv.push(['support_interface_filament', String(s.interfaceExtruder)]);
-    if (s.brim > 0) kv.push(['brim_type', 'outer_only'], ['brim_width', String(s.brim)]);
+    // "brim_ears" = orecchie agli angoli (Bambu Studio e derivati): si staccano meglio del bordo intero.
+    if (s.brim > 0) kv.push(['brim_type', s.ears ? 'brim_ears' : 'outer_only'], ['brim_width', String(s.brim)]);
     return kv.map(([k, v]) => `\n<metadata key="${k}" value="${v}"/>`).join('');
   }
   if (s.supports) kv.push(['support_material', '1'], ['support_material_auto', '1'], ['support_material_style', 'organic']);

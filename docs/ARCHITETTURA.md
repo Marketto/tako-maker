@@ -29,7 +29,7 @@ src/
 │  ├─ assembly/plan.ts        guida di montaggio
 │  ├─ hardware/               elementi da comprare a parte: etichette e lista della spesa
 │  └─ export/                 3MF (Orca/Bambu e PrusaSlicer) e STL
-├─ data/                      stampanti, materiali, linee guida, modello d'esempio
+├─ data/                      stampanti, materiali, linee guida, catalogo dei dettagli (→ docs/CATALOGO.md), modello d'esempio
 ├─ i18n/                      t(), msg(), fmtNum(), elenco lingue → docs/TRADUZIONI.md
 │  ├─ source.json             tutte le frasi italiane (generato da npm run i18n:extract)
 │  └─ locales/<codice>.json   una traduzione per lingua, caricata solo se scelta

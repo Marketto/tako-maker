@@ -4,7 +4,7 @@ import { walkShape } from '../design/ops';
 import { findContacts, overhangBeyond, PEG_SPACING, type PrintStats, type BodyStats, type ButtonReport, type ConnectorReport, type OverlapReport } from '../geometry/evaluate';
 import { printedTogether } from '../design/links';
 import { material } from '../../data/materials';
-import { bondsPoorly, guideline, MAX_SLENDERNESS, MIN_CONTACT_MM2, minWall, SMALL_PART_BRIM_MM, SUPPORT_MIN_AREA_MM2, supportInterfaceFor, plaSupportWeakensPetg } from '../../data/guidelines';
+import { bondsPoorly, guideline, MAX_SLENDERNESS, MIN_CONTACT_MM2, minWall, SMALL_PART_BRIM_MM, SUPPORT_MIN_AREA_MM2, supportInterfaceFor, plaSupportWeakensPetg, LARGE_FLAT_MM2, LARGE_FLAT_MAX_H, MIXED_PLA_PETG_C } from '../../data/guidelines';
 import { materialsToTest, neededTests, TEST_KEYS, TEST_LABEL } from '../calibration/coupons';
 import { isCalibrated } from '../calibration/tolerances';
 import { bedOf, estimateStrategies, fitsBed, fmtTime, STRATEGY_LABEL, type PartStat, type StrategyEstimate } from './estimate';
@@ -25,6 +25,8 @@ export interface PrintHint {
   brim: number;
   /** Filamento per l'interfaccia dei supporti (materiale che non aderisce al pezzo). */
   interfaceFilamentId?: string;
+  /** Brim a "orecchie" (dischetti agli angoli) invece del bordo intero: si toglie meglio (PETG, pezzi grandi). */
+  ears?: boolean;
 }
 
 export interface AnalysisReport {
@@ -664,8 +666,32 @@ export function analyze(
             brim: SMALL_PART_BRIM_MM,
           }),
         );
-      for (const id of ids) printHints[id] = { supports, brim: unstable ? SMALL_PART_BRIM_MM : 0, interfaceFilamentId };
+      // Pezzi grandi e piatti in materiali che si imbarcano (o PETG, il cui brim sul PEI ruvido si toglie male): orecchie agli angoli.
+      const big = s.contactArea > LARGE_FLAT_MM2 && s.height < LARGE_FLAT_MAX_H;
+      const warpy = mats.some((m) => guideline(m).warps);
+      const petg = mats.some((m) => m.startsWith('PETG'));
+      const ears = (unstable && petg) || (big && (warpy || petg));
+      if (big && (warpy || petg))
+        tips.push(
+          ids.length === 1
+            ? t('{names} è grande e piatto: per evitare che gli angoli si sollevino ho messo le “orecchie” anti-sollevamento nel file per lo slicer. Si staccano facilmente a fine stampa.', { names })
+            : t('{names} sono grandi e piatti: per evitare che gli angoli si sollevino ho messo le “orecchie” anti-sollevamento nel file per lo slicer. Si staccano facilmente a fine stampa.', { names }),
+        );
+      for (const id of ids) printHints[id] = { supports, brim: unstable || ears ? SMALL_PART_BRIM_MM : 0, interfaceFilamentId, ears: ears || undefined };
     }
+  }
+
+  // PLA e PETG nello stesso piatto (multicolore o interfaccia dei supporti): finestra di temperatura comune
+  {
+    const together = design.printPlan.strategy !== 'separate';
+    const fams = new Set<string>();
+    if (together) for (const m of usedMaterials) fams.add(m.startsWith('PLA') ? 'PLA' : m.startsWith('PETG') ? 'PETG' : m);
+    for (const h of Object.values(printHints)) {
+      const f = h.interfaceFilamentId && setup.filaments.find((x) => x.id === h.interfaceFilamentId);
+      if (f) fams.add(f.material.startsWith('PLA') ? 'PLA' : f.material.startsWith('PETG') ? 'PETG' : f.material);
+    }
+    if (fams.has('PLA') && fams.has('PETG'))
+      tips.push(t('Nello stesso piatto ci sono PLA e PETG: lo slicer vuole temperature compatibili. Usa circa {petg} °C per il PETG e {pla} °C per il PLA, anche nelle varianti per ugello indurito o ad alto flusso del profilo.', { petg: MIXED_PLA_PETG_C.PETG, pla: MIXED_PLA_PETG_C.PLA }));
   }
 
   // Torre di spurgo: zona lasciata libera sul piatto
