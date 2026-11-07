@@ -588,7 +588,7 @@ export class ProjectSession {
       const f = fil.find((x) => x.id === p.filamentId);
       const h = this.snap.report?.printHints[p.id];
       const iface = h?.interfaceFilamentId ? fil.findIndex((x) => x.id === h.interfaceFilamentId) + 1 : 0;
-      const print = h ? { supports: h.supports, brim: h.brim, interfaceExtruder: iface || undefined } : undefined;
+      const print = h ? { supports: h.supports, brim: h.brim, interfaceExtruder: iface || undefined, ears: h.ears } : undefined;
       return { name: p.name, mesh: p.mesh, filament: f, extruder: f ? fil.indexOf(f) + 1 : 1, group: groups.get(p.id), print };
     });
   }

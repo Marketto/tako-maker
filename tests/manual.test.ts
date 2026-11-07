@@ -20,9 +20,11 @@ describe('copia e incolla con una chat', () => {
     expect(p).toContain('rendi lo schermo più grande');
     expect(p).toContain('"ops"');
     expect(p).toContain('Utente: fai un portatile');
+    expect(p).toContain('Catalogo dei dettagli');
     const search = buildManualPrompt({ skill: SKILLS['cerca-modelli'], setup, printer: printer('bambu-a1'), design: emptyDesign(), meshes: [], history: [], text: 'un vaso' });
     expect(search).toContain('"results"');
     expect(search).not.toContain('"ops"');
+    expect(search).not.toContain('Catalogo dei dettagli');
   });
 
   it('legge il JSON anche con testo intorno e virgole di troppo', () => {
