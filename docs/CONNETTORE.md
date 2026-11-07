@@ -56,9 +56,36 @@ sviluppatore è disponibile, solo in lettura.
    - Variabile `CONNECTOR_URL` con l'indirizzo del Worker (es. `https://printopus-connettore.<nome>.workers.dev`), così la PWA lo conosce.
 3. **Pubblicazione automatica.** A ogni push su `main` la action `connector.yml` costruisce (`npm run build:connettore`) e pubblica il Worker.
 
+Cose da sapere:
+
+- **Action verde non vuol dire Worker pubblicato.** Senza `CLOUDFLARE_API_TOKEN` o `CONNECTOR_KV_ID` la action salta la pubblicazione e finisce comunque con successo. Lo stesso controllo non guarda `CLOUDFLARE_ACCOUNT_ID`: salva anche quello.
+- **L'indirizzo entra nel sito durante la build.** Dopo aver cambiato `CONNECTOR_URL`, rilancia `deploy.yml` (*Actions → Run workflow*), altrimenti il sito resta senza l'indirizzo o con quello vecchio.
+- **Il token si crea sul sito di Cloudflare.** Il modello *Edit Cloudflare Workers* va bene: limitalo al tuo account e salvalo con `gh secret set CLOUDFLARE_API_TOKEN`. Il login di `wrangler` vale solo sul tuo computer, non nella action.
+- **Il proxy usa lo stesso token.** Con il secret salvato, una modifica a `proxy/` fa partire `proxy.yml`, anche se non hai configurato la chiave API del proxy.
+
+### Pubblicazione a mano
+
+Serve per la prima volta o quando la action non è configurata:
+
+1. `npx wrangler login`, poi `npx wrangler whoami` per controllare l'account.
+2. `npm run build:connettore`.
+3. In `connector/`, crea una copia di `wrangler.toml` con l'id del KV al posto del segnaposto e pubblica con `npx wrangler deploy --config <copia>`. Poi cancella la copia: `wrangler.toml` nel repository tiene il segnaposto.
+
+### Controllo dopo la pubblicazione
+
+1. `POST /mcp` con il metodo `initialize` deve rispondere 200 con `serverInfo.name` uguale a `printopus`.
+2. Nell'app, premi «Collega alla chat» in un nuovo modello: deve comparire il codice.
+3. Chiama lo strumento `printopus_modifica` con quel codice e un `add_part`: entro pochi secondi nell'app devono comparire anteprima e messaggio.
+
+### Dati del proprio account
+
+Indirizzo del Worker, id del KV e id dell'account stanno in `connector/cloudflare.local`, ignorato da Git. Il token resta solo nei secret di GitHub: non va scritto in nessun file.
+
 ### Prova in locale
 
 `npm run build:connettore`, poi `cd connector && npx wrangler dev --local`, infine inserisci `http://localhost:8787` in Impostazioni → Assistente AI → indirizzo del connettore. Claude però raggiunge solo indirizzi pubblici.
+
+Il runtime locale di Cloudflare richiede macOS 13.5 o successivo: sulle versioni precedenti `wrangler dev` non parte, mentre `wrangler deploy` funziona.
 
 ### Limiti e privacy
 
