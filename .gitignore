@@ -11,3 +11,5 @@ coverage/
 proxy/.dev.vars
 connector/dist
 .wrangler
+__pycache__/
+*.pyc

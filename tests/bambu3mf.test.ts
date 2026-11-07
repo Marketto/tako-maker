@@ -29,9 +29,11 @@ describe('3MF per Bambu Studio e derivati (Anycubic Slicer Next)', () => {
     const model = strFromU8(zip['3D/3dmodel.model']);
     expect(model).toContain('<metadata name="Application">BambuStudio-2.0.0.3</metadata>');
     expect(model).toContain('requiredextensions="p"');
-    const tr = [...model.matchAll(/<item objectid="\d+"[^>]*transform="1 0 0 0 1 0 0 0 1 ([-\d.]+) ([-\d.]+) ([-\d.]+)"/g)].map((m) => [Number(m[1]) + 130, Number(m[2]) + 130]);
+    const tr = [...model.matchAll(/<item objectid="\d+"[^>]*transform="1 0 0 0 1 0 0 0 1 ([-\d.]+) ([-\d.]+) ([-\d.]+)"/g)].map((m) => [Number(m[1]), Number(m[2]), Number(m[3])]);
     // stessi centri del file di Anycubic Slicer Next: (130,130) (444,4,130) (130,-198,8) (444,4,-198,8)
-    expect(tr).toEqual([[130, 130], [444.4, 130], [130, -198.8], [444.4, -198.8]]);
+    // come nel file di riferimento: mesh centrata sull'origine, transform = centro (z = metà altezza)
+    expect(tr).toEqual([[130, 130, 13], [444.4, 130, 13], [130, -198.8, 13], [444.4, -198.8, 13]]);
+    expect(strFromU8(zip['3D/Objects/oggetto_1_1.model'])).toContain('<vertex x="-13" y="-13" z="-13"/>');
     const cfg = strFromU8(zip['Metadata/model_settings.config']);
     expect(cfg.match(/<plate>/g)).toHaveLength(4);
     expect(cfg.match(/<model_instance>/g)).toHaveLength(4);

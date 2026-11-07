@@ -7,6 +7,7 @@ import type { SearchResult } from './tools';
 import { reportText } from './tools';
 import { systemBlocks, userContext, type ImportedMeshInfo } from './context';
 import { t } from '../i18n';
+import { catalogText } from '../data/catalog';
 
 /* Modalità "copia e incolla": nessuna chiamata API. L'app prepara una richiesta
    completa da incollare in una chat qualsiasi (ChatGPT, Claude, Gemini…) e legge
@@ -51,6 +52,7 @@ function formatSection(skill: Skill): string {
     map.push('- show_results → campo "results" (massimo 6).');
   }
   if (tools.has('web_search')) map.push('- web_search → usa la tua ricerca web, se ce l’hai; altrimenti dillo in "message" e proponi link utili.');
+  if (tools.has('consulta_catalogo')) map.push('- consulta_catalogo → non serve: il catalogo dei dettagli è qui sotto.');
   if (tools.has('print_report')) map.push('- print_report → non serve: l’analisi attuale è qui sotto.');
   return [
     '## Come rispondere',
@@ -82,6 +84,7 @@ export function buildManualPrompt(input: ManualInput): string {
     '',
     sys,
     '',
+    input.skill.tools.includes('consulta_catalogo') ? `## Catalogo dei dettagli provati in stampa\n${catalogText()}\n` : '',
     input.report && input.design.parts.length ? `## Analisi di stampa attuale\n${reportText(input.report)}` : '',
     ctx,
     history ? `## Conversazione recente\n${history}` : '',

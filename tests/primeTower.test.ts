@@ -50,7 +50,7 @@ describe('torre di spurgo', () => {
     const xs = [...objects.matchAll(/x="([-\d.]+)" y="([-\d.]+)"/g)].map((m) => [Number(m[1]), Number(m[2])]);
     expect(xs.length).toBeGreaterThan(0);
     // Le coordinate sono relative al centro dell'oggetto con la traslazione nel build item: controlla dal transform.
-    const tr = model.match(/transform="1 0 0 0 1 0 0 0 1 ([-\d.]+) ([-\d.]+)/);
+    const tr = model.match(/<item[^>]*transform="1 0 0 0 1 0 0 0 1 ([-\d.]+) ([-\d.]+)/);
     const ox = tr ? Number(tr[1]) : 0;
     const oy = tr ? Number(tr[2]) : 0;
     const minX = Math.min(...xs.map((v) => v[0])) + ox, maxX = Math.max(...xs.map((v) => v[0])) + ox;

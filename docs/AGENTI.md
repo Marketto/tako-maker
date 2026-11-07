@@ -33,9 +33,9 @@ Istruzioni…
 | Skill | Modello | Strumenti | Scopo |
 |---|---|---|---|
 | `cerca-modelli` | Haiku | `web_search`, `show_results` | trovare 3-6 modelli gratuiti con licenza che permette modifiche |
-| `crea-modello` | Sonnet | `edit_design`, `ask_user` | costruire un modello parametrico nuovo |
-| `modifica-modello` | Sonnet | `edit_design`, `ask_user` | migliorie mirate al modello corrente |
-| `consiglia-stampa` | Haiku | `print_report`, `edit_design` | colori, materiali, strategia, tempi |
+| `crea-modello` | Sonnet | `consulta_catalogo`, `edit_design`, `ask_user` | costruire un modello parametrico nuovo |
+| `modifica-modello` | Sonnet | `consulta_catalogo`, `edit_design`, `ask_user` | migliorie mirate al modello corrente |
+| `consiglia-stampa` | Haiku | `print_report`, `consulta_catalogo`, `edit_design` | colori, materiali, strategia, tempi; diagnosi di stampe venute male (il router ci manda “si è staccato”, “si imbarca”, “fragile”…) |
 | `spiega` | Haiku | — | domande generali |
 
 In **modalità risparmio** tutte le skill usano Haiku.
@@ -52,6 +52,7 @@ in `skills/index.ts`, eventualmente una regola nel router e gli strumenti in `to
 | `edit_design` | browser | applica operazioni DSL in modo atomico, calcola la geometria nel worker, risponde con ingombri e analisi compatta, oppure con un errore da correggere |
 | `ask_user` | browser | mette in pausa il ciclo e mostra una domanda con opzioni |
 | `print_report` | browser | stime per strategia + avvisi |
+| `consulta_catalogo` | browser | regole pratiche del [catalogo dei dettagli](CATALOGO.md) per argomento; nel copia e incolla e nel connettore è già nel testo |
 
 ## Ciclo agente (`src/agent/runner.ts`)
 

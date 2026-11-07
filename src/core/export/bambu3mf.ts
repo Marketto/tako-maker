@@ -58,10 +58,22 @@ const esc = (s: string) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replac
 const f = (v: number) => (Math.round(v * 1000) / 1000).toString();
 const uuid = (a: number, b: number) => `${a.toString(16).padStart(8, '0')}-${b.toString(16).padStart(4, '0')}-4000-8000-${(a * 7919 + b).toString(16).padStart(12, '0')}`;
 
-function meshXml(m: RawMesh): string {
+/** Centro del riquadro che contiene le mesh. */
+function centerOf(meshes: RawMesh[]): Vec3 {
+  const lo = [Infinity, Infinity, Infinity], hi = [-Infinity, -Infinity, -Infinity];
+  for (const m of meshes)
+    for (let i = 0; i < m.positions.length; i++) {
+      const k = i % 3;
+      lo[k] = Math.min(lo[k], m.positions[i]);
+      hi[k] = Math.max(hi[k], m.positions[i]);
+    }
+  return [0, 1, 2].map((k) => (lo[k] + hi[k]) / 2) as Vec3;
+}
+
+function meshXml(m: RawMesh, c: Vec3 = [0, 0, 0]): string {
   const v: string[] = [];
   const p = m.positions;
-  for (let i = 0; i < p.length; i += 3) v.push(`<vertex x="${f(p[i])}" y="${f(p[i + 1])}" z="${f(p[i + 2])}"/>`);
+  for (let i = 0; i < p.length; i += 3) v.push(`<vertex x="${f(p[i] - c[0])}" y="${f(p[i + 1] - c[1])}" z="${f(p[i + 2] - c[2])}"/>`);
   const t: string[] = [];
   const ix = m.indices;
   for (let i = 0; i < ix.length; i += 3) t.push(`<triangle v1="${ix[i]}" v2="${ix[i + 1]}" v3="${ix[i + 2]}"/>`);
@@ -86,13 +98,15 @@ export function bambuFiles(parts: PlatedPart[], opt: BambuOptions): Record<strin
 
   keys.forEach((key, oi) => {
     const members = parts.filter((p) => p.objectKey === key);
+    // Come fanno gli slicer: mesh centrate sull'origine dell'oggetto, posizione nel transform del build.
+    const c = centerOf(members.map((p) => p.mesh));
     const comps: string[] = [];
     const partSettings: string[] = [];
     for (const [pi, p] of members.entries()) {
       const innerId = nextId++;
       const path = `/3D/Objects/oggetto_${oi + 1}_${pi + 1}.model`;
       files[path.slice(1)] = strToU8(
-        `<?xml version="1.0" encoding="UTF-8"?>\n<model unit="millimeter" xml:lang="en-US" ${NS}>\n <metadata name="BambuStudio:3mfVersion">1</metadata>\n <resources>\n  <object id="${innerId}" p:UUID="${uuid(innerId, 1)}" type="model">${meshXml(p.mesh)}</object>\n </resources>\n <build/>\n</model>\n`,
+        `<?xml version="1.0" encoding="UTF-8"?>\n<model unit="millimeter" xml:lang="en-US" ${NS}>\n <metadata name="BambuStudio:3mfVersion">1</metadata>\n <resources>\n  <object id="${innerId}" p:UUID="${uuid(innerId, 1)}" type="model">${meshXml(p.mesh, c)}</object>\n </resources>\n <build/>\n</model>\n`,
       );
       rels.push(`<Relationship Target="${path}" Id="rel-${rels.length + 1}" Type="http://schemas.microsoft.com/3dmanufacturing/2013/01/3dmodel"/>`);
       comps.push(`<component p:path="${path}" objectid="${innerId}" p:UUID="${uuid(innerId, 2)}" transform="1 0 0 0 1 0 0 0 1 0 0 0"/>`);
@@ -103,7 +117,7 @@ export function bambuFiles(parts: PlatedPart[], opt: BambuOptions): Record<strin
     const id = nextId++;
     const first = members[0];
     const [ox, oy] = plateOrigin(first.plate - 1, plates, opt.bed, opt.plateStride);
-    const tr = `1 0 0 0 1 0 0 0 1 ${f(ox + first.offset[0])} ${f(oy + first.offset[1])} ${f(first.offset[2])}`;
+    const tr = `1 0 0 0 1 0 0 0 1 ${f(ox + first.offset[0] + c[0])} ${f(oy + first.offset[1] + c[1])} ${f(first.offset[2] + c[2])}`;
     const name = members.length > 1 ? opt.title : first.name;
     objects.push(`  <object id="${id}" p:UUID="${uuid(id, 3)}" type="model">\n   <components>\n    ${comps.join('\n    ')}\n   </components>\n  </object>`);
     build.push(`  <item objectid="${id}" p:UUID="${uuid(id, 4)}" transform="${tr}" printable="1"/>`);
