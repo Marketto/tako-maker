@@ -1,5 +1,5 @@
 {
-  "_nota": "Dati indicativi raccolti da schede tecniche pubbliche (aggiornati a novembre 2026): volumi in mm, flusso tipico in mm3/s per PLA; spurgo e tempi di cambio colore sono stime. Verificare sempre sul sito del produttore. Correzioni benvenute via pull request. Torre di spurgo (multi.tower): posizione iniziale e misure predefinite dello slicer ufficiale per 4 colori (angolo anteriore sinistro, mm); null = lo slicer di solito non la usa. multi.multiNozzle: più ugelli, ognuno alla propria temperatura (doppio ugello o cambio utensile).",
+  "_nota": "Dati indicativi raccolti da schede tecniche pubbliche (aggiornati a novembre 2026): volumi in mm, flusso tipico in mm3/s per PLA; spurgo e tempi di cambio colore sono stime. Verificare sempre sul sito del produttore. Correzioni benvenute via pull request. Torre di spurgo (multi.tower): posizione iniziale e misure predefinite dello slicer ufficiale per 4 colori (angolo anteriore sinistro, mm); null = lo slicer di solito non la usa. multi.multiNozzle: più ugelli, ognuno alla propria temperatura (doppio ugello o cambio utensile). plateStride: distanza tra i piatti nei progetti dello slicer, misurata su un file reale (Kobra X: Anycubic Slicer Next 2.0.0.3).",
   "printers": [
     {
       "id": "bambu-a1",
@@ -1073,7 +1073,11 @@
         }
       },
       "kinematics": "bedslinger",
-      "nozzle": 0.4
+      "nozzle": 0.4,
+      "plateStride": [
+        314.4,
+        328.8
+      ]
     },
     {
       "id": "qidi-max4",

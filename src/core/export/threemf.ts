@@ -3,10 +3,11 @@ import type { Attribution, Filament, PrintStrategy, Vec3 } from '../types';
 import type { RawMesh } from '../geometry/evaluate';
 import { t } from '../../i18n';
 import { overlaps, placeAvoiding, type Rect } from '../plate/primeTower';
+import { bambuFiles } from './bambu3mf';
 
 /* Esportazione 3MF.
-   - Formato "orca": Bambu Studio, OrcaSlicer, Creality Print, ElegooSlicer, Anycubic Slicer Next
-     (oggetto con componenti + Metadata/model_settings.config con l'estrusore per parte).
+   - Formato "orca": Bambu Studio e derivati (Anycubic Slicer Next, OrcaSlicer, Creality Print,
+     ElegooSlicer…): progetto con più piatti, scritto da bambu3mf.ts (vedi docs/3MF.md).
    - Formato "prusa": PrusaSlicer (un oggetto con volumi + Metadata/Slic3r_PE_model.config).
    L'assegnazione dei colori è "best effort": se lo slicer la ignora, il modello
    arriva comunque diviso in parti con nome e colore. */
@@ -21,6 +22,8 @@ export interface ExportPart {
   extruder: number;
   /** Parti con lo stesso gruppo restano montate tra loro anche se si stampa separato (cerniere). */
   group?: string;
+  /** Piatto (1 = primo) quando le posizioni sono già decise (keepPositions), es. campioni di prova. */
+  plate?: number;
   /** Impostazioni di stampa calcolate dall'analisi (supporti, brim, interfaccia dei supporti). */
   print?: { supports: boolean; brim: number; interfaceExtruder?: number };
 }
@@ -58,6 +61,8 @@ export interface ExportOptions {
   attribution?: Attribution;
   /** Le parti sono già posizionate in coordinate del piatto: non spostarle (oggetti separati). */
   keepPositions?: boolean;
+  /** Passo tra i piatti nello slicer (Bambu Studio e derivati), se noto per la stampante. */
+  plateStride?: [number, number];
   /** Zona del piatto da lasciare libera (torre di spurgo). */
   keepFree?: Rect | null;
   /** File di testo aggiuntivi nel pacchetto (es. istruzioni). */
@@ -156,6 +161,53 @@ function groupedLayout(parts: ExportPart[], bed: Vec3, keepFree: Rect | null = n
   return keys.map((k) => offs[uniq.indexOf(k)]);
 }
 
+/**
+ * Parti separate su più piatti: un piatto per colore (i gruppi stampati già montati restano
+ * insieme), e un piatto in più quando non ci stanno. La torre di spurgo si evita solo nei
+ * piatti con più colori.
+ */
+export function platedLayout(parts: ExportPart[], bed: Vec3, keepFree: Rect | null = null, gap = 6): { plate: number; offset: Vec3 }[] {
+  const keys = parts.map((p, i) => p.group ?? `#${i}`);
+  const groups = [...new Set(keys)].map((k) => {
+    const members = parts.filter((_, i) => keys[i] === k);
+    return { key: k, box: bounds(members.map((p) => p.mesh)), colors: [...new Set(members.map((p) => p.extruder))].sort().join(',') };
+  });
+  const out = new Map<string, { plate: number; offset: Vec3 }>();
+  let plate = 0;
+  for (const colors of [...new Set(groups.map((g) => g.colors))]) {
+    const zone = colors.includes(',') ? keepFree : null;
+    plate++;
+    let x = gap, y = gap, rowH = 0;
+    for (const g of groups.filter((x) => x.colors === colors)) {
+      const w = g.box.max[0] - g.box.min[0];
+      const h = g.box.max[1] - g.box.min[1];
+      for (let guard = 0; guard < 400; guard++) {
+        if (x + w > bed[0] - gap && x > gap) {
+          x = gap;
+          y += rowH + gap;
+          rowH = 0;
+        }
+        if (y + h > bed[1] - gap && (x > gap || y > gap)) {
+          plate++;
+          x = gap;
+          y = gap;
+          rowH = 0;
+          continue;
+        }
+        if (zone && overlaps({ x, y, w, d: h }, zone)) {
+          x = zone.x + zone.w + gap;
+          continue;
+        }
+        break;
+      }
+      out.set(g.key, { plate, offset: [x - g.box.min[0], y - g.box.min[1], -g.box.min[2]] });
+      x += w + gap;
+      rowH = Math.max(rowH, h);
+    }
+  }
+  return keys.map((k) => out.get(k)!);
+}
+
 export function build3MF(parts: ExportPart[], opt: ExportOptions): Uint8Array {
   if (!parts.length) throw new Error(t('Nessuna parte da esportare'));
   const separate = opt.strategy === 'separate' || !!opt.keepPositions;
@@ -216,27 +268,25 @@ export function build3MF(parts: ExportPart[], opt: ExportOptions): Uint8Array {
       .join('\n')}\n</config>\n`;
     files['Metadata/Slic3r_PE_model.config'] = strToU8(config);
   } else {
-    // Orca/Bambu: mesh per parte; se montato, un oggetto padre con componenti.
+    // Bambu Studio e derivati: oggetti con componenti, mesh in file separati, più piatti.
+    const keyOf = (p: ExportPart, i: number) => (separate ? (p.group ?? `#${i}`) : 'modello');
+    let placed: { plate: number; offset: Vec3 }[];
+    if (opt.keepPositions) placed = parts.map((p) => ({ plate: p.plate ?? 1, offset: [0, 0, 0] }));
+    else if (separate) placed = platedLayout(parts, opt.bed, opt.keepFree ?? null);
+    else placed = parts.map(() => ({ plate: 1, offset: centerOffset }));
+    const metaByKey = new Map<string, string>();
     parts.forEach((p, i) => {
-      resources += `<object id="${i + 2}" name="${esc(p.name)}" type="model" pid="1" pindex="${i}">${meshXml(p.mesh, separate ? offsets[i] : [0, 0, 0])}</object>`;
+      const k = keyOf(p, i);
+      if (!metaByKey.has(k)) metaByKey.set(k, printMeta('orca', mergePrint(parts.filter((q, j) => keyOf(q, j) === k).map((q) => q.print))));
     });
-    if (separate) {
-      parts.forEach((_, i) => (buildItems += `<item objectid="${i + 2}"/>`));
-      config = `<?xml version="1.0" encoding="UTF-8"?>\n<config>\n${parts
-        .map((p, i) => `<object id="${i + 2}">\n<metadata key="name" value="${esc(p.name)}"/>\n<metadata key="extruder" value="${p.extruder}"/>${printMeta('orca', p.print)}\n</object>`)
-        .join('\n')}\n</config>\n`;
-    } else {
-      const parentId = parts.length + 2;
-      const co = centerOffset;
-      resources += `<object id="${parentId}" name="${esc(opt.title)}" type="model"><components>${parts
-        .map((_, i) => `<component objectid="${i + 2}"/>`)
-        .join('')}</components></object>`;
-      buildItems = `<item objectid="${parentId}" transform="1 0 0 0 1 0 0 0 1 ${co[0].toFixed(3)} ${co[1].toFixed(3)} ${co[2].toFixed(3)}"/>`;
-      config = `<?xml version="1.0" encoding="UTF-8"?>\n<config>\n<object id="${parentId}">\n<metadata key="name" value="${esc(opt.title)}"/>\n<metadata key="extruder" value="${parts[0].extruder}"/>${printMeta('orca', mergePrint(parts.map((p) => p.print)))}\n${parts
-        .map((p, i) => `<part id="${i + 2}" subtype="normal_part">\n<metadata key="name" value="${esc(p.name)}"/>\n<metadata key="extruder" value="${p.extruder}"/>\n</part>`)
-        .join('\n')}\n</object>\n</config>\n`;
-    }
-    files['Metadata/model_settings.config'] = strToU8(config);
+    Object.assign(
+      files,
+      bambuFiles(
+        parts.map((p, i) => ({ name: p.name, mesh: p.mesh, extruder: p.extruder, objectKey: keyOf(p, i), plate: placed[i].plate, offset: placed[i].offset, objectMeta: metaByKey.get(keyOf(p, i)) })),
+        { title: opt.title, bed: opt.bed, plateStride: opt.plateStride, meta: meta.filter((m) => !m.includes('name="Application"')) },
+      ),
+    );
+    return finish(files, opt);
   }
 
   const model = `<?xml version="1.0" encoding="UTF-8"?>
@@ -246,13 +296,18 @@ ${meta.join('\n')}
 <build>${buildItems}</build>
 </model>`;
 
+  files['3D/3dmodel.model'] = strToU8(model);
+  return finish(files, opt);
+}
+
+/** Parti comuni del pacchetto: tipi di contenuto, relazioni, attribuzione e file extra. */
+function finish(files: Record<string, Uint8Array>, opt: ExportOptions): Uint8Array {
   files['[Content_Types].xml'] = strToU8(
     `<?xml version="1.0" encoding="UTF-8"?>\n<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="model" ContentType="application/vnd.ms-package.3dmanufacturing-3dmodel+xml"/><Default Extension="config" ContentType="text/xml"/><Default Extension="txt" ContentType="text/plain"/></Types>`,
   );
   files['_rels/.rels'] = strToU8(
     `<?xml version="1.0" encoding="UTF-8"?>\n<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Target="/3D/3dmodel.model" Id="rel0" Type="http://schemas.microsoft.com/3dmanufacturing/2013/01/3dmodel"/></Relationships>`,
   );
-  files['3D/3dmodel.model'] = strToU8(model);
   if (opt.attribution) files['Metadata/ATTRIBUZIONE.txt'] = strToU8(attributionText(opt.attribution));
   for (const [name, text] of Object.entries(opt.extraFiles ?? {})) files[name] = strToU8(text);
   return zipSync(files, { level: 6 });
