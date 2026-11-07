@@ -357,7 +357,7 @@ export class ProjectSession {
       const s = store.get().settings;
       const decision = force
         ? { skill: force, hints: {} as { children?: boolean } }
-        : await route(text, this.snap.project.design, { searchFirst: s.searchFirst, smartRouting: s.smartRouting, client });
+        : await route(text, this.snap.project.design, { searchFirst: s.searchFirst, searched: this.searched(), smartRouting: s.smartRouting, client });
       if (decision.hints.children && !this.snap.project.design.intendedUse.children) {
         await this.applyLocal([{ op: 'set_meta', children: true }]);
       }
@@ -396,6 +396,11 @@ export class ProjectSession {
     }
   }
 
+  /** La ricerca di modelli è già stata fatta in questo progetto? */
+  private searched(): boolean {
+    return this.snap.project.chat.some((c) => c.skill === 'cerca-modelli' || !!c.results?.length);
+  }
+
   stop() {
     this.abort?.abort();
   }
@@ -406,7 +411,7 @@ export class ProjectSession {
   async prepareManual(text: string, force?: SkillName, pushUser = true) {
     const s = store.get().settings;
     const design = this.snap.project.design;
-    const decision = force ? { skill: force, hints: {} as { children?: boolean } } : routeByRules(text, design, { searchFirst: s.searchFirst });
+    const decision = force ? { skill: force, hints: {} as { children?: boolean } } : routeByRules(text, design, { searchFirst: s.searchFirst, searched: this.searched() });
     if (decision.hints.children && !design.intendedUse.children) await this.applyLocal([{ op: 'set_meta', children: true }]);
     const history = this.snap.project.chat.map((c) => ({ role: c.role, text: c.text })).filter((x) => x.text);
     if (pushUser) await this.pushChat({ role: 'user', text });
@@ -588,7 +593,7 @@ export class ProjectSession {
       const f = fil.find((x) => x.id === p.filamentId);
       const h = this.snap.report?.printHints[p.id];
       const iface = h?.interfaceFilamentId ? fil.findIndex((x) => x.id === h.interfaceFilamentId) + 1 : 0;
-      const print = h ? { supports: h.supports, brim: h.brim, interfaceExtruder: iface || undefined } : undefined;
+      const print = h ? { supports: h.supports, brim: h.brim, interfaceExtruder: iface || undefined, ears: h.ears } : undefined;
       return { name: p.name, mesh: p.mesh, filament: f, extruder: f ? fil.indexOf(f) + 1 : 1, group: groups.get(p.id), print };
     });
   }

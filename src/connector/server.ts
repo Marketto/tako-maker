@@ -9,6 +9,7 @@ import { reportText, runTool, type SearchResult, type ToolEnv } from '../agent/t
 import { SKILLS } from '../agent/skills';
 import systemMd from '../agent/prompts/system.md?raw';
 import dslMd from '../agent/prompts/dsl.md?raw';
+import { catalogText } from '../data/catalog';
 import { CODE_RE, MAX_NOTES, normalizeCode, type ConnectorState } from './state';
 
 /* Server MCP di Printopus (trasporto "streamable HTTP", risposte JSON, senza stato
@@ -227,6 +228,7 @@ async function callTool(name: string, args: Json, deps: ServerDeps) {
         '- ask_user → fai la domanda direttamente in chat, con poche opzioni.',
         '- web_search → la tua ricerca web; show_results → printopus_mostra_risultati.',
         '- print_report → l’analisi è qui sotto e arriva dopo ogni modifica.',
+        '- consulta_catalogo → il catalogo dei dettagli è qui sotto: rispetta quelle misure per meccanismi, supporti e piatto.',
         '- Le domande automatiche dell’app (strategia, colori, scatti, pulsanti, elementi da acquistare) sono elencate dopo ogni modifica: chiedile all’utente e registra la scelta con printopus_rispondi.',
         '- Le parti importate da file (mesh) non sono disponibili qui: chiedi all’utente di modificarle dall’app con la chiave API o il copia e incolla.',
         '',
@@ -234,6 +236,9 @@ async function callTool(name: string, args: Json, deps: ServerDeps) {
         skills,
         '',
         printerBlock(state.setup, state.printer),
+        '',
+        '## Catalogo dei dettagli provati in stampa',
+        catalogText(),
       ];
       if (state.design.parts.length) {
         const { report } = await computeReport(state, state.design, deps);

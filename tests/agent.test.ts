@@ -31,6 +31,12 @@ describe('router a regole', () => {
     expect(r.skill).toBe('cerca-modelli');
     expect(r.hints.children).toBe(true);
   });
+  it('dopo la prima ricerca, o se chiede di disegnarlo, si crea', () => {
+    const msg = 'il telefono con la cover misura 160 × 76 × 10 mm';
+    expect(routeByRules(msg, null, { searchFirst: true, searched: true }).skill).toBe('crea-modello');
+    expect(routeByRules('disegnami un porta telefono per la testiera', null, o).skill).toBe('crea-modello');
+    expect(routeByRules('cerca un porta telefono', null, { searchFirst: true, searched: true }).skill).toBe('cerca-modelli');
+  });
   it('con un modello aperto → modifica o consigli', () => {
     const d = toyLaptop();
     expect(routeByRules('rendi lo schermo più grande', d, o).skill).toBe('modifica-modello');

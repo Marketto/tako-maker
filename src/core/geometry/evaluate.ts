@@ -1,7 +1,7 @@
 import type { ManifoldToplevel, Manifold } from 'manifold-3d';
 import type { ButtonSpec, Design, Joint, Part, ShapeNode, Tolerances, Vec3 } from '../types';
 import { pairKey, printedTogether } from '../design/links';
-import { BASE_TOLERANCES } from '../../data/guidelines';
+import { ARCH_SAG_MM, BASE_TOLERANCES } from '../../data/guidelines';
 import { msg } from '../../i18n';
 
 /* Trasforma il Design in mesh triangolari usando manifold-3d (WASM).
@@ -250,12 +250,15 @@ export function hingeGeometry(ctx: Ctx, j: Joint, tol: Tolerances = TOL): JointG
 
   const out: JointGeometry = { addA: [], subA: [], addB: [], subB: [] };
   out.addA.push(placeOnAxis(ctx, kA1, j), placeOnAxis(ctx, kA2, j), placeOnAxis(ctx, pin, j));
+  // Con l'asse orizzontale gli archi stampati sopra perno e nocche si abbassano un po':
+  // foro "ovale" con gioco extra in alto (vedi ARCH_SAG_MM).
+  const withSag = (m: Manifold): Manifold[] => (j.axis === 'z' ? [m] : [m, ctx.keep(m.translate([0, 0, ARCH_SAG_MM]))]);
   // Spazio libero attorno alle nocche dell'altra parte.
-  out.subA.push(placeOnAxis(ctx, cyl(seg + 2 * g, R + g, z0 + seg), j));
+  out.subA.push(...withSag(placeOnAxis(ctx, cyl(seg + 2 * g, R + g, z0 + seg), j)));
   out.subB.push(
-    placeOnAxis(ctx, cyl(seg + g, R + g, z0 - 0.01), j),
-    placeOnAxis(ctx, cyl(seg + g, R + g, z0 + 2 * seg + g + 0.01), j),
-    placeOnAxis(ctx, cyl(L + 1, pinR + tol.pinClearance, z0 - 0.5), j),
+    ...withSag(placeOnAxis(ctx, cyl(seg + g, R + g, z0 - 0.01), j)),
+    ...withSag(placeOnAxis(ctx, cyl(seg + g, R + g, z0 + 2 * seg + g + 0.01), j)),
+    ...withSag(placeOnAxis(ctx, cyl(L + 1, pinR + tol.pinClearance, z0 - 0.5), j)),
   );
   out.addB.push(placeOnAxis(ctx, kB, j));
 

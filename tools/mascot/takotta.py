@@ -100,7 +100,7 @@ def eye(cx, cy, side, expr='normale'):
                 f'<polyline points="{pts}" fill="none" stroke="#1a0b26" stroke-width="3.2" stroke-linecap="round"/>')
     eid = f'__UID__-ir{side}'
     ix = cx + 2 * -s
-    return f'''<g class="eye">
+    return f'''<g><g class="eye">
 <clipPath id="{eid}"><ellipse cx="{ix}" cy="{cy + 7}" rx="26" ry="32"/></clipPath>
 <path d="M{cx - 32},{cy + 2} C{cx - 32},{cy - 34} {cx + 32},{cy - 34} {cx + 32},{cy + 2} C{cx + 32},{cy + 34} {cx - 32},{cy + 42} {cx - 32},{cy + 2}Z" fill="#ffffff" stroke="{lc}" stroke-width="2"/>
 <path d="M{cx - 30},{cy - 4} C{cx - 24},{cy - 26} {cx + 24},{cy - 28} {cx + 30},{cy - 4}" fill="none" stroke="#d9cdf5" stroke-width="6"/>
@@ -121,7 +121,11 @@ def eye(cx, cy, side, expr='normale'):
 <path d="M{cx - 34},{cy + 2} C{cx - 33},{cy - 36} {cx + 33},{cy - 38} {cx + 35},{cy - 3} C{cx + 24},{cy - 25} {cx - 24},{cy - 27} {cx - 34},{cy + 2}Z" fill="#1a0b26"/>
 <path d="M{cx + 33 * s},{cy - 9} l{12 * s},-11 M{cx + 35 * s},{cy - 1} l{14 * s},-5 M{cx + 34 * s},{cy + 7} l{12 * s},1" stroke="#1a0b26" stroke-width="4" stroke-linecap="round"/>
 <path d="M{cx + 12 * s},{cy + 38} q{10 * s},-2 {16 * s},-10 M{cx + 4 * s},{cy + 41} l{2 * s},4" fill="none" stroke="#1a0b26" stroke-width="2.4" stroke-linecap="round"/>
-</g>'''
+</g>
+<g class="lid" opacity="0">
+<path d="M{cx - 30},{cy + 8} Q{cx},{cy + 30} {cx + 30},{cy + 8}" fill="none" stroke="#1a0b26" stroke-width="7" stroke-linecap="round"/>
+<path d="M{cx + 26 * s},{cy + 12} l{10 * s},-6 M{cx + 16 * s},{cy + 20} l{6 * s},8" fill="none" stroke="#1a0b26" stroke-width="4" stroke-linecap="round"/>
+</g></g>'''
 
 
 def mouth(expr):
@@ -245,14 +249,16 @@ CSS = '''
 .bob{animation:bob 3.2s ease-in-out infinite}
 .tent{animation:wig 2.8s ease-in-out infinite;transform-box:fill-box;transform-origin:50% 0%}
 .wave{animation:wave 1.6s ease-in-out infinite;transform-box:fill-box;transform-origin:0% 100%}
-.eye{animation:blink 4.8s infinite;transform-box:fill-box;transform-origin:center}
+.eye{animation:blink 4.8s infinite}
+.lid{animation:lid 4.8s infinite}
 .twinkle{animation:tw 2.2s ease-in-out infinite;transform-box:fill-box;transform-origin:center}
 .float{animation:fl 3s ease-in-out infinite}
 .hat{animation:hat 3.2s ease-in-out infinite;transform-box:fill-box;transform-origin:50% 100%}
 @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
 @keyframes wig{0%,100%{transform:rotate(-2.5deg)}50%{transform:rotate(2.5deg)}}
 @keyframes wave{0%,100%{transform:rotate(-6deg)}50%{transform:rotate(8deg)}}
-@keyframes blink{0%,93%,100%{transform:scaleY(1)}96%{transform:scaleY(.08)}}
+@keyframes blink{0%,93%,98%,100%{opacity:1}94%,97%{opacity:0}}
+@keyframes lid{0%,93%,98%,100%{opacity:0}94%,97%{opacity:1}}
 @keyframes tw{0%,100%{opacity:1;transform:scale(1) rotate(0)}50%{opacity:.45;transform:scale(.6) rotate(20deg)}}
 @keyframes fl{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
 @keyframes hat{0%,100%{transform:rotate(0)}50%{transform:rotate(4deg)}}

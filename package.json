@@ -12,6 +12,7 @@
     "test": "vitest run",
     "typecheck": "tsc --noEmit",
     "i18n:extract": "node tools/i18n/extract.mjs",
+    "catalogo:doc": "node --experimental-strip-types tools/catalog/doc.mjs",
     "i18n:check": "node tools/i18n/extract.mjs --check",
     "i18n:check-locales": "node tools/i18n/check.mjs",
     "build:connettore": "vite build -c connector/vite.config.ts"

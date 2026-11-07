@@ -24,6 +24,10 @@ export interface MaterialGuideline {
   tips: string[];
 }
 
+/** Gli archi stampati sopra un foro orizzontale (asse, perno) si abbassano di 0,2-0,4 mm:
+    nei fori orizzontali delle parti mobili si aggiunge questo gioco solo verso l'alto. */
+export const ARCH_SAG_MM = 0.25;
+
 export const BASE_TOLERANCES: Tolerances = {
   hingeGap: 0.4,
   pinClearance: 0.35,
@@ -54,8 +58,16 @@ export const GUIDELINES: Record<string, MaterialGuideline> = {
     tips: [msg('Leggermente più ruvido: le parti mobili possono richiedere un po’ di gioco in più.')],
   },
   PETG: {
-    nozzleC: [230, 250], bedC: [70, 85], shrinkPct: 0.4, overhangDeg: 45, bridgeMm: 30, tol: plus(0.05), goodForSnap: true, warps: false,
-    tips: [msg('Ottimo per cerniere e incastri: è tenace e un po’ elastico.'), msg('Fa qualche filo (stringing): asciuga la bobina se succede spesso.'), msg('Sul piatto PEI liscio si attacca troppo: usa la colla stick come distaccante.')],
+    // Due superfici in PETG stampate già montate si saldano sotto 0,6 mm di distanza (0,2 si fonde): gioco minimo 0,6.
+    nozzleC: [230, 250], bedC: [75, 85], shrinkPct: 0.4, overhangDeg: 45, bridgeMm: 30, tol: { ...plus(0.05), hingeGap: 0.6 }, goodForSnap: true, warps: false,
+    tips: [
+      msg('Ottimo per cerniere e incastri: è tenace e un po’ elastico.'),
+      msg('Fa qualche filo (stringing): asciuga la bobina se succede spesso.'),
+      msg('Sul piatto PEI liscio si attacca troppo: usa la colla stick come distaccante.'),
+      msg('Pezzi grandi e piatti: piatto a 80 °C, ventola bassa (10–30%) e spenta nei primi strati, stampante coperta. Così non si imbarcano.'),
+      msg('Sul PEI ruvido il brim in PETG si toglie male: meglio le “orecchie” (dischetti sottili agli angoli).'),
+      msg('Niente stiratura (ironing): trascina grumi sulla superficie. Meglio la superficie superiore monotonica e lenta.'),
+    ],
   },
   ABS: {
     nozzleC: [240, 260], bedC: [90, 110], shrinkPct: 0.7, overhangDeg: 45, bridgeMm: 30, tol: plus(0.05), goodForSnap: true, warps: true,
@@ -118,6 +130,11 @@ export const MIN_CONTACT_MM2 = 40;
 export const MAX_SLENDERNESS = 6;
 /** Sporgenze oltre questa area (mm²) richiedono supporti. */
 export const SUPPORT_MIN_AREA_MM2 = 15;
+/** PLA e PETG nello stesso piatto: temperature dentro la finestra comune (PETG 220-250, PLA 190-230). */
+export const MIXED_PLA_PETG_C = { PETG: 230, PLA: 225 };
+/** Pezzo "grande e piatto" (rischio di angoli sollevati): area d'appoggio e altezza massima. */
+export const LARGE_FLAT_MM2 = 8000;
+export const LARGE_FLAT_MAX_H = 25;
 /** Brim consigliato per fissare pezzi piccoli o snelli (mm). */
 export const SMALL_PART_BRIM_MM = 5;
 

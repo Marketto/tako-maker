@@ -6,6 +6,7 @@ import type { PartStat } from '../core/analysis/estimate';
 import { fmtTime, STRATEGY_LABEL } from '../core/analysis/estimate';
 import type { ServerTool, ToolDef } from './client';
 import { LIMITS, SEARCH_DOMAINS } from './config';
+import { CATALOG_TOPICS, catalogText } from '../data/catalog';
 
 /* Strumenti esposti all'AI. Tutti tranne web_search girano nel browser:
    costano zero e restituiscono risposte compatte per risparmiare token. */
@@ -90,6 +91,14 @@ export const TOOL_DEFS: Record<string, ToolDef | ServerTool> = {
       required: ['question', 'options'],
     },
   },
+  consulta_catalogo: {
+    name: 'consulta_catalogo',
+    description: 'Regole pratiche provate in stampa (misure, giochi, forme) per molle, cerniere, scatti, perni, fermi, click, guide, pareti, imbarcamento, supporti, parti sottili, orientamento, multimateriale, file per lo slicer e diagnosi. Chiamalo prima di disegnare un meccanismo o rispondere a un problema di stampa.',
+    input_schema: {
+      type: 'object',
+      properties: { argomenti: { type: 'array', items: { type: 'string', enum: CATALOG_TOPICS }, description: 'Argomenti da leggere (vuoto = tutti)' } },
+    },
+  },
   print_report: {
     name: 'print_report',
     description: 'Stime locali per ogni strategia di stampa (tempo, grammi, scarto, fattibilità) e avvisi.',
@@ -160,6 +169,10 @@ export async function runTool(name: string, input: unknown, env: ToolEnv): Promi
       env.commit(next, typeof args.summary === 'string' ? args.summary : undefined);
       const report = env.analyze(next, ev.parts, ev);
       return { kind: 'result', content: `OK. Parti: ${partsText(next, ev.parts, env.setup)}\nAnalisi:\n${reportText(report)}` };
+    }
+    case 'consulta_catalogo': {
+      const topics = Array.isArray(args.argomenti) ? args.argomenti.map(String) : undefined;
+      return { kind: 'result', content: catalogText(topics) };
     }
     case 'print_report': {
       const d = env.design();

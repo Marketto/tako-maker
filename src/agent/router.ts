@@ -20,22 +20,26 @@ const words = (body: string) => new RegExp(`(?<!\\p{L})(?:${body})(?!\\p{L})`, '
 
 const RX = {
   search: words('cerca|trova|cercami|trovami|altri modelli|alternativ\\p{L}*|qualcosa di gi[aà] fatto|online'),
-  create: words('crea|creami|fai|fammi|disegna|progetta|nuovo modello|da zero'),
+  create: words('crea|creami|fai|fammi|disegna\\p{L}*|progetta\\p{L}*|realizza\\p{L}*|costruisci\\p{L}*|modella\\p{L}*|nuovo modello|da zero|su misura'),
   advice: words('colori?|filament[oi]|material[ei]|pla|petg|tpu|abs|multicolor[ei]?|ams|mmu|quanto tempo|quanti grammi|consum[oi]|stampar(?:e|lo|la) (?:separat\\p{L}*|insieme)|strategia|slicer'),
   question: /^(come|perch[eé]|cosa|che cos\p{L}*|quale|quali|quando|dove|posso|si pu[oò]|è possibile)(?!\p{L}).*\?\s*$/iu,
   edit: words('rendi|rendil[oa]|aumenta|diminuisci|allarga|stringi|allunga|accorcia|sposta|aggiungi|togli|rimuovi|cambia|metti|sostituisci|arrotonda|ingrandisci|rimpicciolisci|ruota|più|meno'),
+  trouble: /(venut[ao] (male|storta)|non (è venut|esce bene|si attacca|aderisce)|si (è )?(stacc|sollev|alz|spacc|rompe|delamin|deform|imbarc)\p{L}*|imbarcat\p{L}*|warping|stringing|filamenti|ragnatel\p{L}*|crepat\p{L}*|spaccat\p{L}*|fragile|delaminat\p{L}*)/iu,
   children: words('bambin[aoie]|bimb[aoie]|figli[aoe]?|nipot[ei]|neonat\\p{L}*|asilo|kids?|toddler'),
 };
 
-export function routeByRules(text: string, design: Design | null, opts: { searchFirst: boolean }): RouteDecision {
+/** searched: in questo progetto la ricerca è già stata fatta (risultati mostrati o skill di ricerca già usata). */
+export function routeByRules(text: string, design: Design | null, opts: { searchFirst: boolean; searched?: boolean }): RouteDecision {
   const hints = RX.children.test(text) ? { children: true } : {};
   const hasModel = !!design && design.parts.length > 0;
   const pick = (skill: SkillName, confidence: 'high' | 'low' = 'high'): RouteDecision => ({ skill, confidence, hints, via: 'rules' });
 
   if (RX.search.test(text)) return pick('cerca-modelli');
+  if (RX.trouble.test(text)) return pick('consiglia-stampa');
   if (!hasModel) {
     if (RX.question.test(text) && !RX.create.test(text)) return pick('spiega', 'low');
-    return pick(opts.searchFirst ? 'cerca-modelli' : 'crea-modello');
+    // "Prima cerca" vale solo per la prima richiesta: dopo i risultati, o se chiede di crearlo, si progetta.
+    return pick(opts.searchFirst && !opts.searched && !RX.create.test(text) ? 'cerca-modelli' : 'crea-modello');
   }
   if (RX.question.test(text) && !RX.edit.test(text)) return pick(RX.advice.test(text) ? 'consiglia-stampa' : 'spiega');
   if (RX.advice.test(text) && !RX.edit.test(text)) return pick('consiglia-stampa', 'low');
@@ -46,7 +50,7 @@ export function routeByRules(text: string, design: Design | null, opts: { search
 export async function route(
   text: string,
   design: Design | null,
-  opts: { searchFirst: boolean; smartRouting: boolean; client: AiClient | null },
+  opts: { searchFirst: boolean; searched?: boolean; smartRouting: boolean; client: AiClient | null },
 ): Promise<RouteDecision> {
   const byRules = routeByRules(text, design, opts);
   if (byRules.confidence === 'high' || !opts.smartRouting || !opts.client?.isConfigured()) return byRules;
