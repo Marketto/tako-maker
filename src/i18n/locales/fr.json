@@ -521,5 +521,11 @@
  "Nello stesso piatto ci sono PLA e PETG: lo slicer vuole temperature compatibili. Usa circa {petg} °C per il PETG e {pla} °C per il PLA, anche nelle varianti per ugello indurito o ad alto flusso del profilo.": "Il y a du PLA et du PETG sur le même plateau : le slicer veut des températures compatibles. Utilise environ {petg} °C pour le PETG et {pla} °C pour le PLA, y compris dans les variantes du profil pour buse trempée ou à haut débit.",
  "Niente stiratura (ironing): trascina grumi sulla superficie. Meglio la superficie superiore monotonica e lenta.": "Pas de lissage (ironing) : il traîne des grumeaux sur la surface. Mieux vaut une surface supérieure monotone et lente.",
  "Pezzi grandi e piatti: piatto a 80 °C, ventola bassa (10–30%) e spenta nei primi strati, stampante coperta. Così non si imbarcano.": "Pièces grandes et plates : plateau à 80 °C, ventilateur bas (10–30 %) et éteint pendant les premières couches, imprimante couverte. Comme ça, elles ne gondolent pas.",
- "Sul PEI ruvido il brim in PETG si toglie male: meglio le “orecchie” (dischetti sottili agli angoli).": "Sur le PEI texturé, le brim en PETG s’enlève mal : mieux vaut les « oreilles de souris » (petits disques fins aux coins)."
+ "Sul PEI ruvido il brim in PETG si toglie male: meglio le “orecchie” (dischetti sottili agli angoli).": "Sur le PEI texturé, le brim en PETG s’enlève mal : mieux vaut les « oreilles de souris » (petits disques fins aux coins).",
+ "Prima di iniziare…": "Avant de commencer…",
+ "Installa Printopus sul dispositivo": "Installe Printopus sur ton appareil",
+ "Così la apri come un’app, a tutto schermo, e funziona anche senza connessione.": "Tu l’ouvres comme une app, en plein écran, et il fonctionne même hors connexion.",
+ "Poi apri Printopus dalla schermata Home e continua da lì: le impostazioni dell’app installata sono separate da quelle del browser.": "Ouvre ensuite Printopus depuis l’écran d’accueil et continue là-bas : les réglages de l’app installée sont séparés de ceux du navigateur.",
+ "Non ora": "Pas maintenant",
+ "Continua nel browser": "Continuer dans le navigateur"
 }

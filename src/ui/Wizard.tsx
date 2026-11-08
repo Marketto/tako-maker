@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { PRINTERS, store, uid, useStore } from '../app/store';
 import { COMMON_COLORS, MATERIALS } from '../data/materials';
 import type { Filament, UserSetup, Vec3 } from '../core/types';
@@ -7,18 +7,32 @@ import { MusicButton } from './MusicButton';
 import { AiModePicker } from './AiModePicker';
 import { msg, t } from '../i18n';
 import { LanguagePicker } from './LanguagePicker';
+import { useInstall } from './Install';
 
 // Nomi della stampante personalizzata (da printers.json), da tradurre.
 void [msg('Altro'), msg('Stampante personalizzata')];
 // Sistemi multicolore con un nome descrittivo (gli altri sono nomi commerciali).
 void [msg('AMS + doppio ugello'), msg('Cambio utensile')];
 
-/* Prima configurazione: marca → modello → sistema multicolore → filamenti → chiave API. */
+/* Prima configurazione: (installazione dell'app, se il dispositivo la supporta) → benvenuto →
+   marca → modello → sistema multicolore → filamenti → chiave API. */
 
-type Step = 'welcome' | 'brand' | 'model' | 'multi' | 'filaments' | 'key';
+type Step = 'install' | 'welcome' | 'brand' | 'model' | 'multi' | 'filaments' | 'key';
 
 export function Wizard({ initial, onDone }: { initial?: UserSetup | null; onDone?: () => void }) {
-  const [step, setStep] = useState<Step>(initial ? 'brand' : 'welcome');
+  const install = useInstall();
+  const [step, setStep] = useState<Step>(initial ? 'brand' : install.mode ? 'install' : 'welcome');
+  // Il browser può segnalare l'installazione qualche istante dopo l'avvio: se si è ancora al benvenuto, si propone prima.
+  const [installSeen, setInstallSeen] = useState(false);
+  useEffect(() => {
+    if (step === 'welcome' && install.mode && !installSeen && !initial) setStep('install');
+    // Installata da un'altra strada (es. menu del browser) mentre si guarda questo passo: si va avanti.
+    if (step === 'install' && !install.mode) setStep('welcome');
+  }, [step, install.mode, installSeen, initial]);
+  const skipInstall = () => {
+    setInstallSeen(true);
+    setStep('welcome');
+  };
   const { keys, settings } = useStore();
   const hasKey = keys.some((k) => k.enabled && (k.key || k.baseUrl));
   const brands = useMemo(() => [...new Set(PRINTERS.map((p) => p.brand))], []);
@@ -58,12 +72,40 @@ export function Wizard({ initial, onDone }: { initial?: UserSetup | null; onDone
 
   return (
     <div className="wizard">
-      {step !== 'welcome' && (
+      {step !== 'welcome' && step !== 'install' && (
         <div className="wizard-progress" aria-hidden>
           {steps.map((s, i) => (
             <span key={s} className={i <= idx ? 'on' : ''} />
           ))}
         </div>
+      )}
+
+      {step === 'install' && (
+        <section className="wizard-card hero install-step">
+          <div className="hero-mascot">
+            <div className="speech static">{t('Prima di iniziare…')}</div>
+            <Takotta mood="felice" size={170} />
+          </div>
+          <h2>{t('Installa Printopus sul dispositivo')}</h2>
+          <p>{t('Così la apri come un’app, a tutto schermo, e funziona anche senza connessione.')}</p>
+          {install.mode === 'prompt' ? (
+            <button
+              className="btn primary big"
+              onClick={async () => {
+                await install.install();
+                skipInstall();
+              }}
+            >
+              {t('Installa')}
+            </button>
+          ) : (
+            <ol className="install-steps">
+              <li>{t('Tocca «Condividi» e poi «Aggiungi alla schermata Home».')}</li>
+              <li>{t('Poi apri Printopus dalla schermata Home e continua da lì: le impostazioni dell’app installata sono separate da quelle del browser.')}</li>
+            </ol>
+          )}
+          <button className="btn ghost" onClick={skipInstall}>{install.mode === 'prompt' ? t('Non ora') : t('Continua nel browser')}</button>
+        </section>
       )}
 
       {step === 'welcome' && (

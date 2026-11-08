@@ -521,5 +521,11 @@
  "Nello stesso piatto ci sono PLA e PETG: lo slicer vuole temperature compatibili. Usa circa {petg} °C per il PETG e {pla} °C per il PLA, anche nelle varianti per ugello indurito o ad alto flusso del profilo.": "Na istoj ploči su PLA i PETG: slicer traži kompatibilne temperature. Postavi oko {petg} °C za PETG i {pla} °C za PLA, i u varijantama profila za kaljenu dizu ili dizu visokog protoka.",
  "Niente stiratura (ironing): trascina grumi sulla superficie. Meglio la superficie superiore monotonica e lenta.": "Bez peglanja (ironing): vuče grudice po površini. Bolja je monotona i spora gornja površina.",
  "Pezzi grandi e piatti: piatto a 80 °C, ventola bassa (10–30%) e spenta nei primi strati, stampante coperta. Così non si imbarcano.": "Veliki pljosnati dijelovi: ploča na 80 °C, slab ventilator (10–30%) i ugašen u prvim slojevima, printer pokriven. Tako se neće iskriviti.",
- "Sul PEI ruvido il brim in PETG si toglie male: meglio le “orecchie” (dischetti sottili agli angoli).": "S hrapavog PEI-ja brim od PETG-a teško se skida: bolje su „mišje uši“ (tanki diskovi na uglovima)."
+ "Sul PEI ruvido il brim in PETG si toglie male: meglio le “orecchie” (dischetti sottili agli angoli).": "S hrapavog PEI-ja brim od PETG-a teško se skida: bolje su „mišje uši“ (tanki diskovi na uglovima).",
+ "Prima di iniziare…": "Prije nego što počnemo…",
+ "Installa Printopus sul dispositivo": "Instaliraj Printopus na uređaj",
+ "Così la apri come un’app, a tutto schermo, e funziona anche senza connessione.": "Tako ga otvaraš kao aplikaciju, preko cijelog ekrana, i radi i bez veze.",
+ "Poi apri Printopus dalla schermata Home e continua da lì: le impostazioni dell’app installata sono separate da quelle del browser.": "Zatim otvori Printopus s početnog ekrana i nastavi odatle: postavke instalirane aplikacije odvojene su od postavki preglednika.",
+ "Non ora": "Ne sada",
+ "Continua nel browser": "Nastavi u pregledniku"
 }

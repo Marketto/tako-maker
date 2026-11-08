@@ -521,5 +521,11 @@
  "Nello stesso piatto ci sono PLA e PETG: lo slicer vuole temperature compatibili. Usa circa {petg} °C per il PETG e {pla} °C per il PLA, anche nelle varianti per ugello indurito o ad alto flusso del profilo.": "Toje pačioje plokštėje yra PLA ir PETG: pjaustyklė nori suderinamų temperatūrų. Nustatyk apie {petg} °C PETG ir {pla} °C PLA, taip pat profilio variantuose grūdintam ar didelio srauto purkštukui.",
  "Niente stiratura (ironing): trascina grumi sulla superficie. Meglio la superficie superiore monotonica e lenta.": "Be lyginimo (ironing): jis tempia gumulėlius paviršiumi. Geriau monotoniškas ir lėtas viršutinis paviršius.",
  "Pezzi grandi e piatti: piatto a 80 °C, ventola bassa (10–30%) e spenta nei primi strati, stampante coperta. Così non si imbarcano.": "Didelės plokščios dalys: plokštė 80 °C, silpnas ventiliatorius (10–30%) ir išjungtas pirmuose sluoksniuose, spausdintuvas uždengtas. Taip jos nesusiriesčia.",
- "Sul PEI ruvido il brim in PETG si toglie male: meglio le “orecchie” (dischetti sottili agli angoli).": "Nuo šiurkštaus PEI PETG brim nusiima prastai: geriau „pelės ausys“ (ploni diskeliai kampuose)."
+ "Sul PEI ruvido il brim in PETG si toglie male: meglio le “orecchie” (dischetti sottili agli angoli).": "Nuo šiurkštaus PEI PETG brim nusiima prastai: geriau „pelės ausys“ (ploni diskeliai kampuose).",
+ "Prima di iniziare…": "Prieš pradedant…",
+ "Installa Printopus sul dispositivo": "Įdiek Printopus į įrenginį",
+ "Così la apri come un’app, a tutto schermo, e funziona anche senza connessione.": "Taip atidarysi jį kaip programėlę, per visą ekraną, ir jis veiks net be ryšio.",
+ "Poi apri Printopus dalla schermata Home e continua da lì: le impostazioni dell’app installata sono separate da quelle del browser.": "Tada atidaryk Printopus iš pradžios ekrano ir tęsk ten: įdiegtos programėlės nustatymai atskirti nuo naršyklės.",
+ "Non ora": "Ne dabar",
+ "Continua nel browser": "Tęsti naršyklėje"
 }

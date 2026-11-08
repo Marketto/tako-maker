@@ -521,5 +521,11 @@
  "Nello stesso piatto ci sono PLA e PETG: lo slicer vuole temperature compatibili. Usa circa {petg} °C per il PETG e {pla} °C per il PLA, anche nelle varianti per ugello indurito o ad alto flusso del profilo.": "PLA und PETG liegen auf derselben Druckplatte: Der Slicer braucht kompatible Temperaturen. Nimm etwa {petg} °C für PETG und {pla} °C für PLA, auch in den Profilvarianten für gehärtete Düse oder High-Flow-Düse.",
  "Niente stiratura (ironing): trascina grumi sulla superficie. Meglio la superficie superiore monotonica e lenta.": "Kein Bügeln (ironing): Es zieht Klümpchen über die Oberfläche. Besser eine langsame, monotone obere Oberfläche.",
  "Pezzi grandi e piatti: piatto a 80 °C, ventola bassa (10–30%) e spenta nei primi strati, stampante coperta. Così non si imbarcano.": "Große, flache Teile: Druckbett auf 80 °C, Lüfter niedrig (10–30%) und in den ersten Schichten aus, Drucker abgedeckt. So verziehen sie sich nicht.",
- "Sul PEI ruvido il brim in PETG si toglie male: meglio le “orecchie” (dischetti sottili agli angoli).": "Auf texturiertem PEI lässt sich ein PETG-Brim schlecht lösen: besser „Mausohren“ (dünne Scheibchen an den Ecken)."
+ "Sul PEI ruvido il brim in PETG si toglie male: meglio le “orecchie” (dischetti sottili agli angoli).": "Auf texturiertem PEI lässt sich ein PETG-Brim schlecht lösen: besser „Mausohren“ (dünne Scheibchen an den Ecken).",
+ "Prima di iniziare…": "Bevor wir anfangen…",
+ "Installa Printopus sul dispositivo": "Installiere Printopus auf deinem Gerät",
+ "Così la apri come un’app, a tutto schermo, e funziona anche senza connessione.": "So öffnest du es wie eine App, im Vollbild, und es funktioniert auch ohne Verbindung.",
+ "Poi apri Printopus dalla schermata Home e continua da lì: le impostazioni dell’app installata sono separate da quelle del browser.": "Öffne Printopus dann vom Home-Bildschirm und mach dort weiter: Die installierte App hat eigene Einstellungen, getrennt vom Browser.",
+ "Non ora": "Nicht jetzt",
+ "Continua nel browser": "Im Browser weitermachen"
 }

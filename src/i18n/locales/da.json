@@ -521,5 +521,11 @@
  "Nello stesso piatto ci sono PLA e PETG: lo slicer vuole temperature compatibili. Usa circa {petg} °C per il PETG e {pla} °C per il PLA, anche nelle varianti per ugello indurito o ad alto flusso del profilo.": "Der er PLA og PETG på samme plade: sliceren vil have kompatible temperaturer. Brug cirka {petg} °C til PETG og {pla} °C til PLA, også i profilens varianter til hærdet dyse eller high-flow-dyse.",
  "Niente stiratura (ironing): trascina grumi sulla superficie. Meglio la superficie superiore monotonica e lenta.": "Ingen strygning (ironing): den trækker klumper hen over overfladen. Hellere en langsom, monoton topflade.",
  "Pezzi grandi e piatti: piatto a 80 °C, ventola bassa (10–30%) e spenta nei primi strati, stampante coperta. Così non si imbarcano.": "Store, flade emner: plade på 80 °C, lav blæser (10–30 %) og slukket i de første lag, printeren tildækket. Så slår de sig ikke.",
- "Sul PEI ruvido il brim in PETG si toglie male: meglio le “orecchie” (dischetti sottili agli angoli).": "På ru PEI er en PETG-brim svær at få af: brug hellere “mouse ears” (tynde små skiver i hjørnerne)."
+ "Sul PEI ruvido il brim in PETG si toglie male: meglio le “orecchie” (dischetti sottili agli angoli).": "På ru PEI er en PETG-brim svær at få af: brug hellere “mouse ears” (tynde små skiver i hjørnerne).",
+ "Prima di iniziare…": "Før vi går i gang…",
+ "Installa Printopus sul dispositivo": "Installer Printopus på din enhed",
+ "Così la apri come un’app, a tutto schermo, e funziona anche senza connessione.": "Så åbner du den som en app, i fuld skærm, og den virker også uden forbindelse.",
+ "Poi apri Printopus dalla schermata Home e continua da lì: le impostazioni dell’app installata sono separate da quelle del browser.": "Åbn derefter Printopus fra hjemmeskærmen og fortsæt der: den installerede app har sine egne indstillinger, adskilt fra browserens.",
+ "Non ora": "Ikke nu",
+ "Continua nel browser": "Fortsæt i browseren"
 }

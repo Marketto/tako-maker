@@ -8,6 +8,10 @@
     <link rel="icon" href="icons/icon.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
     <title>Printopus</title>
+    <script>
+      // Il browser può proporre l'installazione prima che l'app sia caricata: si tiene l'evento per dopo (src/ui/Install.tsx).
+      addEventListener('beforeinstallprompt', function (e) { e.preventDefault(); window.__installPrompt = e; });
+    </script>
   </head>
   <body>
     <div id="root"></div>

@@ -521,5 +521,11 @@
  "Nello stesso piatto ci sono PLA e PETG: lo slicer vuole temperature compatibili. Usa circa {petg} °C per il PETG e {pla} °C per il PLA, anche nelle varianti per ugello indurito o ad alto flusso del profilo.": "Tá PLA agus PETG ar an bpláta céanna: teastaíonn teochtaí comhoiriúnacha ón slicer. Úsáid thart ar {petg} °C don PETG agus {pla} °C don PLA, fiú sna leaganacha den phróifíl do shoc cruaite nó ardsreafa.",
  "Niente stiratura (ironing): trascina grumi sulla superficie. Meglio la superficie superiore monotonica e lenta.": "Ná húsáid iarnáil (ironing): tarraingíonn sé cnapáin trasna an dromchla. Is fearr dromchla uachtair monatónach agus mall.",
  "Pezzi grandi e piatti: piatto a 80 °C, ventola bassa (10–30%) e spenta nei primi strati, stampante coperta. Così non si imbarcano.": "Páirteanna móra cothroma: pláta ag 80 °C, gaothrán íseal (10–30%) agus múchta sna chéad sraitheanna, printéir clúdaithe. Ar an mbealach sin ní lúbfaidh siad.",
- "Sul PEI ruvido il brim in PETG si toglie male: meglio le “orecchie” (dischetti sottili agli angoli).": "Ar PEI garbh is deacair brim PETG a bhaint: is fearr “cluasa luiche” (dioscaí beaga tanaí ag na coirnéil)."
+ "Sul PEI ruvido il brim in PETG si toglie male: meglio le “orecchie” (dischetti sottili agli angoli).": "Ar PEI garbh is deacair brim PETG a bhaint: is fearr “cluasa luiche” (dioscaí beaga tanaí ag na coirnéil).",
+ "Prima di iniziare…": "Sula dtosaímid…",
+ "Installa Printopus sul dispositivo": "Suiteáil Printopus ar do ghléas",
+ "Così la apri come un’app, a tutto schermo, e funziona anche senza connessione.": "Mar sin osclaíonn tú é mar aip, ar lánscáileán, agus oibríonn sé gan cheangal freisin.",
+ "Poi apri Printopus dalla schermata Home e continua da lì: le impostazioni dell’app installata sono separate da quelle del browser.": "Ansin oscail Printopus ón Scáileán Baile agus lean ar aghaidh ansin: tá socruithe na haipe suiteáilte ar leith ó shocruithe an bhrabhsálaí.",
+ "Non ora": "Ní anois",
+ "Continua nel browser": "Lean ar aghaidh sa bhrabhsálaí"
 }
