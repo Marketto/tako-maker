@@ -26,6 +26,10 @@ Esegui sempre `npm test && npm run build` prima di proporre un commit.
 - **Takotta**: non modificare a mano `src/ui/mascot/sprites.ts` né le icone; cambia `tools/mascot/takotta.py` e rigenera con `python3 tools/mascot/takotta.py` (poi riconverti le PNG delle icone). Frasi nuove in `ui/mascot/phrases.ts`, brevi e gentili.
 - **Accessibilità e mobile**: bersagli tattili ≥ 40 px, etichette `aria-label` sui pulsanti a icona, layout verificato a 390 px di larghezza.
 
+## Lavoro in sospeso
+
+Prima di iniziare leggi `docs/RIPRESA-DA-PC.md`: unione delle PR, attivazione del connettore Cloudflare e verifiche ancora da fare.
+
 ## Struttura
 
 Vedi `docs/ARCHITETTURA.md`. File chiave: `app/session.ts` (orchestrazione), `agent/runner.ts`
