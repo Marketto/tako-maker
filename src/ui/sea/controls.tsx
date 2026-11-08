@@ -1,5 +1,5 @@
-import { useId, useLayoutEffect, useMemo, useRef, useState, type ButtonHTMLAttributes, type HTMLAttributes, type ReactNode, type RefObject } from 'react';
-import { GLOW, bottle, crabShell, fish, pearl, rock, sandDollar, scallop, seaGlass, shellPearl, tentacle, type RockOpts } from './shapes';
+import { useId, useLayoutEffect, useMemo, useRef, useState, type ButtonHTMLAttributes, type ChangeEvent, type HTMLAttributes, type ReactNode, type RefObject } from 'react';
+import { GLOW, bottle, crabShell, fish, jellyfish, kelp, pearl, pufferfish, rock, sandDollar, scallop, seaGlass, shellPearl, tentacle, type RockOpts } from './shapes';
 
 /* Controlli del tema marino «B2»: ogni controllo è un vero <button> con disegnato dietro un oggetto marino
    (roccia, ciottolo, lastra, vetro di mare). Le forme si ridisegnano quando cambia la misura del controllo. */
@@ -153,6 +153,16 @@ export function PearlProgress({ count, index }: { count: number; index: number }
   );
 }
 
+const KELP_LEFT = kelp([30, 226], [
+  { pts: [[34, 226], [52, 170], [38, 110], [58, 50], [48, 8]], W: 15, back: true },
+  { pts: [[28, 226], [14, 176], [32, 130], [18, 84], [34, 46]], W: 17 },
+  { pts: [[32, 226], [50, 196], [44, 160], [66, 128]], W: 12, bladder: false },
+], 'kl');
+const KELP_RIGHT = kelp([88, 226], [
+  { pts: [[84, 226], [70, 180], [88, 130], [72, 80]], W: 14, back: true },
+  { pts: [[90, 226], [104, 186], [88, 146], [104, 104], [92, 70]], W: 16 },
+], 'kr');
+
 /** Sfondo del mare: raggi di luce, plancton e colonne di bolle. Tutto fermo con «riduci movimento». */
 export function SeaBackdrop({ children }: { children?: ReactNode }) {
   const bits = useMemo(() => {
@@ -170,6 +180,8 @@ export function SeaBackdrop({ children }: { children?: ReactNode }) {
         <span key={i} className="sea-plankton" style={{ left: `${p.x}%`, top: `${p.y}%`, width: p.size, height: p.size, background: p.c, opacity: p.o, animationDelay: `${p.d}s` }} />
       ))}
       {bits.bubbles.map((b, i) => <span key={i} className="sea-rise" style={{ left: `${b.x}%`, width: b.size, height: b.size, animationDelay: `${b.d}s` }} />)}
+      <svg className="sea-kelp left" width="120" height="230" viewBox="0 0 120 230" dangerouslySetInnerHTML={{ __html: KELP_LEFT }} />
+      <svg className="sea-kelp right" width="120" height="230" viewBox="0 0 120 230" dangerouslySetInnerHTML={{ __html: KELP_RIGHT }} />
       {children}
     </div>
   );
@@ -222,5 +234,32 @@ export function SeaNotice({ className = '', children, ...rest }: ButtonHTMLAttri
       <svg className="sea-bottle" width="72" height="36" viewBox="0 0 96 48" aria-hidden="true" focusable="false" dangerouslySetInnerHTML={{ __html: BOTTLE }} />
       <span className="sea-scroll">{children}</span>
     </button>
+  );
+}
+
+/** Interruttore a medusa in una scanalatura: accesa galleggia e brilla, spenta dorme. È una casella con role="switch". */
+export function SeaSwitch({ checked, onChange, disabled, className = '', children }: { checked: boolean; onChange: (e: ChangeEvent<HTMLInputElement>) => void; disabled?: boolean; className?: string; children: ReactNode }) {
+  return (
+    <label className={`sea-switch ${checked ? 'on' : ''} ${className}`}>
+      <span className="sea-switch-text">{children}</span>
+      <input className="sea-switch-input" type="checkbox" role="switch" checked={checked} disabled={disabled} onChange={onChange} />
+      <span className="sea-switch-track" aria-hidden="true">
+        <svg className="sea-jelly" width="30" height="38" viewBox="-16 -17 32 40" dangerouslySetInnerHTML={{ __html: checked ? JELLY_ON : JELLY_OFF }} />
+      </span>
+    </label>
+  );
+}
+const JELLY_ON = jellyfish(true);
+const JELLY_OFF = jellyfish(false);
+
+const PUFFER = pufferfish();
+
+/** Errore: il pesce palla si gonfia accanto al messaggio. */
+export function SeaError({ children, className = '' }: { children: ReactNode; className?: string }) {
+  return (
+    <div className={`sea-error ${className}`} role="alert">
+      <svg className="sea-puffer" width="44" height="40" viewBox="0 0 44 40" aria-hidden="true" dangerouslySetInnerHTML={{ __html: PUFFER }} />
+      <span>{children}</span>
+    </div>
   );
 }

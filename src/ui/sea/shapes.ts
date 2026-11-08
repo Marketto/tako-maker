@@ -421,3 +421,89 @@ export function bottle(): string {
     `<circle class="rise" cx="66" cy="12" r="2.5" fill="none" stroke="#bff6ff" stroke-width="1.2"/>`
   );
 }
+
+/* ---------- Medusa, pesce palla, kelp ---------- */
+
+/** Medusa dell'interruttore, centrata in (0, 0), circa 30×34. Accesa: rosa luminosa; spenta: grigia che respira. */
+export function jellyfish(on: boolean): string {
+  const bell = on ? '#ff9fcb' : '#5a6488';
+  const inner = on ? '#ffd2e6' : '#7a84a8';
+  const tent = on ? '#ff7ab8' : '#4a5378';
+  const legs = [-8, -3, 2, 7]
+    .map((x, i) => `<path d="M${x} 4 q${i % 2 ? 3 : -3} 5 0 9 q${i % 2 ? -3 : 3} 4 0 8" stroke="${tent}" stroke-width="2" fill="none" stroke-linecap="round"/>`)
+    .join('');
+  const face = on
+    ? `<circle cx="-4" cy="-3" r="1.6" fill="${INK}"/><circle cx="4" cy="-3" r="1.6" fill="${INK}"/><path d="M-2.5 0.5 q2.5 2.2 5 0" stroke="${INK}" stroke-width="1.2" fill="none" stroke-linecap="round"/>`
+    : `<path d="M-6 -3 q2 1.5 4 0 M2 -3 q2 1.5 4 0" stroke="${INK}" stroke-width="1.2" fill="none" stroke-linecap="round"/>`;
+  return (
+    `<g class="${on ? 'jbob' : 'jsleep'}">${legs}` +
+    `<path d="M-13 4 Q-14 -15 0 -15 Q14 -15 13 4 Q9 1.5 6.5 4 Q3 1.5 0 4 Q-3 1.5 -6.5 4 Q-9 1.5 -13 4 Z" fill="${bell}" fill-opacity="${on ? 0.9 : 0.85}" stroke="${INK}" stroke-width="1.6" stroke-linejoin="round"/>` +
+    `<path d="M-8 -9 Q-5 -13 0 -13" stroke="${inner}" stroke-width="2.5" fill="none" stroke-linecap="round"/>${face}</g>`
+  );
+}
+
+/** Pesce palla gonfio per gli errori, viewBox 0 0 44 40. */
+export function pufferfish(): string {
+  let spikes = '';
+  for (let i = 0; i < 12; i++) {
+    const a = (i / 12) * Math.PI * 2;
+    spikes += `<path d="M${f(22 + 13 * Math.cos(a))} ${f(21 + 13 * Math.sin(a))} L${f(22 + 18.5 * Math.cos(a))} ${f(21 + 18.5 * Math.sin(a))}" stroke="${INK}" stroke-width="2.6" stroke-linecap="round"/><path d="M${f(22 + 13 * Math.cos(a))} ${f(21 + 13 * Math.sin(a))} L${f(22 + 17.5 * Math.cos(a))} ${f(21 + 17.5 * Math.sin(a))}" stroke="#f6e7c1" stroke-width="1.2" stroke-linecap="round"/>`;
+  }
+  return (
+    `<g class="puff" style="transform-box:fill-box;transform-origin:center">${spikes}` +
+    `<circle cx="22" cy="21" r="14" fill="#ffd166" stroke="${INK}" stroke-width="2"/>` +
+    `<path d="M10 25 Q22 36 34 25 Q22 31 10 25 Z" fill="#fff3cf"/>` +
+    `<circle cx="16" cy="17" r="3.2" fill="#fff" stroke="${INK}" stroke-width="1.2"/><circle cx="16.6" cy="17.4" r="1.6" fill="${INK}"/>` +
+    `<circle cx="28" cy="17" r="3.2" fill="#fff" stroke="${INK}" stroke-width="1.2"/><circle cx="27.4" cy="17.4" r="1.6" fill="${INK}"/>` +
+    `<path d="M13 12 l5 2 M31 12 l-5 2" stroke="${INK}" stroke-width="1.6" stroke-linecap="round"/>` +
+    `<ellipse cx="22" cy="25.5" rx="3" ry="2.4" fill="#e85d33" stroke="${INK}" stroke-width="1.2"/>` +
+    `<path d="M11 15 Q14 9 20 8" stroke="#fff6d8" stroke-width="2.4" fill="none" stroke-linecap="round"/></g>`
+  );
+}
+
+/** Fronda di kelp con gradiente, nervatura e vescica d'aria. `id` rende unico il gradiente. */
+export function kelpBlade(pts: Pt[], W: number, id: string, back = false, bladder = true, n = 14): string {
+  const c = spline(pts, n);
+  const { s, nrm } = frame(c);
+  const w = s.map((x) => Math.max(1.2, W * Math.sin(Math.PI * Math.min(1, 0.08 + x * 0.92)) ** 0.75 * (1 + 0.14 * Math.sin(x * 34))));
+  const stops = back
+    ? '<stop offset="0" stop-color="#16303a"/><stop offset=".6" stop-color="#28504a"/><stop offset="1" stop-color="#3d6a52"/>'
+    : '<stop offset="0" stop-color="#2e4a1c"/><stop offset=".55" stop-color="#6e8a2a"/><stop offset="1" stop-color="#c2a845"/>';
+  const [x0, y0] = c[0];
+  const [x1, y1] = c[c.length - 1];
+  const out = [
+    `<defs><linearGradient id="${id}" gradientUnits="userSpaceOnUse" x1="${f(x0)}" y1="${f(y0)}" x2="${f(x1)}" y2="${f(y1)}">${stops}</linearGradient></defs>`,
+    `<path d="${ribbon(c, nrm, w, 0, c.length - 1, 0, 1, true)}" fill="url(#${id})" stroke="${INK}" stroke-width="${back ? 1.2 : 1.6}" stroke-linejoin="round" opacity="${back ? 0.85 : 1}"/>`,
+  ];
+  if (!back) {
+    out.push(`<path d="M${c.slice(2, -3).map(([x, y]) => `${f(x)} ${f(y)}`).join(' L')}" stroke="#2a3a12" stroke-width="1" fill="none" opacity=".55"/>`);
+    out.push(`<path d="${ribbon(c, nrm, w, 2, c.length - 4, 0.22, 0.22)}" fill="#e6d77a" opacity=".22"/>`);
+    if (bladder) {
+      const [bx, by] = c[1];
+      out.push(`<ellipse cx="${f(bx)}" cy="${f(by)}" rx="${f(W * 0.32)}" ry="${f(W * 0.45)}" fill="#b89a3c"/><ellipse cx="${f(bx - W * 0.1)}" cy="${f(by - W * 0.15)}" rx="${f(W * 0.1)}" ry="${f(W * 0.14)}" fill="#f0e2a0" opacity=".7"/>`);
+    }
+  }
+  return out.join('');
+}
+
+export interface KelpBlade {
+  pts: Pt[];
+  W: number;
+  back?: boolean;
+  bladder?: boolean;
+}
+
+/** Ciuffo di kelp che ondeggia, attaccato in `base`. */
+export function kelp(base: Pt, blades: KelpBlade[], id: string): string {
+  const [bx, by] = base;
+  const g = blades.map((b, i) => {
+    const [ox, oy] = b.pts[0];
+    return `<g class="kelp" style="transform-box:view-box;transform-origin:${f(ox)}px ${f(oy)}px;animation-duration:${(4 + i * 0.7).toFixed(1)}s">${kelpBlade(b.pts, b.W, `${id}k${i}`, b.back, b.bladder ?? true)}</g>`;
+  });
+  const back = g.filter((_, i) => blades[i].back).join('');
+  const front = g.filter((_, i) => !blades[i].back).join('');
+  const hold =
+    `<ellipse cx="${f(bx)}" cy="${f(by + 1)}" rx="16" ry="3.5" fill="#000" opacity=".35"/>` +
+    `<path d="M${f(bx - 11)} ${f(by + 1)} q3 -7 7 -6 q2 -6 5 -1 q4 -5 6 1 q5 -3 4 6 z" fill="#4a3b22"/>`;
+  return back + hold + front;
+}

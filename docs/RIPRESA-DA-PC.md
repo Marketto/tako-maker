@@ -33,8 +33,11 @@ in `tools/mockup/`, portati in TypeScript in `src/ui/sea/shapes.ts`.
 - Fatto nell'area di lavoro e nelle impostazioni: barra con dollari della sabbia e capasanta, schede a ciottoli, pannello
   e chat scuri, finestra delle impostazioni marina. Il resto (domande, tabella di stampa, montaggio) prende i colori
   marini dalle variabili CSS.
-- Da fare: interruttore a medusa, cursore a tentacolo, campi con il pesce palla per gli errori, scelte delle domande su
-  lastre, kelp; il piatto nell'anteprima 3D è ancora chiaro.
+- Fatto: interruttori a medusa (impostazioni, «ricorda le chiavi»), cursore a tentacolo con il pesce, errori della chat
+  con il pesce palla, risposte alle domande su lastre (singola) e vetro di mare (multipla), kelp sul fondale, piatto 3D
+  scuro.
+- Restano: le caselle piccole nell'editor delle chiavi e nella scheda di copia e incolla (native, in ciano), i menu a
+  tendina della scheda Stampa, il font Fredoka dei mockup (non adottato).
   - Pulsante principale: roccia di basalto con alghe luminose, balani e stella marina, avvolta da tentacoli che passano
     davanti e dietro.
   - Secondario: ciottolo di arenaria con kelp e lumachina. Disattivo: roccia spenta con il pesce che dorme.

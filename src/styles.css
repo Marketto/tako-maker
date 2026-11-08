@@ -640,6 +640,51 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
 .sea input[type="checkbox"], .sea input[type="range"] { accent-color: var(--sea-glow); }
 .sea .spend { color: var(--sea-ink); }
 
+/* Interruttore a medusa */
+.sea-switch { position: relative; display: flex; align-items: center; justify-content: space-between; gap: 0.8rem; margin: 0.5rem 0; font-size: 0.92rem; color: var(--sea-ink); cursor: pointer; min-height: 44px; }
+.sea .sea-switch { color: var(--sea-ink); }
+.sea-switch-text { flex: 1; }
+.sea-switch-input { position: absolute; inset-inline-end: 0; top: 50%; width: 72px; height: 40px; margin: -20px 0 0; opacity: 0; cursor: pointer; z-index: 2; }
+.sea-switch-track { position: relative; flex: none; width: 72px; height: 40px; border-radius: 20px; background: #10172e; box-shadow: inset 0 3px 6px rgb(0 0 0 / 0.7), 0 1px 0 rgb(255 255 255 / 0.08); transition: background 0.2s; }
+.sea-switch.on .sea-switch-track { background: radial-gradient(ellipse at 50% 20%, rgb(127 240 242 / 0.28), rgb(127 240 242 / 0.1)); box-shadow: inset 0 3px 6px rgb(0 0 0 / 0.6), 0 0 12px rgb(127 240 242 / 0.3); }
+.sea-jelly { position: absolute; top: 1px; left: 4px; overflow: visible; transition: transform 0.3s cubic-bezier(.3,1.5,.5,1); }
+.sea-switch.on .sea-jelly { transform: translateX(34px); filter: drop-shadow(0 0 6px #ff7ab8); }
+.sea-switch-input:focus-visible + .sea-switch-track { outline: 3px solid var(--sea-glow); outline-offset: 3px; }
+.sea-switch-input:disabled + .sea-switch-track { opacity: 0.45; }
+.sea-jelly .jbob { animation: sea-jbob 2.2s ease-in-out infinite; }
+.sea-jelly .jsleep { animation: sea-sleep 4s ease-in-out infinite; }
+@keyframes sea-jbob { 0%, 100% { transform: translateY(1px); } 50% { transform: translateY(-3px); } }
+
+/* Cursore: tentacolo con il pesce come maniglia */
+.sea input[type="range"] { -webkit-appearance: none; appearance: none; height: 44px; background: transparent; cursor: pointer; }
+.sea input[type="range"]::-webkit-slider-runnable-track { height: 12px; border-radius: 6px; border: 2px solid #0b1026;
+  background: radial-gradient(circle at 50% 70%, #ffc4de 0 2.2px, transparent 2.6px) 0 0 / 14px 100% repeat-x, linear-gradient(#ff9fcb, #d9508f 55%, #9c2a64); }
+.sea input[type="range"]::-moz-range-track { height: 8px; border-radius: 6px; border: 2px solid #0b1026; background: linear-gradient(#ff9fcb, #d9508f 55%, #9c2a64); }
+.sea input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 36px; height: 24px; margin-top: -8px; border: 0; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 36 24'%3E%3Cpath d='M3 4 L11 12 L3 20 Z' fill='%23ffd166' stroke='%230b1026' stroke-width='1.6' stroke-linejoin='round'/%3E%3Cellipse cx='21' cy='12' rx='13' ry='9.5' fill='%23ffd166' stroke='%230b1026' stroke-width='1.6'/%3E%3Ccircle cx='27' cy='10' r='2.2' fill='%230b1026'/%3E%3Cpath d='M14 7 Q19 4 24 6' stroke='%23fff3cf' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E") center / contain no-repeat; filter: drop-shadow(0 0 5px rgb(127 240 242 / 0.6)); }
+.sea input[type="range"]::-moz-range-thumb { width: 36px; height: 24px; border: 0; border-radius: 0; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 36 24'%3E%3Cpath d='M3 4 L11 12 L3 20 Z' fill='%23ffd166' stroke='%230b1026' stroke-width='1.6' stroke-linejoin='round'/%3E%3Cellipse cx='21' cy='12' rx='13' ry='9.5' fill='%23ffd166' stroke='%230b1026' stroke-width='1.6'/%3E%3Ccircle cx='27' cy='10' r='2.2' fill='%230b1026'/%3E%3C/svg%3E") center / contain no-repeat; }
+.sea input[type="range"]:focus-visible { outline: 3px solid var(--sea-glow); outline-offset: 2px; border-radius: 12px; }
+
+/* Errori: pesce palla */
+.sea-error { display: flex; align-items: center; gap: 0.6rem; padding: 0.6rem 0.8rem; border-radius: 16px; background: #1a1030; color: #ffd0e4; box-shadow: inset 0 3px 6px rgb(0 0 0 / 0.5), 0 0 0 2px #ff7ab8; font-size: 0.92rem; }
+.sea-puffer { flex: none; overflow: visible; }
+.sea-puffer .puff { animation: sea-puff 2.6s ease-in-out infinite; }
+@keyframes sea-puff { 0%, 100% { transform: scale(0.92); } 40% { transform: scale(1.06); } }
+
+/* Domande dell'assistente: lastre (scelta singola) e vetro di mare (scelta multipla) */
+.sea .question { background: rgb(14 24 56 / 0.6); }
+.sea .q-options { flex-direction: column; align-items: stretch; gap: 0.5rem; }
+.sea .q-options:has(.sea-glass) { flex-direction: row; flex-wrap: wrap; }
+.sea .q-options .sea-choice { flex-direction: row; width: 100%; border: 0; background: transparent; box-shadow: none; }
+.sea .q-options .sea-glass { flex: 1 1 auto; border: 0; background: transparent; box-shadow: none; padding-inline: 1rem; }
+.sea .q-options .hint { font-weight: 400; }
+
+/* Kelp ai lati del fondale */
+.sea-kelp { position: absolute; bottom: -4px; overflow: visible; opacity: 0.9; }
+.sea-kelp.left { left: -18px; }
+.sea-kelp.right { right: -22px; }
+.sea-kelp .kelp { animation: sea-kelp 4s ease-in-out infinite alternate; }
+@keyframes sea-kelp { from { transform: rotate(-3deg); } to { transform: rotate(3.5deg); } }
+
 .sea-backdrop { position: fixed; inset: 0; z-index: 0; overflow: hidden; pointer-events: none; }
 .sea-ray { position: absolute; top: 0; width: 22%; height: 46%; background: linear-gradient(#bff6ff, transparent); clip-path: polygon(0 0, 30% 0, 100% 100%, 22% 100%); transform-origin: 50% 0; animation: sea-ray 7s ease-in-out infinite alternate; }
 .sea-plankton { position: absolute; border-radius: 50%; animation: sea-plank 14s linear infinite; }

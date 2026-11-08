@@ -6,6 +6,8 @@ import type { SearchResult } from '../agent/tools';
 import { t } from '../i18n';
 import { CHAT_LINKS } from '../agent/manual';
 import { useStore } from '../app/store';
+import { SeaChoice, SeaError, SeaGlass } from './sea/controls';
+import { GLOW } from './sea/shapes';
 import { connectorBase, mcpUrl } from '../app/connector';
 
 export function ChatPanel({ session, snap }: { session: ProjectSession; snap: Snapshot }) {
@@ -59,7 +61,7 @@ export function ChatPanel({ session, snap }: { session: ProjectSession; snap: Sn
           </div>
         )}
         {snap.manual && <ManualCard session={session} snap={snap} />}
-        {snap.error && <div className="error" role="alert">{snap.error}</div>}
+        {snap.error && <SeaError>{snap.error}</SeaError>}
         <div ref={endRef} />
       </div>
 
@@ -98,15 +100,14 @@ function QuestionCard({ q, onAnswer, disabled }: { q: Question; onAnswer: (ids: 
       <div className="q-options">
         {q.options.map((o) =>
           q.multi ? (
-            <label key={o.id} className={`opt ${sel.includes(o.id) ? 'on' : ''}`}>
-              <input type="checkbox" checked={sel.includes(o.id)} onChange={() => setSel(sel.includes(o.id) ? sel.filter((x) => x !== o.id) : [...sel, o.id])} />
+            <SeaGlass key={o.id} className="opt" color={GLOW} on={sel.includes(o.id)} title={o.hint} onClick={() => setSel(sel.includes(o.id) ? sel.filter((x) => x !== o.id) : [...sel, o.id])}>
               {o.label}
-            </label>
+            </SeaGlass>
           ) : (
-            <button key={o.id} className="opt" disabled={disabled} onClick={() => onAnswer([o.id])} title={o.hint}>
-              {o.label}
-              {o.hint && <span className="hint">{o.hint}</span>}
-            </button>
+            <SeaChoice key={o.id} className="row opt" disabled={disabled} onClick={() => onAnswer([o.id])} title={o.hint}>
+              <strong>{o.label}</strong>
+              {o.hint && <span className="hint muted small">{o.hint}</span>}
+            </SeaChoice>
           ),
         )}
       </div>

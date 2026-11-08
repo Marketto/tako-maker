@@ -104,10 +104,10 @@ export function Viewer3D({ parts, colors, bed, assembly, keepFree = null }: Prop
     const r = refs.current!;
     r.bed.clear();
     const [bx, by] = bed;
-    const grid = new THREE.GridHelper(Math.max(bx, by), Math.round(Math.max(bx, by) / 20), 0xb9b2a3, 0xdcd6c8);
+    const grid = new THREE.GridHelper(Math.max(bx, by), Math.round(Math.max(bx, by) / 20), 0x5fb8c4, 0x3d5088); // tema marino: piatto scuro come il fondale
     grid.rotation.x = Math.PI / 2;
     grid.position.set(bx / 2, by / 2, -0.05);
-    const plate = new THREE.Mesh(new THREE.PlaneGeometry(bx, by), new THREE.MeshBasicMaterial({ color: 0xebe6da, transparent: true, opacity: 0.6 }));
+    const plate = new THREE.Mesh(new THREE.PlaneGeometry(bx, by), new THREE.MeshBasicMaterial({ color: 0x22305e, transparent: true, opacity: 0.75 }));
     plate.position.set(bx / 2, by / 2, -0.1);
     r.bed.add(plate, grid);
     if (keepFree) {
