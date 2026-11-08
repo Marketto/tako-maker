@@ -11,6 +11,7 @@ import { MusicButton } from './MusicButton';
 import { MascotDock } from './mascot/MascotDock';
 import { t } from '../i18n';
 import { plateKeepFree } from '../core/plate';
+import { SeaBackdrop, SeaIconButton, SeaPebble } from './sea/controls';
 
 type Tab = 'chat' | 'print' | 'assembly';
 
@@ -70,15 +71,16 @@ function WorkspaceInner({ session, onBack, onSettings }: { session: ProjectSessi
   const pendingQuestions = snap.questions.length;
 
   return (
-    <div className="workspace">
+    <div className="workspace sea">
+      <SeaBackdrop />
       <header className="topbar">
-        <button className="icon-btn" onClick={onBack} aria-label={t('Torna ai modelli')}>‹</button>
+        <SeaIconButton shell="dollar" small onClick={onBack} aria-label={t('Torna ai modelli')}>‹</SeaIconButton>
         <div className="title" title={snap.project.design.name}>{snap.project.design.name}</div>
         <div className="row gap">
           <BudgetBadge />
-          <MusicButton />
-          <button className="icon-btn" disabled={!snap.project.undo.length || !!snap.busy} onClick={() => session.undo()} aria-label={t('Annulla ultima modifica')} title={t('Annulla')}>↶</button>
-          <button className="icon-btn" onClick={onSettings} aria-label={t('Impostazioni')}>⚙</button>
+          <MusicButton sea small />
+          <SeaIconButton shell="dollar" small disabled={!snap.project.undo.length || !!snap.busy} onClick={() => session.undo()} aria-label={t('Annulla ultima modifica')} title={t('Annulla')}>↶</SeaIconButton>
+          <SeaIconButton shell="dollar" small onClick={onSettings} aria-label={t('Impostazioni')}>⚙</SeaIconButton>
         </div>
       </header>
 
@@ -99,13 +101,13 @@ function WorkspaceInner({ session, onBack, onSettings }: { session: ProjectSessi
 
         <aside className="ws-panel" data-tab={tab}>
           <nav className="tabs" role="tablist">
-            <button role="tab" aria-selected={tab === 'chat'} className={tab === 'chat' ? 'on' : ''} onClick={() => setTab('chat')}>
+            <SeaPebble role="tab" aria-selected={tab === 'chat'} on={tab === 'chat'} onClick={() => setTab('chat')}>
               {t('Assistente')}{pendingQuestions > 0 && tab !== 'chat' && <span className="pill">{pendingQuestions}</span>}
-            </button>
-            <button role="tab" aria-selected={tab === 'print'} className={tab === 'print' ? 'on' : ''} onClick={() => setTab('print')}>{t('Stampa')}</button>
-            <button role="tab" aria-selected={tab === 'assembly'} className={tab === 'assembly' ? 'on' : ''} onClick={() => setTab('assembly')} disabled={!hasAssembly} title={hasAssembly ? '' : t('Disponibile con parti separate')}>
+            </SeaPebble>
+            <SeaPebble role="tab" aria-selected={tab === 'print'} on={tab === 'print'} onClick={() => setTab('print')}>{t('Stampa')}</SeaPebble>
+            <SeaPebble role="tab" aria-selected={tab === 'assembly'} on={tab === 'assembly'} onClick={() => setTab('assembly')} disabled={!hasAssembly} title={hasAssembly ? '' : t('Disponibile con parti separate')}>
               {t('Montaggio')}
-            </button>
+            </SeaPebble>
           </nav>
           <div className="tab-body">
             {tab === 'chat' && <ChatPanel session={session} snap={snap} />}

@@ -9,6 +9,7 @@ import { msg, t } from '../i18n';
 import { LanguagePicker } from './LanguagePicker';
 import { useInstall } from './Install';
 import { seaGo } from './sea/transition';
+import { PearlProgress, SeaBackdrop, SeaButton, SeaChoice, SeaGlass, SeaPebble } from './sea/controls';
 
 // Nomi della stampante personalizzata (da printers.json), da tradurre.
 void [msg('Altro'), msg('Stampante personalizzata')];
@@ -74,14 +75,9 @@ export function Wizard({ initial, onDone }: { initial?: UserSetup | null; onDone
   });
 
   return (
-    <div className="wizard">
-      {step !== 'welcome' && step !== 'install' && (
-        <div className="wizard-progress" aria-hidden>
-          {steps.map((s, i) => (
-            <span key={s} className={i <= idx ? 'on' : ''} />
-          ))}
-        </div>
-      )}
+    <div className="wizard sea">
+      <SeaBackdrop />
+      {step !== 'welcome' && step !== 'install' && <PearlProgress count={steps.length} index={Math.max(0, idx)} />}
 
       {step === 'install' && (
         <section className="wizard-card hero install-step">
@@ -92,22 +88,22 @@ export function Wizard({ initial, onDone }: { initial?: UserSetup | null; onDone
           <h2>{t('Installa Printopus sul dispositivo')}</h2>
           <p>{t('Così la apri come un’app, a tutto schermo, e funziona anche senza connessione.')}</p>
           {install.mode === 'prompt' ? (
-            <button
-              className="btn primary big"
+            <SeaButton
+              big
               onClick={async () => {
                 await install.install();
                 skipInstall();
               }}
             >
               {t('Installa')}
-            </button>
+            </SeaButton>
           ) : (
             <ol className="install-steps">
               <li>{t('Tocca «Condividi» e poi «Aggiungi alla schermata Home».')}</li>
               <li>{t('Poi apri Printopus dalla schermata Home e continua da lì: le impostazioni dell’app installata sono separate da quelle del browser.')}</li>
             </ol>
           )}
-          <button className="btn ghost" onClick={skipInstall}>{install.mode === 'prompt' ? t('Non ora') : t('Continua nel browser')}</button>
+          <SeaButton variant="secondary" onClick={skipInstall}>{install.mode === 'prompt' ? t('Non ora') : t('Continua nel browser')}</SeaButton>
         </section>
       )}
 
@@ -120,8 +116,8 @@ export function Wizard({ initial, onDone }: { initial?: UserSetup | null; onDone
           <h1>Printopus</h1>
           <p>{t('Descrivi l’oggetto che vuoi stampare: troviamo un modello libero o lo creiamo, e lo adattiamo alla tua stampante e ai tuoi filamenti.')}</p>
           <p className="muted">{t('Prima due domande veloci sulla tua attrezzatura.')}</p>
-          <button className="btn primary big" onClick={() => goStep('brand')}>{t('Iniziamo!')}</button>
-          <div className="row gap center-row"><MusicButton /><span className="muted small">{t('Musica rilassante')}</span></div>
+          <SeaButton big onClick={() => goStep('brand')}>{t('Iniziamo!')}</SeaButton>
+          <div className="row gap center-row"><MusicButton sea /><span className="muted small">{t('Musica rilassante')}</span></div>
           <LanguagePicker />
         </section>
       )}
@@ -131,9 +127,9 @@ export function Wizard({ initial, onDone }: { initial?: UserSetup | null; onDone
           <h2>{t('Che marca è la tua stampante?')}</h2>
           <div className="choice-grid">
             {brands.map((b) => (
-              <button key={b} className={`choice ${brand === b ? 'selected' : ''}`} onClick={() => { setBrand(b); setPrinterId(''); goStep('model'); }}>
+              <SeaChoice key={b} selected={brand === b} onClick={() => { setBrand(b); setPrinterId(''); goStep('model'); }}>
                 {t(b)}
-              </button>
+              </SeaChoice>
             ))}
           </div>
           <Nav back={initial ? undefined : back} />
@@ -145,12 +141,12 @@ export function Wizard({ initial, onDone }: { initial?: UserSetup | null; onDone
           <h2>{t('Quale modello?')}</h2>
           <div className="choice-list">
             {PRINTERS.filter((p) => p.brand === brand).map((p) => (
-              <button key={p.id} className={`choice row ${printerId === p.id ? 'selected' : ''}`} onClick={() => setPrinterId(p.id)}>
+              <SeaChoice key={p.id} className="row" selected={printerId === p.id} onClick={() => setPrinterId(p.id)}>
                 <strong>{t(p.model)}</strong>
                 <span className="muted">
                   {p.id === 'custom' ? t('Inserisci le misure') : `${p.bed.join('×')} mm${p.multi ? ` · ${t('compatibile {system}', { system: t(p.multi.system) })}` : ''}${p.enclosed ? ` · ${t('chiusa')}` : ''}`}
                 </span>
-              </button>
+              </SeaChoice>
             ))}
           </div>
           {printerId === 'custom' && (
@@ -164,18 +160,18 @@ export function Wizard({ initial, onDone }: { initial?: UserSetup | null; onDone
               </div>
               <label>{t('Com’è fatta?')}</label>
               <div className="segmented">
-                <button className={!custom.enclosed ? 'on' : ''} onClick={() => setCustom({ ...custom, enclosed: false })}>{t('Aperta')}</button>
-                <button className={custom.enclosed ? 'on' : ''} onClick={() => setCustom({ ...custom, enclosed: true })}>{t('Chiusa, con sportello')}</button>
+                <SeaPebble on={!custom.enclosed} onClick={() => setCustom({ ...custom, enclosed: false })}>{t('Aperta')}</SeaPebble>
+                <SeaPebble on={custom.enclosed} onClick={() => setCustom({ ...custom, enclosed: true })}>{t('Chiusa, con sportello')}</SeaPebble>
               </div>
               <label>{t('Cosa si muove avanti e indietro?')}</label>
               <div className="segmented">
-                <button className={custom.kinematics === 'bedslinger' ? 'on' : ''} onClick={() => setCustom({ ...custom, kinematics: 'bedslinger' })}>{t('Il piatto')}</button>
-                <button className={custom.kinematics === 'corexy' ? 'on' : ''} onClick={() => setCustom({ ...custom, kinematics: 'corexy' })}>{t('Solo la testina (CoreXY)')}</button>
+                <SeaPebble on={custom.kinematics === 'bedslinger'} onClick={() => setCustom({ ...custom, kinematics: 'bedslinger' })}>{t('Il piatto')}</SeaPebble>
+                <SeaPebble on={custom.kinematics === 'corexy'} onClick={() => setCustom({ ...custom, kinematics: 'corexy' })}>{t('Solo la testina (CoreXY)')}</SeaPebble>
               </div>
               <label>{t('Quanti colori può stampare nello stesso pezzo?')}</label>
               <div className="segmented">
                 {[1, 2, 4, 5, 8].map((n) => (
-                  <button key={n} className={custom.multiSlots === n ? 'on' : ''} onClick={() => setCustom({ ...custom, multiSlots: n })}>{n}</button>
+                  <SeaPebble key={n} on={custom.multiSlots === n} onClick={() => setCustom({ ...custom, multiSlots: n })}>{n}</SeaPebble>
                 ))}
               </div>
             </div>
@@ -189,8 +185,8 @@ export function Wizard({ initial, onDone }: { initial?: UserSetup | null; onDone
           <h2>{t('Hai il sistema {system}?', { system: t(printer.multi.system) })}</h2>
           <p className="muted">{t('Permette di stampare fino a {n} colori nello stesso pezzo.', { n: printer.multi.slots })}</p>
           <div className="choice-grid two">
-            <button className={`choice ${hasMulti ? 'selected' : ''}`} onClick={() => { setHasMulti(true); next(); }}>{t('Sì, ce l’ho')}</button>
-            <button className={`choice ${!hasMulti ? 'selected' : ''}`} onClick={() => { setHasMulti(false); next(); }}>{t('No')}</button>
+            <SeaChoice selected={hasMulti} onClick={() => { setHasMulti(true); next(); }}>{t('Sì, ce l’ho')}</SeaChoice>
+            <SeaChoice selected={!hasMulti} onClick={() => { setHasMulti(false); next(); }}>{t('No')}</SeaChoice>
           </div>
           <Nav back={back} />
         </section>
@@ -205,19 +201,18 @@ export function Wizard({ initial, onDone }: { initial?: UserSetup | null; onDone
           <p className="muted">{t('Scegli il materiale, poi tocca i colori che possiedi.')}</p>
           <div className="segmented" role="tablist">
             {MATERIALS.slice(0, 7).map((m) => (
-              <button key={m.id} role="tab" aria-selected={mat === m.id} className={mat === m.id ? 'on' : ''} onClick={() => setMat(m.id)}>
+              <SeaPebble key={m.id} role="tab" aria-selected={mat === m.id} on={mat === m.id} onClick={() => setMat(m.id)}>
                 {m.short}
-              </button>
+              </SeaPebble>
             ))}
           </div>
           <div className="swatches">
             {COMMON_COLORS.map((c) => {
               const on = filaments.some((f) => f.material === mat && f.colorName === c.name);
               return (
-                <button key={c.name} className={`swatch ${on ? 'on' : ''}`} onClick={() => toggleColor(c)} aria-pressed={on}>
-                  <span className="dot" style={{ background: c.hex }} />
+                <SeaGlass key={c.name} color={c.hex} on={on} onClick={() => toggleColor(c)}>
                   {t(c.name)}
-                </button>
+                </SeaGlass>
               );
             })}
           </div>
@@ -250,9 +245,9 @@ export function Wizard({ initial, onDone }: { initial?: UserSetup | null; onDone
 function Nav({ back, next, nextLabel }: { back?: () => void; next?: () => void; nextLabel?: string }) {
   return (
     <div className="wizard-nav">
-      {back ? <button className="btn ghost" onClick={back}>{t('Indietro')}</button> : <span />}
+      {back ? <SeaButton variant="secondary" onClick={back}>{t('Indietro')}</SeaButton> : <span />}
       {next !== undefined || nextLabel !== undefined ? (
-        <button className="btn primary" disabled={!next} onClick={next}>{nextLabel ?? t('Avanti')}</button>
+        <SeaButton disabled={!next} onClick={next}>{nextLabel ?? t('Avanti')}</SeaButton>
       ) : null}
     </div>
   );

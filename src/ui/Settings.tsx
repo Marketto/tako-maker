@@ -5,6 +5,7 @@ import { MODELS } from '../agent/config';
 import { AiModePicker } from './AiModePicker';
 import { t } from '../i18n';
 import { LanguagePicker } from './LanguagePicker';
+import { SeaButton, SeaIconButton } from './sea/controls';
 
 function useSpend() {
   const { settings } = useStore();
@@ -37,10 +38,10 @@ export function SettingsDialog({ onClose, onEditSetup }: { onClose: () => void; 
 
   return (
     <div className="sheet-backdrop" onClick={onClose}>
-      <div className="sheet" role="dialog" aria-modal="true" aria-label={t('Impostazioni')} onClick={(e) => e.stopPropagation()}>
+      <div className="sheet sea" role="dialog" aria-modal="true" aria-label={t('Impostazioni')} onClick={(e) => e.stopPropagation()}>
         <header className="sheet-head">
           <h2>{t('Impostazioni')}</h2>
-          <button className="icon-btn" onClick={onClose} aria-label={t('Chiudi')}>×</button>
+          <SeaIconButton shell="dollar" small onClick={onClose} aria-label={t('Chiudi')}>×</SeaIconButton>
         </header>
 
         <section>
@@ -89,7 +90,7 @@ export function SettingsDialog({ onClose, onEditSetup }: { onClose: () => void; 
 
         <section>
           <h3>{t('Attrezzatura')}</h3>
-          <button className="btn" onClick={onEditSetup}>{t('Cambia stampante o filamenti')}</button>
+          <SeaButton variant="secondary" onClick={onEditSetup}>{t('Cambia stampante o filamenti')}</SeaButton>
         </section>
 
         <p className="muted small">

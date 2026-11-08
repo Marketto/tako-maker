@@ -2,7 +2,9 @@
 
 Script Python usati per disegnare i mockup del tema B2 (canvas privato, link in
 [docs/RIPRESA-DA-PC.md](../../docs/RIPRESA-DA-PC.md)). Producono stringhe SVG; servono come riferimento
-per portare le stesse forme nei componenti React, dove andranno riscritte in TypeScript.
+per i componenti React. Rocce, balani, stella, lumachina, vetro di mare, tentacolo, capasanta, dollaro della sabbia, granchio e bottiglia
+sono già portati in
+`src/ui/sea/shapes.ts` (usati da `src/ui/sea/controls.tsx`); il kelp è ancora solo qui.
 
 - `forme.py`: tentacolo rastremato con ventose, che può passare davanti e dietro a un elemento
   (`tentacle(punti, larghezza_iniziale, larghezza_finale, behind=[(da, a)])` restituisce lo strato dietro e quello davanti);
