@@ -85,6 +85,14 @@ nuova versione compare una barra “Aggiorna”.
 - **Sprite**: `tools/mascot/takotta.py` genera `src/ui/mascot/sprites.ts` (un corpo comune + un viso per umore, ~7 KB compressi) e le icone in `public/icons/`. Le punte dei tentacoli usano le variabili CSS `--tip0…--tip6`, impostate con i colori dei filamenti dell'utente.
 - **Umori**: `MascotDock` deriva l'espressione dallo stato del progetto (in attesa dell'AI → pensierosa, calcolo → concentrata, errore → confusa, modifica riuscita/esportazione → felice).
 - **Frasi**: `ui/mascot/phrases.ts`, scelte localmente senza ripetizioni consecutive.
+
+## Transizioni tra le schermate
+
+`ui/sea/transition.ts` espone `seaGo(cambio)`: copre lo schermo con una transizione scelta a caso (inchiostro dal punto
+toccato, onda, bolle; mai la stessa due volte di fila), esegue il cambio quando è coperto e poi scopre. Il disegno è in
+`ui/sea/SeaTransitionLayer.tsx`, gli stili `.sea-*` in `styles.css` (durate allineate a `COVER_MS` e `REVEAL_MS`).
+La usano i passi del wizard e la navigazione di `App.tsx`; i cambi automatici e il tasto Indietro del browser restano
+immediati. Con «riduci movimento» il cambio è immediato.
 - **Musica**: `app/music.ts` sintetizza in tempo reale accordi e carillon pentatonico; parte solo dopo un gesto dell'utente e si sospende quando la scheda è nascosta.
 - **Riduci movimento**: animazioni della mascotte, coriandoli e rimbalzi si disattivano se il sistema lo richiede.
 - **Font**: M PLUS Rounded 1c (licenza OFL) incluso nel bundle con i sottoinsiemi latino, latino esteso, cirillico e greco; per arabo, cinese, giapponese e coreano si usano i font di sistema.
