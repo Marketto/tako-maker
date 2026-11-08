@@ -6,6 +6,8 @@ import { Home } from './ui/Home';
 import { Workspace } from './ui/Workspace';
 import { SettingsDialog } from './ui/Settings';
 import { ConnectRoute } from './ui/ConnectRoute';
+import { SeaTransitionLayer } from './ui/sea/SeaTransitionLayer';
+import { seaGo } from './ui/sea/transition';
 
 /* Navigazione minimale basata sull'hash (#/p/<id>), compatibile con GitHub Pages. */
 
@@ -16,13 +18,18 @@ function useHashRoute(): [string, (h: string) => void] {
     window.addEventListener('hashchange', on);
     return () => window.removeEventListener('hashchange', on);
   }, []);
-  return [hash, (h) => (location.hash = h)];
+  return [hash, (h) => seaGo(() => (location.hash = h))];
 }
 
 /** Ridisegna tutta l'app quando cambia la lingua (anche testi calcolati come analisi e guida). */
 export function LocaleRoot() {
   const code = useSyncExternalStore(onLocaleChange, locale);
-  return <App key={code} />;
+  return (
+    <>
+      <App key={code} />
+      <SeaTransitionLayer />
+    </>
+  );
 }
 
 export function App() {
@@ -47,10 +54,12 @@ export function App() {
       {settings && (
         <SettingsDialog
           onClose={() => setSettings(false)}
-          onEditSetup={() => {
-            setSettings(false);
-            setEditSetup(true);
-          }}
+          onEditSetup={() =>
+            seaGo(() => {
+              setSettings(false);
+              setEditSetup(true);
+            })
+          }
         />
       )}
     </>

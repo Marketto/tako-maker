@@ -8,6 +8,7 @@ import { AiModePicker } from './AiModePicker';
 import { msg, t } from '../i18n';
 import { LanguagePicker } from './LanguagePicker';
 import { useInstall } from './Install';
+import { seaGo } from './sea/transition';
 
 // Nomi della stampante personalizzata (da printers.json), da tradurre.
 void [msg('Altro'), msg('Stampante personalizzata')];
@@ -29,9 +30,11 @@ export function Wizard({ initial, onDone }: { initial?: UserSetup | null; onDone
     // Installata da un'altra strada (es. menu del browser) mentre si guarda questo passo: si va avanti.
     if (step === 'install' && !install.mode) setStep('welcome');
   }, [step, install.mode, installSeen, initial]);
+  // I cambi di passo voluti dall'utente passano dalla transizione marina; quelli automatici no.
+  const goStep = (s: Step) => seaGo(() => setStep(s));
   const skipInstall = () => {
     setInstallSeen(true);
-    setStep('welcome');
+    goStep('welcome');
   };
   const { keys, settings } = useStore();
   const hasKey = keys.some((k) => k.enabled && (k.key || k.baseUrl));
@@ -49,15 +52,15 @@ export function Wizard({ initial, onDone }: { initial?: UserSetup | null; onDone
   const askMulti = !!printer?.multi && printer.multi.optional;
   const steps: Step[] = ['brand', 'model', ...(askMulti ? (['multi'] as Step[]) : []), 'filaments', 'key'];
   const idx = steps.indexOf(step);
-  const next = () => setStep(steps[Math.min(idx + 1, steps.length - 1)]);
-  const back = () => setStep(idx <= 0 ? 'welcome' : steps[idx - 1]);
+  const next = () => goStep(steps[Math.min(idx + 1, steps.length - 1)]);
+  const back = () => goStep(idx <= 0 ? 'welcome' : steps[idx - 1]);
 
   const toggleColor = (c: { name: string; hex: string }) => {
     const exists = filaments.find((f) => f.material === mat && f.colorName === c.name);
     setFilaments(exists ? filaments.filter((f) => f !== exists) : [...filaments, { id: `f${uid().slice(0, 4)}`, material: mat, colorName: c.name, hex: c.hex }]);
   };
 
-  const finish = () => {
+  const finish = () => seaGo(() => {
     const isCustom = printerId === 'custom';
     const setup: UserSetup = {
       printerId,
@@ -68,7 +71,7 @@ export function Wizard({ initial, onDone }: { initial?: UserSetup | null; onDone
     };
     store.setSetup(setup);
     onDone?.();
-  };
+  });
 
   return (
     <div className="wizard">
@@ -117,7 +120,7 @@ export function Wizard({ initial, onDone }: { initial?: UserSetup | null; onDone
           <h1>Printopus</h1>
           <p>{t('Descrivi l’oggetto che vuoi stampare: troviamo un modello libero o lo creiamo, e lo adattiamo alla tua stampante e ai tuoi filamenti.')}</p>
           <p className="muted">{t('Prima due domande veloci sulla tua attrezzatura.')}</p>
-          <button className="btn primary big" onClick={() => setStep('brand')}>{t('Iniziamo!')}</button>
+          <button className="btn primary big" onClick={() => goStep('brand')}>{t('Iniziamo!')}</button>
           <div className="row gap center-row"><MusicButton /><span className="muted small">{t('Musica rilassante')}</span></div>
           <LanguagePicker />
         </section>
@@ -128,7 +131,7 @@ export function Wizard({ initial, onDone }: { initial?: UserSetup | null; onDone
           <h2>{t('Che marca è la tua stampante?')}</h2>
           <div className="choice-grid">
             {brands.map((b) => (
-              <button key={b} className={`choice ${brand === b ? 'selected' : ''}`} onClick={() => { setBrand(b); setPrinterId(''); setStep('model'); }}>
+              <button key={b} className={`choice ${brand === b ? 'selected' : ''}`} onClick={() => { setBrand(b); setPrinterId(''); goStep('model'); }}>
                 {t(b)}
               </button>
             ))}
