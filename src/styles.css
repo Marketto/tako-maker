@@ -515,3 +515,42 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
 .install-step { display: flex; flex-direction: column; align-items: center; gap: 0.6rem; }
 .install-steps { text-align: start; margin: 0.4rem 0; padding-inline-start: 1.4rem; display: flex; flex-direction: column; gap: 0.5rem; }
 .install-step .btn { min-height: 44px; }
+
+/* Transizioni marine tra le schermate (src/ui/sea): durate allineate a COVER_MS (480) e REVEAL_MS (560). */
+.sea-tr { position: fixed; inset: 0; z-index: 1000; overflow: hidden; pointer-events: auto; }
+.sea-tr.sea-reveal { pointer-events: none; }
+.sea-splat { position: absolute; transform-origin: 50% 50%; }
+.sea-ink.sea-cover .sea-splat { animation: sea-ink-in 480ms cubic-bezier(0.5, 0, 0.3, 1) both; }
+.sea-ink.sea-reveal .sea-splat { animation: sea-ink-out 560ms ease-in both; }
+@keyframes sea-ink-in { from { transform: scale(0) rotate(-20deg); } to { transform: scale(1) rotate(0); } }
+@keyframes sea-ink-out { from { transform: scale(1); opacity: 1; } to { transform: scale(1.12) rotate(8deg); opacity: 0; } }
+.sea-wave { position: absolute; left: 0; top: 0; width: 100%; height: 140vh; }
+.sea-wave-crest, .sea-wave-foam { position: absolute; left: 0; top: 0; width: 100%; height: 70px; }
+.sea-wave-body { position: absolute; left: 0; right: 0; top: 66px; bottom: 0; background: linear-gradient(#2a7fc0, #14306e 60%); }
+.sea-wave-fish { position: absolute; }
+.sea-cover .sea-wave { animation: sea-wave-in 480ms cubic-bezier(0.45, 0, 0.4, 1) both; }
+.sea-reveal .sea-wave { animation: sea-wave-out 560ms cubic-bezier(0.5, 0, 0.6, 1) both; }
+@keyframes sea-wave-in { from { transform: translateY(100vh); } to { transform: translateY(-80px); } }
+@keyframes sea-wave-out { from { transform: translateY(-80px); } to { transform: translateY(-145vh); } }
+.sea-bubbles-veil { position: absolute; inset: 0; background: #14306e; }
+.sea-cover .sea-bubbles-veil { animation: sea-veil-in 480ms ease-in both; }
+.sea-reveal .sea-bubbles-veil { animation: sea-veil-out 560ms ease-out both; }
+@keyframes sea-veil-in { from { opacity: 0; } to { opacity: 0.94; } }
+@keyframes sea-veil-out { from { opacity: 0.94; } to { opacity: 0; } }
+.sea-bubble {
+  position: absolute; border-radius: 50%; border: 2px solid #0b1026;
+  background: radial-gradient(circle at 32% 30%, rgb(255 255 255 / 0.8) 0 12%, rgb(191 246 255 / 0.3) 13% 60%, rgb(127 240 242 / 0.5));
+  animation: sea-bubble 1040ms cubic-bezier(0.4, 0, 0.8, 0.6) both;
+}
+@keyframes sea-bubble { from { transform: translateY(0); } to { transform: translateY(-150vh); } }
+
+/* Gli elementi della nuova schermata entrano uno dopo l'altro. */
+@media (prefers-reduced-motion: no-preference) {
+  .wizard-card > *, .home-main > *, .ws-body > * { animation: sea-pop 0.5s cubic-bezier(0.3, 1.5, 0.5, 1) both; }
+  .wizard-card > :nth-child(2), .home-main > :nth-child(2), .ws-body > :nth-child(2) { animation-delay: 70ms; }
+  .wizard-card > :nth-child(3), .home-main > :nth-child(3) { animation-delay: 140ms; }
+  .wizard-card > :nth-child(4), .home-main > :nth-child(4) { animation-delay: 210ms; }
+  .wizard-card > :nth-child(5), .home-main > :nth-child(5) { animation-delay: 280ms; }
+  .wizard-card > :nth-child(n + 6), .home-main > :nth-child(n + 6) { animation-delay: 350ms; }
+}
+@keyframes sea-pop { from { opacity: 0; transform: translateY(18px) scale(0.97); } to { opacity: 1; transform: none; } }
