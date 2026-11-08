@@ -26,6 +26,8 @@ export function Wizard({ initial, onDone }: { initial?: UserSetup | null; onDone
   const [installSeen, setInstallSeen] = useState(false);
   useEffect(() => {
     if (step === 'welcome' && install.mode && !installSeen && !initial) setStep('install');
+    // Installata da un'altra strada (es. menu del browser) mentre si guarda questo passo: si va avanti.
+    if (step === 'install' && !install.mode) setStep('welcome');
   }, [step, install.mode, installSeen, initial]);
   const skipInstall = () => {
     setInstallSeen(true);
