@@ -44,6 +44,7 @@ describe('forme marine', () => {
   it('il vetro di mare acceso brilla, quello spento no', () => {
     expect(seaGlass(120, 48, 2, '#ff0000', true)).toContain('sparkle');
     expect(seaGlass(120, 48, 2, '#ff0000', false)).not.toContain('sparkle');
+    expect(seaGlass(120, 48, 2, '"/><script>', true)).not.toContain('<script>');
   });
 
   it('riconosce i colori chiari per il testo scuro', () => {

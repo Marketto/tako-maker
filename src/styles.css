@@ -661,6 +661,7 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
 .sea-btn.big { width: 100%; min-height: 66px; font-size: 1.12rem; margin: 0.6rem 0 0.3rem; }
 .sea-primary { color: #f2f7ff; text-shadow: 0 1px 0 #10162c, 0 0 10px rgb(127 240 242 / 0.45); animation: sea-hug 3.6s ease-in-out infinite; }
 .sea-secondary { color: #3a2a12; text-shadow: 0 1px 0 rgb(255 255 255 / 0.5); }
+.sea-primary:active:not(:disabled) { animation: none; }
 .sea-btn:disabled { color: #8a93b5; text-shadow: none; cursor: not-allowed; animation: none; }
 @keyframes sea-hug { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.012) translateY(-1px); } }
 

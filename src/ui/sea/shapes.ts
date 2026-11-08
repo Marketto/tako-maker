@@ -198,6 +198,8 @@ export function rock(w: number, h: number, seed: number, id: string, o: RockOpts
 
 /** Ciottolo di vetro di mare levigato dal mare (scelta multipla, filamenti). */
 export function seaGlass(w: number, h: number, seed: number, color: string, on: boolean): string {
+  // il colore finisce dentro l'SVG come testo: si accetta solo un esadecimale
+  if (!/^#[0-9a-f]{3,8}$/i.test(color)) color = '#9aa4c4';
   const r = rng(seed);
   const N = 7;
   const pts: Pt[] = [];
