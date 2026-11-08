@@ -15,7 +15,27 @@ e la riga che lo cita in `CLAUDE.md`.
   personalizzato `…workers.dev/mcp` (vedi [CONNETTORE.md](CONNETTORE.md)) e scrivi in chat il codice mostrato dall'app.
 - Takotta: il battito di ciglia ora mostra una palpebra chiusa (`.lid` in `tools/mascot/takotta.py`).
 
-## 2. Come sono state fatte le traduzioni
+## 2. Prossimo lavoro: tema marino «B2»
+
+Scelta fatta: l'interfaccia diventa marina, scura e bioluminescente, in stile cartoon. Mockup nel canvas privato
+https://claude.ai/artifact/PRxoi9523Yt1dEnNkMH7Qx (riga «B2»: wizard, componenti, transizioni). Generatori delle forme
+in `tools/mockup/` (da riscrivere in TypeScript).
+
+- Fatto: transizioni casuali tra le schermate (inchiostro, onda, bolle) ed entrata a cascata degli elementi,
+  in `src/ui/sea/` (PR #21).
+- Da fare, partendo dal wizard e poi home e area di lavoro: controlli come oggetti marini.
+  - Pulsante principale: roccia di basalto con alghe luminose, balani e stella marina, avvolta da tentacoli che passano
+    davanti e dietro.
+  - Secondario: ciottolo di arenaria con kelp e lumachina. Disattivo: roccia spenta con il pesce che dorme.
+  - Elimina: carapace di granchio con la chela. Pulsanti a icona: capasanta e dollaro della sabbia.
+  - Schede: ciottoli sulla sabbia. Scelta singola: lastre di pietra con conchiglia e perla, tenute da un tentacolo.
+  - Scelta multipla e filamenti: vetro di mare. Interruttore: medusa in una scanalatura.
+  - Cursore: tentacolo con il pesce come maniglia. Campi: solchi scolpiti nella pietra, pesce palla per gli errori.
+  - Avanzamento: perle, pesce e bolle. Avvisi: messaggio in bottiglia. Fumetto di Takotta: bolla d'aria.
+  - Micro-animazioni lente e sfondo con raggi di luce, plancton e bolle. Tutto fermo con «riduci movimento».
+  - Il ciano luminoso segna sempre ciò che è attivo o si può toccare; bersagli tattili ≥ 40 px.
+
+## 3. Come sono state fatte le traduzioni
 
 Le frasi nuove si traducono così:
 
