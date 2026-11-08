@@ -60,7 +60,11 @@ Cose da sapere:
 
 - **Action verde non vuol dire Worker pubblicato.** Senza `CLOUDFLARE_API_TOKEN` o `CONNECTOR_KV_ID` la action salta la pubblicazione e finisce comunque con successo. Lo stesso controllo non guarda `CLOUDFLARE_ACCOUNT_ID`: salva anche quello.
 - **L'indirizzo entra nel sito durante la build.** Dopo aver cambiato `CONNECTOR_URL`, rilancia `deploy.yml` (*Actions → Run workflow*), altrimenti il sito resta senza l'indirizzo o con quello vecchio.
-- **Il token si crea sul sito di Cloudflare.** Il modello *Edit Cloudflare Workers* va bene: limitalo al tuo account e salvalo con `gh secret set CLOUDFLARE_API_TOKEN`. Il login di `wrangler` vale solo sul tuo computer, non nella action.
+- **Il token si crea sul sito di Cloudflare** (*My Profile → API Tokens → Create Token*). Il login di `wrangler` vale solo sul tuo computer, non nella action, e non può creare token.
+  - Nome: libero, serve solo a riconoscerlo (es. `tako-maker-github-actions`).
+  - Modello *Edit Cloudflare Workers*. Nelle risorse dell'account scegli il tuo account; per le zone, se non hai domini su Cloudflare, scegli «Tutte le zone» (altrimenti il modulo chiede una zona).
+  - Cloudflare mostra il token una volta sola.
+- **Salvare i secret.** Da un terminale esegui `bash tools/cloudflare/token.sh`: chiede il token senza mostrarlo, lo scrive in `.env.cloudflare` (ignorato da Git, leggibile solo da te) e, se vuoi, carica i secret su GitHub con `gh secret set -f .env.cloudflare`. Poi `gh workflow run connector.yml` pubblica subito il connettore.
 - **Il proxy usa lo stesso token.** Con il secret salvato, una modifica a `proxy/` fa partire `proxy.yml`, anche se non hai configurato la chiave API del proxy.
 
 ### Pubblicazione a mano
@@ -79,7 +83,7 @@ Serve per la prima volta o quando la action non è configurata:
 
 ### Dati del proprio account
 
-Indirizzo del Worker, id del KV e id dell'account stanno in `connector/cloudflare.local`, ignorato da Git. Il token resta solo nei secret di GitHub: non va scritto in nessun file.
+Indirizzo del Worker, id del KV e id dell'account stanno in `connector/cloudflare.local`, ignorato da Git. Il token e l'id dell'account per le action stanno in `.env.cloudflare`, anch'esso ignorato da Git e con permessi `600`: non vanno mai in un file versionato. Per cambiare token, crea quello nuovo, rilancia `tools/cloudflare/token.sh` e revoca il vecchio su Cloudflare.
 
 ### Prova in locale
 
