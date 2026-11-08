@@ -34,9 +34,9 @@ function useSeed(): { seed: number; id: string } {
 }
 
 /** Disegno decorativo: posizionato dietro (o davanti) al contenuto, non riceve tocchi. */
-function Art({ w, h, svg, className = '' }: { w: number; h: number; svg: string; className?: string }) {
+function Art({ w, h, svg, className = '', viewBox }: { w: number; h: number; svg: string; className?: string; viewBox?: string }) {
   if (!w || !h || !svg) return null;
-  return <svg className={`sea-art ${className}`} width={w} height={h} viewBox={`0 0 ${w} ${h}`} aria-hidden="true" focusable="false" dangerouslySetInnerHTML={{ __html: svg }} />;
+  return <svg className={`sea-art ${className}`} width={w} height={h} viewBox={viewBox ?? `0 0 ${w} ${h}`} aria-hidden="true" focusable="false" dangerouslySetInnerHTML={{ __html: svg }} />;
 }
 
 type Variant = 'primary' | 'secondary';
@@ -192,10 +192,11 @@ export function SeaSlab({ className = '', children, ...rest }: HTMLAttributes<HT
 const SHELL_ART = { scallop: scallop(), dollar: sandDollar() };
 
 /** Pulsante a icona: capasanta o dollaro della sabbia, con il simbolo sopra. Serve sempre un aria-label. */
-export function SeaIconButton({ shell, lit, className = '', children, ...rest }: ButtonHTMLAttributes<HTMLButtonElement> & { shell: 'scallop' | 'dollar'; lit?: boolean; 'aria-label': string }) {
+export function SeaIconButton({ shell, lit, small, className = '', children, ...rest }: ButtonHTMLAttributes<HTMLButtonElement> & { shell: 'scallop' | 'dollar'; lit?: boolean; small?: boolean; 'aria-label': string }) {
+  const size = small ? 44 : 52;
   return (
-    <button className={`sea-icon sea-icon-${shell} ${lit ? 'lit' : ''} ${className}`} {...rest}>
-      <Art w={52} h={52} svg={SHELL_ART[shell]} />
+    <button className={`sea-icon sea-icon-${shell} ${lit ? 'lit' : ''} ${small ? 'small' : ''} ${className}`} {...rest}>
+      <Art w={size} h={size} viewBox="0 0 52 52" svg={SHELL_ART[shell]} />
       <span className="sea-label">{children}</span>
     </button>
   );

@@ -30,8 +30,11 @@ in `tools/mockup/`, portati in TypeScript in `src/ui/sea/shapes.ts`.
 - Fatto nella home: barra in alto scura, capasanta (musica) e dollaro della sabbia (impostazioni), riepilogo su lastra,
   avviso in bottiglia, «Nuovo modello» in basalto, modelli su lastre ed elimina con il granchio.
   Lo stile marino vale dentro qualsiasi elemento con la classe `sea`.
-- Da fare, nell'area di lavoro, nelle impostazioni (finestra ancora chiara) e quel che manca nel wizard: controlli come
-  oggetti marini.
+- Fatto nell'area di lavoro e nelle impostazioni: barra con dollari della sabbia e capasanta, schede a ciottoli, pannello
+  e chat scuri, finestra delle impostazioni marina. Il resto (domande, tabella di stampa, montaggio) prende i colori
+  marini dalle variabili CSS.
+- Da fare: interruttore a medusa, cursore a tentacolo, campi con il pesce palla per gli errori, scelte delle domande su
+  lastre, kelp; il piatto nell'anteprima 3D è ancora chiaro.
   - Pulsante principale: roccia di basalto con alghe luminose, balani e stella marina, avvolta da tentacoli che passano
     davanti e dietro.
   - Secondario: ciottolo di arenaria con kelp e lumachina. Disattivo: roccia spenta con il pesce che dorme.

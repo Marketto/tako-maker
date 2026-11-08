@@ -26,7 +26,7 @@ export function armMusicResume() {
 }
 
 /** `sea`: nel tema marino diventa una capasanta. */
-export function MusicButton({ sea }: { sea?: boolean } = {}) {
+export function MusicButton({ sea, small }: { sea?: boolean; small?: boolean } = {}) {
   const { settings } = useStore();
   useEffect(() => music.setVolume(settings.musicVolume), [settings.musicVolume]);
   const on = settings.musicOn;
@@ -49,7 +49,7 @@ export function MusicButton({ sea }: { sea?: boolean } = {}) {
   );
   if (sea)
     return (
-      <SeaIconButton shell="scallop" lit={on} aria-pressed={on} aria-label={label} title={on ? t('Spegni la musica') : t('Musica rilassante')} onClick={toggle}>
+      <SeaIconButton shell="scallop" small={small} lit={on} aria-pressed={on} aria-label={label} title={on ? t('Spegni la musica') : t('Musica rilassante')} onClick={toggle}>
         {icon}
       </SeaIconButton>
     );
