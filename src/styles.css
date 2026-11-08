@@ -554,3 +554,117 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
   .wizard-card > :nth-child(n + 6), .home-main > :nth-child(n + 6) { animation-delay: 350ms; }
 }
 @keyframes sea-pop { from { opacity: 0; transform: translateY(18px) scale(0.97); } to { opacity: 1; transform: none; } }
+
+/* ---------- Tema marino «B2» (per ora nel wizard): controlli disegnati in src/ui/sea/controls.tsx ---------- */
+.wizard.sea {
+  --sea-ink: #eaf2ff; --sea-muted: #a9b8e0; --sea-glow: #7ff0f2; --sea-deep: #0a1430;
+  /* i componenti non ancora disegnati usano le variabili comuni: qui diventano scure e marine */
+  --surface: #16224a; --surface-2: #1b2a55; --ink: #eaf2ff; --muted: #a9b8e0; --line: #3a4a7e; --line-strong: #7ff0f2;
+  --brand: #7ff0f2; --brand-dark: #3fb6c4; --brand-ink: #0a1430; --brand-soft: #1d3366; --accent-soft: #3a2350;
+  position: relative; isolation: isolate; color: var(--sea-ink); color-scheme: dark;
+  background: radial-gradient(ellipse at 50% 0%, #17295a, var(--sea-deep) 60%) var(--sea-deep);
+}
+.wizard.sea > :not(.sea-backdrop) { position: relative; z-index: 1; }
+.wizard.sea .muted, .wizard.sea label, .wizard.sea .bed-input > label { color: var(--sea-muted); }
+.wizard.sea a, .wizard.sea .link { color: var(--sea-glow); }
+.wizard.sea .wizard-card { background: transparent; border: 0; box-shadow: none; padding: 0.5rem 0.25rem; }
+.wizard.sea .wizard-card.hero::before { display: none; }
+.wizard.sea .wizard-card.hero h1 { color: var(--sea-ink); text-shadow: 0 0 18px rgb(127 240 242 / 0.45), 0 3px 0 #2b1656; }
+.wizard.sea h2 { color: var(--sea-ink); }
+.wizard.sea .wizard-nav { align-items: flex-end; gap: 0.8rem; }
+.wizard.sea .wizard-nav > .sea-primary { flex: 1; max-width: 240px; margin-inline-start: auto; }
+
+.sea-backdrop { position: fixed; inset: 0; z-index: 0; overflow: hidden; pointer-events: none; }
+.sea-ray { position: absolute; top: 0; width: 22%; height: 46%; background: linear-gradient(#bff6ff, transparent); clip-path: polygon(0 0, 30% 0, 100% 100%, 22% 100%); transform-origin: 50% 0; animation: sea-ray 7s ease-in-out infinite alternate; }
+.sea-plankton { position: absolute; border-radius: 50%; animation: sea-plank 14s linear infinite; }
+.sea-rise { position: absolute; bottom: 0; border: 1px solid #bff6ff; border-radius: 50%; animation: sea-col 6s linear infinite; }
+@keyframes sea-ray { from { opacity: 0.03; transform: skewX(-6deg); } to { opacity: 0.08; transform: skewX(6deg); } }
+@keyframes sea-plank { from { transform: translate(0, 0); } to { transform: translate(30px, -60px); } }
+@keyframes sea-col { 0% { transform: translateY(0); opacity: 0; } 10% { opacity: 0.8; } 100% { transform: translateY(-60vh); opacity: 0; } }
+
+.sea-art { position: absolute; left: 0; top: 0; overflow: visible; pointer-events: none; }
+.sea-label { position: relative; }
+.sea-btn, .sea-choice, .sea-pebble, .sea-glass {
+  position: relative; isolation: isolate; border: 0; background: transparent; cursor: pointer; font: inherit;
+  -webkit-tap-highlight-color: transparent; transition: transform 0.14s cubic-bezier(.3,1.6,.5,1);
+}
+.sea-btn:focus-visible, .sea-choice:focus-visible, .sea-pebble:focus-visible, .sea-glass:focus-visible { outline: 3px solid var(--sea-glow); outline-offset: 4px; border-radius: 18px; }
+.sea-btn:active:not(:disabled), .sea-choice:active, .sea-pebble:active, .sea-glass:active { transform: translateY(3px); }
+
+.sea-btn { display: inline-flex; align-items: center; justify-content: center; min-height: 58px; min-width: 110px; padding: 0 1.4rem 6px; font-weight: 800; font-size: 1.02rem; }
+.sea-btn.big { width: 100%; min-height: 66px; font-size: 1.12rem; margin: 0.6rem 0 0.3rem; }
+.sea-primary { color: #f2f7ff; text-shadow: 0 1px 0 #10162c, 0 0 10px rgb(127 240 242 / 0.45); animation: sea-hug 3.6s ease-in-out infinite; }
+.sea-secondary { color: #3a2a12; text-shadow: 0 1px 0 rgb(255 255 255 / 0.5); }
+.sea-btn:disabled { color: #8a93b5; text-shadow: none; cursor: not-allowed; animation: none; }
+@keyframes sea-hug { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.012) translateY(-1px); } }
+
+.sea-choice { display: flex; align-items: center; min-height: 56px; padding: 0.6rem 1rem 0.95rem; color: var(--sea-ink); text-align: start; font-weight: 600; }
+.sea-choice.selected { padding-inline-start: 46px; }
+.sea-choice .sea-label { flex: 1; }
+.sea-choice.row .sea-label { display: flex; flex-direction: column; gap: 0.1rem; }
+.sea-choice.row .muted { font-weight: 400; font-size: 0.85rem; }
+.wizard.sea .choice-list { gap: 0.6rem; padding: 12px 6px 8px; }
+
+.wizard.sea .segmented { background: rgb(242 215 154 / 0.1); border-radius: 18px; padding: 0.35rem; gap: 0.4rem; }
+.wizard.sea .segmented .sea-pebble { background: transparent; box-shadow: none; border-radius: 0; }
+.sea-pebble { flex: 1 0 auto; min-height: 44px; padding: 0 0.9rem 4px; color: var(--sea-ink); font-size: 0.92rem; }
+.sea-pebble.on { color: var(--sea-deep); font-weight: 800; }
+
+.wizard.sea .swatches { gap: 0.6rem; grid-template-columns: repeat(auto-fill, minmax(118px, 1fr)); }
+.sea-glass { display: flex; align-items: center; justify-content: center; min-height: 48px; padding: 0 0.7rem 4px; color: var(--sea-muted); font-size: 0.92rem; text-shadow: 0 1px 2px rgb(0 0 0 / 0.6); }
+.sea-glass.on { color: #fff; font-weight: 700; }
+.sea-glass.on.pale { color: var(--sea-deep); text-shadow: 0 1px 0 rgb(255 255 255 / 0.6); }
+.sea-glass .lit { filter: drop-shadow(0 0 7px var(--glass)); }
+
+.sea-progress { position: relative; width: min(520px, 100%); height: 34px; flex: none; }
+
+/* Fumetto di Takotta: bolla d'aria */
+.wizard.sea .speech {
+  color: var(--sea-ink); font-weight: 600; border-radius: 26px; border: 1.5px solid rgb(180 240 255 / 0.45);
+  background: radial-gradient(ellipse at 30% 25%, rgb(200 250 255 / 0.22), rgb(127 240 242 / 0.07) 55%, rgb(127 240 242 / 0.12));
+  box-shadow: inset 0 -4px 10px rgb(127 240 242 / 0.15), 0 0 14px rgb(127 240 242 / 0.15); margin-bottom: 1.2rem;
+}
+.wizard.sea .speech::after { width: 10px; height: 10px; bottom: -16px; border-radius: 50%; background: transparent; border: 1.5px solid rgb(180 240 255 / 0.5); transform: none; }
+.wizard.sea .speech::before { content: ''; position: absolute; left: 10px; top: 3px; width: 14px; height: 5px; border-radius: 50%; background: rgb(255 255 255 / 0.5); transform: rotate(-12deg); }
+
+/* Campi: solchi scolpiti nella pietra */
+.wizard.sea input:not([type="checkbox"]):not([type="radio"]):not([type="range"]), .wizard.sea .text, .wizard.sea select {
+  background: #0c1838; color: var(--sea-ink); border: 0; border-radius: 14px; min-height: 44px; padding: 0.5rem 0.8rem;
+  box-shadow: inset 0 3px 6px rgb(0 0 0 / 0.6), 0 0 0 1.5px #3a4a7e;
+}
+.wizard.sea input:focus, .wizard.sea .text:focus, .wizard.sea select:focus { outline: 2px solid var(--sea-glow); outline-offset: 2px; }
+.wizard.sea .chip { background: rgb(127 240 242 / 0.1); border: 1px solid rgb(127 240 242 / 0.3); color: var(--sea-ink); }
+.wizard.sea .chip button { color: var(--sea-muted); min-width: 32px; min-height: 32px; }
+.wizard.sea .lang-picker { background: #0c1838; border-color: #3a4a7e; }
+.wizard.sea .lang-picker select { background: none; box-shadow: none; }
+.wizard.sea .icon-btn:hover:not(:disabled) { background: rgb(127 240 242 / 0.12); }
+/* Scelte non ancora disegnate (es. modo dell'assistente): lastra scura */
+.wizard.sea .choice { background: linear-gradient(#3f4b70, #2b3456); color: var(--sea-ink); border: 2px solid #0b1026; box-shadow: 0 5px 0 #222a4a; border-radius: 16px; }
+.wizard.sea .choice.selected { border-color: var(--sea-glow); box-shadow: 0 5px 0 #222a4a, 0 0 12px rgb(127 240 242 / 0.4); }
+.wizard.sea .btn.primary { background: var(--brand); color: var(--brand-ink); border-color: var(--brand-dark); box-shadow: 0 3px 0 var(--brand-dark); }
+.wizard.sea .badge { background: rgb(127 240 242 / 0.15); color: var(--sea-glow); }
+
+/* Micro-animazioni delle forme (lente) */
+.sea-art .glowline { animation: sea-dash 2.4s linear infinite; }
+.sea-art .glowdot { animation: sea-twinkle 2s ease-in-out infinite; }
+.sea-art .cirri { animation: sea-cirri 3.2s ease-in-out infinite; }
+.sea-art .wiggle { animation: sea-wiggle 2.6s ease-in-out infinite; }
+.sea-art .crawl { animation: sea-crawl 9s ease-in-out infinite alternate; }
+.sea-art .sparkle { animation: sea-sparkle 2.4s ease-in-out infinite; }
+.sea-art .pulse { animation: sea-pulse 2s ease-in-out infinite; }
+.sea-art .swim { animation: sea-swim 2.4s ease-in-out infinite alternate; }
+.sea-art .jsleep { animation: sea-sleep 4s ease-in-out infinite; }
+@keyframes sea-dash { to { stroke-dashoffset: -30; } }
+@keyframes sea-twinkle { 0%, 100% { opacity: 0.35; } 50% { opacity: 1; } }
+@keyframes sea-cirri { 0%, 55%, 100% { transform: scaleY(0); } 65%, 85% { transform: scaleY(1); } }
+@keyframes sea-wiggle { 0%, 100% { transform: rotate(-6deg); } 50% { transform: rotate(8deg); } }
+@keyframes sea-crawl { from { transform: translateX(-14px); } to { transform: translateX(10px); } }
+@keyframes sea-sparkle { 0%, 60%, 100% { transform: scale(0); opacity: 0; } 75% { transform: scale(1) rotate(45deg); opacity: 1; } }
+@keyframes sea-pulse { 0%, 100% { filter: drop-shadow(0 0 3px #7ff0f2); } 50% { filter: drop-shadow(0 0 9px #7ff0f2); } }
+@keyframes sea-swim { from { translate: -3px 0; } to { translate: 3px 0; } }
+@keyframes sea-sleep { 0%, 100% { transform: translateY(1px); opacity: 0.8; } 50% { transform: translateY(0); opacity: 1; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .wizard.sea, .wizard.sea *, .sea-backdrop * { animation: none !important; transition: none !important; }
+  .sea-rise { display: none; }
+}

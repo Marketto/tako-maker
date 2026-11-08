@@ -19,11 +19,15 @@ e la riga che lo cita in `CLAUDE.md`.
 
 Scelta fatta: l'interfaccia diventa marina, scura e bioluminescente, in stile cartoon. Mockup nel canvas privato
 https://claude.ai/artifact/PRxoi9523Yt1dEnNkMH7Qx (riga «B2»: wizard, componenti, transizioni). Generatori delle forme
-in `tools/mockup/` (da riscrivere in TypeScript).
+in `tools/mockup/`, portati in TypeScript in `src/ui/sea/shapes.ts`.
 
 - Fatto: transizioni casuali tra le schermate (inchiostro, onda, bolle) ed entrata a cascata degli elementi,
   in `src/ui/sea/` (PR #21).
-- Da fare, partendo dal wizard e poi home e area di lavoro: controlli come oggetti marini.
+- Fatto nel wizard: sfondo (raggi, plancton, bolle), pulsante principale in basalto con tentacolo, secondario
+  in arenaria, disattivo con il pesce che dorme, scelte su lastre con conchiglia e perla, schede a ciottoli, filamenti
+  in vetro di mare, avanzamento a perle, fumetto a bolla d'aria, campi a solco (`src/ui/sea/controls.tsx`).
+  Gli altri componenti dentro il wizard (modo dell'assistente, chiavi) prendono i colori marini dalle variabili CSS.
+- Da fare, nella home e nell'area di lavoro (e quel che manca nel wizard): controlli come oggetti marini.
   - Pulsante principale: roccia di basalto con alghe luminose, balani e stella marina, avvolta da tentacoli che passano
     davanti e dietro.
   - Secondario: ciottolo di arenaria con kelp e lumachina. Disattivo: roccia spenta con il pesce che dorme.

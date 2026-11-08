@@ -72,5 +72,7 @@ export default defineConfig({
   test: {
     environment: 'node',
     include: ['tests/**/*.test.ts'],
+    // La geometria (manifold) è pesante: su macchine lente alcuni test superano i 5 s predefiniti.
+    testTimeout: 30_000,
   },
 });
