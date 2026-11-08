@@ -521,5 +521,11 @@
  "Nello stesso piatto ci sono PLA e PETG: lo slicer vuole temperature compatibili. Usa circa {petg} °C per il PETG e {pla} °C per il PLA, anche nelle varianti per ugello indurito o ad alto flusso del profilo.": "على اللوح نفسه PLA وPETG: السلايسر يحتاج درجات حرارة متوافقة. استخدم نحو {petg} °C لـPETG و{pla} °C لـPLA، وكذلك في نسخ الملف الشخصي الخاصة بالفوهة المقسّاة أو عالية التدفق.",
  "Niente stiratura (ironing): trascina grumi sulla superficie. Meglio la superficie superiore monotonica e lenta.": "بلا كيّ (ironing): يجرّ كتلًا صغيرة على السطح. الأفضل سطح علوي أحادي الاتجاه وبطيء.",
  "Pezzi grandi e piatti: piatto a 80 °C, ventola bassa (10–30%) e spenta nei primi strati, stampante coperta. Così non si imbarcano.": "قطع كبيرة ومسطحة: اللوح على 80 °C، مروحة منخفضة (10–30%) ومطفأة في الطبقات الأولى، والطابعة مغطاة. هكذا لا تلتوي.",
- "Sul PEI ruvido il brim in PETG si toglie male: meglio le “orecchie” (dischetti sottili agli angoli).": "على PEI الخشن تُنزع حافة brim من PETG بصعوبة: الأفضل «آذان الفأر» (أقراص رقيقة في الزوايا)."
+ "Sul PEI ruvido il brim in PETG si toglie male: meglio le “orecchie” (dischetti sottili agli angoli).": "على PEI الخشن تُنزع حافة brim من PETG بصعوبة: الأفضل «آذان الفأر» (أقراص رقيقة في الزوايا).",
+ "Prima di iniziare…": "قبل أن نبدأ…",
+ "Installa Printopus sul dispositivo": "ثبّت Printopus على جهازك",
+ "Così la apri come un’app, a tutto schermo, e funziona anche senza connessione.": "هكذا تفتحه كتطبيق، بملء الشاشة، ويعمل حتى دون اتصال.",
+ "Poi apri Printopus dalla schermata Home e continua da lì: le impostazioni dell’app installata sono separate da quelle del browser.": "ثم افتح Printopus من الشاشة الرئيسية وتابع من هناك: إعدادات التطبيق المثبّت منفصلة عن إعدادات المتصفح.",
+ "Non ora": "ليس الآن",
+ "Continua nel browser": "تابع في المتصفح"
 }

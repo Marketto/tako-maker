@@ -521,5 +521,11 @@
  "Nello stesso piatto ci sono PLA e PETG: lo slicer vuole temperature compatibili. Usa circa {petg} °C per il PETG e {pla} °C per il PLA, anche nelle varianti per ugello indurito o ad alto flusso del profilo.": "Mae PLA a PETG ar yr un plât: mae'r slicer eisiau tymereddau cydnaws. Defnyddia tua {petg} °C ar gyfer PETG a {pla} °C ar gyfer PLA, hefyd yn amrywiadau'r proffil ar gyfer ffroenell galed neu lif uchel.",
  "Niente stiratura (ironing): trascina grumi sulla superficie. Meglio la superficie superiore monotonica e lenta.": "Dim smwddio (ironing): mae'n llusgo lympiau ar draws yr arwyneb. Gwell yw arwyneb uchaf monotonig ac araf.",
  "Pezzi grandi e piatti: piatto a 80 °C, ventola bassa (10–30%) e spenta nei primi strati, stampante coperta. Così non si imbarcano.": "Darnau mawr a fflat: plât ar 80 °C, ffan isel (10–30%) ac i ffwrdd yn yr haenau cyntaf, argraffydd wedi'i orchuddio. Fel hyn, fyddan nhw ddim yn ystumio.",
- "Sul PEI ruvido il brim in PETG si toglie male: meglio le “orecchie” (dischetti sottili agli angoli).": "Ar PEI garw mae brim PETG yn anodd ei dynnu: gwell defnyddio “clustiau llygoden” (disgiau bach tenau yn y corneli)."
+ "Sul PEI ruvido il brim in PETG si toglie male: meglio le “orecchie” (dischetti sottili agli angoli).": "Ar PEI garw mae brim PETG yn anodd ei dynnu: gwell defnyddio “clustiau llygoden” (disgiau bach tenau yn y corneli).",
+ "Prima di iniziare…": "Cyn i ni ddechrau…",
+ "Installa Printopus sul dispositivo": "Gosoda Printopus ar dy ddyfais",
+ "Così la apri come un’app, a tutto schermo, e funziona anche senza connessione.": "Felly rwyt ti’n ei agor fel ap, ar sgrin lawn, ac mae’n gweithio heb gysylltiad hefyd.",
+ "Poi apri Printopus dalla schermata Home e continua da lì: le impostazioni dell’app installata sono separate da quelle del browser.": "Yna agor Printopus o’r Sgrin Gartref a pharhau yno: mae gosodiadau’r ap wedi’i osod ar wahân i rai’r porwr.",
+ "Non ora": "Dim nawr",
+ "Continua nel browser": "Parhau yn y porwr"
 }

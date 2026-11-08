@@ -510,3 +510,8 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
 .ai-mode-list { max-height: none; margin: 0.3rem 0; }
 .ai-mode-head { display: flex; align-items: center; gap: 0.3rem; flex-wrap: wrap; font-weight: 800; }
 .ai-mode-head .badge { margin: 0; }
+
+/* Installazione dell'app prima del wizard */
+.install-step { display: flex; flex-direction: column; align-items: center; gap: 0.6rem; }
+.install-steps { text-align: start; margin: 0.4rem 0; padding-inline-start: 1.4rem; display: flex; flex-direction: column; gap: 0.5rem; }
+.install-step .btn { min-height: 44px; }

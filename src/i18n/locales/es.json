@@ -521,5 +521,11 @@
  "Nello stesso piatto ci sono PLA e PETG: lo slicer vuole temperature compatibili. Usa circa {petg} °C per il PETG e {pla} °C per il PLA, anche nelle varianti per ugello indurito o ad alto flusso del profilo.": "En la misma cama hay PLA y PETG: el slicer necesita temperaturas compatibles. Usa unos {petg} °C para el PETG y {pla} °C para el PLA, también en las variantes del perfil para boquilla endurecida o de alto flujo.",
  "Niente stiratura (ironing): trascina grumi sulla superficie. Meglio la superficie superiore monotonica e lenta.": "Sin planchado (ironing): arrastra grumos por la superficie. Mejor una superficie superior monotónica y lenta.",
  "Pezzi grandi e piatti: piatto a 80 °C, ventola bassa (10–30%) e spenta nei primi strati, stampante coperta. Così non si imbarcano.": "Piezas grandes y planas: cama a 80 °C, ventilador bajo (10–30%) y apagado en las primeras capas, impresora cubierta. Así no se deforman.",
- "Sul PEI ruvido il brim in PETG si toglie male: meglio le “orecchie” (dischetti sottili agli angoli).": "Sobre PEI texturizado el brim de PETG se quita mal: mejor las “orejas de ratón” (discos finos en las esquinas)."
+ "Sul PEI ruvido il brim in PETG si toglie male: meglio le “orecchie” (dischetti sottili agli angoli).": "Sobre PEI texturizado el brim de PETG se quita mal: mejor las “orejas de ratón” (discos finos en las esquinas).",
+ "Prima di iniziare…": "Antes de empezar…",
+ "Installa Printopus sul dispositivo": "Instala Printopus en tu dispositivo",
+ "Così la apri come un’app, a tutto schermo, e funziona anche senza connessione.": "Así lo abres como una app, a pantalla completa, y funciona incluso sin conexión.",
+ "Poi apri Printopus dalla schermata Home e continua da lì: le impostazioni dell’app installata sono separate da quelle del browser.": "Luego abre Printopus desde la pantalla de inicio y sigue desde allí: los ajustes de la app instalada son independientes de los del navegador.",
+ "Non ora": "Ahora no",
+ "Continua nel browser": "Seguir en el navegador"
 }

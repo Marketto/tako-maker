@@ -521,5 +521,11 @@
  "Nello stesso piatto ci sono PLA e PETG: lo slicer vuole temperature compatibili. Usa circa {petg} °C per il PETG e {pla} °C per il PLA, anche nelle varianti per ugello indurito o ad alto flusso del profilo.": "Ugyanazon a tálcán PLA és PETG is van: a slicer kompatibilis hőmérsékleteket kér. Állíts kb. {petg} °C-ot a PETG-hez és {pla} °C-ot a PLA-hoz, a profil edzett vagy nagy átfolyású fúvókás változataiban is.",
  "Niente stiratura (ironing): trascina grumi sulla superficie. Meglio la superficie superiore monotonica e lenta.": "Ne használj vasalást (ironing): csomókat húz a felületen. Jobb a monoton, lassú felső felület.",
  "Pezzi grandi e piatti: piatto a 80 °C, ventola bassa (10–30%) e spenta nei primi strati, stampante coperta. Così non si imbarcano.": "Nagy, lapos darabok: tálca 80 °C-on, gyenge ventilátor (10–30%), az első rétegeknél kikapcsolva, a nyomtató letakarva. Így nem vetemednek meg.",
- "Sul PEI ruvido il brim in PETG si toglie male: meglio le “orecchie” (dischetti sottili agli angoli).": "Érdes PEI-ről a PETG brim nehezen jön le: jobbak az „egérfülek” (vékony korongok a sarkokban)."
+ "Sul PEI ruvido il brim in PETG si toglie male: meglio le “orecchie” (dischetti sottili agli angoli).": "Érdes PEI-ről a PETG brim nehezen jön le: jobbak az „egérfülek” (vékony korongok a sarkokban).",
+ "Prima di iniziare…": "Mielőtt elkezdjük…",
+ "Installa Printopus sul dispositivo": "Telepítsd a Printopust az eszközödre",
+ "Così la apri come un’app, a tutto schermo, e funziona anche senza connessione.": "Így alkalmazásként nyithatod meg, teljes képernyőn, és kapcsolat nélkül is működik.",
+ "Poi apri Printopus dalla schermata Home e continua da lì: le impostazioni dell’app installata sono separate da quelle del browser.": "Ezután nyisd meg a Printopust a főképernyőről, és ott folytasd: a telepített alkalmazás beállításai külön vannak a böngészőétől.",
+ "Non ora": "Most nem",
+ "Continua nel browser": "Folytatás a böngészőben"
 }
