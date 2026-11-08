@@ -349,3 +349,73 @@ export function tentacle(pts: Pt[], w0: number, w1: number, behind: [number, num
   }
   return { back: back.join(''), front: front.join('') };
 }
+
+/* ---------- Pulsanti a icona, elimina, avvisi (da materiali.py) ---------- */
+
+/** Capasanta che respira e fa bolle (pulsanti a icona), viewBox 0 0 52 52. */
+export function scallop(): string {
+  const cx = 26;
+  const hy = 42;
+  const R = 22;
+  const ribs = 9;
+  const angs = Array.from({ length: ribs + 1 }, (_, i) => ((200 + i * (140 / ribs)) * Math.PI) / 180);
+  const edge: Pt[] = angs.map((a) => [cx + R * Math.cos(a), hy - 4 + R * Math.sin(a) * 1.05]);
+  let d = `M17 ${hy} L${f(edge[0][0])} ${f(edge[0][1])}`;
+  for (let i = 0; i < ribs; i++) {
+    const am = (angs[i] + angs[i + 1]) / 2;
+    d += ` Q${f(cx + (R + 3.5) * Math.cos(am))} ${f(hy - 4 + (R + 3.5) * Math.sin(am) * 1.05)} ${f(edge[i + 1][0])} ${f(edge[i + 1][1])}`;
+  }
+  d += ` L35 ${hy} Z`;
+  const ribsSvg = edge.slice(1, -1).map(([x, y]) => `<path d="M${cx} ${hy - 1} L${f(x)} ${f(y)}" stroke="#d0705c" stroke-width="1.3"/>`).join('');
+  return (
+    `<g class="breathe" style="transform-box:fill-box;transform-origin:50% 100%"><path d="${d}" fill="#ffb8a3" stroke="${INK}" stroke-width="2" stroke-linejoin="round"/>${ribsSvg}` +
+    `<path d="M12 22 Q18 10 30 8" stroke="#fff1ea" stroke-width="3" fill="none" stroke-linecap="round"/></g>` +
+    `<path d="M15 ${hy} L37 ${hy} L34 ${hy + 7} L18 ${hy + 7} Z" fill="#f08f78" stroke="${INK}" stroke-width="2" stroke-linejoin="round"/>` +
+    `<circle class="rise" cx="40" cy="8" r="3" fill="none" stroke="#bff6ff" stroke-width="1.4"/><circle class="rise rise2" cx="44" cy="14" r="2" fill="none" stroke="#bff6ff" stroke-width="1.2"/>`
+  );
+}
+
+/** Dollaro della sabbia che dondola (pulsanti a icona), viewBox 0 0 52 52. */
+export function sandDollar(): string {
+  const petals = Array.from({ length: 5 }, (_, i) => `<ellipse cx="26" cy="15" rx="3.2" ry="7.5" fill="#e8d3a2" stroke="#b39463" stroke-width="1.3" transform="rotate(${i * 72} 26 26)"/>`).join('');
+  return (
+    `<g class="wobble" style="transform-box:fill-box;transform-origin:center"><circle cx="26" cy="28" r="23" fill="#c7aa72" stroke="${INK}" stroke-width="2"/><circle cx="26" cy="26" r="23" fill="#f6e7c1" stroke="${INK}" stroke-width="2"/>` +
+    `<g opacity=".6">${petals}</g><path d="M10 18 Q16 8 28 6" stroke="#fffaf0" stroke-width="3" fill="none" stroke-linecap="round"/></g>`
+  );
+}
+
+/** Carapace di granchio con la chela che schiocca (elimina). La chela sporge a sinistra fino a x = -40, gli occhi sopra fino a y = -15. */
+export function crabShell(w: number, h: number, seed = 3): string {
+  const r = rng(seed);
+  const body = polyPath(blob(w, h - 5, seed, 3, 2));
+  let spots = '';
+  for (let i = 0; i < Math.floor(w / 14); i++) spots += `<circle cx="${f(r(Math.min(30, w * 0.4), w - 12))}" cy="${f(r(10, Math.max(11, h - 16)))}" r="${f(r(1.5, 3))}" fill="#ffc29a" stroke="#b8401f" stroke-width=".8"/>`;
+  const eye = (x: number) =>
+    `<path d="M${f(x)} 6 v-12" stroke="${INK}" stroke-width="5" stroke-linecap="round"/><path d="M${f(x)} 6 v-12" stroke="#ff7a4f" stroke-width="3" stroke-linecap="round"/>` +
+    `<g class="blink" style="transform-box:fill-box;transform-origin:center"><circle cx="${f(x)}" cy="-9" r="5.5" fill="#fff" stroke="${INK}" stroke-width="1.6"/><circle cx="${f(x + 1)}" cy="-8.5" r="2.6" fill="${INK}"/><circle cx="${f(x + 2)}" cy="-10" r=".9" fill="#fff"/></g>`;
+  let teethUp = '';
+  for (let i = 0; i < 4; i++) teethUp += `<path d="M${f(-30 + i * 8)} ${f(h * 0.21 + i * 1.8)} l3 4 l3 -3" fill="#fff3e6" stroke="${INK}" stroke-width=".8"/>`;
+  let teethLo = '';
+  for (let i = 0; i < 3; i++) teethLo += `<path d="M${f(-26 + i * 8)} ${f(h * 0.83 - i * 1.8)} l3 -4 l3 3" fill="#fff3e6" stroke="${INK}" stroke-width=".8"/>`;
+  const upper =
+    `<g class="snap" style="transform-box:view-box;transform-origin:14px ${f(h * 0.42)}px"><path d="M22 ${f(h * 0.26)} C 8 ${f(h * 0.02)}, -18 ${f(h * -0.02)}, -40 ${f(h * 0.14)} C -30 ${f(h * 0.24)}, -14 ${f(h * 0.32)}, 4 ${f(h * 0.46)} Z" fill="#ff7a4f" stroke="${INK}" stroke-width="2" stroke-linejoin="round"/>` +
+    `${teethUp}<path d="M-6 ${f(h * 0.12)} Q 6 ${f(h * 0.06)} 14 ${f(h * 0.16)}" stroke="#ffc29a" stroke-width="2.5" fill="none" stroke-linecap="round"/></g>`;
+  const lower = `<path d="M20 ${f(h * 0.78)} C 6 ${f(h * 0.98)}, -16 ${f(h * 1.02)}, -32 ${f(h * 0.86)} C -22 ${f(h * 0.78)}, -8 ${f(h * 0.66)}, 4 ${f(h * 0.56)} Z" fill="#e85d33" stroke="${INK}" stroke-width="2" stroke-linejoin="round"/>${teethLo}`;
+  return (
+    `${eye(Math.floor(w * 0.6))}${eye(Math.floor(w * 0.78))}` +
+    `<path d="${body}" transform="translate(0 5)" fill="#a8341a" stroke="${INK}" stroke-width="2.4"/><path d="${body}" fill="#f0643a" stroke="${INK}" stroke-width="2.4"/>` +
+    `<path d="M${f(Math.min(30, w * 0.4))} ${f(h * 0.3)} Q ${f(w * 0.5)} 6 ${f(w - 20)} ${f(h * 0.3)}" stroke="#ffb08a" stroke-width="3" fill="none" stroke-linecap="round"/>${spots}` +
+    `${lower}<ellipse cx="16" cy="${f(h * 0.5)}" rx="20" ry="${f(h * 0.4)}" fill="#f0643a" stroke="${INK}" stroke-width="2"/><path d="M4 ${f(h * 0.36)} q8 -6 18 -2" stroke="#ffb08a" stroke-width="2.5" fill="none" stroke-linecap="round"/>${upper}`
+  );
+}
+
+/** Bottiglia con il messaggio (avvisi), viewBox 0 0 96 48. */
+export function bottle(): string {
+  return (
+    `<path d="M6 12 Q2 12 2 24 Q2 36 6 36 L52 36 Q58 36 62 31 L74 29 L74 19 L62 17 Q58 12 52 12 Z" fill="#5fc79a" fill-opacity=".7" stroke="${INK}" stroke-width="2" stroke-linejoin="round"/>` +
+    `<rect x="14" y="17" width="40" height="14" rx="7" fill="#f6e7c1" stroke="${INK}" stroke-width="1.4"/><path d="M18 21 h30 M18 25 h24" stroke="#b49a68" stroke-width="1.2"/>` +
+    `<rect x="73" y="18.5" width="9" height="11" rx="2" fill="#c98a52" stroke="${INK}" stroke-width="1.6"/>` +
+    `<path d="M8 16 Q30 13 52 15" stroke="#fff" stroke-width="2.5" fill="none" opacity=".75" stroke-linecap="round"/>` +
+    `<circle class="rise" cx="66" cy="12" r="2.5" fill="none" stroke="#bff6ff" stroke-width="1.2"/>`
+  );
+}

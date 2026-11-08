@@ -5,6 +5,7 @@ import { InstallButton } from './Install';
 import { MusicButton } from './MusicButton';
 import { demoDesign } from '../data/demo';
 import { locale, t } from '../i18n';
+import { SeaBackdrop, SeaButton, SeaChoice, SeaDelete, SeaIconButton, SeaNotice, SeaSlab } from './sea/controls';
 
 export function Home({ onOpen, onSettings }: { onOpen: (id: string) => void; onSettings: () => void }) {
   const { setup, keys } = useStore();
@@ -23,7 +24,8 @@ export function Home({ onOpen, onSettings }: { onOpen: (id: string) => void; onS
   };
 
   return (
-    <div className="home">
+    <div className="home sea">
+      <SeaBackdrop />
       <header className="topbar">
         <div className="brand">
           <img src={`${import.meta.env.BASE_URL}icons/icon.svg`} alt="" width={28} height={28} />
@@ -31,13 +33,13 @@ export function Home({ onOpen, onSettings }: { onOpen: (id: string) => void; onS
         </div>
         <div className="row gap">
           <InstallButton />
-          <MusicButton />
-          <button className="icon-btn" onClick={onSettings} aria-label={t('Impostazioni')}>⚙</button>
+          <MusicButton sea />
+          <SeaIconButton shell="dollar" onClick={onSettings} aria-label={t('Impostazioni')}>⚙</SeaIconButton>
         </div>
       </header>
 
       <main className="home-main">
-        <section className="setup-summary">
+        <SeaSlab className="setup-summary">
           <div>
             <div className="muted small">{t('La tua stampante')}</div>
             <strong>{t(printer?.brand ?? '')} {t(printer?.model ?? '')}</strong>
@@ -48,19 +50,19 @@ export function Home({ onOpen, onSettings }: { onOpen: (id: string) => void; onS
               <span key={f.id} className="chip small"><span className="dot" style={{ background: f.hex }} />{f.material} {t(f.colorName)}</span>
             ))}
           </div>
-        </section>
+        </SeaSlab>
 
         {!keys.some((k) => k.enabled && (k.key || k.baseUrl)) && (
-          <button className="notice" onClick={onSettings}>{t('Aggiungi una chiave AI (Claude, GPT o Gemini) per usare l’assistente →')}</button>
+          <SeaNotice onClick={onSettings}>{t('Aggiungi una chiave AI (Claude, GPT o Gemini) per usare l’assistente →')}</SeaNotice>
         )}
 
-        <button className="new-project" onClick={() => create()}>
-          <span className="plus">+</span>
-          <span>
+        <SeaButton big className="new-project-sea" onClick={() => create()}>
+          <span className="plus" aria-hidden="true">+</span>
+          <span className="new-project-text">
             <strong>{t('Nuovo modello')}</strong>
-            <span className="muted">{t('Descrivi cosa vuoi stampare')}</span>
+            <span className="small">{t('Descrivi cosa vuoi stampare')}</span>
           </span>
-        </button>
+        </SeaButton>
 
         <button className="link small" onClick={() => create(true)}>{t('Oppure apri un modello d’esempio (non serve la chiave)')}</button>
 
@@ -71,21 +73,18 @@ export function Home({ onOpen, onSettings }: { onOpen: (id: string) => void; onS
           <ul className="project-list">
             {projects.map((p) => (
               <li key={p.id}>
-                <button className="project" onClick={() => onOpen(p.id)}>
+                <SeaChoice className="row project" onClick={() => onOpen(p.id)}>
                   <strong>{p.name}</strong>
                   <span className="muted small">{t('{n} parti', { n: p.design.parts.length })} · {new Date(p.updatedAt).toLocaleDateString(locale())}</span>
-                </button>
-                <button
-                  className="icon-btn"
+                </SeaChoice>
+                <SeaDelete
                   aria-label={t('Elimina {name}', { name: p.name })}
                   onClick={async () => {
                     if (!confirm(t('Eliminare "{name}"?', { name: p.name }))) return;
                     await deleteProject(p);
                     setProjects(await listProjects());
                   }}
-                >
-                  🗑
-                </button>
+                />
               </li>
             ))}
           </ul>

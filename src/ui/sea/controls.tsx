@@ -1,5 +1,5 @@
-import { useId, useLayoutEffect, useMemo, useRef, useState, type ButtonHTMLAttributes, type ReactNode, type RefObject } from 'react';
-import { GLOW, fish, pearl, rock, seaGlass, shellPearl, tentacle, type RockOpts } from './shapes';
+import { useId, useLayoutEffect, useMemo, useRef, useState, type ButtonHTMLAttributes, type HTMLAttributes, type ReactNode, type RefObject } from 'react';
+import { GLOW, bottle, crabShell, fish, pearl, rock, sandDollar, scallop, seaGlass, shellPearl, tentacle, type RockOpts } from './shapes';
 
 /* Controlli del tema marino «B2»: ogni controllo è un vero <button> con disegnato dietro un oggetto marino
    (roccia, ciottolo, lastra, vetro di mare). Le forme si ridisegnano quando cambia la misura del controllo. */
@@ -172,5 +172,54 @@ export function SeaBackdrop({ children }: { children?: ReactNode }) {
       {bits.bubbles.map((b, i) => <span key={i} className="sea-rise" style={{ left: `${b.x}%`, width: b.size, height: b.size, animationDelay: `${b.d}s` }} />)}
       {children}
     </div>
+  );
+}
+
+/** Riquadro su lastra di pietra (riepiloghi, pannelli): il contenuto sta sopra la pietra. */
+export function SeaSlab({ className = '', children, ...rest }: HTMLAttributes<HTMLDivElement>) {
+  const ref = useRef<HTMLDivElement>(null);
+  const { w, h } = useBox(ref);
+  const { seed, id } = useSeed();
+  const svg = useMemo(() => (w && h ? rock(w, h, seed, id, { kind: 'slab', n: 6, amp: 2.2, thick: 6, barnacles: w > 260 ? 1 : 0 }) : ''), [w, h, seed, id]);
+  return (
+    <div ref={ref} className={`sea-slab ${className}`} {...rest}>
+      <Art w={w} h={h} svg={svg} />
+      <div className="sea-label">{children}</div>
+    </div>
+  );
+}
+
+const SHELL_ART = { scallop: scallop(), dollar: sandDollar() };
+
+/** Pulsante a icona: capasanta o dollaro della sabbia, con il simbolo sopra. Serve sempre un aria-label. */
+export function SeaIconButton({ shell, lit, className = '', children, ...rest }: ButtonHTMLAttributes<HTMLButtonElement> & { shell: 'scallop' | 'dollar'; lit?: boolean; 'aria-label': string }) {
+  return (
+    <button className={`sea-icon sea-icon-${shell} ${lit ? 'lit' : ''} ${className}`} {...rest}>
+      <Art w={52} h={52} svg={SHELL_ART[shell]} />
+      <span className="sea-label">{children}</span>
+    </button>
+  );
+}
+
+const CRAB = crabShell(60, 40);
+
+/** Elimina: carapace di granchio con la chela. Solo icona, quindi serve un aria-label. */
+export function SeaDelete({ className = '', ...rest }: ButtonHTMLAttributes<HTMLButtonElement> & { 'aria-label': string }) {
+  return (
+    <button className={`sea-delete ${className}`} {...rest}>
+      <svg className="sea-art" width="65" height="40" viewBox="-44 -18 108 66" aria-hidden="true" focusable="false" dangerouslySetInnerHTML={{ __html: CRAB }} />
+    </button>
+  );
+}
+
+const BOTTLE = bottle();
+
+/** Avviso: messaggio in bottiglia con il foglio srotolato. */
+export function SeaNotice({ className = '', children, ...rest }: ButtonHTMLAttributes<HTMLButtonElement>) {
+  return (
+    <button className={`sea-notice ${className}`} {...rest}>
+      <svg className="sea-bottle" width="72" height="36" viewBox="0 0 96 48" aria-hidden="true" focusable="false" dangerouslySetInnerHTML={{ __html: BOTTLE }} />
+      <span className="sea-scroll">{children}</span>
+    </button>
   );
 }

@@ -117,7 +117,7 @@ export function Wizard({ initial, onDone }: { initial?: UserSetup | null; onDone
           <p>{t('Descrivi l’oggetto che vuoi stampare: troviamo un modello libero o lo creiamo, e lo adattiamo alla tua stampante e ai tuoi filamenti.')}</p>
           <p className="muted">{t('Prima due domande veloci sulla tua attrezzatura.')}</p>
           <SeaButton big onClick={() => goStep('brand')}>{t('Iniziamo!')}</SeaButton>
-          <div className="row gap center-row"><MusicButton /><span className="muted small">{t('Musica rilassante')}</span></div>
+          <div className="row gap center-row"><MusicButton sea /><span className="muted small">{t('Musica rilassante')}</span></div>
           <LanguagePicker />
         </section>
       )}

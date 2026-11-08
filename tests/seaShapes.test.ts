@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { blob, rng, rock, seaGlass, tentacle } from '../src/ui/sea/shapes';
+import { blob, bottle, crabShell, rng, rock, sandDollar, scallop, seaGlass, tentacle } from '../src/ui/sea/shapes';
 import { isLight } from '../src/ui/sea/controls';
 
 describe('forme marine', () => {
@@ -51,5 +51,13 @@ describe('forme marine', () => {
     expect(isLight('#f5d90a')).toBe(true);
     expect(isLight('#1b1b1b')).toBe(false);
     expect(isLight('#2a6cd6')).toBe(false);
+  });
+
+  it('capasanta, dollaro della sabbia, granchio e bottiglia sono SVG validi', () => {
+    for (const svg of [scallop(), sandDollar(), crabShell(60, 40), bottle()]) {
+      expect(svg.length).toBeGreaterThan(100);
+      expect(svg).not.toMatch(/NaN|undefined/);
+    }
+    expect(crabShell(60, 40)).toContain('class="snap"');
   });
 });

@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { store, useStore } from '../app/store';
 import { music } from '../app/music';
 import { t } from '../i18n';
+import { SeaIconButton } from './sea/controls';
 
 /* Interruttore della musica. Se l'utente l'aveva lasciata accesa, riparte
    al primo tocco sulla pagina (i browser non permettono l'avvio automatico). */
@@ -24,31 +25,37 @@ export function armMusicResume() {
   window.addEventListener('keydown', go);
 }
 
-export function MusicButton() {
+/** `sea`: nel tema marino diventa una capasanta. */
+export function MusicButton({ sea }: { sea?: boolean } = {}) {
   const { settings } = useStore();
   useEffect(() => music.setVolume(settings.musicVolume), [settings.musicVolume]);
   const on = settings.musicOn;
+  const label = on ? t('Spegni la musica') : t('Accendi la musica rilassante');
+  const toggle = () => {
+    store.setSettings({ musicOn: !on });
+    if (on) music.stop();
+    else {
+      music.setVolume(settings.musicVolume);
+      void music.start();
+    }
+  };
+  const icon = (
+    <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M9 18V5l11-2v13" />
+      <circle cx="6" cy="18" r="3" />
+      <circle cx="17" cy="16" r="3" />
+      {!on && <path d="M3 3l18 18" />}
+    </svg>
+  );
+  if (sea)
+    return (
+      <SeaIconButton shell="scallop" lit={on} aria-pressed={on} aria-label={label} title={on ? t('Spegni la musica') : t('Musica rilassante')} onClick={toggle}>
+        {icon}
+      </SeaIconButton>
+    );
   return (
-    <button
-      className={`icon-btn music ${on ? 'on' : ''}`}
-      aria-pressed={on}
-      aria-label={on ? t('Spegni la musica') : t('Accendi la musica rilassante')}
-      title={on ? t('Spegni la musica') : t('Musica rilassante')}
-      onClick={() => {
-        store.setSettings({ musicOn: !on });
-        if (on) music.stop();
-        else {
-          music.setVolume(settings.musicVolume);
-          void music.start();
-        }
-      }}
-    >
-      <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M9 18V5l11-2v13" />
-        <circle cx="6" cy="18" r="3" />
-        <circle cx="17" cy="16" r="3" />
-        {!on && <path d="M3 3l18 18" />}
-      </svg>
+    <button className={`icon-btn music ${on ? 'on' : ''}`} aria-pressed={on} aria-label={label} title={on ? t('Spegni la musica') : t('Musica rilassante')} onClick={toggle}>
+      {icon}
     </button>
   );
 }

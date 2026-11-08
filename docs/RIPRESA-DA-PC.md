@@ -27,7 +27,11 @@ in `tools/mockup/`, portati in TypeScript in `src/ui/sea/shapes.ts`.
   in arenaria, disattivo con il pesce che dorme, scelte su lastre con conchiglia e perla, schede a ciottoli, filamenti
   in vetro di mare, avanzamento a perle, fumetto a bolla d'aria, campi a solco (`src/ui/sea/controls.tsx`).
   Gli altri componenti dentro il wizard (modo dell'assistente, chiavi) prendono i colori marini dalle variabili CSS.
-- Da fare, nella home e nell'area di lavoro (e quel che manca nel wizard): controlli come oggetti marini.
+- Fatto nella home: barra in alto scura, capasanta (musica) e dollaro della sabbia (impostazioni), riepilogo su lastra,
+  avviso in bottiglia, «Nuovo modello» in basalto, modelli su lastre ed elimina con il granchio.
+  Lo stile marino vale dentro qualsiasi elemento con la classe `sea`.
+- Da fare, nell'area di lavoro, nelle impostazioni (finestra ancora chiara) e quel che manca nel wizard: controlli come
+  oggetti marini.
   - Pulsante principale: roccia di basalto con alghe luminose, balani e stella marina, avvolta da tentacoli che passano
     davanti e dietro.
   - Secondario: ciottolo di arenaria con kelp e lumachina. Disattivo: roccia spenta con il pesce che dorme.
