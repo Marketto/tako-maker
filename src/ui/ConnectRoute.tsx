@@ -3,6 +3,7 @@ import { listProjects, saveProject, store, uid, type Project } from '../app/stor
 import { getSession } from '../app/connector';
 import { normalizeCode } from '../connector/state';
 import { t } from '../i18n';
+import { SeaMessage } from './sea/controls';
 
 /** Link #/collega/<codice> dalla chat: apre il progetto collegato (o lo crea su questo dispositivo). */
 export function ConnectRoute({ code, onOpen, onFail }: { code: string; onOpen: (id: string) => void; onFail: () => void }) {
@@ -41,6 +42,6 @@ export function ConnectRoute({ code, onOpen, onFail }: { code: string; onOpen: (
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [code]);
-  if (error) return <div className="center-msg"><p>{error}</p><button className="btn" onClick={onFail}>{t('Torna indietro')}</button></div>;
-  return <div className="center-msg"><span className="spinner" /> {t('Apro il progetto collegato…')}</div>;
+  if (error) return <SeaMessage><p>{error}</p><button className="btn" onClick={onFail}>{t('Torna indietro')}</button></SeaMessage>;
+  return <SeaMessage><span className="spinner" /> {t('Apro il progetto collegato…')}</SeaMessage>;
 }
