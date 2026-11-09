@@ -27,8 +27,9 @@ function json(status, body, origin) {
 export default {
   async fetch(request, env) {
     const origin = request.headers.get('origin') ?? '';
-    const allowed = (env.ALLOWED_ORIGIN ?? '').split(',').map((s) => s.trim()).filter(Boolean);
-    const okOrigin = allowed.length === 0 || allowed.includes(origin);
+    // Il browser manda l'origine in minuscolo: il confronto ignora maiuscole e minuscole.
+    const allowed = (env.ALLOWED_ORIGIN ?? '').split(',').map((s) => s.trim().toLowerCase()).filter(Boolean);
+    const okOrigin = allowed.length === 0 || allowed.includes(origin.toLowerCase());
     const replyOrigin = okOrigin ? origin : 'null';
 
     if (request.method === 'OPTIONS') return new Response(null, { status: 204, headers: cors(replyOrigin) });
