@@ -11,7 +11,7 @@ import { MusicButton } from './MusicButton';
 import { MascotDock } from './mascot/MascotDock';
 import { t } from '../i18n';
 import { plateKeepFree } from '../core/plate';
-import { SeaBackdrop, SeaIconButton, SeaPebble } from './sea/controls';
+import { SeaBackdrop, SeaIconButton, SeaMessage, SeaPebble } from './sea/controls';
 
 type Tab = 'chat' | 'print' | 'assembly';
 
@@ -33,8 +33,8 @@ export function Workspace({ projectId, onBack, onSettings }: { projectId: string
       opened?.dispose();
     };
   }, [projectId]);
-  if (failed) return <div className="center-msg">{t('Progetto non trovato.')} <button className="link" onClick={onBack}>{t('Torna indietro')}</button></div>;
-  if (!session) return <div className="center-msg"><span className="spinner" /> {t('Carico il progetto…')}</div>;
+  if (failed) return <SeaMessage>{t('Progetto non trovato.')} <button className="link" onClick={onBack}>{t('Torna indietro')}</button></SeaMessage>;
+  if (!session) return <SeaMessage><span className="spinner" /> {t('Carico il progetto…')}</SeaMessage>;
   return <WorkspaceInner session={session} onBack={onBack} onSettings={onSettings} />;
 }
 

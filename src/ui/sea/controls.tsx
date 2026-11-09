@@ -164,6 +164,16 @@ const KELP_RIGHT = kelp([88, 226], [
 ], 'kr');
 
 /** Sfondo del mare: raggi di luce, plancton e colonne di bolle. Tutto fermo con «riduci movimento». */
+/** Messaggio a tutto schermo (caricamento, errore) sul fondale marino. */
+export function SeaMessage({ children }: { children: ReactNode }) {
+  return (
+    <div className="center-msg sea">
+      <SeaBackdrop />
+      <div className="center-msg-body">{children}</div>
+    </div>
+  );
+}
+
 export function SeaBackdrop({ children }: { children?: ReactNode }) {
   const bits = useMemo(() => {
     let s = 4242;
