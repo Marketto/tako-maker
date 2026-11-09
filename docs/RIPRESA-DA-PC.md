@@ -38,7 +38,7 @@ in `tools/mockup/`, portati in TypeScript in `src/ui/sea/shapes.ts`.
   scuro.
 - Fatto: caselle a ciottolo di vetro di mare (chiavi, licenza dei modelli trovati) e menu a tendina a solco con la
   conchiglia come freccia (scheda Stampa, chiavi), solo CSS dentro `.sea`.
-- Resta da decidere: il font Fredoka dei mockup (non adottato).
+- Fatto: font Fredoka dei mockup (OFL, incluso nel sito) in tutto il tema marino, con `font-size-adjust` per la leggibilità.
   - Pulsante principale: roccia di basalto con alghe luminose, balani e stella marina, avvolta da tentacoli che passano
     davanti e dietro.
   - Secondario: ciottolo di arenaria con kelp e lumachina. Disattivo: roccia spenta con il pesce che dorme.

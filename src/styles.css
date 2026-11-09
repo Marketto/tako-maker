@@ -561,6 +561,9 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
   /* i componenti non ancora disegnati usano le variabili comuni: qui diventano scure e marine */
   --surface: #16224a; --surface-2: #1b2a55; --ink: #eaf2ff; --muted: #a9b8e0; --line: #3a4a7e; --line-strong: #7ff0f2;
   --brand: #7ff0f2; --brand-dark: #3fb6c4; --brand-ink: #0a1430; --brand-soft: #1d3366; --accent-soft: #3a2350;
+  font-family: 'Fredoka Variable', 'M PLUS Rounded 1c', ui-rounded, 'SF Pro Rounded', system-ui, sans-serif;
+  /* Fredoka ha la «x» più bassa: si porta l'altezza delle minuscole poco sopra M PLUS, per la leggibilità dei testi piccoli */
+  font-size-adjust: 0.53;
   position: relative; isolation: isolate; color: var(--sea-ink); color-scheme: dark;
   background: radial-gradient(ellipse at 50% 0%, #17295a, var(--sea-deep) 60%) var(--sea-deep);
 }

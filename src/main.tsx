@@ -11,6 +11,8 @@ import '@fontsource/m-plus-rounded-1c/cyrillic-500.css';
 import '@fontsource/m-plus-rounded-1c/cyrillic-800.css';
 import '@fontsource/m-plus-rounded-1c/greek-500.css';
 import '@fontsource/m-plus-rounded-1c/greek-800.css';
+// Fredoka (OFL 1.1) per il tema marino; per gli alfabeti che non copre resta M PLUS Rounded 1c.
+import '@fontsource-variable/fredoka/wght.css';
 import './styles.css';
 import { armMusicResume } from './ui/MusicButton';
 import { detectLocale, setLocale, t } from './i18n';
