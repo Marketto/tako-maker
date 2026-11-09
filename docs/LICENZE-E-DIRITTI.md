@@ -24,6 +24,7 @@ L’app è pensata per un uso **personale e non commerciale** e per rispettare i
 - Takotta (mascotte) e icone: personaggio e disegni originali del progetto, licenza MIT.
 - Musica: generata dal codice in tempo reale, nessun brano di terzi.
 - Font M PLUS Rounded 1c: SIL Open Font License 1.1 (pacchetto `@fontsource/m-plus-rounded-1c`).
+- Font Fredoka (tema marino): SIL Open Font License 1.1 (pacchetto `@fontsource-variable/fredoka`), incluso nel sito, senza Google Fonts.
 - Nessuna chiave, token o dato personale nel codice o nella cronologia git.
 
 ## Nomi: Printopus e Takotta

@@ -95,4 +95,4 @@ La usano i passi del wizard e la navigazione di `App.tsx`; i cambi automatici e 
 immediati. Con «riduci movimento» il cambio è immediato.
 - **Musica**: `app/music.ts` sintetizza in tempo reale accordi e carillon pentatonico; parte solo dopo un gesto dell'utente e si sospende quando la scheda è nascosta.
 - **Riduci movimento**: animazioni della mascotte, coriandoli e rimbalzi si disattivano se il sistema lo richiede.
-- **Font**: M PLUS Rounded 1c (licenza OFL) incluso nel bundle con i sottoinsiemi latino, latino esteso, cirillico e greco; per arabo, cinese, giapponese e coreano si usano i font di sistema.
+- **Font**: M PLUS Rounded 1c (licenza OFL) incluso nel bundle con i sottoinsiemi latino, latino esteso, cirillico e greco; per arabo, cinese, giapponese e coreano si usano i font di sistema. Il tema marino (`.sea`) usa Fredoka variabile (OFL, latino e latino esteso) con `font-size-adjust` per non rimpicciolire i testi; per gli altri alfabeti ricade su M PLUS.
