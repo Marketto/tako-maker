@@ -528,7 +528,6 @@
  "Poi apri Printopus dalla schermata Home e continua da lì: le impostazioni dell’app installata sono separate da quelle del browser.": "Gero ireki Printopus hasierako pantailatik eta jarraitu hortik: instalatutako aplikazioaren ezarpenak nabigatzailearenetatik bereizita daude.",
  "Non ora": "Orain ez",
  "Continua nel browser": "Jarraitu nabigatzailean",
- "Collegato alla chat con il codice {code}": "Txatera konektatuta {code} kodearekin",
- "Mostra istruzioni": "Erakutsi argibideak",
- "Nascondi istruzioni": "Ezkutatu argibideak"
+ "Espandi": "Zabaldu",
+ "Riduci": "Txikitu"
 }

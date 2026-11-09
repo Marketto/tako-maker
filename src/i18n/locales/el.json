@@ -528,7 +528,6 @@
  "Poi apri Printopus dalla schermata Home e continua da lì: le impostazioni dell’app installata sono separate da quelle del browser.": "Μετά άνοιξε το Printopus από την οθόνη Αφετηρίας και συνέχισε από εκεί: οι ρυθμίσεις της εγκατεστημένης εφαρμογής είναι ξεχωριστές από του προγράμματος περιήγησης.",
  "Non ora": "Όχι τώρα",
  "Continua nel browser": "Συνέχεια στο πρόγραμμα περιήγησης",
- "Collegato alla chat con il codice {code}": "Συνδέθηκε με τη συνομιλία με τον κωδικό {code}",
- "Mostra istruzioni": "Εμφάνιση οδηγιών",
- "Nascondi istruzioni": "Απόκρυψη οδηγιών"
+ "Espandi": "Ανάπτυξη",
+ "Riduci": "Σύμπτυξη"
 }

@@ -528,7 +528,6 @@
  "Poi apri Printopus dalla schermata Home e continua da lì: le impostazioni dell’app installata sono separate da quelle del browser.": "Opnaðu svo Printopus af heimaskjánum og haltu áfram þar: uppsetta appið hefur sínar eigin stillingar, aðskildar frá vafranum.",
  "Non ora": "Ekki núna",
  "Continua nel browser": "Halda áfram í vafranum",
- "Collegato alla chat con il codice {code}": "Tengt spjallinu með kóðanum {code}",
- "Mostra istruzioni": "Sýna leiðbeiningar",
- "Nascondi istruzioni": "Fela leiðbeiningar"
+ "Espandi": "Stækka",
+ "Riduci": "Minnka"
 }

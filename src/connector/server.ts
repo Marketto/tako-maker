@@ -213,6 +213,8 @@ async function callTool(name: string, args: Json, deps: ServerDeps) {
 
   switch (name) {
     case 'printopus_apri': {
+      // La prima apertura cambia versione: l'app se ne accorge e compatta il pannello del codice.
+      if (!state.openedAt) await save(deps, code, state, { openedAt: deps.now?.() ?? Date.now() });
       const skills = (['crea-modello', 'modifica-modello', 'consiglia-stampa', 'cerca-modelli'] as const)
         .map((s) => `### ${s}\n${SKILLS[s].description}\n${SKILLS[s].instructions}`)
         .join('\n\n');

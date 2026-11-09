@@ -528,7 +528,6 @@
  "Poi apri Printopus dalla schermata Home e continua da lì: le impostazioni dell’app installata sono separate da quelle del browser.": "Tada atidaryk Printopus iš pradžios ekrano ir tęsk ten: įdiegtos programėlės nustatymai atskirti nuo naršyklės.",
  "Non ora": "Ne dabar",
  "Continua nel browser": "Tęsti naršyklėje",
- "Collegato alla chat con il codice {code}": "Susieta su pokalbiu kodu {code}",
- "Mostra istruzioni": "Rodyti instrukcijas",
- "Nascondi istruzioni": "Slėpti instrukcijas"
+ "Espandi": "Išskleisti",
+ "Riduci": "Suskleisti"
 }

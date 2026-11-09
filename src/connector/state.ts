@@ -27,6 +27,8 @@ export interface ConnectorState {
   languageName: string;
   /** Messaggi e risultati arrivati dalla chat (gli ultimi). */
   notes: ConnectorNote[];
+  /** Prima volta che la chat ha aperto il progetto: l'app capisce che il collegamento è avvenuto. */
+  openedAt?: number;
 }
 
 /** Codice di abbinamento: 10 caratteri senza lettere ambigue, es. "K7QM-2XPA-9D". */

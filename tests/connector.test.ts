@@ -51,6 +51,17 @@ describe('connettore MCP', () => {
     expect(r.text).toContain('#/collega/');
   });
 
+  it('alla prima apertura segna il collegamento e cambia versione, una volta sola', async () => {
+    const { call, store, code } = await setupSession();
+    const v0 = (await store.get(code))!.v;
+    await call('printopus_apri', {});
+    const s1 = (await store.get(code))!;
+    expect(s1.openedAt).toBeGreaterThan(0);
+    expect(s1.v).toBe(v0 + 1);
+    await call('printopus_apri', {});
+    expect((await store.get(code))!.v).toBe(v0 + 1);
+  });
+
   it('modifica il modello, salva la nuova versione e propone le domande dell’app', async () => {
     const { call, store, code } = await setupSession();
     const r = await call('printopus_modifica', {

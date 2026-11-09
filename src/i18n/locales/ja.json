@@ -528,7 +528,6 @@
  "Poi apri Printopus dalla schermata Home e continua da lì: le impostazioni dell’app installata sono separate da quelle del browser.": "そのあとホーム画面から Printopus を開いて、そこで続けてください。インストールしたアプリの設定はブラウザとは別です。",
  "Non ora": "今はしない",
  "Continua nel browser": "ブラウザで続ける",
- "Collegato alla chat con il codice {code}": "コード {code} でチャットに接続済み",
- "Mostra istruzioni": "説明を表示",
- "Nascondi istruzioni": "説明を隠す"
+ "Espandi": "展開",
+ "Riduci": "折りたたむ"
 }

@@ -528,7 +528,6 @@
  "Poi apri Printopus dalla schermata Home e continua da lì: le impostazioni dell’app installata sono separate da quelle del browser.": "Potom otvor Printopus z plochy a pokračuj tam: nainštalovaná aplikácia má vlastné nastavenia, oddelené od prehliadača.",
  "Non ora": "Teraz nie",
  "Continua nel browser": "Pokračovať v prehliadači",
- "Collegato alla chat con il codice {code}": "Prepojené s chatom kódom {code}",
- "Mostra istruzioni": "Zobraziť pokyny",
- "Nascondi istruzioni": "Skryť pokyny"
+ "Espandi": "Rozbaliť",
+ "Riduci": "Zbaliť"
 }
