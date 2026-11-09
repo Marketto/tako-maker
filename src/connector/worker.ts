@@ -3,6 +3,7 @@ import Module, { type ManifoldToplevel } from 'manifold-3d';
 import wasmModule from './manifold.wasm';
 import { handleRpc, validState, type ConnectorStore } from './server';
 import { newCode, normalizeCode, CODE_RE, SESSION_TTL_DAYS, type ConnectorState } from './state';
+import { matchOrigin } from './cors';
 
 /* Cloudflare Worker del connettore Printopus:
    - POST /mcp            server MCP per la chat (Claude, ChatGPT…)
@@ -56,10 +57,9 @@ function kvStore(env: Env): ConnectorStore {
 
 function cors(env: Env, req: Request): Record<string, string> {
   const origin = req.headers.get('Origin') ?? '';
-  const allowed = (env.ALLOWED_ORIGIN ?? '*').split(',').map((s) => s.trim());
-  const ok = allowed.includes('*') || allowed.includes(origin);
+  const ok = matchOrigin(origin, env.ALLOWED_ORIGIN);
   return {
-    'Access-Control-Allow-Origin': ok ? origin || '*' : allowed[0],
+    'Access-Control-Allow-Origin': ok ?? 'null',
     'Access-Control-Allow-Methods': 'GET, POST, PUT, OPTIONS',
     'Access-Control-Allow-Headers': 'Content-Type, Accept, Mcp-Session-Id, Mcp-Protocol-Version, Authorization',
     'Access-Control-Max-Age': '86400',
