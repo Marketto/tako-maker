@@ -5,7 +5,7 @@ import { MODELS } from '../agent/config';
 import { AiModePicker } from './AiModePicker';
 import { t } from '../i18n';
 import { LanguagePicker } from './LanguagePicker';
-import { SeaButton, SeaIconButton } from './sea/controls';
+import { SeaButton, SeaIconButton, SeaSwitch } from './sea/controls';
 
 function useSpend() {
   const { settings } = useStore();
@@ -60,28 +60,24 @@ export function SettingsDialog({ onClose, onEditSetup }: { onClose: () => void; 
             {t('Tetto mensile (USD)')}
             <input className="text" type="number" min={0.5} step={0.5} value={settings.monthlyCapUsd} onChange={(e) => store.setSettings({ monthlyCapUsd: Math.max(0.5, Number(e.target.value)) })} />
           </label>
-          <label className="check">
-            <input type="checkbox" checked={settings.economy} onChange={(e) => store.setSettings({ economy: e.target.checked })} />
+          <SeaSwitch checked={settings.economy} onChange={(e) => store.setSettings({ economy: e.target.checked })}>
             {t('Modalità risparmio: usa sempre il modello veloce di ogni provider (es. {model}): più economico, modelli un po’ meno curati', { model: MODELS.fast.label })}
-          </label>
-          <label className="check">
-            <input type="checkbox" checked={settings.smartRouting} onChange={(e) => store.setSettings({ smartRouting: e.target.checked })} />
+          </SeaSwitch>
+          <SeaSwitch checked={settings.smartRouting} onChange={(e) => store.setSettings({ smartRouting: e.target.checked })}>
             {t('Se non è chiaro cosa vuoi, lascia decidere al modello veloce quale assistente usare')}
-          </label>
-          <label className="check">
-            <input type="checkbox" checked={settings.searchFirst} onChange={(e) => store.setSettings({ searchFirst: e.target.checked })} />
+          </SeaSwitch>
+          <SeaSwitch checked={settings.searchFirst} onChange={(e) => store.setSettings({ searchFirst: e.target.checked })}>
             {t('Per un nuovo modello cerca prima online modelli gratuiti')}
-          </label>
+          </SeaSwitch>
         </section>
         )}
 
         <section>
           <h3>{t('Lingua e atmosfera')}</h3>
           <LanguagePicker />
-          <label className="check">
-            <input type="checkbox" checked={settings.mascotOn} onChange={(e) => store.setSettings({ mascotOn: e.target.checked })} />
+          <SeaSwitch checked={settings.mascotOn} onChange={(e) => store.setSettings({ mascotOn: e.target.checked })}>
             {t('Mostra Takotta e le frasi di incitamento')}
-          </label>
+          </SeaSwitch>
           <label className="field">
             {t('Volume della musica')}
             <input type="range" min={0} max={1} step={0.05} value={settings.musicVolume} onChange={(e) => store.setSettings({ musicVolume: Number(e.target.value) })} />

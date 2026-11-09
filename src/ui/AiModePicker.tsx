@@ -1,6 +1,7 @@
 import { store, useStore, type AiMode } from '../app/store';
 import { connectorBase, mcpUrl } from '../app/connector';
 import { KeysEditor } from './KeysEditor';
+import { SeaSwitch } from './sea/controls';
 import { msg, t } from '../i18n';
 
 /* Scelta di come lavora l'assistente: chiavi API (gratis con Gemini o a pagamento),
@@ -32,10 +33,9 @@ export function AiModePicker({ compact = false }: { compact?: boolean }) {
         <>
           <KeysEditor compact={compact} />
           {!compact && (
-            <label className="check">
-              <input type="checkbox" checked={settings.rememberKey} onChange={(e) => store.setSettings({ rememberKey: e.target.checked })} />
+            <SeaSwitch checked={settings.rememberKey} onChange={(e) => store.setSettings({ rememberKey: e.target.checked })}>
               {t('Ricorda le chiavi su questo dispositivo (altrimenti solo fino alla chiusura della scheda)')}
-            </label>
+            </SeaSwitch>
           )}
           <p className="tip">{t('Consiglio: nella console di ogni provider imposta un limite di spesa sulla chiave.')}</p>
         </>

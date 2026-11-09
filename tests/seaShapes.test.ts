@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { blob, bottle, crabShell, rng, rock, sandDollar, scallop, seaGlass, tentacle } from '../src/ui/sea/shapes';
+import { blob, bottle, crabShell, jellyfish, kelp, pufferfish, rng, rock, sandDollar, scallop, seaGlass, tentacle } from '../src/ui/sea/shapes';
 import { isLight } from '../src/ui/sea/controls';
 
 describe('forme marine', () => {
@@ -60,5 +60,14 @@ describe('forme marine', () => {
       expect(svg).not.toMatch(/NaN|undefined/);
     }
     expect(crabShell(60, 40)).toContain('class="snap"');
+  });
+
+  it('medusa accesa e spenta, pesce palla e kelp', () => {
+    expect(jellyfish(true)).toContain('jbob');
+    expect(jellyfish(false)).toContain('jsleep');
+    const k = kelp([30, 226], [{ pts: [[34, 226], [52, 170], [38, 110]], W: 15, back: true }, { pts: [[28, 226], [14, 176], [32, 130]], W: 17 }], 'kx');
+    expect(k).toContain('id="kxk0"');
+    expect(k).toContain('id="kxk1"');
+    for (const svg of [jellyfish(true), pufferfish(), k]) expect(svg).not.toMatch(/NaN|undefined/);
   });
 });
