@@ -16,12 +16,13 @@ jobs:
   deploy-proxy:
     runs-on: ubuntu-latest
     env:
-      HAS_CF: ${{ secrets.CLOUDFLARE_API_TOKEN != '' }}
+      # Il token Cloudflare serve anche al connettore: il proxy parte solo se ha anche la sua chiave.
+      HAS_CF: ${{ secrets.CLOUDFLARE_API_TOKEN != '' && secrets.ANTHROPIC_API_KEY != '' }}
     steps:
       - uses: actions/checkout@v4
       - name: Secret mancanti
         if: env.HAS_CF != 'true'
-        run: echo "CLOUDFLARE_API_TOKEN non impostato, proxy non pubblicato (è facoltativo)."
+        run: echo "CLOUDFLARE_API_TOKEN o ANTHROPIC_API_KEY non impostati, proxy non pubblicato (è facoltativo)."
       - name: Pubblica il Worker
         if: env.HAS_CF == 'true'
         uses: cloudflare/wrangler-action@v3
