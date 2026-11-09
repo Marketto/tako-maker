@@ -772,6 +772,11 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
 [dir="rtl"] .sea select { background-position: left 0.75rem center, 0 0; }
 .sea select option { background: #0c1838; color: var(--sea-ink); }
 .sea input:focus, .sea .text:focus, .sea select:focus { outline: 2px solid var(--sea-glow); outline-offset: 2px; }
+/* Fredoka arriva al peso 700: niente grassetto finto e grassetti a 600 con un filo di spaziatura, più nitidi su fondo scuro.
+   :is() prende la specificità del selettore più forte, così vince sulle regole dei singoli componenti. */
+.sea { font-synthesis: none; }
+.sea :is(h2, h3, strong, b, .btn, .speech, .brand, .brand span, .bed-input > label, .license, .opt, .key-status, .key-prio, .key-head select, .budget,
+  .chip, .tabs button, .pill, .summary, .ai-mode-head, .sea-btn, .sea-pebble, .sea-glass.on, .new-project .plus) { font-weight: 600; letter-spacing: 0.015em; }
 .sea .chip { background: rgb(127 240 242 / 0.1); border: 1px solid rgb(127 240 242 / 0.3); color: var(--sea-ink); }
 .sea .chip button { color: var(--sea-muted); min-width: 32px; min-height: 32px; }
 .sea .lang-picker { background: #0c1838; border-color: #3a4a7e; }
