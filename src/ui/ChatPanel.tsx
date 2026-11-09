@@ -221,6 +221,7 @@ function ManualCard({ session, snap }: { session: ProjectSession; snap: Snapshot
 function ConnectorPanel({ session, snap }: { session: ProjectSession; snap: Snapshot }) {
   const c = snap.project.connector;
   const [copied, setCopied] = useState('');
+  const [help, setHelp] = useState(false);
   const copy = async (what: string, value: string) => {
     try {
       await navigator.clipboard.writeText(value);
@@ -246,6 +247,17 @@ function ConnectorPanel({ session, snap }: { session: ProjectSession; snap: Snap
     );
   }
   const starter = t('Usa Printopus con il codice {code}.', { code: c.code });
+  // Dopo il primo messaggio della chat le istruzioni si chiudono: resta una riga con il codice.
+  if (c.linked && !help) {
+    return (
+      <div className="connector compact">
+        <span className="connector-dot" aria-hidden="true" />
+        <span className="small">{t('Collegato alla chat con il codice {code}', { code: c.code })}</span>
+        <button className="link small" onClick={() => setHelp(true)}>{t('Mostra istruzioni')}</button>
+        <button className="link small" onClick={() => void session.disconnect()}>{t('Scollega')}</button>
+      </div>
+    );
+  }
   return (
     <div className="connector">
       <div className="connector-code">
@@ -272,7 +284,10 @@ function ConnectorPanel({ session, snap }: { session: ProjectSession; snap: Snap
           <span>{t('Le modifiche compaiono qui da sole, con le domande dell’app: puoi rispondere qui o in chat.')}</span>
         </li>
       </ol>
-      <button className="link small" onClick={() => void session.disconnect()}>{t('Scollega')}</button>
+      <div className="row gap wrap">
+        {c.linked && <button className="link small" onClick={() => setHelp(false)}>{t('Nascondi istruzioni')}</button>}
+        <button className="link small" onClick={() => void session.disconnect()}>{t('Scollega')}</button>
+      </div>
     </div>
   );
 }

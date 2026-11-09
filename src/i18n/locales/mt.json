@@ -527,5 +527,8 @@
  "Così la apri come un’app, a tutto schermo, e funziona anche senza connessione.": "Hekk tiftħu bħal app, fuq l-iskrin kollu, u jaħdem anke mingħajr konnessjoni.",
  "Poi apri Printopus dalla schermata Home e continua da lì: le impostazioni dell’app installata sono separate da quelle del browser.": "Imbagħad iftaħ Printopus mill-Home Screen u kompli minn hemm: is-settings tal-app installata huma separati minn dawk tal-browser.",
  "Non ora": "Mhux issa",
- "Continua nel browser": "Kompli fil-browser"
+ "Continua nel browser": "Kompli fil-browser",
+ "Collegato alla chat con il codice {code}": "Konness maċ-chat bil-kodiċi {code}",
+ "Mostra istruzioni": "Uri l-istruzzjonijiet",
+ "Nascondi istruzioni": "Aħbi l-istruzzjonijiet"
 }

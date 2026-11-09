@@ -527,5 +527,8 @@
  "Così la apri come un’app, a tutto schermo, e funziona anche senza connessione.": "Tā to atver kā lietotni, pilnekrāna režīmā, un tā darbojas arī bez savienojuma.",
  "Poi apri Printopus dalla schermata Home e continua da lì: le impostazioni dell’app installata sono separate da quelle del browser.": "Tad atver Printopus no sākuma ekrāna un turpini tur: instalētās lietotnes iestatījumi ir atsevišķi no pārlūka.",
  "Non ora": "Ne tagad",
- "Continua nel browser": "Turpināt pārlūkā"
+ "Continua nel browser": "Turpināt pārlūkā",
+ "Collegato alla chat con il codice {code}": "Savienots ar tērzēšanu ar kodu {code}",
+ "Mostra istruzioni": "Rādīt norādījumus",
+ "Nascondi istruzioni": "Paslēpt norādījumus"
 }

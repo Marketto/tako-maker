@@ -527,5 +527,8 @@
  "Così la apri come un’app, a tutto schermo, e funziona anche senza connessione.": "Kështu e hap si aplikacion, në ekran të plotë, dhe punon edhe pa lidhje.",
  "Poi apri Printopus dalla schermata Home e continua da lì: le impostazioni dell’app installata sono separate da quelle del browser.": "Pastaj hap Printopus nga ekrani bazë dhe vazhdo atje: cilësimet e aplikacionit të instaluar janë të ndara nga ato të shfletuesit.",
  "Non ora": "Jo tani",
- "Continua nel browser": "Vazhdo në shfletues"
+ "Continua nel browser": "Vazhdo në shfletues",
+ "Collegato alla chat con il codice {code}": "Lidhur me bisedën me kodin {code}",
+ "Mostra istruzioni": "Shfaq udhëzimet",
+ "Nascondi istruzioni": "Fshih udhëzimet"
 }

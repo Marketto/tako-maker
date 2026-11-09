@@ -527,5 +527,8 @@
  "Così la apri come un’app, a tutto schermo, e funziona anche senza connessione.": "Така го отвораш како апликација, на цел екран, и работи и без врска.",
  "Poi apri Printopus dalla schermata Home e continua da lì: le impostazioni dell’app installata sono separate da quelle del browser.": "Потоа отвори го Printopus од почетниот екран и продолжи оттаму: поставките на инсталираната апликација се одвоени од оние на прелистувачот.",
  "Non ora": "Не сега",
- "Continua nel browser": "Продолжи во прелистувачот"
+ "Continua nel browser": "Продолжи во прелистувачот",
+ "Collegato alla chat con il codice {code}": "Поврзано со разговорот со кодот {code}",
+ "Mostra istruzioni": "Прикажи упатства",
+ "Nascondi istruzioni": "Скриј упатства"
 }
