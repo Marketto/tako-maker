@@ -242,7 +242,7 @@ export class ProjectSession {
       undo: changed ? [...p.undo, p.design].slice(-20) : p.undo,
       answered: remote.answered,
       chat,
-      connector: { code: c.code, v: remote.v, notesAt: Math.max(c.notesAt, ...remote.notes.map((n) => n.at)) },
+      connector: { code: c.code, v: remote.v, notesAt: Math.max(c.notesAt, ...remote.notes.map((n) => n.at)), linked: true },
     };
     this.lastSynced = this.syncSig(next);
     await this.persist(next);

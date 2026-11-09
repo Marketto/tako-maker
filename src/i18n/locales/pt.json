@@ -527,5 +527,8 @@
  "Così la apri come un’app, a tutto schermo, e funziona anche senza connessione.": "Assim abres como uma app, em ecrã inteiro, e funciona mesmo sem ligação.",
  "Poi apri Printopus dalla schermata Home e continua da lì: le impostazioni dell’app installata sono separate da quelle del browser.": "Depois abre o Printopus a partir do ecrã principal e continua lá: as definições da app instalada são separadas das do navegador.",
  "Non ora": "Agora não",
- "Continua nel browser": "Continuar no navegador"
+ "Continua nel browser": "Continuar no navegador",
+ "Collegato alla chat con il codice {code}": "Ligado ao chat com o código {code}",
+ "Mostra istruzioni": "Mostrar instruções",
+ "Nascondi istruzioni": "Ocultar instruções"
 }

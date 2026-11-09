@@ -124,7 +124,8 @@ export interface Project {
   meshIds: string[];
   reference?: SearchResult;
   /** Collegamento alla chat tramite connettore: codice, versione sincronizzata, note già mostrate. */
-  connector?: { code: string; v: number; notesAt: number };
+  /** `linked`: dalla chat è già arrivato qualcosa con questo codice (il pannello diventa compatto). */
+  connector?: { code: string; v: number; notesAt: number; linked?: boolean };
   createdAt: number;
   updatedAt: number;
 }

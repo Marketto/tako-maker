@@ -527,5 +527,8 @@
  "Così la apri come un’app, a tutto schermo, e funziona anche senza connessione.": "Nii avad selle nagu rakenduse, täisekraanil, ja see töötab ka ilma ühenduseta.",
  "Poi apri Printopus dalla schermata Home e continua da lì: le impostazioni dell’app installata sono separate da quelle del browser.": "Seejärel ava Printopus avakuvalt ja jätka seal: paigaldatud rakenduse seaded on brauseri omadest eraldi.",
  "Non ora": "Mitte praegu",
- "Continua nel browser": "Jätka brauseris"
+ "Continua nel browser": "Jätka brauseris",
+ "Collegato alla chat con il codice {code}": "Vestlusega ühendatud koodiga {code}",
+ "Mostra istruzioni": "Näita juhiseid",
+ "Nascondi istruzioni": "Peida juhised"
 }

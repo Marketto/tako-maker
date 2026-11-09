@@ -527,5 +527,8 @@
  "Così la apri come un’app, a tutto schermo, e funziona anche senza connessione.": "Þá opnarðu það eins og app, á öllum skjánum, og það virkar líka án tengingar.",
  "Poi apri Printopus dalla schermata Home e continua da lì: le impostazioni dell’app installata sono separate da quelle del browser.": "Opnaðu svo Printopus af heimaskjánum og haltu áfram þar: uppsetta appið hefur sínar eigin stillingar, aðskildar frá vafranum.",
  "Non ora": "Ekki núna",
- "Continua nel browser": "Halda áfram í vafranum"
+ "Continua nel browser": "Halda áfram í vafranum",
+ "Collegato alla chat con il codice {code}": "Tengt spjallinu með kóðanum {code}",
+ "Mostra istruzioni": "Sýna leiðbeiningar",
+ "Nascondi istruzioni": "Fela leiðbeiningar"
 }

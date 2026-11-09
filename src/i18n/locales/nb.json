@@ -527,5 +527,8 @@
  "Così la apri come un’app, a tutto schermo, e funziona anche senza connessione.": "Da åpner du den som en app, i fullskjerm, og den virker også uten nett.",
  "Poi apri Printopus dalla schermata Home e continua da lì: le impostazioni dell’app installata sono separate da quelle del browser.": "Åpne så Printopus fra Hjem-skjermen og fortsett der: den installerte appen har egne innstillinger, adskilt fra nettleseren.",
  "Non ora": "Ikke nå",
- "Continua nel browser": "Fortsett i nettleseren"
+ "Continua nel browser": "Fortsett i nettleseren",
+ "Collegato alla chat con il codice {code}": "Koblet til chatten med koden {code}",
+ "Mostra istruzioni": "Vis instruksjoner",
+ "Nascondi istruzioni": "Skjul instruksjoner"
 }

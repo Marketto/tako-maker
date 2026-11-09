@@ -527,5 +527,8 @@
  "Così la apri come un’app, a tutto schermo, e funziona anche senza connessione.": "Otevřeš ho jako aplikaci, na celou obrazovku, a funguje i bez připojení.",
  "Poi apri Printopus dalla schermata Home e continua da lì: le impostazioni dell’app installata sono separate da quelle del browser.": "Pak otevři Printopus z plochy a pokračuj tam: nainstalovaná aplikace má vlastní nastavení, oddělené od prohlížeče.",
  "Non ora": "Teď ne",
- "Continua nel browser": "Pokračovat v prohlížeči"
+ "Continua nel browser": "Pokračovat v prohlížeči",
+ "Collegato alla chat con il codice {code}": "Propojeno s chatem kódem {code}",
+ "Mostra istruzioni": "Zobrazit pokyny",
+ "Nascondi istruzioni": "Skrýt pokyny"
 }

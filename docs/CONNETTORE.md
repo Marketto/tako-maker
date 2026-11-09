@@ -39,7 +39,8 @@ Un Cloudflare Worker (`connector/`) espone:
 1. **Collegamento.** In un progetto preme **Collega alla chat**: l'app mostra un codice (es. `K7QM-2XPA-9D`).
 2. **Connettore in Claude (solo la prima volta).** Impostazioni → Connettori → **Aggiungi connettore personalizzato** con l'indirizzo `https://<worker>/mcp`. Su claude.ai i connettori personalizzati sono disponibili anche con l'account gratuito (uno solo).
 3. **Chat.** In una chat con il connettore attivo scrive cosa vuole stampare e «Usa Printopus con il codice …».
-4. **Modifiche.** Arrivano nell'app (anteprima, domande, esportazione). Le risposte date nell'app tornano alla chat.
+4. **Modifiche.** Arrivano nell'app (anteprima, domande, esportazione). Le risposte date nell'app tornano alla chat. Dal primo
+   aggiornamento arrivato dalla chat il pannello del codice si riduce a una riga («Mostra istruzioni» lo riapre).
 
 Il link `#/collega/<codice>` apre il progetto collegato anche su un altro dispositivo.
 

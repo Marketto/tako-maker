@@ -527,5 +527,8 @@
  "Così la apri come un’app, a tutto schermo, e funziona anche senza connessione.": "Zo open je het als een app, schermvullend, en het werkt ook zonder verbinding.",
  "Poi apri Printopus dalla schermata Home e continua da lì: le impostazioni dell’app installata sono separate da quelle del browser.": "Open daarna Printopus vanaf het beginscherm en ga daar verder: de geïnstalleerde app heeft eigen instellingen, los van de browser.",
  "Non ora": "Niet nu",
- "Continua nel browser": "Doorgaan in de browser"
+ "Continua nel browser": "Doorgaan in de browser",
+ "Collegato alla chat con il codice {code}": "Gekoppeld aan de chat met code {code}",
+ "Mostra istruzioni": "Instructies tonen",
+ "Nascondi istruzioni": "Instructies verbergen"
 }

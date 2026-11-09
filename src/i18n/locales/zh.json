@@ -527,5 +527,8 @@
  "Così la apri come un’app, a tutto schermo, e funziona anche senza connessione.": "这样可以像应用一样全屏打开，没有网络也能用。",
  "Poi apri Printopus dalla schermata Home e continua da lì: le impostazioni dell’app installata sono separate da quelle del browser.": "然后从主屏幕打开 Printopus 并在那里继续：已安装应用的设置与浏览器的设置是分开的。",
  "Non ora": "以后再说",
- "Continua nel browser": "在浏览器中继续"
+ "Continua nel browser": "在浏览器中继续",
+ "Collegato alla chat con il codice {code}": "已通过代码 {code} 连接到聊天",
+ "Mostra istruzioni": "显示说明",
+ "Nascondi istruzioni": "隐藏说明"
 }
