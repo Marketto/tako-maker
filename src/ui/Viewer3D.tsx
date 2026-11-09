@@ -147,7 +147,12 @@ export function Viewer3D({ parts, colors, bed, assembly, keepFree = null }: Prop
     }
     r.group.clear();
     r.meshes.clear();
-    if (!parts.length) return;
+    if (!parts.length) {
+      // Nessun pezzo: si inquadra tutto il piatto, con il suo centro al centro della vista.
+      r.lastFitKey = '';
+      frame(r, new THREE.Vector3(bed[0] / 2, bed[1] / 2, 0), Math.hypot(bed[0], bed[1]) / 2);
+      return;
+    }
 
     const box = new THREE.Box3();
     for (const p of parts) {
@@ -173,13 +178,7 @@ export function Viewer3D({ parts, colors, bed, assembly, keepFree = null }: Prop
     const fitKey = size.toArray().map((v) => Math.round(v / 10)).join(',');
     if (fitKey !== r.lastFitKey) {
       r.lastFitKey = fitKey;
-      const radius = Math.max(size.length() / 2, 30);
-      const target = new THREE.Vector3(bed[0] / 2, bed[1] / 2, size.z / 2);
-      const dist = radius / Math.sin((r.camera.fov * Math.PI) / 360) * 1.1;
-      r.controls.target.copy(target);
-      r.camera.position.copy(target).add(new THREE.Vector3(0.55, -0.75, 0.55).normalize().multiplyScalar(dist));
-      r.camera.far = dist * 10;
-      r.camera.updateProjectionMatrix();
+      frame(r, new THREE.Vector3(bed[0] / 2, bed[1] / 2, size.z / 2), Math.max(size.length() / 2, 30));
     }
   }, [parts, colors, bed, keepFree?.x, keepFree?.y, keepFree?.w, keepFree?.d]);
 
@@ -215,4 +214,13 @@ export function Viewer3D({ parts, colors, bed, assembly, keepFree = null }: Prop
   }, [assembly, parts]);
 
   return <div ref={host} className="viewer" aria-label={t('Anteprima 3D: trascina per ruotare, pizzica o usa la rotellina per lo zoom')} />;
+}
+
+/** Punta la camera su `target` da una distanza che fa stare in vista una sfera di raggio `radius`. */
+function frame(r: SceneRefs, target: THREE.Vector3, radius: number) {
+  const dist = (radius / Math.sin((r.camera.fov * Math.PI) / 360)) * 1.1;
+  r.controls.target.copy(target);
+  r.camera.position.copy(target).add(new THREE.Vector3(0.55, -0.75, 0.55).normalize().multiplyScalar(dist));
+  r.camera.far = dist * 10;
+  r.camera.updateProjectionMatrix();
 }
