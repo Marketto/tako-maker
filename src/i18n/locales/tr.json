@@ -529,5 +529,7 @@
  "Non ora": "Şimdi değil",
  "Continua nel browser": "Tarayıcıda devam et",
  "Espandi": "Genişlet",
- "Riduci": "Daralt"
+ "Riduci": "Daralt",
+ "Unisci \"{name}\" a {target} {from} con l'aggancio disegnato nel modello, fino allo scatto.": "\"{name}\" parçasını modelde çizilmiş bağlantıyla {from} {target} parçasına, tık sesi gelene kadar tak.",
+ "Aggancio nel modello": "Modeldeki bağlantı"
 }

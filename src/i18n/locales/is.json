@@ -529,5 +529,7 @@
  "Non ora": "Ekki núna",
  "Continua nel browser": "Halda áfram í vafranum",
  "Espandi": "Stækka",
- "Riduci": "Minnka"
+ "Riduci": "Minnka",
+ "Unisci \"{name}\" a {target} {from} con l'aggancio disegnato nel modello, fino allo scatto.": "Tengdu \"{name}\" við {target} {from} með festingunni sem er teiknuð í líkanið, þar til smellur heyrist.",
+ "Aggancio nel modello": "Festing í líkaninu"
 }

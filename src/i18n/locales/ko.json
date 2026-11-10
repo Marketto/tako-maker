@@ -529,5 +529,7 @@
  "Non ora": "나중에",
  "Continua nel browser": "브라우저에서 계속",
  "Espandi": "펼치기",
- "Riduci": "접기"
+ "Riduci": "접기",
+ "Unisci \"{name}\" a {target} {from} con l'aggancio disegnato nel modello, fino allo scatto.": "모델에 설계된 결합부로 \"{name}\"을(를) {from} {target}에 끼워 딸깍 소리가 날 때까지 맞춥니다.",
+ "Aggancio nel modello": "모델의 결합부"
 }

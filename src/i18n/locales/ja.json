@@ -529,5 +529,7 @@
  "Non ora": "今はしない",
  "Continua nel browser": "ブラウザで続ける",
  "Espandi": "展開",
- "Riduci": "折りたたむ"
+ "Riduci": "折りたたむ",
+ "Unisci \"{name}\" a {target} {from} con l'aggancio disegnato nel modello, fino allo scatto.": "モデルに設計された留め具で「{name}」を{from}{target}に取り付け、カチッとはまるまで押し込みます。",
+ "Aggancio nel modello": "モデル内の留め具"
 }

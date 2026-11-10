@@ -529,5 +529,7 @@
  "Non ora": "Nie teraz",
  "Continua nel browser": "Kontynuuj w przeglądarce",
  "Espandi": "Rozwiń",
- "Riduci": "Zwiń"
+ "Riduci": "Zwiń",
+ "Unisci \"{name}\" a {target} {from} con l'aggancio disegnato nel modello, fino allo scatto.": "Połącz \"{name}\" z {target} {from} za pomocą zaczepu zaprojektowanego w modelu, aż kliknie.",
+ "Aggancio nel modello": "Zaczep w modelu"
 }

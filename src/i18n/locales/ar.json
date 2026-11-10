@@ -529,5 +529,7 @@
  "Non ora": "ليس الآن",
  "Continua nel browser": "تابع في المتصفح",
  "Espandi": "توسيع",
- "Riduci": "تصغير"
+ "Riduci": "تصغير",
+ "Unisci \"{name}\" a {target} {from} con l'aggancio disegnato nel modello, fino allo scatto.": "ركّب \"{name}\" في {target} {from} باستخدام آلية التثبيت المصممة في النموذج، حتى تسمع الطقطقة.",
+ "Aggancio nel modello": "تثبيت مصمم في النموذج"
 }

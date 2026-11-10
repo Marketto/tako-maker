@@ -529,5 +529,7 @@
  "Non ora": "Ikke nu",
  "Continua nel browser": "Fortsæt i browseren",
  "Espandi": "Udvid",
- "Riduci": "Skjul"
+ "Riduci": "Skjul",
+ "Unisci \"{name}\" a {target} {from} con l'aggancio disegnato nel modello, fino allo scatto.": "Sæt \"{name}\" på {target} {from} med koblingen, der er tegnet i modellen, til den klikker.",
+ "Aggancio nel modello": "Kobling i modellen"
 }

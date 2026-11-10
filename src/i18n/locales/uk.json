@@ -529,5 +529,7 @@
  "Non ora": "Не зараз",
  "Continua nel browser": "Продовжити в браузері",
  "Espandi": "Розгорнути",
- "Riduci": "Згорнути"
+ "Riduci": "Згорнути",
+ "Unisci \"{name}\" a {target} {from} con l'aggancio disegnato nel modello, fino allo scatto.": "З'єднай \"{name}\" з {target} {from} за допомогою защіпки, намальованої в моделі, до клацання.",
+ "Aggancio nel modello": "Защіпка в моделі"
 }

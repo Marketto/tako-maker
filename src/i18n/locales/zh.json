@@ -529,5 +529,7 @@
  "Non ora": "以后再说",
  "Continua nel browser": "在浏览器中继续",
  "Espandi": "展开",
- "Riduci": "收起"
+ "Riduci": "收起",
+ "Unisci \"{name}\" a {target} {from} con l'aggancio disegnato nel modello, fino allo scatto.": "用模型中设计的卡扣将“{name}”{from}装到{target}上，直到听到咔嗒声。",
+ "Aggancio nel modello": "模型中的卡扣"
 }

@@ -529,5 +529,7 @@
  "Non ora": "Jo tani",
  "Continua nel browser": "Vazhdo në shfletues",
  "Espandi": "Zgjero",
- "Riduci": "Palos"
+ "Riduci": "Palos",
+ "Unisci \"{name}\" a {target} {from} con l'aggancio disegnato nel modello, fino allo scatto.": "Bashko \"{name}\" me {target} {from} me kapësen e vizatuar në model, derisa të bëjë klik.",
+ "Aggancio nel modello": "Kapëse në model"
 }

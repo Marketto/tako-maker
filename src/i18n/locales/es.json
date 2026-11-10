@@ -529,5 +529,7 @@
  "Non ora": "Ahora no",
  "Continua nel browser": "Seguir en el navegador",
  "Espandi": "Desplegar",
- "Riduci": "Reducir"
+ "Riduci": "Reducir",
+ "Unisci \"{name}\" a {target} {from} con l'aggancio disegnato nel modello, fino allo scatto.": "Une \"{name}\" a {target} {from} con el enganche diseñado en el modelo, hasta que haga clic.",
+ "Aggancio nel modello": "Enganche en el modelo"
 }

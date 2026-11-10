@@ -667,7 +667,8 @@ export function evaluateDesign(
   const { strategy, connection } = design.printPlan;
   const connectors: ConnectorReport[] = [];
   const jointPairs = new Set(printedTogether(design).map(([a, b]) => pairKey(a, b)));
-  if (strategy === 'separate' && connection !== 'none') {
+  // Perni automatici solo per incastro o colla: con «designed» l'aggancio è già nel modello.
+  if (strategy === 'separate' && (connection === 'snap' || connection === 'glue')) {
     const boxes = [...base.entries()].map(([id, m]) => ({ id, box: m.boundingBox() as Box }));
     for (const c of findContacts(boxes)) {
       if (jointPairs.has([c.a, c.b].sort().join('|'))) continue;

@@ -529,5 +529,7 @@
  "Non ora": "Ne sada",
  "Continua nel browser": "Nastavi u pregledniku",
  "Espandi": "Proširi",
- "Riduci": "Sažmi"
+ "Riduci": "Sažmi",
+ "Unisci \"{name}\" a {target} {from} con l'aggancio disegnato nel modello, fino allo scatto.": "Spoji \"{name}\" na {target} {from} pomoću spoja ucrtanog u model, dok ne klikne.",
+ "Aggancio nel modello": "Spoj u modelu"
 }

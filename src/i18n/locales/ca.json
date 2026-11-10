@@ -529,5 +529,7 @@
  "Non ora": "Ara no",
  "Continua nel browser": "Continua al navegador",
  "Espandi": "Desplega",
- "Riduci": "Redueix"
+ "Riduci": "Redueix",
+ "Unisci \"{name}\" a {target} {from} con l'aggancio disegnato nel modello, fino allo scatto.": "Uneix \"{name}\" a {target} {from} amb l'encaix dissenyat al model, fins que faci clic.",
+ "Aggancio nel modello": "Encaix al model"
 }

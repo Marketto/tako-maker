@@ -529,5 +529,7 @@
  "Non ora": "Не сега",
  "Continua nel browser": "Продолжи во прелистувачот",
  "Espandi": "Прошири",
- "Riduci": "Собери"
+ "Riduci": "Собери",
+ "Unisci \"{name}\" a {target} {from} con l'aggancio disegnato nel modello, fino allo scatto.": "Спои го \"{name}\" со {target} {from} со спојката нацртана во моделот, додека не кликне.",
+ "Aggancio nel modello": "Спојка во моделот"
 }

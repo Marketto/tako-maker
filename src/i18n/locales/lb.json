@@ -529,5 +529,7 @@
  "Non ora": "Net elo",
  "Continua nel browser": "Am Browser weidermaachen",
  "Espandi": "Opklappen",
- "Riduci": "Zouklappen"
+ "Riduci": "Zouklappen",
+ "Unisci \"{name}\" a {target} {from} con l'aggancio disegnato nel modello, fino allo scatto.": "Verbann \"{name}\" {from} mat {target} iwwer d'Verbindung, déi am Modell gezeechent ass, bis se aklickt.",
+ "Aggancio nel modello": "Verbindung am Modell"
 }

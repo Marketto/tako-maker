@@ -63,9 +63,10 @@ export function PrintPanel({ session, snap }: { session: ProjectSession; snap: S
         <>
           <h3>{t('Unione delle parti')}</h3>
           <div className="segmented">
-            {(['snap', 'glue', 'none'] as Connection[]).map((c) => (
+            {/* «Aggancio nel modello» compare solo se l'ha scelto l'assistente disegnando l'aggancio. */}
+            {(['snap', 'glue', 'none', ...(d.printPlan.connection === 'designed' ? ['designed'] : [])] as Connection[]).map((c) => (
               <button key={c} className={d.printPlan.connection === c ? 'on' : ''} onClick={() => session.applyLocal([{ op: 'set_plan', connection: c }])}>
-                {c === 'snap' ? t('A incastro') : c === 'glue' ? t('Da incollare') : t('Nessun perno')}
+                {c === 'snap' ? t('A incastro') : c === 'glue' ? t('Da incollare') : c === 'designed' ? t('Aggancio nel modello') : t('Nessun perno')}
               </button>
             ))}
           </div>

@@ -529,5 +529,7 @@
  "Non ora": "Ne zdaj",
  "Continua nel browser": "Nadaljuj v brskalniku",
  "Espandi": "Razširi",
- "Riduci": "Strni"
+ "Riduci": "Strni",
+ "Unisci \"{name}\" a {target} {from} con l'aggancio disegnato nel modello, fino allo scatto.": "Združi \"{name}\" s {target} {from} z zaskočko, narisano v modelu, dokler ne klikne.",
+ "Aggancio nel modello": "Zaskočka v modelu"
 }

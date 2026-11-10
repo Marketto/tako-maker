@@ -529,5 +529,7 @@
  "Non ora": "Dim nawr",
  "Continua nel browser": "Parhau yn y porwr",
  "Espandi": "Ehangu",
- "Riduci": "Lleihau"
+ "Riduci": "Lleihau",
+ "Unisci \"{name}\" a {target} {from} con l'aggancio disegnato nel modello, fino allo scatto.": "Cysyllta \"{name}\" â {target} {from} gyda’r clymiad sydd wedi’i ddylunio yn y model, nes iddo glicio.",
+ "Aggancio nel modello": "Clymiad yn y model"
 }

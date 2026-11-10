@@ -529,5 +529,7 @@
  "Non ora": "Ne tagad",
  "Continua nel browser": "Turpināt pārlūkā",
  "Espandi": "Izvērst",
- "Riduci": "Sakļaut"
+ "Riduci": "Sakļaut",
+ "Unisci \"{name}\" a {target} {from} con l'aggancio disegnato nel modello, fino allo scatto.": "Savieno \"{name}\" ar {target} {from}, izmantojot modelī uzzīmēto stiprinājumu, līdz tas noklikšķ.",
+ "Aggancio nel modello": "Stiprinājums modelī"
 }

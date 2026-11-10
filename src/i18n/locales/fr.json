@@ -529,5 +529,7 @@
  "Non ora": "Pas maintenant",
  "Continua nel browser": "Continuer dans le navigateur",
  "Espandi": "Déplier",
- "Riduci": "Replier"
+ "Riduci": "Replier",
+ "Unisci \"{name}\" a {target} {from} con l'aggancio disegnato nel modello, fino allo scatto.": "Assemble \"{name}\" à {target} {from} avec l'attache dessinée dans le modèle, jusqu'au clic.",
+ "Aggancio nel modello": "Attache dans le modèle"
 }

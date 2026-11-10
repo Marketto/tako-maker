@@ -529,5 +529,7 @@
  "Non ora": "Niet nu",
  "Continua nel browser": "Doorgaan in de browser",
  "Espandi": "Uitklappen",
- "Riduci": "Inklappen"
+ "Riduci": "Inklappen",
+ "Unisci \"{name}\" a {target} {from} con l'aggancio disegnato nel modello, fino allo scatto.": "Verbind \"{name}\" {from} met {target} via de koppeling die in het model is getekend, tot hij klikt.",
+ "Aggancio nel modello": "Koppeling in het model"
 }

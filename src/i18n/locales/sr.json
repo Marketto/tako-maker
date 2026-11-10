@@ -529,5 +529,7 @@
  "Non ora": "Не сада",
  "Continua nel browser": "Настави у прегледачу",
  "Espandi": "Прошири",
- "Riduci": "Скупи"
+ "Riduci": "Скупи",
+ "Unisci \"{name}\" a {target} {from} con l'aggancio disegnato nel modello, fino allo scatto.": "Споји \"{name}\" са {target} {from} помоћу спојнице нацртане у моделу, док не кликне.",
+ "Aggancio nel modello": "Спојница у моделу"
 }

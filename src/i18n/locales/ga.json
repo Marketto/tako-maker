@@ -529,5 +529,7 @@
  "Non ora": "Ní anois",
  "Continua nel browser": "Lean ar aghaidh sa bhrabhsálaí",
  "Espandi": "Leathnaigh",
- "Riduci": "Laghdaigh"
+ "Riduci": "Laghdaigh",
+ "Unisci \"{name}\" a {target} {from} con l'aggancio disegnato nel modello, fino allo scatto.": "Ceangail \"{name}\" le {target} {from} leis an gceangal atá dearadh sa mhúnla, go gcloisfidh tú cliceáil.",
+ "Aggancio nel modello": "Ceangal sa mhúnla"
 }
