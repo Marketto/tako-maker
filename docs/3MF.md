@@ -45,7 +45,7 @@ La struttura `orca` riproduce un progetto reale salvato con Anycubic Slicer Next
 - **Stessa struttura del riferimento:** Production, oggetti in `3D/Objects/`, `model_settings.config` con oggetti, parti, piatti e montaggio, `Application = BambuStudio-2.0.0.3`. Gli slicer della famiglia Bambu leggono piatti e impostazioni per oggetto solo dai progetti che si dichiarano "BambuStudio".
 - **Piatti:**
   - modello montato (stampa unica o multicolore): un oggetto con una parte per colore, sul piatto 1;
-  - parti separate: un piatto per colore (i gruppi stampati già montati restano insieme), più piatti se non ci stanno;
+  - parti separate: un piatto per colore (i gruppi stampati già montati restano insieme), più piatti se non ci stanno, pezzi al centro di ogni piatto;
   - campioni di prova: un solo 3MF con un piatto per materiale.
 - **Impostazioni per oggetto:** `enable_support`, `support_type`, `support_interface_filament`, `brim_type`, `brim_width` (vedi docs/ANALISI.md).
 - **Impostazioni di progetto minime** (solo per le stampanti con `slicerProfile` in `printers.json`, oggi la Kobra X, e con l'ugello di serie): `Metadata/project_settings.config` e `Metadata/slice_info.config`. Vedi la sezione qui sotto.
@@ -79,6 +79,8 @@ Con entrambe ogni oggetto finisce sul suo piatto. Printopus usa la variante A: c
 **Estrusori compatti.** Prima l'estrusore era la posizione del filamento nell'elenco dell'utente, per esempio 8 e 9. Ora, quando si scrivono le impostazioni, gli estrusori diventano 1..k sui soli filamenti usati, nello stesso ordine (`compactExtruders` in `threemf.ts`). L'interfaccia dei supporti segue la stessa numerazione. Il progetto elenca così solo quei filamenti, e la Kobra X (4 slot ACE) non riceve un estrusore 8.
 
 **Pezzo quasi lungo quanto il piatto.** Un supporto di 256 mm su un piatto di 260 veniva messo a 6 mm dal bordo e usciva di 2 mm ("Un oggetto è posizionato oltre il limite del piatto"). Ora `platedLayout` riduce il margine e lo centra (2 mm per lato).
+
+**Pezzi al centro del piatto.** Come nei progetti salvati dallo slicer, `platedLayout` prima dispone i pezzi di ogni piatto in righe, poi sposta il gruppo intero al centro del piatto. Sui piatti con più colori lo mette accanto alla zona della torre di spurgo (`placeAvoiding`). Se non c'è posto, i pezzi restano dove sono.
 
 **Per un'altra stampante** si salva un progetto dallo slicer e si copiano in `slicerProfile` i nomi di `printer_model`, `printer_settings_id`, `print_settings_id`, il modello di `filament_settings_id` e `curr_bed_type`. Poi si prova un file esportato nello slicer.
 

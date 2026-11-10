@@ -198,6 +198,7 @@ export function platedLayout(parts: ExportPart[], bed: Vec3, keepFree: Rect | nu
     return { key: k, box: bounds(members.map((p) => p.mesh)), colors: [...new Set(members.map((p) => p.extruder))].sort().join(',') };
   });
   const out = new Map<string, { plate: number; offset: Vec3 }>();
+  const placed: { key: string; plate: number; zone: Rect | null; x: number; y: number; w: number; h: number }[] = [];
   let plate = 0;
   for (const colors of [...new Set(groups.map((g) => g.colors))]) {
     const zone = colors.includes(',') ? keepFree : null;
@@ -229,8 +230,22 @@ export function platedLayout(parts: ExportPart[], bed: Vec3, keepFree: Rect | nu
       const px = x === gap && w + 2 * gap > bed[0] ? Math.max(0, (bed[0] - w) / 2) : x;
       const py = y === gap && h + 2 * gap > bed[1] ? Math.max(0, (bed[1] - h) / 2) : y;
       out.set(g.key, { plate, offset: [px - g.box.min[0], py - g.box.min[1], -g.box.min[2]] });
+      placed.push({ key: g.key, plate, zone, x: px, y: py, w, h });
       x += w + gap;
       rowH = Math.max(rowH, h);
+    }
+  }
+  // Come nei progetti salvati dallo slicer: i pezzi di ogni piatto, tutti insieme, al centro del
+  // piatto (o accanto alla torre di spurgo). Se non c'è posto restano dove sono.
+  for (const n of new Set(placed.map((q) => q.plate))) {
+    const items = placed.filter((q) => q.plate === n);
+    const x0 = Math.min(...items.map((q) => q.x)), y0 = Math.min(...items.map((q) => q.y));
+    const x1 = Math.max(...items.map((q) => q.x + q.w)), y1 = Math.max(...items.map((q) => q.y + q.h));
+    const spot = placeAvoiding(x1 - x0, y1 - y0, bed, items[0].zone);
+    if (!spot) continue;
+    for (const q of items) {
+      const o = out.get(q.key)!;
+      out.set(q.key, { plate: n, offset: [o.offset[0] + spot.x - x0, o.offset[1] + spot.y - y0, o.offset[2]] });
     }
   }
   return keys.map((k) => out.get(k)!);

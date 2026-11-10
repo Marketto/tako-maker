@@ -63,6 +63,16 @@ describe('3MF per Bambu Studio e derivati (Anycubic Slicer Next)', () => {
     expect(p.offset[0] + 256).toBeLessThanOrEqual(260);
   });
 
+  it('i pezzi di ogni piatto stanno insieme al centro del piatto, lontano dalla torre di spurgo', () => {
+    const [a, b] = platedLayout([{ name: 'A', mesh: cube(20), extruder: 1 }, { name: 'B', mesh: cube(20), extruder: 1 }], [260, 260, 260]);
+    // 20 + 6 + 20 = 46 mm di larghezza → da 107 a 153, in Y da 120 a 140
+    expect([a.offset[0], a.offset[1], b.offset[0]]).toEqual([107, 120, 133]);
+    const zone = { x: 100, y: 100, w: 60, d: 60 };
+    const two: ExportPart[] = [{ name: 'C', mesh: cube(20), extruder: 1, group: 'g' }, { name: 'D', mesh: cube(20), extruder: 2, group: 'g' }];
+    const [c] = platedLayout(two, [260, 260, 260], zone);
+    expect(c.offset[0] + 20).toBeLessThanOrEqual(zone.x);
+  });
+
   it('modello montato: un oggetto con una parte per colore, sul primo piatto', () => {
     const parts: ExportPart[] = [
       { name: 'Base', mesh: cube(20), extruder: 1, print: { supports: true, brim: 0 } },
