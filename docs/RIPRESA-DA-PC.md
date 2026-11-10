@@ -9,6 +9,8 @@ e la riga che lo cita in `CLAUDE.md`.
 - I file di prova `printopus-*-kobra-x.3mf` (4 piatti, parti separate, multicolore) vanno aperti in
   Anycubic Slicer Next: controllare piatti, posizione degli oggetti, colori, supporti e orecchie anti-sollevamento.
   Le regole del formato sono in [3MF.md](3MF.md); `tests/bambu3mf.test.ts` fissa le posizioni attese.
+  Piatti e posizioni sulla Kobra X sono verificati (10 novembre, supporto Nordli). In corso una stampa di prova
+  del supporto Nordli: aspettare il riscontro su ganci, supporti e incastri.
 - Chat: con «prima cerca modelli già fatti» attivo, dopo i risultati le richieste successive devono andare alla
   progettazione (`routeByRules` con `searched`).
 - Connettore per Claude, prova completa: in un progetto «Collega alla chat», in Claude aggiungi il connettore
