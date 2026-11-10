@@ -528,7 +528,6 @@
  "Poi apri Printopus dalla schermata Home e continua da lì: le impostazioni dell’app installata sono separate da quelle del browser.": "Öffne Printopus dann vom Home-Bildschirm und mach dort weiter: Die installierte App hat eigene Einstellungen, getrennt vom Browser.",
  "Non ora": "Nicht jetzt",
  "Continua nel browser": "Im Browser weitermachen",
- "Collegato alla chat con il codice {code}": "Mit dem Chat verbunden, Code {code}",
- "Mostra istruzioni": "Anleitung anzeigen",
- "Nascondi istruzioni": "Anleitung ausblenden"
+ "Espandi": "Aufklappen",
+ "Riduci": "Zuklappen"
 }

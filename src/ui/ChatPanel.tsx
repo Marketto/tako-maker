@@ -247,14 +247,13 @@ function ConnectorPanel({ session, snap }: { session: ProjectSession; snap: Snap
     );
   }
   const starter = t('Usa Printopus con il codice {code}.', { code: c.code });
-  // Dopo il primo messaggio della chat le istruzioni si chiudono: resta una riga con il codice.
+  // Quando la chat ha aperto il progetto il pannello si chiude: restano «Scollega» ed «Espandi».
   if (c.linked && !help) {
     return (
       <div className="connector compact">
         <span className="connector-dot" aria-hidden="true" />
-        <span className="small">{t('Collegato alla chat con il codice {code}', { code: c.code })}</span>
-        <button className="link small" onClick={() => setHelp(true)}>{t('Mostra istruzioni')}</button>
         <button className="link small" onClick={() => void session.disconnect()}>{t('Scollega')}</button>
+        <button className="link small" aria-expanded="false" onClick={() => setHelp(true)}>{t('Espandi')}</button>
       </div>
     );
   }
@@ -285,7 +284,7 @@ function ConnectorPanel({ session, snap }: { session: ProjectSession; snap: Snap
         </li>
       </ol>
       <div className="row gap wrap">
-        {c.linked && <button className="link small" onClick={() => setHelp(false)}>{t('Nascondi istruzioni')}</button>}
+        {c.linked && <button className="link small" aria-expanded="true" onClick={() => setHelp(false)}>{t('Riduci')}</button>}
         <button className="link small" onClick={() => void session.disconnect()}>{t('Scollega')}</button>
       </div>
     </div>

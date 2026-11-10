@@ -110,7 +110,7 @@ export default {
           const { baseV, state } = (await readJson(req)) as { baseV: number; state: ConnectorState };
           if (!validState(state)) return json({ error: 'Stato non valido' }, 400, h);
           if (baseV !== cur.v) return json({ error: 'conflitto', state: cur }, 409, h);
-          const next: ConnectorState = { ...state, notes: cur.notes, v: cur.v + 1, updatedAt: Date.now() };
+          const next: ConnectorState = { ...state, notes: cur.notes, openedAt: cur.openedAt, v: cur.v + 1, updatedAt: Date.now() };
           await store.put(code, next);
           return json({ v: next.v }, 200, h);
         }

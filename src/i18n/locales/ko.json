@@ -528,7 +528,6 @@
  "Poi apri Printopus dalla schermata Home e continua da lì: le impostazioni dell’app installata sono separate da quelle del browser.": "그다음 홈 화면에서 Printopus를 열고 거기서 계속하세요. 설치한 앱의 설정은 브라우저와 따로 저장돼요.",
  "Non ora": "나중에",
  "Continua nel browser": "브라우저에서 계속",
- "Collegato alla chat con il codice {code}": "코드 {code}(으)로 채팅에 연결됨",
- "Mostra istruzioni": "안내 보기",
- "Nascondi istruzioni": "안내 숨기기"
+ "Espandi": "펼치기",
+ "Riduci": "접기"
 }

@@ -528,7 +528,6 @@
  "Poi apri Printopus dalla schermata Home e continua da lì: le impostazioni dell’app installata sono separate da quelle del browser.": "ثم افتح Printopus من الشاشة الرئيسية وتابع من هناك: إعدادات التطبيق المثبّت منفصلة عن إعدادات المتصفح.",
  "Non ora": "ليس الآن",
  "Continua nel browser": "تابع في المتصفح",
- "Collegato alla chat con il codice {code}": "متصل بالمحادثة بالرمز {code}",
- "Mostra istruzioni": "إظهار التعليمات",
- "Nascondi istruzioni": "إخفاء التعليمات"
+ "Espandi": "توسيع",
+ "Riduci": "تصغير"
 }

@@ -528,7 +528,6 @@
  "Poi apri Printopus dalla schermata Home e continua da lì: le impostazioni dell’app installata sono separate da quelle del browser.": "Sonra Printopus’u Ana Ekran’dan aç ve oradan devam et: yüklü uygulamanın ayarları tarayıcınınkilerden ayrıdır.",
  "Non ora": "Şimdi değil",
  "Continua nel browser": "Tarayıcıda devam et",
- "Collegato alla chat con il codice {code}": "{code} koduyla sohbete bağlandı",
- "Mostra istruzioni": "Talimatları göster",
- "Nascondi istruzioni": "Talimatları gizle"
+ "Espandi": "Genişlet",
+ "Riduci": "Daralt"
 }

@@ -528,7 +528,6 @@
  "Poi apri Printopus dalla schermata Home e continua da lì: le impostazioni dell’app installata sono separate da quelle del browser.": "Затем открой Printopus с экрана «Домой» и продолжай там: у установленного приложения свои настройки, отдельно от браузера.",
  "Non ora": "Не сейчас",
  "Continua nel browser": "Продолжить в браузере",
- "Collegato alla chat con il codice {code}": "Подключено к чату с кодом {code}",
- "Mostra istruzioni": "Показать инструкции",
- "Nascondi istruzioni": "Скрыть инструкции"
+ "Espandi": "Развернуть",
+ "Riduci": "Свернуть"
 }
