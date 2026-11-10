@@ -139,6 +139,8 @@ export function planAssembly(
       text = t('Metti la colla sulla faccia di contatto, poi accosta "{name}" a {target} {from} usando i perni di centraggio.', { name: name(best.id), target, from });
       tips.push(t('Colla cianoacrilica per PLA/PETG: poche gocce, tieni premuto 30 secondi.'));
       tips.push(t('Prova prima a secco che i pezzi combacino.'));
+    } else if (connection === 'designed') {
+      text = t('Unisci "{name}" a {target} {from} con l\'aggancio disegnato nel modello, fino allo scatto.', { name: name(best.id), target, from });
     } else {
       text = t('Accosta "{name}" a {target} {from}.', { name: name(best.id), target, from });
     }

@@ -529,5 +529,7 @@
  "Non ora": "Orain ez",
  "Continua nel browser": "Jarraitu nabigatzailean",
  "Espandi": "Zabaldu",
- "Riduci": "Txikitu"
+ "Riduci": "Txikitu",
+ "Unisci \"{name}\" a {target} {from} con l'aggancio disegnato nel modello, fino allo scatto.": "Lotu \"{name}\" {target}-(e)ri {from} ereduan diseinatutako lotunearekin, klik egin arte.",
+ "Aggancio nel modello": "Lotunea ereduan"
 }

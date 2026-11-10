@@ -529,5 +529,7 @@
  "Non ora": "Όχι τώρα",
  "Continua nel browser": "Συνέχεια στο πρόγραμμα περιήγησης",
  "Espandi": "Ανάπτυξη",
- "Riduci": "Σύμπτυξη"
+ "Riduci": "Σύμπτυξη",
+ "Unisci \"{name}\" a {target} {from} con l'aggancio disegnato nel modello, fino allo scatto.": "Ένωσε το \"{name}\" με το {target} {from} με τον σύνδεσμο που είναι σχεδιασμένος στο μοντέλο, μέχρι να κουμπώσει.",
+ "Aggancio nel modello": "Σύνδεσμος στο μοντέλο"
 }

@@ -529,5 +529,7 @@
  "Non ora": "Most nem",
  "Continua nel browser": "Folytatás a böngészőben",
  "Espandi": "Kibontás",
- "Riduci": "Összecsukás"
+ "Riduci": "Összecsukás",
+ "Unisci \"{name}\" a {target} {from} con l'aggancio disegnato nel modello, fino allo scatto.": "Illeszd \"{name}\" részt a(z) {target} részhez {from} a modellbe rajzolt rögzítővel, amíg be nem kattan.",
+ "Aggancio nel modello": "Rögzítő a modellben"
 }

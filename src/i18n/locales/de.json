@@ -529,5 +529,7 @@
  "Non ora": "Nicht jetzt",
  "Continua nel browser": "Im Browser weitermachen",
  "Espandi": "Aufklappen",
- "Riduci": "Zuklappen"
+ "Riduci": "Zuklappen",
+ "Unisci \"{name}\" a {target} {from} con l'aggancio disegnato nel modello, fino allo scatto.": "Verbinde \"{name}\" {from} mit {target} über die im Modell gezeichnete Verbindung, bis sie einrastet.",
+ "Aggancio nel modello": "Verbindung im Modell"
 }

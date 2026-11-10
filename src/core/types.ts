@@ -121,7 +121,8 @@ export interface Joint {
 }
 
 export type PrintStrategy = 'single' | 'multicolor' | 'separate' | 'layer-swap';
-export type Connection = 'glue' | 'snap' | 'none';
+/** `none`: non ancora deciso (l'app chiede); `designed`: aggancio disegnato nel modello, l'app non aggiunge perni. */
+export type Connection = 'glue' | 'snap' | 'none' | 'designed';
 
 export interface Attribution {
   title: string;

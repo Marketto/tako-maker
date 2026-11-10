@@ -529,5 +529,7 @@
  "Non ora": "Nu acum",
  "Continua nel browser": "Continuă în browser",
  "Espandi": "Extinde",
- "Riduci": "Restrânge"
+ "Riduci": "Restrânge",
+ "Unisci \"{name}\" a {target} {from} con l'aggancio disegnato nel modello, fino allo scatto.": "Unește \"{name}\" cu {target} {from} folosind prinderea desenată în model, până face clic.",
+ "Aggancio nel modello": "Prindere în model"
 }

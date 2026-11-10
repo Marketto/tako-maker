@@ -529,5 +529,7 @@
  "Non ora": "Mhux issa",
  "Continua nel browser": "Kompli fil-browser",
  "Espandi": "Espandi",
- "Riduci": "Naqqas"
+ "Riduci": "Naqqas",
+ "Unisci \"{name}\" a {target} {from} con l'aggancio disegnato nel modello, fino allo scatto.": "Għaqqad \"{name}\" ma' {target} {from} bil-qafla ddisinjata fil-mudell, sakemm tagħmel klikk.",
+ "Aggancio nel modello": "Qafla fil-mudell"
 }

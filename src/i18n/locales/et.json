@@ -529,5 +529,7 @@
  "Non ora": "Mitte praegu",
  "Continua nel browser": "Jätka brauseris",
  "Espandi": "Laienda",
- "Riduci": "Ahenda"
+ "Riduci": "Ahenda",
+ "Unisci \"{name}\" a {target} {from} con l'aggancio disegnato nel modello, fino allo scatto.": "Ühenda \"{name}\" {target} külge {from} mudelisse joonistatud kinnitusega, kuni see klõpsatab.",
+ "Aggancio nel modello": "Kinnitus mudelis"
 }

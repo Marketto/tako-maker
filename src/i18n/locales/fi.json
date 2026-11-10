@@ -529,5 +529,7 @@
  "Non ora": "Ei nyt",
  "Continua nel browser": "Jatka selaimessa",
  "Espandi": "Laajenna",
- "Riduci": "Pienennä"
+ "Riduci": "Pienennä",
+ "Unisci \"{name}\" a {target} {from} con l'aggancio disegnato nel modello, fino allo scatto.": "Liitä \"{name}\" kohteeseen {target} {from} malliin piirretyllä kiinnikkeellä, kunnes se napsahtaa.",
+ "Aggancio nel modello": "Kiinnike mallissa"
 }

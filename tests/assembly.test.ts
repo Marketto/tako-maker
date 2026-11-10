@@ -7,7 +7,7 @@ import type { Design, ShapeNode, Vec3 } from '../src/core/types';
 import { manifold, printer, setup } from './fixtures';
 
 /** Scatola cava in due metà: fondo aperto in alto, coperchio aperto in basso. */
-function hollowBox(wall: number, connection: 'snap' | 'glue' = 'snap'): Design {
+function hollowBox(wall: number, connection: Design['printPlan']['connection'] = 'snap'): Design {
   const shell = (h: number, z: number, openTop: boolean): ShapeNode => ({
     op: 'difference',
     at: [0, 0, z],
@@ -85,6 +85,30 @@ describe('perni lungo i bordi', () => {
     const r = evaluateDesign(w, d);
     const plan = planAssembly(d, r.parts.map((p) => ({ id: p.id, box: p.contactBox })), 'snap', r.connectors);
     expect(plan.steps[1].text).toMatch(new RegExp(`i ${r.connectors[0].pegs} perni`));
+  });
+});
+
+describe('aggancio disegnato nel modello (connection: designed)', () => {
+  it('niente perni automatici, niente domanda sull\'unione, montaggio con l\'aggancio', async () => {
+    const w = await manifold();
+    const d = hollowBox(7, 'designed');
+    const r = evaluateDesign(w, d);
+    expect(r.errors).toEqual([]);
+    expect(r.connectors).toEqual([]);
+    const plain = evaluateDesign(w, hollowBox(7, 'none'));
+    expect(r.parts[0].volume).toBeCloseTo(plain.parts[0].volume, 3);
+    const rep = analyze(d, r.parts, setup, printer('bambu-a1'), new Set(), r);
+    expect(rep.questions.some((q) => q.key?.startsWith('connection:'))).toBe(false);
+    const asked = analyze(hollowBox(7, 'none'), plain.parts, setup, printer('bambu-a1'), new Set(), plain);
+    expect(asked.questions.some((q) => q.key?.startsWith('connection:'))).toBe(true);
+    const plan = planAssembly(d, r.parts.map((p) => ({ id: p.id, box: p.contactBox })), 'designed', r.connectors);
+    expect(plan.steps[1].text).toMatch(/aggancio disegnato nel modello/);
+  });
+
+  it('set_plan accetta designed e rifiuta valori sconosciuti', () => {
+    const d = hollowBox(7, 'none');
+    expect(applyOps(d, [{ op: 'set_plan', connection: 'designed' }]).printPlan.connection).toBe('designed');
+    expect(() => applyOps(d, [{ op: 'set_plan', connection: 'colla' as never }])).toThrow(/Unione delle parti non valida/);
   });
 });
 

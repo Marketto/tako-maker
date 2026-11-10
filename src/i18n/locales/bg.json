@@ -529,5 +529,7 @@
  "Non ora": "Не сега",
  "Continua nel browser": "Продължи в браузъра",
  "Espandi": "Разгъни",
- "Riduci": "Сгъни"
+ "Riduci": "Сгъни",
+ "Unisci \"{name}\" a {target} {from} con l'aggancio disegnato nel modello, fino allo scatto.": "Свържи \"{name}\" с {target} {from} чрез закрепването, проектирано в модела, докато щракне.",
+ "Aggancio nel modello": "Закрепване в модела"
 }

@@ -529,5 +529,7 @@
  "Non ora": "Ne dabar",
  "Continua nel browser": "Tęsti naršyklėje",
  "Espandi": "Išskleisti",
- "Riduci": "Suskleisti"
+ "Riduci": "Suskleisti",
+ "Unisci \"{name}\" a {target} {from} con l'aggancio disegnato nel modello, fino allo scatto.": "Sujunk \"{name}\" su {target} {from} modelyje nubraižytu tvirtinimu, kol spragtelės.",
+ "Aggancio nel modello": "Tvirtinimas modelyje"
 }

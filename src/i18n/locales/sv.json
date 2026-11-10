@@ -529,5 +529,7 @@
  "Non ora": "Inte nu",
  "Continua nel browser": "Fortsätt i webbläsaren",
  "Espandi": "Visa mer",
- "Riduci": "Visa mindre"
+ "Riduci": "Visa mindre",
+ "Unisci \"{name}\" a {target} {from} con l'aggancio disegnato nel modello, fino allo scatto.": "Sätt ihop \"{name}\" med {target} {from} med låset som är ritat i modellen, tills det klickar.",
+ "Aggancio nel modello": "Lås i modellen"
 }

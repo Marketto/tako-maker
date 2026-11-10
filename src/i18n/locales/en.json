@@ -529,5 +529,7 @@
  "Non ora": "Not now",
  "Continua nel browser": "Continue in the browser",
  "Espandi": "Expand",
- "Riduci": "Collapse"
+ "Riduci": "Collapse",
+ "Unisci \"{name}\" a {target} {from} con l'aggancio disegnato nel modello, fino allo scatto.": "Join \"{name}\" to {target} {from} using the catch designed into the model, until it clicks.",
+ "Aggancio nel modello": "Catch built into the model"
 }

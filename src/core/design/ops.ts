@@ -111,6 +111,10 @@ export function validateDesign(d: Design, filamentIds?: Set<string>): void {
     if (!Number.isInteger(h.qty) || h.qty < 1 || h.qty > 100) throw new DesignError(`L'elemento "${h.id}" ha una quantità non valida (1-100)`);
     if (h.decision !== undefined && h.decision !== 'buy' && h.decision !== 'printed') throw new DesignError(`L'elemento "${h.id}" ha una scelta non valida`);
   }
+  const plan = d.printPlan;
+  if (!plan) return;
+  if (!['single', 'multicolor', 'separate', 'layer-swap'].includes(plan.strategy)) throw new DesignError(`Strategia di stampa non valida: "${plan.strategy}"`);
+  if (!['glue', 'snap', 'none', 'designed'].includes(plan.connection)) throw new DesignError(`Unione delle parti non valida: "${plan.connection}" (glue, snap, none o designed)`);
 }
 
 function findIndex<T extends { id: string }>(list: T[], id: string, what: string): number {

@@ -529,5 +529,7 @@
  "Non ora": "Teď ne",
  "Continua nel browser": "Pokračovat v prohlížeči",
  "Espandi": "Rozbalit",
- "Riduci": "Sbalit"
+ "Riduci": "Sbalit",
+ "Unisci \"{name}\" a {target} {from} con l'aggancio disegnato nel modello, fino allo scatto.": "Spoj \"{name}\" s {target} {from} pomocí úchytu navrženého v modelu, až zacvakne.",
+ "Aggancio nel modello": "Úchyt v modelu"
 }

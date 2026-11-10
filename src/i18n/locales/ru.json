@@ -529,5 +529,7 @@
  "Non ora": "Не сейчас",
  "Continua nel browser": "Продолжить в браузере",
  "Espandi": "Развернуть",
- "Riduci": "Свернуть"
+ "Riduci": "Свернуть",
+ "Unisci \"{name}\" a {target} {from} con l'aggancio disegnato nel modello, fino allo scatto.": "Соедини \"{name}\" с {target} {from} с помощью защёлки, нарисованной в модели, до щелчка.",
+ "Aggancio nel modello": "Защёлка в модели"
 }
