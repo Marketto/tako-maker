@@ -34,6 +34,22 @@ export interface PrinterSpec {
   nozzle?: number;
   /** Passo tra i piatti nel progetto dello slicer (Bambu Studio e derivati), misurato su un file reale. */
   plateStride?: [number, number];
+  /** Nomi dei profili nello slicer (Bambu Studio e derivati): servono perché il 3MF si apra come progetto con i suoi piatti. */
+  slicerProfile?: SlicerProfile;
+}
+
+/** Profili di sistema dello slicer per la stampante, come compaiono in un progetto salvato. */
+export interface SlicerProfile {
+  /** Prefisso delle intestazioni di slice_info.config (es. "X-ACNext" per Anycubic Slicer Next). */
+  client: string;
+  printerModel: string;
+  /** Profilo stampante (es. "Anycubic Kobra X 0.4 nozzle"). */
+  printer: string;
+  /** Profilo di stampa (processo). */
+  print: string;
+  /** Profilo filamento: {material} diventa il materiale (es. "Anycubic {material} @Anycubic Kobra X 0.4 nozzle"). */
+  filament: string;
+  bedType?: string;
 }
 
 /** Giochi e tolleranze usati per cerniere, scatti e perni (mm). */

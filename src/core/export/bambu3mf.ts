@@ -1,5 +1,5 @@
 import { strToU8 } from 'fflate';
-import type { Vec3 } from '../types';
+import type { Filament, SlicerProfile, Vec3 } from '../types';
 import type { RawMesh } from '../geometry/evaluate';
 
 /* 3MF nel formato dei progetti di Bambu Studio e dei suoi derivati (OrcaSlicer, Anycubic
@@ -12,7 +12,10 @@ import type { RawMesh } from '../geometry/evaluate';
      la traslazione in coordinate del "mondo" (piatto 1 nell'origine, gli altri accanto).
    - 3D/Objects/*.model: una mesh per parte.
    - Metadata/model_settings.config: nome ed estrusore di oggetti e parti, impostazioni per
-     oggetto, elenco dei piatti con gli oggetti assegnati, posizioni di montaggio. */
+     oggetto, elenco dei piatti con gli oggetti assegnati, posizioni di montaggio.
+   - Metadata/project_settings.config e slice_info.config, solo se si conoscono i profili della
+     stampante: senza, Anycubic Slicer Next apre il file come semplice geometria, ignora i
+     piatti e mette tutto al centro del piatto 1. */
 
 export interface PlatedPart {
   name: string;
@@ -35,6 +38,8 @@ export interface BambuOptions {
   plateStride?: [number, number];
   /** Righe <metadata> del modello (titolo, autore, licenza…). */
   meta: string[];
+  /** Impostazioni minime del progetto (vedi projectSettings). */
+  settings?: { profile: SlicerProfile; filaments: (Filament | undefined)[] };
 }
 
 /** Applicazione dichiarata: gli slicer della famiglia Bambu leggono piatti e impostazioni solo dai progetti "BambuStudio". */
@@ -52,6 +57,35 @@ export function plateOrigin(index: number, count: number, bed: Vec3, stride?: [n
   const cols = plateColumns(count);
   const [sx, sy] = stride ?? [bed[0] * 1.2, bed[1] * 1.2];
   return [(index % cols) * sx, -Math.floor(index / cols) * sy];
+}
+
+/**
+ * Impostazioni minime del progetto: nomi dei profili di sistema, piatto e filamenti usati
+ * (estrusore n = filaments[n-1]). Lo slicer completa il resto dai suoi profili. Provato con
+ * Anycubic Slicer Next 2.0.0.3 sulla Kobra X: così il file si apre con i suoi piatti.
+ */
+export function projectSettings(profile: SlicerProfile, bed: Vec3, filaments: (Filament | undefined)[]): Record<string, unknown> {
+  const fil = filaments.length ? filaments : [undefined];
+  const nozzle = profile.printer.match(/(\d+(?:\.\d+)?) nozzle/)?.[1] ?? '0.4';
+  return {
+    from: 'project',
+    version: BAMBU_APPLICATION.split('-')[1],
+    name: 'project_settings',
+    printer_model: profile.printerModel,
+    printer_settings_id: profile.printer,
+    print_settings_id: profile.print,
+    printer_variant: nozzle,
+    print_compatible_printers: [profile.printer],
+    printable_area: ['0x0', `${f(bed[0])}x0`, `${f(bed[0])}x${f(bed[1])}`, `0x${f(bed[1])}`],
+    printable_height: f(bed[2]),
+    nozzle_diameter: [nozzle],
+    ...(profile.bedType ? { curr_bed_type: profile.bedType } : {}),
+    single_extruder_multi_material: '1',
+    enable_prime_tower: fil.length > 1 ? '1' : '0',
+    filament_settings_id: fil.map((x) => profile.filament.replace('{material}', x?.material ?? 'PLA')),
+    filament_type: fil.map((x) => x?.material ?? 'PLA'),
+    filament_colour: fil.map((x) => (x?.hex ?? '#FFFFFF').toUpperCase()),
+  };
 }
 
 const esc = (s: string) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
@@ -143,5 +177,13 @@ export function bambuFiles(parts: PlatedPart[], opt: BambuOptions): Record<strin
   files['Metadata/model_settings.config'] = strToU8(
     `<?xml version="1.0" encoding="UTF-8"?>\n<config>\n${settings.join('\n')}\n${plateXml.join('\n')}\n  <assemble>\n${assemble.join('\n')}\n  </assemble>\n</config>\n`,
   );
+  if (opt.settings) {
+    const { profile, filaments } = opt.settings;
+    files['Metadata/project_settings.config'] = strToU8(JSON.stringify(projectSettings(profile, opt.bed, filaments), null, 4) + '\n');
+    const version = `${BAMBU_APPLICATION.split('-')[1]}`;
+    files['Metadata/slice_info.config'] = strToU8(
+      `<?xml version="1.0" encoding="UTF-8"?>\n<config>\n  <header>\n    <header_item key="${esc(profile.client)}-Client-Type" value="slicer"/>\n    <header_item key="${esc(profile.client)}-Client-Version" value="${version}"/>\n  </header>\n</config>\n`,
+    );
+  }
   return files;
 }

@@ -8,7 +8,7 @@ import { downloadBlob } from './download';
 import type { PartResult, RawMesh } from '../core/geometry/evaluate';
 import { importModelFile } from '../core/geometry/import';
 import { planAssembly, type AssemblyPlan } from '../core/assembly/plan';
-import { build3MF, flavorForSlicer } from '../core/export/threemf';
+import { build3MF, flavorForSlicer, slicerProfileFor } from '../core/export/threemf';
 import { buildSTLZip } from '../core/export/stl';
 import { bedOf } from '../core/analysis/estimate';
 import type { Design, Question } from '../core/types';
@@ -648,6 +648,8 @@ export class ProjectSession {
       bed: bedOf(this.setup, this.printer),
       keepFree: plateKeepFree(d, this.setup, this.printer),
       plateStride: this.printer.plateStride,
+      slicerProfile: slicerProfileFor(this.setup, this.printer),
+      filaments: this.setup.filaments,
       attribution: d.source,
       extraFiles: this.shoppingFiles('Metadata/'),
     });

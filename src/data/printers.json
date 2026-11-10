@@ -1077,7 +1077,15 @@
       "plateStride": [
         314.4,
         328.8
-      ]
+      ],
+      "slicerProfile": {
+        "client": "X-ACNext",
+        "printerModel": "Anycubic Kobra X",
+        "printer": "Anycubic Kobra X 0.4 nozzle",
+        "print": "0.20mm Standard @Anycubic Kobra X 0.4 nozzle",
+        "filament": "Anycubic {material} @Anycubic Kobra X 0.4 nozzle",
+        "bedType": "Textured PEI Plate"
+      }
     },
     {
       "id": "qidi-max4",
