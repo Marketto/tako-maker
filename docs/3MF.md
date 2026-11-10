@@ -76,13 +76,27 @@ Con entrambe ogni oggetto finisce sul suo piatto. Printopus usa la variante A: c
 
 `slice_info.config` contiene solo l'intestazione del client (`X-ACNext-Client-Type = slicer` e la versione).
 
-**Estrusori compatti.** Prima l'estrusore era la posizione del filamento nell'elenco dell'utente, per esempio 8 e 9. Ora, quando si scrivono le impostazioni, gli estrusori diventano 1..k sui soli filamenti usati, nello stesso ordine (`compactExtruders` in `threemf.ts`). L'interfaccia dei supporti segue la stessa numerazione. Il progetto elenca così solo quei filamenti, e la Kobra X (4 slot ACE) non riceve un estrusore 8.
+**Estrusori compatti.** Prima l'estrusore era la posizione del filamento nell'elenco dell'utente, per esempio 8 e 9. Ora, in ogni 3MF (anche per PrusaSlicer), gli estrusori diventano 1..k sui soli filamenti usati, nello stesso ordine (`compactExtruders` in `threemf.ts`). L'interfaccia dei supporti segue la stessa numerazione. Il progetto elenca così solo quei filamenti, e la Kobra X (4 slot ACE) non riceve un estrusore 8.
 
-**Pezzo quasi lungo quanto il piatto.** Un supporto di 256 mm su un piatto di 260 veniva messo a 6 mm dal bordo e usciva di 2 mm ("Un oggetto è posizionato oltre il limite del piatto"). Ora `platedLayout` riduce il margine e lo centra (2 mm per lato).
+**Pezzo quasi lungo quanto il piatto.** Un supporto di 256 mm su un piatto di 260 veniva messo a 6 mm dal bordo e usciva di 2 mm ("Un oggetto è posizionato oltre il limite del piatto"). Ora la disposizione riduce il margine e lo centra (2 mm per lato), sia con più piatti (`platedLayout`) sia nel piatto unico di PrusaSlicer (`layoutOnBed`).
 
-**Pezzi al centro del piatto.** Come nei progetti salvati dallo slicer, `platedLayout` prima dispone i pezzi di ogni piatto in righe, poi sposta il gruppo intero al centro del piatto. Sui piatti con più colori lo mette accanto alla zona della torre di spurgo (`placeAvoiding`). Se non c'è posto, i pezzi restano dove sono.
+**Pezzi al centro del piatto.** Come nei progetti salvati dallo slicer, la disposizione (per tutti e due i formati) prima dispone i pezzi di ogni piatto in righe, poi sposta il gruppo intero al centro del piatto. Sui piatti con più colori lo mette accanto alla zona della torre di spurgo (`placeAvoiding`). Se non c'è posto, i pezzi restano dove sono.
 
 **Pezzi staccati della stessa parte.** I ganci per gli occhiali erano una sola parte con due pezzi disegnati a quote diverse (z 20 e z 26). Stampando la parte da sola, il gancio più alto restava a 6 mm dal piatto: lo slicer lo segnalava come "regioni fluttuanti" e lo reggeva con i supporti per tutta l'altezza. Ora, con le parti separate, ogni pezzo staccato scende sul piatto, a meno che sotto, in pianta, ci sia un altro pezzo (`settleIslands` in `core/geometry/islands.ts`). L'analisi dei supporti misura la parte già sistemata così.
 
 **Per un'altra stampante** si salva un progetto dallo slicer e si copiano in `slicerProfile` i nomi di `printer_model`, `printer_settings_id`, `print_settings_id`, il modello di `filament_settings_id` e `curr_bed_type`. Poi si prova un file esportato nello slicer.
+
+## A chi valgono le correzioni
+
+| Correzione | Ambito | Dove |
+|---|---|---|
+| Pezzi staccati di una parte sul piatto | tutti gli slicer e le stampanti (anche STL) | `core/geometry/islands.ts`, `app/session.ts` |
+| Margine ridotto per i pezzi lunghi quasi quanto il piatto | tutti gli slicer | `nearlyFull` in `threemf.ts` |
+| Pezzi al centro del piatto, accanto alla torre di spurgo | tutti gli slicer | `centerShift` in `threemf.ts` |
+| Estrusori 1..k sui filamenti usati | tutti gli slicer | `compactExtruders` in `threemf.ts` |
+| Struttura del progetto (piatti, oggetti, `model_settings.config`) | famiglia Bambu Studio | `bambu3mf.ts` |
+| `project_settings.config` e `slice_info.config` | meccanismo della famiglia Bambu Studio; i nomi dei profili sono della singola stampante | `projectSettings` in `bambu3mf.ts`, `slicerProfile` in `printers.json` |
+| Passo tra i piatti | singola stampante (misurato su un file reale) | `plateStride` in `printers.json` |
+
+Oggi solo la Kobra X ha `slicerProfile` e `plateStride` misurati. Per le altre stampanti della famiglia il 3MF resta senza impostazioni di progetto. Se uno slicer sposta gli oggetti fuori dai piatti, si salva un progetto da quello slicer e si aggiungono i due valori come descritto sopra. Senza una prova nello slicer non si inventano i nomi dei profili: un nome sbagliato farebbe comparire avvisi di profilo mancante.
 

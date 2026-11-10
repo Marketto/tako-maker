@@ -81,8 +81,8 @@ export function slicerProfileFor(setup: UserSetup, printer: PrinterSpec): Slicer
 }
 
 /**
- * Estrusori numerati 1..k sui soli filamenti usati (es. 8 e 9 diventano 1 e 2): il progetto
- * elenca solo quei filamenti, e uno slicer con 4 slot rifiuterebbe l'estrusore 8.
+ * Estrusori numerati 1..k sui soli filamenti usati, nello stesso ordine (es. 8 e 9 diventano
+ * 1 e 2): il progetto elenca solo quei filamenti, e uno slicer con 4 slot rifiuterebbe l'estrusore 8.
  */
 export function compactExtruders(parts: ExportPart[], filaments: Filament[] = []): { parts: ExportPart[]; filaments: (Filament | undefined)[] } {
   const used = [...new Set(parts.flatMap((p) => [p.extruder, p.print?.supports ? (p.print.interfaceExtruder ?? 0) : 0]).filter((e) => e > 0))].sort((a, b) => a - b);
@@ -147,6 +147,7 @@ function mergeMeshes(meshes: RawMesh[], offsets: Vec3[]): { mesh: RawMesh; triRa
 /** Dispone le parti sul piatto in righe, ognuna appoggiata a z=0. */
 export function layoutOnBed(meshes: RawMesh[], bed: Vec3, gap = 6, keepFree: Rect | null = null): Vec3[] {
   const offsets: Vec3[] = [];
+  const rects: { x: number; y: number; w: number; h: number }[] = [];
   let x = gap, y = gap, rowH = 0;
   for (const m of meshes) {
     const b = bounds([m]);
@@ -165,11 +166,31 @@ export function layoutOnBed(meshes: RawMesh[], bed: Vec3, gap = 6, keepFree: Rec
       }
       break;
     }
-    offsets.push([x - b.min[0], y - b.min[1], -b.min[2]]);
+    const px = nearlyFull(x, w, bed[0], gap), py = nearlyFull(y, h, bed[1], gap);
+    offsets.push([px - b.min[0], py - b.min[1], -b.min[2]]);
+    rects.push({ x: px, y: py, w, h });
     x += w + gap;
     rowH = Math.max(rowH, h);
   }
-  return offsets;
+  const [dx, dy] = centerShift(rects, bed, keepFree);
+  return offsets.map(([ox, oy, oz]) => [ox + dx, oy + dy, oz]);
+}
+
+/** Pezzo all'inizio della riga quasi lungo quanto il piatto: il margine si riduce e resta dentro (es. 256 mm su 260). */
+function nearlyFull(pos: number, size: number, bedSize: number, gap: number): number {
+  return pos === gap && size + 2 * gap > bedSize ? Math.max(0, (bedSize - size) / 2) : pos;
+}
+
+/**
+ * Spostamento che porta i pezzi di un piatto, tutti insieme, al centro (o accanto alla torre
+ * di spurgo), come nei progetti salvati dagli slicer. [0, 0] se non c'è posto.
+ */
+function centerShift(rects: { x: number; y: number; w: number; h: number }[], bed: Vec3, zone: Rect | null): [number, number] {
+  if (!rects.length) return [0, 0];
+  const x0 = Math.min(...rects.map((q) => q.x)), y0 = Math.min(...rects.map((q) => q.y));
+  const x1 = Math.max(...rects.map((q) => q.x + q.w)), y1 = Math.max(...rects.map((q) => q.y + q.h));
+  const spot = placeAvoiding(x1 - x0, y1 - y0, bed, zone);
+  return spot ? [spot.x - x0, spot.y - y0] : [0, 0];
 }
 
 /** Layout separato, ma le parti dello stesso gruppo mantengono la posizione relativa. */
@@ -226,33 +247,28 @@ export function platedLayout(parts: ExportPart[], bed: Vec3, keepFree: Rect | nu
         }
         break;
       }
-      // Pezzo quasi lungo quanto il piatto: il margine si riduce, così resta dentro (es. 256 mm su 260).
-      const px = x === gap && w + 2 * gap > bed[0] ? Math.max(0, (bed[0] - w) / 2) : x;
-      const py = y === gap && h + 2 * gap > bed[1] ? Math.max(0, (bed[1] - h) / 2) : y;
+      const px = nearlyFull(x, w, bed[0], gap), py = nearlyFull(y, h, bed[1], gap);
       out.set(g.key, { plate, offset: [px - g.box.min[0], py - g.box.min[1], -g.box.min[2]] });
       placed.push({ key: g.key, plate, zone, x: px, y: py, w, h });
       x += w + gap;
       rowH = Math.max(rowH, h);
     }
   }
-  // Come nei progetti salvati dallo slicer: i pezzi di ogni piatto, tutti insieme, al centro del
-  // piatto (o accanto alla torre di spurgo). Se non c'è posto restano dove sono.
   for (const n of new Set(placed.map((q) => q.plate))) {
     const items = placed.filter((q) => q.plate === n);
-    const x0 = Math.min(...items.map((q) => q.x)), y0 = Math.min(...items.map((q) => q.y));
-    const x1 = Math.max(...items.map((q) => q.x + q.w)), y1 = Math.max(...items.map((q) => q.y + q.h));
-    const spot = placeAvoiding(x1 - x0, y1 - y0, bed, items[0].zone);
-    if (!spot) continue;
+    const [dx, dy] = centerShift(items, bed, items[0].zone);
     for (const q of items) {
       const o = out.get(q.key)!;
-      out.set(q.key, { plate: n, offset: [o.offset[0] + spot.x - x0, o.offset[1] + spot.y - y0, o.offset[2]] });
+      out.set(q.key, { plate: n, offset: [o.offset[0] + dx, o.offset[1] + dy, o.offset[2]] });
     }
   }
   return keys.map((k) => out.get(k)!);
 }
 
-export function build3MF(parts: ExportPart[], opt: ExportOptions): Uint8Array {
-  if (!parts.length) throw new Error(t('Nessuna parte da esportare'));
+export function build3MF(input: ExportPart[], opt: ExportOptions): Uint8Array {
+  if (!input.length) throw new Error(t('Nessuna parte da esportare'));
+  // Vale per tutti gli slicer: estrusori 1..k sui soli filamenti usati.
+  const { parts, filaments: used } = compactExtruders(input, opt.filaments);
   const separate = opt.strategy === 'separate' || !!opt.keepPositions;
   const all = bounds(parts.map((p) => p.mesh));
   // Modello unico: al centro del piatto, oppure accanto alla zona della torre di spurgo.
@@ -312,12 +328,7 @@ export function build3MF(parts: ExportPart[], opt: ExportOptions): Uint8Array {
     files['Metadata/Slic3r_PE_model.config'] = strToU8(config);
   } else {
     // Bambu Studio e derivati: oggetti con componenti, mesh in file separati, più piatti.
-    let settings: { profile: SlicerProfile; filaments: (Filament | undefined)[] } | undefined;
-    if (opt.slicerProfile) {
-      const c = compactExtruders(parts, opt.filaments);
-      parts = c.parts;
-      settings = { profile: opt.slicerProfile, filaments: c.filaments };
-    }
+    const settings = opt.slicerProfile ? { profile: opt.slicerProfile, filaments: used } : undefined;
     const keyOf = (p: ExportPart, i: number) => (separate ? (p.group ?? `#${i}`) : 'modello');
     let placed: { plate: number; offset: Vec3 }[];
     if (opt.keepPositions) placed = parts.map((p) => ({ plate: p.plate ?? 1, offset: [0, 0, 0] }));

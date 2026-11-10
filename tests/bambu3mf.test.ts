@@ -73,6 +73,17 @@ describe('3MF per Bambu Studio e derivati (Anycubic Slicer Next)', () => {
     expect(c.offset[0] + 20).toBeLessThanOrEqual(zone.x);
   });
 
+  it('PrusaSlicer: stesso margine ridotto e pezzi al centro del piatto', () => {
+    const long = { positions: new Float32Array([0, -22, 0, 256, 27, 55]), indices: new Uint32Array() };
+    const zip = unzipSync(build3MF([{ name: 'Supporto', mesh: long, extruder: 2 }], { title: 'S', flavor: 'prusa', strategy: 'separate', bed: [260, 260, 260] }));
+    const model = strFromU8(zip['3D/3dmodel.model']);
+    const tr = model.match(/transform="1 0 0 0 1 0 0 0 1 ([-\d.]+) ([-\d.]+) ([-\d.]+)"/);
+    const xs = [...model.matchAll(/<vertex x="([-\d.]+)"/g)].map((m) => Number(m[1]) + Number(tr?.[1] ?? 0));
+    expect(Math.min(...xs)).toBeCloseTo(2);
+    expect(Math.max(...xs)).toBeCloseTo(258);
+    expect(model + strFromU8(zip['Metadata/Slic3r_PE_model.config'])).not.toMatch(/key="extruder" value="2"/);
+  });
+
   it('modello montato: un oggetto con una parte per colore, sul primo piatto', () => {
     const parts: ExportPart[] = [
       { name: 'Base', mesh: cube(20), extruder: 1, print: { supports: true, brim: 0 } },
@@ -113,7 +124,8 @@ describe('3MF per Bambu Studio e derivati (Anycubic Slicer Next)', () => {
     expect(slicerProfileFor(setup, kobraX)).toBeUndefined();
     const zip = unzipSync(build3MF([{ name: 'A', mesh: cube(10), extruder: 3 }], { title: 'A', flavor: 'orca', strategy: 'separate', bed: kobraX.bed }));
     expect(zip['Metadata/project_settings.config']).toBeUndefined();
-    expect(strFromU8(zip['Metadata/model_settings.config'])).toContain('key="extruder" value="3"');
+    // Gli estrusori diventano 1..k per tutti gli slicer, anche senza profilo.
+    expect(strFromU8(zip['Metadata/model_settings.config'])).toContain('key="extruder" value="1"');
     expect(compactExtruders([{ name: 'A', mesh: cube(10), extruder: 3 }]).parts[0].extruder).toBe(1);
   });
 });
