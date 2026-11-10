@@ -48,6 +48,37 @@ La struttura `orca` riproduce un progetto reale salvato con Anycubic Slicer Next
   - parti separate: un piatto per colore (i gruppi stampati già montati restano insieme), più piatti se non ci stanno;
   - campioni di prova: un solo 3MF con un piatto per materiale.
 - **Impostazioni per oggetto:** `enable_support`, `support_type`, `support_interface_filament`, `brim_type`, `brim_width` (vedi docs/ANALISI.md).
-- **Cosa resta fuori:** `project_settings.config` (profilo stampante, processo, filamenti) e le miniature. Lo slicer usa i profili scelti al momento dell'apertura, quindi il file resta valido per qualsiasi stampante della famiglia. Le chiavi del riferimento sono annotate sopra per un'eventuale aggiunta futura, da provare prima nello slicer.
+- **Impostazioni di progetto minime** (solo per le stampanti con `slicerProfile` in `printers.json`, oggi la Kobra X, e con l'ugello di serie): `Metadata/project_settings.config` e `Metadata/slice_info.config`. Vedi la sezione qui sotto.
+- **Cosa resta fuori:** il profilo completo (circa 600 chiavi) e le miniature. Lo slicer completa le impostazioni dai suoi profili di sistema.
 
 Il test `tests/bambu3mf.test.ts` controlla che con il passo della Kobra X i 4 cubi finiscano negli stessi punti del progetto di riferimento.
+
+## Correzione: oggetti fuori dai piatti in Anycubic Slicer Next
+
+**Il problema.** Un 3MF con supporto (piatto 1) e ganci (piatto 2) si apriva in Anycubic Slicer Next per Kobra X con tutti gli oggetti spostati di circa (−53, +100) mm, fuori dai piatti. Le posizioni nel file erano giuste.
+
+**La causa.** Senza `Metadata/project_settings.config` lo slicer non tratta il file come un progetto: lo carica come semplice geometria, ignora i piatti di `model_settings.config` e centra il gruppo di oggetti sul piatto 1.
+
+**La prova.** Confronto con un progetto vero salvato da Anycubic Slicer Next (un portatile giocattolo, 7 piatti), su due varianti dello stesso file:
+
+- A: impostazioni minime (14 chiavi più i filamenti) e `slice_info.config`;
+- B: il profilo completo del progetto vero, ridotto a 2 filamenti.
+
+Con entrambe ogni oggetto finisce sul suo piatto. Printopus usa la variante A: contiene solo i nomi dei profili di sistema, senza copiare il profilo completo (G-code e parametri di Anycubic).
+
+**Cosa scrive Printopus** (`projectSettings` in `bambu3mf.ts`):
+
+- `from = "project"`, `version`, `name`;
+- profili: `printer_model`, `printer_settings_id`, `print_settings_id`, `printer_variant`, `print_compatible_printers`;
+- piatto e ugello: `printable_area`, `printable_height`, `nozzle_diameter`, `curr_bed_type`;
+- multicolore: `single_extruder_multi_material = 1`, `enable_prime_tower`;
+- filamenti usati: `filament_settings_id`, `filament_type`, `filament_colour`.
+
+`slice_info.config` contiene solo l'intestazione del client (`X-ACNext-Client-Type = slicer` e la versione).
+
+**Estrusori compatti.** Prima l'estrusore era la posizione del filamento nell'elenco dell'utente, per esempio 8 e 9. Ora, quando si scrivono le impostazioni, gli estrusori diventano 1..k sui soli filamenti usati, nello stesso ordine (`compactExtruders` in `threemf.ts`). L'interfaccia dei supporti segue la stessa numerazione. Il progetto elenca così solo quei filamenti, e la Kobra X (4 slot ACE) non riceve un estrusore 8.
+
+**Pezzo quasi lungo quanto il piatto.** Un supporto di 256 mm su un piatto di 260 veniva messo a 6 mm dal bordo e usciva di 2 mm ("Un oggetto è posizionato oltre il limite del piatto"). Ora `platedLayout` riduce il margine e lo centra (2 mm per lato).
+
+**Per un'altra stampante** si salva un progetto dallo slicer e si copiano in `slicerProfile` i nomi di `printer_model`, `printer_settings_id`, `print_settings_id`, il modello di `filament_settings_id` e `curr_bed_type`. Poi si prova un file esportato nello slicer.
+

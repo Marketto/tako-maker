@@ -1,5 +1,5 @@
 import { strToU8, zipSync } from 'fflate';
-import type { Attribution, Filament, PrintStrategy, Vec3 } from '../types';
+import type { Attribution, Filament, PrinterSpec, PrintStrategy, SlicerProfile, UserSetup, Vec3 } from '../types';
 import type { RawMesh } from '../geometry/evaluate';
 import { t } from '../../i18n';
 import { overlaps, placeAvoiding, type Rect } from '../plate/primeTower';
@@ -68,6 +68,30 @@ export interface ExportOptions {
   keepFree?: Rect | null;
   /** File di testo aggiuntivi nel pacchetto (es. istruzioni). */
   extraFiles?: Record<string, string>;
+  /** Profili dello slicer (formato "orca"): il 3MF diventa un progetto con le impostazioni minime. */
+  slicerProfile?: SlicerProfile;
+  /** Filamenti dell'utente: l'estrusore n è filaments[n-1]. */
+  filaments?: Filament[];
+}
+
+/** Profili dello slicer da scrivere nel progetto: solo con l'ugello di serie, perché i nomi dei profili lo contengono. */
+export function slicerProfileFor(setup: UserSetup, printer: PrinterSpec): SlicerProfile | undefined {
+  if (setup.nozzle && setup.nozzle !== (printer.nozzle ?? 0.4)) return undefined;
+  return printer.slicerProfile;
+}
+
+/**
+ * Estrusori numerati 1..k sui soli filamenti usati (es. 8 e 9 diventano 1 e 2): il progetto
+ * elenca solo quei filamenti, e uno slicer con 4 slot rifiuterebbe l'estrusore 8.
+ */
+export function compactExtruders(parts: ExportPart[], filaments: Filament[] = []): { parts: ExportPart[]; filaments: (Filament | undefined)[] } {
+  const used = [...new Set(parts.flatMap((p) => [p.extruder, p.print?.supports ? (p.print.interfaceExtruder ?? 0) : 0]).filter((e) => e > 0))].sort((a, b) => a - b);
+  const idx = new Map(used.map((e, i) => [e, i + 1]));
+  const map = (e: number) => idx.get(e) ?? 1;
+  return {
+    parts: parts.map((p) => ({ ...p, extruder: map(p.extruder), print: p.print && { ...p.print, interfaceExtruder: p.print.interfaceExtruder ? map(p.print.interfaceExtruder) : undefined } })),
+    filaments: used.map((e) => filaments[e - 1] ?? parts.find((p) => p.extruder === e)?.filament),
+  };
 }
 
 export function flavorForSlicer(slicer: string): SlicerFlavor {
@@ -201,7 +225,10 @@ export function platedLayout(parts: ExportPart[], bed: Vec3, keepFree: Rect | nu
         }
         break;
       }
-      out.set(g.key, { plate, offset: [x - g.box.min[0], y - g.box.min[1], -g.box.min[2]] });
+      // Pezzo quasi lungo quanto il piatto: il margine si riduce, così resta dentro (es. 256 mm su 260).
+      const px = x === gap && w + 2 * gap > bed[0] ? Math.max(0, (bed[0] - w) / 2) : x;
+      const py = y === gap && h + 2 * gap > bed[1] ? Math.max(0, (bed[1] - h) / 2) : y;
+      out.set(g.key, { plate, offset: [px - g.box.min[0], py - g.box.min[1], -g.box.min[2]] });
       x += w + gap;
       rowH = Math.max(rowH, h);
     }
@@ -270,6 +297,12 @@ export function build3MF(parts: ExportPart[], opt: ExportOptions): Uint8Array {
     files['Metadata/Slic3r_PE_model.config'] = strToU8(config);
   } else {
     // Bambu Studio e derivati: oggetti con componenti, mesh in file separati, più piatti.
+    let settings: { profile: SlicerProfile; filaments: (Filament | undefined)[] } | undefined;
+    if (opt.slicerProfile) {
+      const c = compactExtruders(parts, opt.filaments);
+      parts = c.parts;
+      settings = { profile: opt.slicerProfile, filaments: c.filaments };
+    }
     const keyOf = (p: ExportPart, i: number) => (separate ? (p.group ?? `#${i}`) : 'modello');
     let placed: { plate: number; offset: Vec3 }[];
     if (opt.keepPositions) placed = parts.map((p) => ({ plate: p.plate ?? 1, offset: [0, 0, 0] }));
@@ -284,7 +317,7 @@ export function build3MF(parts: ExportPart[], opt: ExportOptions): Uint8Array {
       files,
       bambuFiles(
         parts.map((p, i) => ({ name: p.name, mesh: p.mesh, extruder: p.extruder, objectKey: keyOf(p, i), plate: placed[i].plate, offset: placed[i].offset, objectMeta: metaByKey.get(keyOf(p, i)) })),
-        { title: opt.title, bed: opt.bed, plateStride: opt.plateStride, meta: meta.filter((m) => !m.includes('name="Application"')) },
+        { title: opt.title, bed: opt.bed, plateStride: opt.plateStride, meta: meta.filter((m) => !m.includes('name="Application"')), settings },
       ),
     );
     return finish(files, opt);

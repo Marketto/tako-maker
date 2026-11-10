@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { unzipSync, strFromU8 } from 'fflate';
-import { build3MF, platedLayout, type ExportPart } from '../src/core/export/threemf';
+import { build3MF, compactExtruders, platedLayout, slicerProfileFor, type ExportPart } from '../src/core/export/threemf';
 import { plateColumns, plateOrigin } from '../src/core/export/bambu3mf';
 import { printer } from './fixtures';
 
@@ -56,6 +56,13 @@ describe('3MF per Bambu Studio e derivati (Anycubic Slicer Next)', () => {
     expect(plates).toEqual([1, 3, 1, 1, 1, 2]);
   });
 
+  it('un pezzo quasi lungo quanto il piatto resta dentro (256 mm su 260)', () => {
+    const long = { positions: new Float32Array([0, -22, 0, 256, 27, 55]), indices: new Uint32Array() };
+    const [p] = platedLayout([{ name: 'Supporto', mesh: long, extruder: 1 }], [260, 260, 260]);
+    expect(p.offset[0]).toBeCloseTo(2);
+    expect(p.offset[0] + 256).toBeLessThanOrEqual(260);
+  });
+
   it('modello montato: un oggetto con una parte per colore, sul primo piatto', () => {
     const parts: ExportPart[] = [
       { name: 'Base', mesh: cube(20), extruder: 1, print: { supports: true, brim: 0 } },
@@ -68,5 +75,35 @@ describe('3MF per Bambu Studio e derivati (Anycubic Slicer Next)', () => {
     expect(cfg).toContain('value="Casetta"');
     expect(cfg).toContain('key="enable_support" value="1"');
     expect(cfg.match(/<plate>/g)).toHaveLength(1);
+  });
+
+  it('con il profilo della stampante il 3MF è un progetto: impostazioni minime e filamenti usati (estrusori 8 e 9 → 1 e 2)', () => {
+    const white = { id: 'w', material: 'PETG', colorName: 'Bianco', hex: '#ffffff' };
+    const black = { id: 'k', material: 'PETG', colorName: 'Nero', hex: '#000000' };
+    const filaments = [...Array(7).keys()].map((i) => ({ id: `f${i}`, material: 'PLA', colorName: 'X', hex: '#123456' })).concat(white, black);
+    const parts: ExportPart[] = [
+      { name: 'Supporto', mesh: cube(100), extruder: 8, filament: white },
+      { name: 'Gancio', mesh: cube(20), extruder: 9, filament: black, print: { supports: true, brim: 0, interfaceExtruder: 8 } },
+    ];
+    const profile = slicerProfileFor({ printerId: kobraX.id, hasMulti: true, filaments }, kobraX)!;
+    expect(profile.printer).toBe('Anycubic Kobra X 0.4 nozzle');
+    const zip = unzipSync(build3MF(parts, { title: 'Nordli', flavor: 'orca', strategy: 'separate', bed: kobraX.bed, plateStride: kobraX.plateStride, slicerProfile: profile, filaments }));
+    const ps = JSON.parse(strFromU8(zip['Metadata/project_settings.config']));
+    expect(ps).toMatchObject({ from: 'project', printer_settings_id: 'Anycubic Kobra X 0.4 nozzle', printable_area: ['0x0', '260x0', '260x260', '0x260'] });
+    expect(ps.filament_colour).toEqual(['#FFFFFF', '#000000']);
+    expect(ps.filament_settings_id).toEqual(['Anycubic PETG @Anycubic Kobra X 0.4 nozzle', 'Anycubic PETG @Anycubic Kobra X 0.4 nozzle']);
+    expect(strFromU8(zip['Metadata/slice_info.config'])).toContain('key="X-ACNext-Client-Type" value="slicer"');
+    const cfg = strFromU8(zip['Metadata/model_settings.config']);
+    expect(cfg).not.toMatch(/key="extruder" value="[89]"/);
+    expect(cfg).toContain('key="support_interface_filament" value="1"');
+  });
+
+  it('senza profilo noto (o con un ugello diverso) niente impostazioni di progetto', () => {
+    const setup = { printerId: kobraX.id, hasMulti: false, filaments: [], nozzle: 0.6 };
+    expect(slicerProfileFor(setup, kobraX)).toBeUndefined();
+    const zip = unzipSync(build3MF([{ name: 'A', mesh: cube(10), extruder: 3 }], { title: 'A', flavor: 'orca', strategy: 'separate', bed: kobraX.bed }));
+    expect(zip['Metadata/project_settings.config']).toBeUndefined();
+    expect(strFromU8(zip['Metadata/model_settings.config'])).toContain('key="extruder" value="3"');
+    expect(compactExtruders([{ name: 'A', mesh: cube(10), extruder: 3 }]).parts[0].extruder).toBe(1);
   });
 });

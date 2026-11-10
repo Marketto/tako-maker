@@ -1,7 +1,7 @@
 import { strToU8, zipSync } from 'fflate';
 import type { Design, PrinterSpec, Tolerances, UserSetup } from '../types';
 import type { PartResult } from '../geometry/evaluate';
-import { build3MF, flavorForSlicer, type ExportPart } from '../export/threemf';
+import { build3MF, flavorForSlicer, slicerProfileFor, type ExportPart } from '../export/threemf';
 import { bedOf } from '../analysis/estimate';
 import { buildCoupons, layoutPlates, materialsToTest, neededTests, readmeText, type TestKind } from './coupons';
 import { t } from '../../i18n';
@@ -63,7 +63,7 @@ export async function buildCalibrationFiles(design: Design, setup: UserSetup, pr
 
   const materials = mats.map((m) => m.material);
   if (flavor === 'orca') {
-    const data = build3MF(all, { title: t('Campioni di prova'), flavor, strategy: 'separate', bed, keepPositions: true, plateStride: printer.plateStride, extraFiles: { 'Metadata/LEGGIMI.txt': readme } });
+    const data = build3MF(all, { title: t('Campioni di prova'), flavor, strategy: 'separate', bed, keepPositions: true, plateStride: printer.plateStride, slicerProfile: slicerProfileFor(setup, printer), filaments: setup.filaments, extraFiles: { 'Metadata/LEGGIMI.txt': readme } });
     return { filename: 'campioni-di-prova.3mf', data, mime: 'model/3mf', readme, plates: plates.length, materials, kinds };
   }
   if (files.length === 1) {
