@@ -3,6 +3,7 @@ import type { ButtonSpec, Design, Joint, Part, ShapeNode, Tolerances, Vec3 } fro
 import { pairKey, printedTogether } from '../design/links';
 import { ARCH_SAG_MM, BASE_TOLERANCES } from '../../data/guidelines';
 import { msg } from '../../i18n';
+import { settleIslands } from './islands';
 
 /* Trasforma il Design in mesh triangolari usando manifold-3d (WASM).
    Gira in un Web Worker nel browser e direttamente in Node nei test. */
@@ -733,7 +734,8 @@ export function evaluateDesign(
   const printStats: PrintStats = { parts: {}, together: [] };
   for (const r of parts) {
     if (!r.manifold) continue;
-    printStats.parts[r.id] = bodyStats(r.mesh, r.bbox.min[2]);
+    // Stampata da sola: i pezzi staccati della parte poggiano ognuno sul piatto (come nel file esportato).
+    printStats.parts[r.id] = bodyStats(settleIslands(r.mesh), r.bbox.min[2]);
   }
   try {
     const list = [...finals.entries()];

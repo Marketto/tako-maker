@@ -82,5 +82,7 @@ Con entrambe ogni oggetto finisce sul suo piatto. Printopus usa la variante A: c
 
 **Pezzi al centro del piatto.** Come nei progetti salvati dallo slicer, `platedLayout` prima dispone i pezzi di ogni piatto in righe, poi sposta il gruppo intero al centro del piatto. Sui piatti con più colori lo mette accanto alla zona della torre di spurgo (`placeAvoiding`). Se non c'è posto, i pezzi restano dove sono.
 
+**Pezzi staccati della stessa parte.** I ganci per gli occhiali erano una sola parte con due pezzi disegnati a quote diverse (z 20 e z 26). Stampando la parte da sola, il gancio più alto restava a 6 mm dal piatto: lo slicer lo segnalava come "regioni fluttuanti" e lo reggeva con i supporti per tutta l'altezza. Ora, con le parti separate, ogni pezzo staccato scende sul piatto, a meno che sotto, in pianta, ci sia un altro pezzo (`settleIslands` in `core/geometry/islands.ts`). L'analisi dei supporti misura la parte già sistemata così.
+
 **Per un'altra stampante** si salva un progetto dallo slicer e si copiano in `slicerProfile` i nomi di `printer_model`, `printer_settings_id`, `print_settings_id`, il modello di `filament_settings_id` e `curr_bed_type`. Poi si prova un file esportato nello slicer.
 

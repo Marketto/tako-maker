@@ -11,6 +11,7 @@ import { planAssembly, type AssemblyPlan } from '../core/assembly/plan';
 import { build3MF, flavorForSlicer, slicerProfileFor } from '../core/export/threemf';
 import { buildSTLZip } from '../core/export/stl';
 import { bedOf } from '../core/analysis/estimate';
+import { settleIslands } from '../core/geometry/islands';
 import type { Design, Question } from '../core/types';
 import { Budget } from '../agent/budget';
 import type { AiClient } from '../agent/client';
@@ -589,12 +590,15 @@ export class ProjectSession {
   private exportParts() {
     const fil = this.setup.filaments;
     const groups = jointGroups(this.snap.project.design);
+    const separate = this.snap.project.design.printPlan.strategy === 'separate';
     return this.snap.parts.map((p) => {
       const f = fil.find((x) => x.id === p.filamentId);
       const h = this.snap.report?.printHints[p.id];
       const iface = h?.interfaceFilamentId ? fil.findIndex((x) => x.id === h.interfaceFilamentId) + 1 : 0;
       const print = h ? { supports: h.supports, brim: h.brim, interfaceExtruder: iface || undefined, ears: h.ears } : undefined;
-      return { name: p.name, mesh: p.mesh, filament: f, extruder: f ? fil.indexOf(f) + 1 : 1, group: groups.get(p.id), print };
+      // Parti separate: ogni pezzo staccato della parte poggia sul piatto (vedi core/geometry/islands.ts).
+      const mesh = separate && !groups.has(p.id) ? settleIslands(p.mesh) : p.mesh;
+      return { name: p.name, mesh, filament: f, extruder: f ? fil.indexOf(f) + 1 : 1, group: groups.get(p.id), print };
     });
   }
 
