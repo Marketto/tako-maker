@@ -13,7 +13,7 @@ import { buildSTLZip } from '../core/export/stl';
 import { bedOf } from '../core/analysis/estimate';
 import { settleIslands } from '../core/geometry/islands';
 import type { Design, Question } from '../core/types';
-import { Budget } from '../agent/budget';
+import { Budget, addTally, diffTally, estimateTokens, type EstimatedMode, type TokenTally } from '../agent/budget';
 import type { AiClient } from '../agent/client';
 import { KeyRouter } from '../agent/providers/keyRouter';
 import { LIMITS } from '../agent/config';
@@ -55,6 +55,8 @@ export interface ManualRequest {
   text: string;
   /** true se è una richiesta di correzione dopo una risposta non valida. */
   correction?: boolean;
+  /** Consumo già contato per questa richiesta (una risposta incollata più volte conta una volta). */
+  counted?: boolean;
 }
 
 let router: KeyRouter | null = null;
@@ -222,12 +224,22 @@ export class ProjectSession {
         this.set({ error: t('Il collegamento con la chat è scaduto: premi «Collega alla chat» per crearne uno nuovo.') });
         return;
       }
+      await this.trackConnectorUsage(remote);
       if (remote.v > c.v) await this.applyRemote(remote);
     } catch {
       /* rete assente: si riprova al prossimo giro */
     } finally {
       this.syncing = false;
     }
+  }
+
+  /** Il connettore somma i token scambiati con la chat: qui si conta solo la parte nuova. */
+  private async trackConnectorUsage(remote: ConnectorState) {
+    const c = this.snap.project.connector;
+    if (!c || !remote.usage) return;
+    const delta = diffTally(remote.usage, c.usageSeen);
+    if (!delta.calls && !delta.inputTokens && !delta.outputTokens) return;
+    await this.addUsage('connector', delta, 0, { connector: { ...c, usageSeen: remote.usage } });
   }
 
   private async applyRemote(remote: ConnectorState) {
@@ -243,7 +255,7 @@ export class ProjectSession {
       undo: changed ? [...p.undo, p.design].slice(-20) : p.undo,
       answered: remote.answered,
       chat,
-      connector: { code: c.code, v: remote.v, notesAt: Math.max(c.notesAt, ...remote.notes.map((n) => n.at)), linked: true },
+      connector: { ...c, v: remote.v, notesAt: Math.max(c.notesAt, ...remote.notes.map((n) => n.at)), linked: true },
     };
     this.lastSynced = this.syncSig(next);
     await this.persist(next);
@@ -305,6 +317,18 @@ export class ProjectSession {
   private async pushChat(item: Omit<ChatItem, 'id'>) {
     const p = this.snap.project;
     await this.persist({ ...p, chat: [...p.chat, { id: uid(), ...item }] });
+  }
+
+  /** Somma il consumo al progetto; per le modalità senza API anche al riepilogo del mese. */
+  private async addUsage(mode: 'api' | EstimatedMode, tally: TokenTally, usd = 0, extra?: Partial<Project>) {
+    const p = this.snap.project;
+    const usage = { ...p.usage };
+    if (mode === 'api') usage.api = { ...addTally(usage.api, tally), usd: (usage.api?.usd ?? 0) + usd };
+    else {
+      usage[mode] = addTally(usage[mode], tally);
+      new Budget(localStorage, store.get().settings.monthlyCapUsd).recordEstimate(mode, tally);
+    }
+    await this.persist({ ...p, ...extra, usage });
   }
 
   private env(): ToolEnv {
@@ -379,6 +403,8 @@ export class ProjectSession {
   }
 
   private async handleOutcome(out: Awaited<ReturnType<typeof runAgent>>, skill: SkillName, query?: string) {
+    await this.addUsage('api', { calls: 1, inputTokens: out.tokens.input, outputTokens: out.tokens.output }, out.costUsd);
+    const tokens = out.tokens.input || out.tokens.output ? { input: out.tokens.input, output: out.tokens.output } : undefined;
     if (out.results) {
       if (query && out.results.length) await storeSearch(query, out.results);
       await this.pushChat({
@@ -387,9 +413,10 @@ export class ProjectSession {
         results: out.results,
         skill,
         costUsd: out.costUsd,
+        tokens,
       });
     } else if (out.text || !out.question) {
-      await this.pushChat({ role: 'assistant', text: out.text || t('Fatto.'), skill, costUsd: out.costUsd });
+      await this.pushChat({ role: 'assistant', text: out.text || t('Fatto.'), skill, costUsd: out.costUsd, tokens });
     }
     if (out.question && out.state) {
       this.pendingAgent = { question: out.question, state: out.state };
@@ -446,6 +473,12 @@ export class ProjectSession {
     const m = this.snap.manual;
     if (!m) return;
     this.set({ error: null });
+    // La chat ha già letto la richiesta e scritto la risposta: il consumo c'è anche se non si applica.
+    const tokens = { input: estimateTokens(m.prompt), output: estimateTokens(reply), estimated: true };
+    if (!m.counted && reply.trim()) {
+      await this.addUsage('manual', { calls: 1, inputTokens: tokens.input, outputTokens: tokens.output });
+      this.set({ manual: { ...m, counted: true } });
+    }
     let parsed;
     try {
       parsed = parseManualReply(reply);
@@ -458,7 +491,7 @@ export class ProjectSession {
       try {
         const out = await runTool('edit_design', { ops: parsed.ops, summary: parsed.summary }, this.env());
         if (out.kind === 'result' && out.isError) {
-          this.set({ manual: { ...m, prompt: correctionPrompt(out.content), correction: true }, error: t('La risposta non si può applicare: copia la richiesta di correzione e incolla di nuovo la risposta.') });
+          this.set({ manual: { ...m, prompt: correctionPrompt(out.content), correction: true, counted: false }, error: t('La risposta non si può applicare: copia la richiesta di correzione e incolla di nuovo la risposta.') });
           return;
         }
       } finally {
@@ -474,9 +507,10 @@ export class ProjectSession {
         results: parsed.results,
         skill: m.skill,
         costUsd: 0,
+        tokens,
       });
     } else if (parsed.message || !parsed.question) {
-      await this.pushChat({ role: 'assistant', text: parsed.message || t('Fatto.'), skill: m.skill, costUsd: 0 });
+      await this.pushChat({ role: 'assistant', text: parsed.message || t('Fatto.'), skill: m.skill, costUsd: 0, tokens });
     }
     if (parsed.question) {
       const q = parsed.question;

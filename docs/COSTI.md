@@ -45,3 +45,34 @@ Con $100 di credito restano disponibili migliaia di modifiche. Il valore esatto 
 compare sotto il messaggio e nel riepilogo delle impostazioni.
 
 Consiglio: imposta anche un limite di spesa sulla chiave nella Claude Console, in aggiunta al tetto dell’app.
+
+## Copia e incolla e connettore: token della tua chat
+
+In queste due modalità l’app non paga nulla: i token li consuma la chat dell’utente (abbonamento o
+piano gratuito, con i suoi limiti di utilizzo). L’app li **stima** (circa 3,5 caratteri per token,
+`estimateTokens` in `src/agent/budget.ts`) e li mostra:
+
+- sotto ogni risposta incollata («circa 5,3k token»);
+- nel badge in alto nell’area di lavoro (totale del progetto, dettaglio nel suggerimento);
+- nelle impostazioni, sezione «Token con la tua chat» (totale del mese per modalità).
+
+Con il connettore il conteggio lo fa il server (`usage` nello stato condiviso): somma il testo che ogni
+strumento riceve dalla chat e quello che le restituisce, più istruzioni e definizioni degli strumenti
+alla prima apertura. L’app legge il totale a ogni sincronizzazione e conta solo la parte nuova.
+
+Ordini di grandezza misurati (Bambu Lab A1, scatola con coperchio):
+
+| Passo | Token stimati |
+|---|---|
+| Connettore: istruzioni e definizioni degli strumenti (una volta per conversazione) | ~900 |
+| Connettore: `printopus_apri` (regole, DSL, catalogo, stampante, modello) | ~6.100 – 6.300 |
+| Connettore: una modifica (operazioni scritte + risposta) | ~250 |
+| Copia e incolla: richiesta per creare o modificare il modello | ~5.200 – 5.300 + risposta |
+| Copia e incolla: richiesta di ricerca modelli | ~1.400 + risposta |
+| Chiavi API: parte fissa del prompt (in cache) | ~1.000 – 3.200 |
+
+Cosa la stima **non** vede: il testo che la chat scrive all’utente, il suo ragionamento, le sue ricerche
+web e il fatto che ogni nuovo messaggio nella stessa conversazione rilegge tutto quello che c’è prima.
+Il consumo reale è quindi più alto, soprattutto nelle conversazioni lunghe: conviene una conversazione
+nuova per ogni progetto. Con il copia e incolla ogni richiesta è completa, quindi si può incollare anche
+in una conversazione nuova ogni volta.

@@ -531,5 +531,18 @@
  "Espandi": "Razširi",
  "Riduci": "Strni",
  "Unisci \"{name}\" a {target} {from} con l'aggancio disegnato nel modello, fino allo scatto.": "Združi \"{name}\" s {target} {from} z zaskočko, narisano v modelu, dokler ne klikne.",
- "Aggancio nel modello": "Zaskočka v modelu"
+ "Aggancio nel modello": "Zaskočka v modelu",
+ "{tokens} token": "{tokens} žetonov",
+ "circa {tokens} token": "približno {tokens} žetonov",
+ "Chiavi API: {tokens} token, {usd} dollari ({calls} richieste)": "Ključi API: {tokens} žetonov, {usd} dolarjev ({calls} zahtev)",
+ "Connettore: circa {tokens} token ({calls} chiamate)": "Povezovalnik: približno {tokens} žetonov ({calls} klicev)",
+ "Connettore: circa {tokens} token questo mese ({input} letti, {output} scritti, {calls} chiamate)": "Povezovalnik: približno {tokens} žetonov ta mesec ({input} prebranih, {output} napisanih, {calls} klicev)",
+ "Copia e incolla: circa {tokens} token ({calls} risposte)": "Kopiraj in prilepi: približno {tokens} žetonov ({calls} odgovorov)",
+ "Copia e incolla: circa {tokens} token questo mese ({input} letti, {output} scritti, {calls} risposte)": "Kopiraj in prilepi: približno {tokens} žetonov ta mesec ({input} prebranih, {output} napisanih, {calls} odgovorov)",
+ "Nessun consumo di token in questo progetto.": "V tem projektu ni porabe žetonov.",
+ "Nessun consumo questo mese.": "Ta mesec ni porabe.",
+ "Questo progetto:": "Ta projekt:",
+ "Sono stime: questi token li consuma la tua chat (abbonamento o piano gratuito), non l’app. Contano il testo che l’app manda e riceve; ogni nuovo messaggio nella stessa conversazione rilegge anche i precedenti, quindi il consumo reale è più alto. Per risparmiare usa una conversazione nuova per ogni progetto.": "To so ocene: te žetone porabi tvoj klepet (naročnina ali brezplačni paket), ne aplikacija. Šteje se besedilo, ki ga aplikacija pošlje in prejme; vsako novo sporočilo v istem pogovoru znova prebere tudi prejšnja, zato je dejanska poraba višja. Za varčevanje uporabi nov pogovor za vsak projekt.",
+ "Token con la tua chat": "Žetoni z tvojim klepetom",
+ "Token stimati per questo progetto: {tokens}": "Ocenjeni žetoni za ta projekt: {tokens}"
 }

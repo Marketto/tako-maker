@@ -531,5 +531,18 @@
  "Espandi": "Visa mer",
  "Riduci": "Visa mindre",
  "Unisci \"{name}\" a {target} {from} con l'aggancio disegnato nel modello, fino allo scatto.": "Sätt ihop \"{name}\" med {target} {from} med låset som är ritat i modellen, tills det klickar.",
- "Aggancio nel modello": "Lås i modellen"
+ "Aggancio nel modello": "Lås i modellen",
+ "{tokens} token": "{tokens} tokens",
+ "circa {tokens} token": "ungefär {tokens} tokens",
+ "Chiavi API: {tokens} token, {usd} dollari ({calls} richieste)": "API-nycklar: {tokens} tokens, {usd} dollar ({calls} förfrågningar)",
+ "Connettore: circa {tokens} token ({calls} chiamate)": "Koppling: ungefär {tokens} tokens ({calls} anrop)",
+ "Connettore: circa {tokens} token questo mese ({input} letti, {output} scritti, {calls} chiamate)": "Koppling: ungefär {tokens} tokens den här månaden ({input} lästa, {output} skrivna, {calls} anrop)",
+ "Copia e incolla: circa {tokens} token ({calls} risposte)": "Kopiera och klistra in: ungefär {tokens} tokens ({calls} svar)",
+ "Copia e incolla: circa {tokens} token questo mese ({input} letti, {output} scritti, {calls} risposte)": "Kopiera och klistra in: ungefär {tokens} tokens den här månaden ({input} lästa, {output} skrivna, {calls} svar)",
+ "Nessun consumo di token in questo progetto.": "Ingen tokenanvändning i det här projektet.",
+ "Nessun consumo questo mese.": "Ingen användning den här månaden.",
+ "Questo progetto:": "Det här projektet:",
+ "Sono stime: questi token li consuma la tua chat (abbonamento o piano gratuito), non l’app. Contano il testo che l’app manda e riceve; ogni nuovo messaggio nella stessa conversazione rilegge anche i precedenti, quindi il consumo reale è più alto. Per risparmiare usa una conversazione nuova per ogni progetto.": "Det här är uppskattningar: de här tokens förbrukas av din chatt (prenumeration eller gratisplan), inte av appen. Det räknas text som appen skickar och tar emot; varje nytt meddelande i samma konversation läser också om de tidigare, så den verkliga förbrukningen är högre. För att spara, använd en ny konversation för varje projekt.",
+ "Token con la tua chat": "Tokens med din chatt",
+ "Token stimati per questo progetto: {tokens}": "Uppskattade tokens för det här projektet: {tokens}"
 }

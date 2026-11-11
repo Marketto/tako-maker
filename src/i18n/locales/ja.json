@@ -531,5 +531,18 @@
  "Espandi": "展開",
  "Riduci": "折りたたむ",
  "Unisci \"{name}\" a {target} {from} con l'aggancio disegnato nel modello, fino allo scatto.": "モデルに設計された留め具で「{name}」を{from}{target}に取り付け、カチッとはまるまで押し込みます。",
- "Aggancio nel modello": "モデル内の留め具"
+ "Aggancio nel modello": "モデル内の留め具",
+ "{tokens} token": "{tokens} トークン",
+ "circa {tokens} token": "約 {tokens} トークン",
+ "Chiavi API: {tokens} token, {usd} dollari ({calls} richieste)": "API キー: {tokens} トークン、{usd} ドル（{calls} リクエスト）",
+ "Connettore: circa {tokens} token ({calls} chiamate)": "コネクター: 約 {tokens} トークン（{calls} 回の呼び出し）",
+ "Connettore: circa {tokens} token questo mese ({input} letti, {output} scritti, {calls} chiamate)": "コネクター: 今月 約 {tokens} トークン（読み取り {input}、書き込み {output}、{calls} 回の呼び出し）",
+ "Copia e incolla: circa {tokens} token ({calls} risposte)": "コピー＆ペースト: 約 {tokens} トークン（{calls} 件の返信）",
+ "Copia e incolla: circa {tokens} token questo mese ({input} letti, {output} scritti, {calls} risposte)": "コピー＆ペースト: 今月 約 {tokens} トークン（読み取り {input}、書き込み {output}、{calls} 件の返信）",
+ "Nessun consumo di token in questo progetto.": "このプロジェクトではトークンを使っていません。",
+ "Nessun consumo questo mese.": "今月はまだ使っていません。",
+ "Questo progetto:": "このプロジェクト:",
+ "Sono stime: questi token li consuma la tua chat (abbonamento o piano gratuito), non l’app. Contano il testo che l’app manda e riceve; ogni nuovo messaggio nella stessa conversazione rilegge anche i precedenti, quindi il consumo reale è più alto. Per risparmiare usa una conversazione nuova per ogni progetto.": "これは推定値です。このトークンはアプリではなく、あなたのチャット（サブスクリプションまたは無料プラン）が消費します。アプリが送受信するテキストだけを数えています。同じ会話で新しいメッセージを送るたびに前のメッセージも読み直されるため、実際の消費はもっと多くなります。節約するには、プロジェクトごとに新しい会話を使ってください。",
+ "Token con la tua chat": "チャットでのトークン",
+ "Token stimati per questo progetto: {tokens}": "このプロジェクトの推定トークン: {tokens}"
 }

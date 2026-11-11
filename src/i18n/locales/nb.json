@@ -531,5 +531,18 @@
  "Espandi": "Utvid",
  "Riduci": "Skjul",
  "Unisci \"{name}\" a {target} {from} con l'aggancio disegnato nel modello, fino allo scatto.": "Fest \"{name}\" til {target} {from} med låsen som er tegnet i modellen, til den klikker.",
- "Aggancio nel modello": "Lås i modellen"
+ "Aggancio nel modello": "Lås i modellen",
+ "{tokens} token": "{tokens} tokens",
+ "circa {tokens} token": "omtrent {tokens} tokens",
+ "Chiavi API: {tokens} token, {usd} dollari ({calls} richieste)": "API-nøkler: {tokens} tokens, {usd} dollar ({calls} forespørsler)",
+ "Connettore: circa {tokens} token ({calls} chiamate)": "Kobling: omtrent {tokens} tokens ({calls} kall)",
+ "Connettore: circa {tokens} token questo mese ({input} letti, {output} scritti, {calls} chiamate)": "Kobling: omtrent {tokens} tokens denne måneden ({input} lest, {output} skrevet, {calls} kall)",
+ "Copia e incolla: circa {tokens} token ({calls} risposte)": "Kopier og lim inn: omtrent {tokens} tokens ({calls} svar)",
+ "Copia e incolla: circa {tokens} token questo mese ({input} letti, {output} scritti, {calls} risposte)": "Kopier og lim inn: omtrent {tokens} tokens denne måneden ({input} lest, {output} skrevet, {calls} svar)",
+ "Nessun consumo di token in questo progetto.": "Ingen token-bruk i dette prosjektet.",
+ "Nessun consumo questo mese.": "Ingen bruk denne måneden.",
+ "Questo progetto:": "Dette prosjektet:",
+ "Sono stime: questi token li consuma la tua chat (abbonamento o piano gratuito), non l’app. Contano il testo che l’app manda e riceve; ogni nuovo messaggio nella stessa conversazione rilegge anche i precedenti, quindi il consumo reale è più alto. Per risparmiare usa una conversazione nuova per ogni progetto.": "Dette er anslag: disse tokenene bruker chatten din (abonnement eller gratisplan), ikke appen. Det telles teksten appen sender og mottar; hver ny melding i samme samtale leser også de forrige på nytt, så det faktiske forbruket er høyere. For å spare bør du bruke en ny samtale for hvert prosjekt.",
+ "Token con la tua chat": "Tokens med chatten din",
+ "Token stimati per questo progetto: {tokens}": "Anslåtte tokens for dette prosjektet: {tokens}"
 }

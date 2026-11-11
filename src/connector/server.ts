@@ -10,6 +10,7 @@ import { SKILLS } from '../agent/skills';
 import systemMd from '../agent/prompts/system.md?raw';
 import dslMd from '../agent/prompts/dsl.md?raw';
 import { catalogText } from '../data/catalog';
+import { addTally, estimateTokens } from '../agent/budget';
 import { CODE_RE, MAX_NOTES, normalizeCode, type ConnectorState } from './state';
 
 /* Server MCP di Printopus (trasporto "streamable HTTP", risposte JSON, senza stato
@@ -199,9 +200,36 @@ function languageLine(state: ConnectorState): string {
   return state.language === 'it' ? 'L’utente usa l’app in italiano.' : `L’utente usa l’app in ${state.languageName}: scrivi in ${state.languageName} tutti i testi per l’utente, anche i nomi delle parti nuove.`;
 }
 
-async function save(deps: ServerDeps, code: string, state: ConnectorState, patch: Partial<ConnectorState>, note?: ConnectorState['notes'][number]) {
+type Note = ConnectorState['notes'][number];
+type ToolText = ReturnType<typeof text>;
+/** Esito di uno strumento: risposta per la chat e, se serve, cosa cambia nello stato condiviso. */
+interface ToolOut {
+  res: ToolText;
+  patch?: Partial<ConnectorState>;
+  note?: Note;
+}
+
+/** Token che la chat legge una volta per conversazione: istruzioni e definizioni degli strumenti. */
+export const SETUP_TOKENS = estimateTokens(INSTRUCTIONS + JSON.stringify(TOOLS));
+
+/** Una sola scrittura per chiamata: modifiche, nota e consumo. La versione cresce solo se cambia il contenuto. */
+async function save(deps: ServerDeps, code: string, state: ConnectorState, out: ToolOut, args: Json) {
   const now = deps.now?.() ?? Date.now();
-  const next: ConnectorState = { ...state, ...patch, v: state.v + 1, updatedAt: now, notes: note ? [...state.notes, { ...note, at: now }].slice(-MAX_NOTES) : state.notes };
+  const firstOpen = !state.openedAt && !!out.patch?.openedAt;
+  const usage = addTally(state.usage, {
+    calls: 1,
+    inputTokens: estimateTokens(out.res.content.map((c) => c.text).join('\n')) + (firstOpen ? SETUP_TOKENS : 0),
+    outputTokens: estimateTokens(JSON.stringify(args)),
+  });
+  const changed = !!out.patch || !!out.note;
+  const next: ConnectorState = {
+    ...state,
+    ...out.patch,
+    usage,
+    v: changed ? state.v + 1 : state.v,
+    updatedAt: changed ? now : state.updatedAt,
+    notes: out.note ? [...state.notes, { ...out.note, at: now }].slice(-MAX_NOTES) : state.notes,
+  };
   await deps.store.put(code, next);
   return next;
 }
@@ -210,11 +238,17 @@ async function callTool(name: string, args: Json, deps: ServerDeps) {
   const loaded = await load(args, deps);
   if ('error' in loaded) return text(loaded.error, true);
   const { code, state } = loaded;
+  const out = await runConnectorTool(name, args, deps, code, state);
+  await save(deps, code, state, out, args);
+  return out.res;
+}
 
+const only = (res: ToolText): ToolOut => ({ res });
+
+async function runConnectorTool(name: string, args: Json, deps: ServerDeps, code: string, state: ConnectorState): Promise<ToolOut> {
   switch (name) {
     case 'printopus_apri': {
       // La prima apertura cambia versione: l'app se ne accorge e compatta il pannello del codice.
-      if (!state.openedAt) await save(deps, code, state, { openedAt: deps.now?.() ?? Date.now() });
       const skills = (['crea-modello', 'modifica-modello', 'consiglia-stampa', 'cerca-modelli'] as const)
         .map((s) => `### ${s}\n${SKILLS[s].description}\n${SKILLS[s].instructions}`)
         .join('\n\n');
@@ -248,47 +282,54 @@ async function callTool(name: string, args: Json, deps: ServerDeps) {
       } else {
         parts.push('', '## Modello attuale', 'Il modello è vuoto: chiedi all’utente cosa vuole stampare (o crealo se l’ha già detto).');
       }
-      return text(parts.join('\n'));
+      // La prima apertura cambia versione: l'app se ne accorge e compatta il pannello del codice.
+      return { res: text(parts.join('\n')), patch: state.openedAt ? undefined : { openedAt: deps.now?.() ?? Date.now() } };
     }
 
     case 'printopus_modifica': {
-      if (!Array.isArray(args.ops) || !args.ops.length) return text('Nessuna operazione ricevuta: passa le operazioni del Design DSL in "ops".', true);
+      if (!Array.isArray(args.ops) || !args.ops.length) return only(text('Nessuna operazione ricevuta: passa le operazioni del Design DSL in "ops".', true));
       const box: { design?: Design } = {};
       const out = await runTool('edit_design', { ops: args.ops, summary: args.riassunto }, env(state, deps, (d) => (box.design = d)));
-      if (out.kind !== 'result' || out.isError || !box.design) return text(out.kind === 'result' ? out.content : 'Modifica non riuscita', true);
+      if (out.kind !== 'result' || out.isError || !box.design) return only(text(out.kind === 'result' ? out.content : 'Modifica non riuscita', true));
       const design = box.design;
       const msg = typeof args.messaggio === 'string' && args.messaggio.trim() ? args.messaggio.trim() : typeof args.riassunto === 'string' ? args.riassunto : '';
-      await save(deps, code, state, { design }, msg ? { role: 'assistant', text: msg, at: 0 } : undefined);
       const { report } = await computeReport({ ...state, design }, design, deps);
-      return text([out.content, '', questionsText(report.questions), '', `Anteprima aggiornata nell’app: ${appLink(deps, code)}`].join('\n'));
+      return {
+        res: text([out.content, '', questionsText(report.questions), '', `Anteprima aggiornata nell’app: ${appLink(deps, code)}`].join('\n')),
+        patch: { design },
+        note: msg ? { role: 'assistant', text: msg, at: 0 } : undefined,
+      };
     }
 
     case 'printopus_rispondi': {
       const key = String(args.domanda ?? '');
       const chosenIds = Array.isArray(args.opzioni) ? args.opzioni.map(String) : [];
-      if (!state.design.parts.length) return text('Il modello è vuoto: non ci sono domande.', true);
+      if (!state.design.parts.length) return only(text('Il modello è vuoto: non ci sono domande.', true));
       const { report } = await computeReport(state, state.design, deps);
       const q = report.questions.find((x) => x.key === key || x.id === key);
-      if (!q) return text(`Domanda "${key}" non trovata (forse già risolta).\n\n${questionsText(report.questions)}`, true);
+      if (!q) return only(text(`Domanda "${key}" non trovata (forse già risolta).\n\n${questionsText(report.questions)}`, true));
       const chosen = q.options.filter((o) => chosenIds.includes(o.id));
-      if (!chosen.length) return text(`Opzione non valida. ${questionsText([q])}`, true);
+      if (!chosen.length) return only(text(`Opzione non valida. ${questionsText([q])}`, true));
       const ops: DesignOp[] = [...(q.baseOps ?? []), ...chosen.flatMap((o) => o.ops ?? [])];
       let design = state.design;
       if (ops.length) {
         try {
           design = applyOps(state.design, ops, new Set(state.setup.filaments.map((f) => f.id)));
         } catch (e) {
-          return text(`Non riesco ad applicare la scelta: ${(e as Error).message}`, true);
+          return only(text(`Non riesco ad applicare la scelta: ${(e as Error).message}`, true));
         }
       }
       const answered = [...state.answered, q.key];
-      await save(deps, code, state, { design, answered }, { role: 'user', text: chosen.map((o) => o.label).join(', '), at: 0 });
       const extra: string[] = [];
       if (chosen.some((o) => o.action === 'calibration')) extra.push('L’utente deve scaricare i campioni di prova dall’app Printopus: scheda Stampa → «Scarica i campioni di prova».');
       const ai = chosen.find((o) => o.action === 'ask_ai' && o.prompt);
       if (ai) extra.push(`Ora fallo tu: ${ai.prompt}`);
       const after = await computeReport({ ...state, design, answered }, design, deps);
-      return text([`Scelta registrata: ${chosen.map((o) => o.label).join(', ')}.`, ...extra, '', reportText(after.report), '', questionsText(after.report.questions)].join('\n'));
+      return {
+        res: text([`Scelta registrata: ${chosen.map((o) => o.label).join(', ')}.`, ...extra, '', reportText(after.report), '', questionsText(after.report.questions)].join('\n')),
+        patch: { design, answered },
+        note: { role: 'user', text: chosen.map((o) => o.label).join(', '), at: 0 },
+      };
     }
 
     case 'printopus_mostra_risultati': {
@@ -297,14 +338,13 @@ async function callTool(name: string, args: Json, deps: ServerDeps) {
         .filter((r) => r && typeof r.url === 'string' && /^https?:\/\//.test(r.url) && typeof r.title === 'string')
         .slice(0, 6)
         .map((r) => ({ ...r, site: r.site || new URL(r.url).hostname, license: r.license || '?', summary: r.summary ?? '' }));
-      if (!results.length) return text('Nessun risultato valido (servono almeno titolo, url, licenza e descrizione).', true);
+      if (!results.length) return only(text('Nessun risultato valido (servono almeno titolo, url, licenza e descrizione).', true));
       const msg = typeof args.messaggio === 'string' ? args.messaggio : '';
-      await save(deps, code, state, {}, { role: 'assistant', text: msg, results, at: 0 });
-      return text(`Mostrati ${results.length} risultati nell’app: ${appLink(deps, code)}`);
+      return { res: text(`Mostrati ${results.length} risultati nell’app: ${appLink(deps, code)}`), note: { role: 'assistant', text: msg, results, at: 0 } };
     }
 
     default:
-      return text(`Strumento sconosciuto: ${name}`, true);
+      return only(text(`Strumento sconosciuto: ${name}`, true));
   }
 }
 
