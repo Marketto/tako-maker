@@ -151,10 +151,29 @@ export async function listProjects(): Promise<Project[]> {
   return (all.filter(Boolean) as Project[]).sort((a, b) => b.updatedAt - a.updatedAt);
 }
 export const loadProject = (id: string) => get<Project>(P(id));
-export const saveProject = (p: Project) => set(P(p.id), { ...p, updatedAt: Date.now() });
+export type ProjectEvent = { type: 'saved' | 'deleted'; id: string };
+const projectListeners = new Set<(e: ProjectEvent) => void>();
+/** Avvisa quando un progetto viene salvato o eliminato (per il salvataggio nel cloud). */
+export function onProjectChange(l: (e: ProjectEvent) => void) {
+  projectListeners.add(l);
+  return () => projectListeners.delete(l);
+}
+const notify = (e: ProjectEvent) => projectListeners.forEach((l) => l(e));
+
+export async function saveProject(p: Project) {
+  await set(P(p.id), { ...p, updatedAt: Date.now() });
+  notify({ type: 'saved', id: p.id });
+}
 export async function deleteProject(p: Project) {
   await Promise.all(p.meshIds.map((m) => del(M(m))));
   await del(P(p.id));
+  notify({ type: 'deleted', id: p.id });
+}
+/** Ripristina un progetto da un backup così com'è (data compresa). `announce`: da caricare anche nel cloud. */
+export async function restoreProject(p: Project, meshes: StoredMesh[], announce = false) {
+  await Promise.all(meshes.map((m) => set(M(m.id), m)));
+  await set(P(p.id), p);
+  if (announce) notify({ type: 'saved', id: p.id });
 }
 
 export interface StoredMesh {

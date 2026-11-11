@@ -5,14 +5,21 @@ import { InstallButton } from './Install';
 import { MusicButton } from './MusicButton';
 import { demoDesign } from '../data/demo';
 import { locale, t } from '../i18n';
+import { CloudHomeNotice } from './CloudBackup';
+import { cloud, CLOUD_NAME, useCloud } from '../app/cloud';
 import { SeaBackdrop, SeaButton, SeaChoice, SeaDelete, SeaIconButton, SeaNotice, SeaSlab } from './sea/controls';
 
 export function Home({ onOpen, onSettings }: { onOpen: (id: string) => void; onSettings: () => void }) {
   const { setup, keys } = useStore();
   const [projects, setProjects] = useState<Project[] | null>(null);
+  const c = useCloud();
+  // Si rilegge l'elenco anche dopo ogni sincronizzazione: possono essere arrivati progetti dal cloud.
   useEffect(() => {
     void listProjects().then(setProjects);
-  }, []);
+  }, [c.lastSync]);
+  useEffect(() => {
+    if (c.kind && (c.status === 'idle' || c.status === 'error')) void cloud.refresh();
+  }, []); // solo all'apertura della home
   const printer = setup ? printerOf(setup) : null;
 
   const create = async (demo = false) => {
@@ -80,7 +87,8 @@ export function Home({ onOpen, onSettings }: { onOpen: (id: string) => void; onS
                 <SeaDelete
                   aria-label={t('Elimina {name}', { name: p.name })}
                   onClick={async () => {
-                    if (!confirm(t('Eliminare "{name}"?', { name: p.name }))) return;
+                    const ask = c.kind ? t('Eliminare "{name}"? Verrà tolto anche da {provider}.', { name: p.name, provider: CLOUD_NAME[c.kind] }) : t('Eliminare "{name}"?', { name: p.name });
+                    if (!confirm(ask)) return;
                     await deleteProject(p);
                     setProjects(await listProjects());
                   }}
@@ -89,6 +97,7 @@ export function Home({ onOpen, onSettings }: { onOpen: (id: string) => void; onS
             ))}
           </ul>
         )}
+        <CloudHomeNotice onSettings={onSettings} />
       </main>
     </div>
   );

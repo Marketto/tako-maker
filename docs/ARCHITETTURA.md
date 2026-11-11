@@ -9,6 +9,7 @@ src/
 ├─ main.tsx, App.tsx          avvio, registrazione service worker, navigazione via hash (#/p/<id>)
 ├─ app/
 │  ├─ store.ts                configurazione, impostazioni, chiave; progetti/mesh/cache in IndexedDB
+│  ├─ cloud/                  backup facoltativo su Dropbox o Google Drive e su file → docs/BACKUP.md
 │  └─ session.ts              orchestratore di un progetto aperto (UI ⇄ agente ⇄ geometria ⇄ analisi)
 ├─ agent/                     tutto ciò che parla con Claude → docs/AGENTI.md
 │  ├─ config.ts               modelli, prezzi, limiti
@@ -93,6 +94,7 @@ toccato, onda, bolle; mai la stessa due volte di fila), esegue il cambio quando 
 `ui/sea/SeaTransitionLayer.tsx`, gli stili `.sea-*` in `styles.css` (durate allineate a `COVER_MS` e `REVEAL_MS`).
 La usano i passi del wizard e la navigazione di `App.tsx`; i cambi automatici e il tasto Indietro del browser restano
 immediati. Con «riduci movimento» il cambio è immediato.
+- **Backup**: `app/cloud/` carica ogni progetto salvato nel cloud dell'utente (Dropbox o Google Drive, dal browser con OAuth) e all'avvio scarica quelli mancanti o più recenti; senza cloud si scarica e ripristina un file `.zip`. Dettagli in [BACKUP.md](BACKUP.md).
 - **Musica**: `app/music.ts` sintetizza in tempo reale accordi e carillon pentatonico; parte solo dopo un gesto dell'utente e si sospende quando la scheda è nascosta.
 - **Riduci movimento**: animazioni della mascotte, coriandoli e rimbalzi si disattivano se il sistema lo richiede.
 - **Font**: M PLUS Rounded 1c (licenza OFL) incluso nel bundle con i sottoinsiemi latino, latino esteso, cirillico e greco; per arabo, cinese, giapponese e coreano si usano i font di sistema. Il tema marino (`.sea`) usa Fredoka variabile (OFL, latino e latino esteso) con `font-size-adjust` per non rimpicciolire i testi; per gli altri alfabeti ricade su M PLUS.

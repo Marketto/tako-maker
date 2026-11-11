@@ -5,6 +5,7 @@ import { MODELS } from '../agent/config';
 import { AiModePicker } from './AiModePicker';
 import { fmtNum, t } from '../i18n';
 import { LanguagePicker } from './LanguagePicker';
+import { CloudSettings } from './CloudBackup';
 import { SeaButton, SeaIconButton, SeaSwitch } from './sea/controls';
 
 function useSpend() {
@@ -128,13 +129,15 @@ export function SettingsDialog({ onClose, onEditSetup }: { onClose: () => void; 
           </label>
         </section>
 
+        <CloudSettings />
+
         <section>
           <h3>{t('Attrezzatura')}</h3>
           <SeaButton variant="secondary" onClick={onEditSetup}>{t('Cambia stampante o filamenti')}</SeaButton>
         </section>
 
         <p className="muted small">
-          {t('Tutti i dati restano su questo dispositivo. Il codice è open source (licenza MIT).')}
+          {t('I dati restano su questo dispositivo (e nel tuo cloud, se lo colleghi). Il codice è open source (licenza MIT).')}
         </p>
       </div>
     </div>
