@@ -1,6 +1,7 @@
 import { useSyncExternalStore } from 'react';
 import { listProjects, loadMesh, loadProject, onProjectChange, restoreProject, store, type StoredMesh } from '../store';
-import { decodeIndex, decodeProject, encodeIndex, encodeProject, entryOf, INDEX_FILE, PROJECT_EXT, projectFile, reconcile, toDownload, withEntry, type CloudIndex, type IndexEntry } from './archive';
+import { configPlan, withConfig, decodeIndex, decodeProject, encodeIndex, encodeProject, entryOf, INDEX_FILE, PROJECT_EXT, projectFile, reconcile, syncedSettings, toDownload, withEntry, type CloudIndex, type ConfigTimes, type IndexEntry } from './archive';
+import { setLocale } from '../../i18n';
 import { accessToken, beginAuth, completeAuth, loadTokens, saveTokens } from './auth';
 import { CloudAuthError, dropboxDrive, gdriveDrive, type CloudDrive, type CloudKind } from './drives';
 
@@ -32,7 +33,19 @@ export interface CloudSnapshot {
 }
 
 const PENDING = 'm3d.cloud.pending';
-const SETUP_KEY = '__setup__';
+/** Voce della coda per stampante, filamenti e impostazioni (nome storico). */
+const CONFIG_KEY = '__setup__';
+const TIMES = 'm3d.cloud.at';
+
+function loadTimes(): ConfigTimes {
+  try {
+    return { setup: 0, settings: 0, ...(JSON.parse(localStorage.getItem(TIMES) ?? '{}') as Partial<ConfigTimes>) };
+  } catch {
+    return { setup: 0, settings: 0 };
+  }
+}
+const saveTimes = (t: ConfigTimes) => localStorage.setItem(TIMES, JSON.stringify(t));
+const settingsSig = () => JSON.stringify(syncedSettings(store.get().settings));
 
 class CloudSync {
   private snap: CloudSnapshot = { kind: null, status: 'off', error: null, entries: [], lastSync: null, pending: 0 };
@@ -41,6 +54,8 @@ class CloudSync {
   private timer: ReturnType<typeof setTimeout> | null = null;
   private pending = new Set<string>();
   private started = false;
+  /** Sto applicando la configurazione arrivata dal cloud: non è una modifica locale. */
+  private applying = false;
 
   get = () => this.snap;
   subscribe = (l: () => void) => {
@@ -73,10 +88,31 @@ class CloudSync {
     if (done && 'error' in done) error = done.error;
     onProjectChange((e) => (e.type === 'saved' ? this.markDirty(e.id) : void this.removeRemote(e.id)));
     let setupSig = JSON.stringify(store.get().setup);
+    let setSig = settingsSig();
     store.subscribe(() => {
       const sig = JSON.stringify(store.get().setup);
-      if (sig !== setupSig && store.get().setup) this.markDirty(SETUP_KEY);
+      const ss = settingsSig();
+      if (this.applying) {
+        setupSig = sig;
+        setSig = ss;
+        return;
+      }
+      const times = loadTimes();
+      let changed = false;
+      if (sig !== setupSig && store.get().setup) {
+        times.setup = Date.now();
+        changed = true;
+      }
+      if (ss !== setSig) {
+        times.settings = Date.now();
+        changed = true;
+      }
       setupSig = sig;
+      setSig = ss;
+      if (changed) {
+        saveTimes(times);
+        this.markDirty(CONFIG_KEY);
+      }
     });
     const t = loadTokens();
     if (t && IDS[t.kind]) {
@@ -148,7 +184,7 @@ class CloudSync {
       if (!ids.length) return;
       const entries: { id: string; entry: IndexEntry | null }[] = [];
       for (const id of ids) {
-        if (id === SETUP_KEY) continue;
+        if (id === CONFIG_KEY) continue;
         const p = await loadProject(id);
         if (!p) {
           entries.push({ id, entry: null });
@@ -157,8 +193,10 @@ class CloudSync {
         await d.write(projectFile(id), encodeProject(p, await meshesOf(p.meshIds)));
         entries.push({ id, entry: entryOf(p) });
       }
-      const setup = store.get().setup;
-      await this.updateIndex(d, (i) => entries.reduce((acc, e) => withEntry(acc, e.id, e.entry), setup ? { ...i, setup } : i));
+      const { setup, settings } = store.get();
+      const times = loadTimes();
+      await this.updateIndex(d, (i) => entries.reduce((acc, e) => withEntry(acc, e.id, e.entry), withConfig(i, setup, syncedSettings(settings), times)));
+      saveTimes(times);
       for (const id of ids) this.pending.delete(id);
       this.savePending();
     });
@@ -185,7 +223,25 @@ class CloudSync {
         const { project, meshes } = decodeProject(data);
         await restoreProject(project, meshes);
       }
-      if (!store.get().setup && index.setup) store.setSetup(index.setup);
+      const times = loadTimes();
+      const plan = configPlan(index, times, !!store.get().setup);
+      this.applying = true;
+      try {
+        if (plan.takeSetup && index.setup) {
+          store.setSetup(index.setup);
+          times.setup = index.setupAt ?? 0;
+        }
+        if (plan.takeSettings && index.settings) {
+          const lang = store.get().settings.language;
+          store.setSettings(index.settings);
+          times.settings = index.settingsAt ?? 0;
+          if (index.settings.language && index.settings.language !== lang) await setLocale(index.settings.language);
+        }
+      } finally {
+        this.applying = false;
+      }
+      saveTimes(times);
+      if (plan.upload) this.pending.add(CONFIG_KEY);
       const inCloud = new Map(index.projects.map((e) => [e.id, e.updatedAt]));
       for (const p of local) if (!inCloud.has(p.id) || p.updatedAt > inCloud.get(p.id)!) this.pending.add(p.id);
       this.savePending();

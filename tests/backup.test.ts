@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { createHash } from 'node:crypto';
 import { gunzipSync, strFromU8 } from 'fflate';
-import { decodeIndex, decodeProject, emptyIndex, encodeIndex, encodeProject, entryOf, projectFile, reconcile, toDownload, withEntry } from '../src/app/cloud/archive';
+import { configPlan, syncedSettings, withConfig, decodeIndex, decodeProject, emptyIndex, encodeIndex, encodeProject, entryOf, projectFile, reconcile, toDownload, withEntry } from '../src/app/cloud/archive';
 import { dropboxArg, dropboxDrive, gdriveDrive, CloudAuthError } from '../src/app/cloud/drives';
 import { parseReturn, pkceChallenge } from '../src/app/cloud/auth';
 import type { Project } from '../src/app/store';
@@ -135,5 +135,40 @@ describe('collegamento', () => {
   it('PKCE: sfida S256 in base64url', async () => {
     const v = 'dBjftJeZ4CVP-mB92K92KH4u6evNs7Kjnig9sHAU_BI~.x';
     expect(await pkceChallenge(v)).toBe(createHash('sha256').update(v).digest('base64url'));
+  });
+});
+
+describe('configurazione nel cloud', () => {
+  const setup = { printerId: 'kobra-x' } as never;
+
+  it('salva le impostazioni ma mai le chiavi o i codici d’accesso', () => {
+    const out = syncedSettings({ musicOn: true, language: 'en', proxyUrl: 'https://x', accessCode: 'segreto' } as never);
+    expect(out).toEqual({ musicOn: true, language: 'en' });
+  });
+
+  it('su un dispositivo nuovo prende stampante e impostazioni dal cloud', () => {
+    const index = { ...emptyIndex(), setup, setupAt: 5, settings: { musicOn: true }, settingsAt: 5 };
+    expect(configPlan(index, { setup: 0, settings: 0 }, false)).toEqual({ takeSetup: true, takeSettings: true, upload: false });
+  });
+
+  it('vince la modifica più recente', () => {
+    const index = { ...emptyIndex(), setup, setupAt: 5, settings: { musicOn: true }, settingsAt: 5 };
+    expect(configPlan(index, { setup: 9, settings: 2 }, true)).toEqual({ takeSetup: false, takeSettings: true, upload: true });
+  });
+
+  it('carica la configurazione se nel cloud manca', () => {
+    expect(configPlan(emptyIndex(), { setup: 0, settings: 0 }, true).upload).toBe(true);
+  });
+
+  it('le impostazioni mai cambiate qui non coprono quelle del cloud', () => {
+    const index = { ...emptyIndex(), settings: { musicOn: true }, settingsAt: 5 };
+    const times = { setup: 0, settings: 0 };
+    expect(withConfig(index, null, { musicOn: false }, times).settings).toEqual({ musicOn: true });
+    const fresh = { setup: 0, settings: 0 };
+    const out = withConfig(emptyIndex(), setup, { musicOn: false }, fresh);
+    expect(out.settings).toEqual({ musicOn: false });
+    expect(out.settingsAt).toBe(fresh.settings);
+    expect(fresh.settings).toBeGreaterThan(0);
+    expect(out.setupAt).toBe(fresh.setup);
   });
 });
