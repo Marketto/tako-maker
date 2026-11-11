@@ -52,6 +52,12 @@ Gli id delle app sono pubblici (non sono segreti) e arrivano dalla build. Senza 
 5. In modalità *Test* possono collegarsi solo gli utenti di prova che aggiungi (massimo 100). Per tutti, pubblica
    l’app: con il solo ambito `drive.file` non serve la verifica di sicurezza, al più quella del marchio.
 
+### Icona delle app
+
+`python3 tools/mascot/takotta.py --backup-icon` crea `tools/mascot/branding/backup-icon.svg` (Takotta che esce da uno
+scatolone generico: niente loghi di Dropbox o Google). I PNG `backup-icon-64/120/256.png` si ricavano con `sharp`:
+64 e 256 per la scheda *Branding* di Dropbox (c’è anche la variante blu `backup-icon-blu-*.png`, più vicina allo stile di Dropbox), 120 per il logo nella schermata di consenso di Google.
+
 ### Sviluppo in locale
 
 Crea `.env.local` (ignorato da Git) con `VITE_DROPBOX_APP_KEY=…` e/o `VITE_GOOGLE_CLIENT_ID=…`, poi `npm run dev`.
