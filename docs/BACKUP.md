@@ -56,7 +56,7 @@ Gli id delle app sono pubblici (non sono segreti) e arrivano dalla build. Senza 
 
 `python3 tools/mascot/takotta.py --backup-icon` crea `tools/mascot/branding/backup-icon.svg` (Takotta che esce da uno
 scatolone generico: niente loghi di Dropbox o Google). I PNG `backup-icon-64/120/256.png` si ricavano con `sharp`:
-64 e 256 per la scheda *Branding* di Dropbox, 120 per il logo nella schermata di consenso di Google.
+64 e 256 per la scheda *Branding* di Dropbox (c’è anche la variante blu `backup-icon-blu-*.png`, più vicina allo stile di Dropbox), 120 per il logo nella schermata di consenso di Google.
 
 ### Sviluppo in locale
 
