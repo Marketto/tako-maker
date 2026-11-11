@@ -1,7 +1,7 @@
 # Traduzioni
 
-Printopus è disponibile in 42 lingue: italiano (lingua di partenza), inglese, tutte le altre lingue
-europee (bulgaro, bosniaco, catalano, ceco, gallese, danese, tedesco, greco, spagnolo, estone, basco,
+Printopus è disponibile in 43 lingue: italiano (lingua di partenza), inglese, tutte le altre lingue
+europee (bielorusso, bulgaro, bosniaco, catalano, ceco, gallese, danese, tedesco, greco, spagnolo, estone, basco,
 finlandese, francese, irlandese, galiziano, croato, ungherese, islandese, lussemburghese, lituano,
 lettone, macedone, maltese, norvegese, olandese, polacco, portoghese, rumeno, slovacco, sloveno,
 albanese, serbo, svedese, turco, ucraino), più russo, arabo, cinese semplificato, giapponese e coreano.
@@ -14,7 +14,7 @@ albanese, serbo, svedese, turco, ucraino), più russo, arabo, cinese semplificat
 - `fmtNum(0.25, 2)` scrive i numeri con il separatore della lingua (0,25 · 0.25 · ٠٫٢٥).
 - Le traduzioni sono file JSON in `src/i18n/locales/<codice>.json`, caricati **solo** quando si sceglie quella lingua. Se manca una frase si usa l'inglese, poi l'italiano.
 - L'arabo imposta `dir="rtl"` sulla pagina; gli stili usano proprietà logiche (`text-align: start`, `padding-inline-start`) così il layout si specchia da solo.
-- La lingua iniziale è quella del dispositivo (se disponibile); si cambia dal primo schermo o nelle impostazioni.
+- La lingua iniziale è la prima delle lingue preferite del dispositivo che l'app conosce; se nessuna è disponibile si parte in inglese. Si cambia dal primo schermo o nelle impostazioni.
 - L'assistente AI riceve la lingua dell'utente nel blocco in cache della stampante e risponde in quella lingua. I prompt e le skill restano in italiano: il modello li capisce comunque e così non si moltiplicano i token in cache.
 
 ## Aggiungere o cambiare una frase

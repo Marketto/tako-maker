@@ -18,6 +18,7 @@ export interface LocaleInfo {
 export const LOCALES: LocaleInfo[] = [
   { code: 'it', name: 'Italiano', english: 'Italian' },
   { code: 'en', name: 'English', english: 'English' },
+  { code: 'be', name: 'Беларуская', english: 'Belarusian' },
   { code: 'bg', name: 'Български', english: 'Bulgarian' },
   { code: 'bs', name: 'Bosanski', english: 'Bosnian' },
   { code: 'ca', name: 'Català', english: 'Catalan' },
@@ -109,14 +110,14 @@ export function onLocaleChange(l: () => void): () => void {
   return () => listeners.delete(l);
 }
 
-/** Lingua preferita del dispositivo tra quelle disponibili (italiano se nessuna). */
+/** Lingua preferita del dispositivo tra quelle disponibili (inglese se nessuna: più comprensibile per chi viene dall'estero). */
 export function detectLocale(langs: readonly string[] = typeof navigator !== 'undefined' ? navigator.languages ?? [navigator.language] : []): string {
   for (const l of langs) {
     const base = l.toLowerCase().split('-')[0];
     const norm = base === 'no' || base === 'nn' ? 'nb' : base === 'hr' || base === 'sr' || base === 'bs' ? base : base;
     if (LOCALES.some((x) => x.code === norm)) return norm;
   }
-  return 'it';
+  return 'en';
 }
 
 /** Numero con il separatore decimale della lingua corrente. */
