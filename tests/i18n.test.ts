@@ -55,6 +55,8 @@ describe('traduzioni', () => {
   it('riconosce la lingua del dispositivo', () => {
     expect(detectLocale(['de-AT', 'en'])).toBe('de');
     expect(detectLocale(['no-NO'])).toBe('nb');
-    expect(detectLocale(['xx'])).toBe('it');
+    expect(detectLocale(['xx'])).toBe('en');
+    expect(detectLocale(['hi-IN', 'it-IT'])).toBe('it');
+    expect(detectLocale(['be-BY'])).toBe('be');
   });
 });

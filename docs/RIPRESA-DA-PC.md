@@ -17,6 +17,13 @@ e la riga che lo cita in `CLAUDE.md`.
   personalizzato `…workers.dev/mcp` (vedi [CONNETTORE.md](CONNETTORE.md)) e scrivi in chat il codice mostrato dall'app.
 - Takotta: il battito di ciglia ora mostra una palpebra chiusa (`.lid` in `tools/mascot/takotta.py`).
 
+- Backup nel cloud: registrare le app Dropbox e Google e salvare `DROPBOX_APP_KEY` / `GOOGLE_CLIENT_ID`
+  come variabili del repository ([BACKUP.md](BACKUP.md)), poi provare collegamento, ripristino dal wizard
+  dopo aver pulito il browser e «Ricollega» di Google dopo un'ora. Senza le variabili resta solo il backup su file.
+- Consumo di token: con il connettore, controllare che badge e impostazioni mostrino la stima dopo `printopus_apri`
+  (serve il connettore ripubblicato, che parte da solo con il push su `main`).
+- Bielorusso: traduzione fatta con l'AI, da far rivedere a chi parla la lingua.
+
 ## 2. Prossimo lavoro: tema marino «B2»
 
 Scelta fatta: l'interfaccia diventa marina, scura e bioluminescente, in stile cartoon. Mockup nel canvas privato
