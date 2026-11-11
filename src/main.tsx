@@ -17,6 +17,7 @@ import './styles.css';
 import { armMusicResume } from './ui/MusicButton';
 import { detectLocale, setLocale, t } from './i18n';
 import { store } from './app/store';
+import { cloud } from './app/cloud';
 
 const updateSW = registerSW({
   onNeedRefresh() {
@@ -36,7 +37,8 @@ const updateSW = registerSW({
 armMusicResume();
 
 // La lingua va caricata prima del primo disegno, per non mostrare testi misti.
-void setLocale(store.get().settings.language ?? detectLocale()).finally(() => {
+// Anche il ritorno da Dropbox o Google (collegamento del cloud) va gestito prima di disegnare.
+void Promise.allSettled([setLocale(store.get().settings.language ?? detectLocale()), cloud.init()]).finally(() => {
   createRoot(document.getElementById('root')!).render(
     <StrictMode>
       <LocaleRoot />

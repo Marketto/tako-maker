@@ -829,3 +829,9 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
   .sea, .sea *, .sea-backdrop * { animation: none !important; transition: none !important; }
   .sea-rise, .sea-art .rise { display: none; }
 }
+
+/* Backup dei progetti (impostazioni, home, benvenuto) */
+.cloud-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; margin-top: 0.6rem; }
+.cloud-actions .link, .restore .link { min-height: 40px; }
+.cloud-line { text-align: center; margin: 0.6rem 0 0; }
+.restore { margin-top: 0.8rem; text-align: center; }

@@ -8,6 +8,7 @@ import { AiModePicker } from './AiModePicker';
 import { msg, t } from '../i18n';
 import { LanguagePicker } from './LanguagePicker';
 import { useInstall } from './Install';
+import { RestoreChoices } from './CloudBackup';
 import { seaGo } from './sea/transition';
 import { PearlProgress, SeaBackdrop, SeaButton, SeaChoice, SeaGlass, SeaPebble } from './sea/controls';
 
@@ -119,6 +120,7 @@ export function Wizard({ initial, onDone }: { initial?: UserSetup | null; onDone
           <SeaButton big onClick={() => goStep('brand')}>{t('Iniziamo!')}</SeaButton>
           <div className="row gap center-row"><MusicButton sea /><span className="muted small">{t('Musica rilassante')}</span></div>
           <LanguagePicker />
+          <RestoreChoices />
         </section>
       )}
 
