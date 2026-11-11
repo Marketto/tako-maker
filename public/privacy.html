@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Printopus · Privacy</title>
+<link rel="icon" href="icons/icon.svg">
+<style>
+  :root { color-scheme: dark; --bg:#071a2b; --fg:#e6f4ff; --muted:#9fc3dc; --accent:#5ff2ff; }
+  body { margin:0; background:var(--bg); color:var(--fg); font:16px/1.6 system-ui, -apple-system, "Segoe UI", sans-serif; }
+  main { max-width:760px; margin:0 auto; padding:32px 16px 64px; }
+  h1 { font-size:1.8rem; margin:0 0 4px; }
+  h2 { font-size:1.25rem; margin:32px 0 8px; color:var(--accent); }
+  p, li { color:var(--fg); }
+  .muted { color:var(--muted); }
+  a { color:var(--accent); }
+  hr { border:0; border-top:1px solid #1d3a52; margin:48px 0; }
+  nav a { display:inline-block; padding:10px 0; margin-right:16px; }
+</style>
+</head>
+<body>
+<main>
+<nav><a href="#it">Italiano</a><a href="#en">English</a><a href="./">Printopus</a></nav>
+
+<section id="it" lang="it">
+<h1>Privacy di Printopus</h1>
+<p class="muted">Ultimo aggiornamento: 11 novembre 2026</p>
+
+<p>Printopus è un sito statico e open source per progettare oggetti da stampare in 3D. Non ha un server proprio,
+non chiede di creare un account, non usa cookie di profilazione né strumenti di statistica.</p>
+
+<h2>Dati salvati sul tuo dispositivo</h2>
+<p>Progetti, modelli importati, stampante, filamenti e impostazioni restano nel tuo browser (IndexedDB e localStorage).
+Anche le chiavi API e i token di collegamento ai servizi cloud sono salvati solo lì. Puoi cancellare tutto pulendo i dati
+del sito nel browser.</p>
+
+<h2>Servizi esterni, solo se li scegli tu</h2>
+<ul>
+  <li><strong>Assistente AI</strong> (Anthropic Claude, Google Gemini, OpenAI): il browser invia direttamente al servizio
+  scelto le tue richieste e i dati del progetto necessari a rispondere, con la tua chiave. Valgono le condizioni del servizio
+  scelto; per esempio, nel piano gratuito Google può usare i contenuti per migliorare i propri prodotti.</li>
+  <li><strong>Connettore per Claude</strong>: se colleghi un progetto alla chat di Claude, il progetto viene copiato in un
+  servizio su Cloudflare, legato a un codice casuale, e viene cancellato in automatico dopo 7 giorni.</li>
+  <li><strong>Backup nel cloud</strong> (Dropbox, Google Drive): i progetti vengono salvati nel tuo account. Su Dropbox l'app
+  vede solo la propria cartella in <em>Apps</em>; su Google Drive solo i file creati dall'app (permesso <code>drive.file</code>).
+  Printopus non legge né conserva altri file e non condivide questi dati con nessuno. Puoi scollegare il servizio quando vuoi
+  dalle impostazioni o dal tuo account Dropbox/Google.</li>
+</ul>
+
+<h2>Uso dei dati di Google</h2>
+<p>L'uso e il trasferimento delle informazioni ricevute dalle API di Google rispettano le
+<a href="https://developers.google.com/terms/api-services-user-data-policy">Google API Services User Data Policy</a>,
+compresi i requisiti di uso limitato.</p>
+
+<h2>Hosting</h2>
+<p>Il sito è pubblicato su GitHub Pages, che può registrare dati tecnici come l'indirizzo IP per sicurezza e funzionamento,
+secondo l'informativa di GitHub.</p>
+
+<h2>Contatti</h2>
+<p>Per domande apri una segnalazione su
+<a href="https://github.com/Marketto/tako-maker/issues">github.com/Marketto/tako-maker/issues</a>.</p>
+</section>
+
+<hr>
+
+<section id="en" lang="en">
+<h1>Printopus privacy policy</h1>
+<p class="muted">Last updated: 11 November 2026</p>
+
+<p>Printopus is a static, open-source website for designing 3D-printable objects. It has no server of its own,
+requires no account, and uses no tracking cookies or analytics.</p>
+
+<h2>Data stored on your device</h2>
+<p>Projects, imported models, printer, filaments and settings stay in your browser (IndexedDB and localStorage).
+API keys and cloud connection tokens are stored only there too. You can delete everything by clearing the site data
+in your browser.</p>
+
+<h2>External services, only if you choose them</h2>
+<ul>
+  <li><strong>AI assistant</strong> (Anthropic Claude, Google Gemini, OpenAI): your browser sends your requests and the
+  project data needed to answer directly to the chosen service, using your key. That service's terms apply; for example,
+  on the free tier Google may use content to improve its products.</li>
+  <li><strong>Claude connector</strong>: if you link a project to the Claude chat, the project is copied to a service on
+  Cloudflare, tied to a random code, and deleted automatically after 7 days.</li>
+  <li><strong>Cloud backup</strong> (Dropbox, Google Drive): projects are saved in your own account. On Dropbox the app only
+  sees its own folder in <em>Apps</em>; on Google Drive only the files it created (<code>drive.file</code> scope).
+  Printopus does not read or keep any other files and does not share this data with anyone. You can disconnect at any time
+  from the settings or from your Dropbox/Google account.</li>
+</ul>
+
+<h2>Use of Google data</h2>
+<p>Printopus's use and transfer of information received from Google APIs adheres to the
+<a href="https://developers.google.com/terms/api-services-user-data-policy">Google API Services User Data Policy</a>,
+including the Limited Use requirements.</p>
+
+<h2>Hosting</h2>
+<p>The site is hosted on GitHub Pages, which may log technical data such as IP addresses for security and operation,
+under GitHub's privacy statement.</p>
+
+<h2>Contact</h2>
+<p>For questions, open an issue at
+<a href="https://github.com/Marketto/tako-maker/issues">github.com/Marketto/tako-maker/issues</a>.</p>
+</section>
+</main>
+</body>
+</html>
