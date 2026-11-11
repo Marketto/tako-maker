@@ -309,7 +309,49 @@ def icon_svg(size, pad=0.0, bg='#ffcf2e'):
             f'</g></svg>')
 
 
+def backup_icon_svg(size=256):
+    """Icona per le app di backup (Dropbox, Google): Takotta che esce da uno scatolone di cartone.
+    Niente loghi di terzi: lo scatolone è generico, il cloud sull'etichetta pure."""
+    lc = P['line']
+    inner = mascot('felice', 'bk', accessories=False).replace('__UID__', 'bk')
+    # tentacolo che si aggrappa al bordo dello scatolone (coordinate della mascotte)
+    grip = tentacle(2, [(118, 250), (70, 262), (46, 300), (60, 338)], 1, w0=40, curl_r=11).replace('__UID__', 'bk').replace('-tc2', '-tg2')
+    card, card_d, card_l, inside = '#e0a66a', '#b97a45', '#f3c995', '#5a3a22'
+    stroke = f'stroke="{lc}" stroke-width="5" stroke-linejoin="round"'
+    m = 'translate(52,22) scale(.74)'
+    return (f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="{size}" height="{size}">'
+            f'<defs><clipPath id="bk-clip"><rect width="400" height="400" rx="88"/></clipPath>'
+            f'<radialGradient id="bk-glow" cx="50%" cy="34%" r="62%"><stop offset="0" stop-color="#fff3b8"/><stop offset="1" stop-color="#ffcf2e"/></radialGradient>'
+            f'<pattern id="bk-dots" width="22" height="22" patternUnits="userSpaceOnUse"><circle cx="11" cy="11" r="2.4" fill="#ffffff" fill-opacity=".45"/></pattern></defs>'
+            f'<g clip-path="url(#bk-clip)">'
+            f'<rect width="400" height="400" fill="url(#bk-glow)"/><rect width="400" height="400" fill="url(#bk-dots)"/>'
+            # alette posteriori e interno
+            f'<path d="M104,236 L296,236 L312,198 L120,198Z" fill="{card_d}" {stroke}/>'
+            f'<path d="M64,262 L104,236 L58,206 L18,232Z" fill="{card}" {stroke}/>'
+            f'<path d="M336,262 L296,236 L342,206 L382,232Z" fill="{card_d}" {stroke}/>'
+            f'<path d="M64,262 L104,236 L296,236 L336,262Z" fill="{inside}" {stroke}/>'
+            f'<g transform="{m}">{inner}</g>'
+            # fronte dello scatolone con aletta ribaltata
+            f'<path d="M64,262 L336,262 L326,384 L74,384Z" fill="{card}" {stroke}/>'
+            f'<path d="M64,262 L336,262 L326,384 L74,384Z" fill="url(#bk-dots)" fill-opacity=".35"/>'
+            f'<path d="M64,262 L336,262 L346,296 L54,296Z" fill="{card_l}" {stroke}/>'
+            f'<path d="M180,262 h40 l2,34 h-44z" fill="#f7e2b8" fill-opacity=".85"/>'
+            f'<g transform="{m}">{grip}</g>'
+            # etichetta con nuvola e freccia: il backup
+            f'<g transform="translate(200,340)"><rect x="-58" y="-28" width="116" height="56" rx="10" fill="#ffffff" {stroke}/>'
+            f'<path d="M-24,12 a14,14 0 0 1 2,-27 a20,20 0 0 1 38,2 a13,13 0 0 1 8,25z" fill="#7fd3ff" stroke="{lc}" stroke-width="3.5" stroke-linejoin="round"/>'
+            f'<path d="M0,8 v-18 m-8,8 l8,-8 l8,8" fill="none" stroke="{lc}" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></g>'
+            f'</g></svg>')
+
+
 if __name__ == '__main__':
+    import sys, os
+    if '--backup-icon' in sys.argv:
+        out = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'branding')
+        os.makedirs(out, exist_ok=True)
+        open(os.path.join(out, 'backup-icon.svg'), 'w').write(backup_icon_svg(512))
+        print('icona di backup in tools/mascot/branding/backup-icon.svg')
+        sys.exit()
     import json, os, re
     root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
     moods = ['normale', 'felice', 'concentrata', 'confusa', 'pensierosa']
