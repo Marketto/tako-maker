@@ -6,23 +6,14 @@ e la riga che lo cita in `CLAUDE.md`.
 
 ## 1. Da verificare
 
-- I file di prova `printopus-*-kobra-x.3mf` (4 piatti, parti separate, multicolore) vanno aperti in
-  Anycubic Slicer Next: controllare piatti, posizione degli oggetti, colori, supporti e orecchie anti-sollevamento.
-  Le regole del formato sono in [3MF.md](3MF.md); `tests/bambu3mf.test.ts` fissa le posizioni attese.
-  Piatti e posizioni sulla Kobra X sono verificati (10 novembre, supporto Nordli). In corso una stampa di prova
-  del supporto Nordli: aspettare il riscontro su ganci, supporti e incastri.
-- Chat: con «prima cerca modelli già fatti» attivo, dopo i risultati le richieste successive devono andare alla
-  progettazione (`routeByRules` con `searched`).
-- Connettore per Claude, prova completa: in un progetto «Collega alla chat», in Claude aggiungi il connettore
-  personalizzato `…workers.dev/mcp` (vedi [CONNETTORE.md](CONNETTORE.md)) e scrivi in chat il codice mostrato dall'app.
-- Takotta: il battito di ciglia ora mostra una palpebra chiusa (`.lid` in `tools/mascot/takotta.py`).
-
+- Disposizione sul piatto: per la stampa del supporto Nordli lo slicer ha ridisposto gli oggetti in diagonale
+  (un pezzo stretto, lungo quasi quanto il piatto è largo). Idea: in `core` provare la diagonale quando un pezzo lungo
+  non entra dritto o lascia poco spazio.
 - Backup nel cloud: registrare le app Dropbox e Google e salvare `DROPBOX_APP_KEY` / `GOOGLE_CLIENT_ID`
   come variabili del repository ([BACKUP.md](BACKUP.md)), poi provare collegamento, ripristino dal wizard
   dopo aver pulito il browser e «Ricollega» di Google dopo un'ora. Senza le variabili resta solo il backup su file.
 - Consumo di token: con il connettore, controllare che badge e impostazioni mostrino la stima dopo `printopus_apri`
   (serve il connettore ripubblicato, che parte da solo con il push su `main`).
-- Bielorusso: traduzione fatta con l'AI, da far rivedere a chi parla la lingua.
 
 ## 2. Prossimo lavoro: tema marino «B2»
 
