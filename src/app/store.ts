@@ -6,6 +6,7 @@ import { DEFAULT_SETTINGS } from '../agent/config';
 import type { KeyEntry } from '../agent/providers/types';
 import type { ChatTurn } from '../agent/runner';
 import type { SearchResult } from '../agent/tools';
+import type { TokenTally } from '../agent/budget';
 
 /* Stato persistente. Tutto resta sul dispositivo dell'utente:
    - localStorage: configurazione, impostazioni, (opzionale) chiave API
@@ -110,6 +111,8 @@ export function useStore(): AppState {
 export interface ChatItem extends ChatTurn {
   id: string;
   costUsd?: number;
+  /** Token della risposta: esatti con le chiavi API, stimati (`estimated`) con il copia e incolla. */
+  tokens?: { input: number; output: number; estimated?: boolean };
   results?: SearchResult[];
   skill?: string;
 }
@@ -125,9 +128,18 @@ export interface Project {
   reference?: SearchResult;
   /** Collegamento alla chat tramite connettore: codice, versione sincronizzata, note già mostrate. */
   /** `linked`: la chat ha aperto il progetto o vi ha scritto (il pannello diventa compatto). */
-  connector?: { code: string; v: number; notesAt: number; linked?: boolean };
+  /** `usageSeen`: consumo della chat già contato (il connettore lo somma dall'inizio della sessione). */
+  connector?: { code: string; v: number; notesAt: number; linked?: boolean; usageSeen?: TokenTally };
+  /** Consumo di token del progetto per modalità (api esatto, le altre stimate). */
+  usage?: ProjectUsage;
   createdAt: number;
   updatedAt: number;
+}
+
+export interface ProjectUsage {
+  api?: TokenTally & { usd: number };
+  manual?: TokenTally;
+  connector?: TokenTally;
 }
 
 const P = (id: string) => `project:${id}`;

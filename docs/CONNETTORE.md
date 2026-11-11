@@ -94,6 +94,6 @@ Il runtime locale di Cloudflare richiede macOS 13.5 o successivo: sulle versioni
 
 ### Limiti e privacy
 
-- **Dati salvati:** nel KV restano solo stampante, filamenti, modello e ultimi messaggi, per 7 giorni dall'ultima modifica, sotto un codice casuale. Nessuna chiave e nessun dato personale.
-- **Piano gratuito di Cloudflare KV:** 1.000 scritture al giorno. Ogni modifica è una scrittura.
+- **Dati salvati:** nel KV restano solo stampante, filamenti, modello, ultimi messaggi e stima dei token scambiati, per 7 giorni dall'ultima modifica, sotto un codice casuale. Nessuna chiave e nessun dato personale.
+- **Piano gratuito di Cloudflare KV:** 1.000 scritture al giorno. Ogni chiamata di uno strumento è una scrittura (anche `printopus_apri`, che aggiorna la stima dei token in `usage`), più una per ogni modifica fatta nell’app.
 - **Mesh importate da file:** non vengono inviate al connettore. Per modificarle si usa la chiave API o il copia e incolla.

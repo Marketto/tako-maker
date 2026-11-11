@@ -531,5 +531,18 @@
  "Espandi": "Прошири",
  "Riduci": "Собери",
  "Unisci \"{name}\" a {target} {from} con l'aggancio disegnato nel modello, fino allo scatto.": "Спои го \"{name}\" со {target} {from} со спојката нацртана во моделот, додека не кликне.",
- "Aggancio nel modello": "Спојка во моделот"
+ "Aggancio nel modello": "Спојка во моделот",
+ "{tokens} token": "{tokens} токени",
+ "circa {tokens} token": "околу {tokens} токени",
+ "Chiavi API: {tokens} token, {usd} dollari ({calls} richieste)": "API клучеви: {tokens} токени, {usd} долари ({calls} барања)",
+ "Connettore: circa {tokens} token ({calls} chiamate)": "Конектор: околу {tokens} токени ({calls} повици)",
+ "Connettore: circa {tokens} token questo mese ({input} letti, {output} scritti, {calls} chiamate)": "Конектор: околу {tokens} токени овој месец ({input} прочитани, {output} напишани, {calls} повици)",
+ "Copia e incolla: circa {tokens} token ({calls} risposte)": "Копирај и залепи: околу {tokens} токени ({calls} одговори)",
+ "Copia e incolla: circa {tokens} token questo mese ({input} letti, {output} scritti, {calls} risposte)": "Копирај и залепи: околу {tokens} токени овој месец ({input} прочитани, {output} напишани, {calls} одговори)",
+ "Nessun consumo di token in questo progetto.": "Нема потрошени токени во овој проект.",
+ "Nessun consumo questo mese.": "Нема потрошувачка овој месец.",
+ "Questo progetto:": "Овој проект:",
+ "Sono stime: questi token li consuma la tua chat (abbonamento o piano gratuito), non l’app. Contano il testo che l’app manda e riceve; ogni nuovo messaggio nella stessa conversazione rilegge anche i precedenti, quindi il consumo reale è più alto. Per risparmiare usa una conversazione nuova per ogni progetto.": "Ова се проценки: овие токени ги троши твојот разговор (претплата или бесплатен план), а не апликацијата. Се брои текстот што апликацијата го праќа и прима; секоја нова порака во истиот разговор ги чита повторно и претходните, па вистинската потрошувачка е поголема. За да штедиш, користи нов разговор за секој проект.",
+ "Token con la tua chat": "Токени со твојот разговор",
+ "Token stimati per questo progetto: {tokens}": "Проценети токени за овој проект: {tokens}"
 }

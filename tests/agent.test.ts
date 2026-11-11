@@ -95,6 +95,7 @@ describe('ciclo agente (API simulata)', () => {
     ], seen));
     const out = await runAgent({ skill: SKILLS['crea-modello'], text: 'un cubo', history: [], env: e, client, economy: false, meshes: [] });
     expect(out.text).toBe('Ho creato un cubo rosso.');
+    expect(out.tokens).toEqual({ input: 200, output: 100 });
     expect(e.current.parts).toHaveLength(1);
     const second = seen[1] as { messages: { content: { type: string; content: string }[] }[]; system: { cache_control?: unknown }[] };
     expect(second.messages.at(-1)!.content[0].content).toMatch(/^OK\. Parti: cubo/);

@@ -531,5 +531,18 @@
  "Espandi": "Zgjero",
  "Riduci": "Palos",
  "Unisci \"{name}\" a {target} {from} con l'aggancio disegnato nel modello, fino allo scatto.": "Bashko \"{name}\" me {target} {from} me kapësen e vizatuar në model, derisa të bëjë klik.",
- "Aggancio nel modello": "Kapëse në model"
+ "Aggancio nel modello": "Kapëse në model",
+ "{tokens} token": "{tokens} tokenë",
+ "circa {tokens} token": "rreth {tokens} tokenësh",
+ "Chiavi API: {tokens} token, {usd} dollari ({calls} richieste)": "Çelësat API: {tokens} tokenë, {usd} dollarë ({calls} kërkesa)",
+ "Connettore: circa {tokens} token ({calls} chiamate)": "Lidhësi: rreth {tokens} tokenësh ({calls} thirrje)",
+ "Connettore: circa {tokens} token questo mese ({input} letti, {output} scritti, {calls} chiamate)": "Lidhësi: rreth {tokens} tokenësh këtë muaj ({input} të lexuara, {output} të shkruara, {calls} thirrje)",
+ "Copia e incolla: circa {tokens} token ({calls} risposte)": "Kopjo dhe ngjit: rreth {tokens} tokenësh ({calls} përgjigje)",
+ "Copia e incolla: circa {tokens} token questo mese ({input} letti, {output} scritti, {calls} risposte)": "Kopjo dhe ngjit: rreth {tokens} tokenësh këtë muaj ({input} të lexuara, {output} të shkruara, {calls} përgjigje)",
+ "Nessun consumo di token in questo progetto.": "Asnjë përdorim tokenësh në këtë projekt.",
+ "Nessun consumo questo mese.": "Asnjë përdorim këtë muaj.",
+ "Questo progetto:": "Ky projekt:",
+ "Sono stime: questi token li consuma la tua chat (abbonamento o piano gratuito), non l’app. Contano il testo che l’app manda e riceve; ogni nuovo messaggio nella stessa conversazione rilegge anche i precedenti, quindi il consumo reale è più alto. Per risparmiare usa una conversazione nuova per ogni progetto.": "Janë vlerësime: këta tokenë i harxhon biseda jote (abonim ose plan falas), jo aplikacioni. Numërohet teksti që dërgon e merr aplikacioni; çdo mesazh i ri në të njëjtën bisedë rilexon edhe ato të mëparshmet, ndaj përdorimi real është më i lartë. Për të kursyer, përdor një bisedë të re për çdo projekt.",
+ "Token con la tua chat": "Tokenë me bisedën tënde",
+ "Token stimati per questo progetto: {tokens}": "Tokenë të vlerësuar për këtë projekt: {tokens}"
 }

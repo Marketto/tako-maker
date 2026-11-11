@@ -531,5 +531,18 @@
  "Espandi": "Expand",
  "Riduci": "Collapse",
  "Unisci \"{name}\" a {target} {from} con l'aggancio disegnato nel modello, fino allo scatto.": "Join \"{name}\" to {target} {from} using the catch designed into the model, until it clicks.",
- "Aggancio nel modello": "Catch built into the model"
+ "Aggancio nel modello": "Catch built into the model",
+ "{tokens} token": "{tokens} tokens",
+ "circa {tokens} token": "about {tokens} tokens",
+ "Chiavi API: {tokens} token, {usd} dollari ({calls} richieste)": "API keys: {tokens} tokens, {usd} dollars ({calls} requests)",
+ "Connettore: circa {tokens} token ({calls} chiamate)": "Connector: about {tokens} tokens ({calls} calls)",
+ "Connettore: circa {tokens} token questo mese ({input} letti, {output} scritti, {calls} chiamate)": "Connector: about {tokens} tokens this month ({input} read, {output} written, {calls} calls)",
+ "Copia e incolla: circa {tokens} token ({calls} risposte)": "Copy and paste: about {tokens} tokens ({calls} replies)",
+ "Copia e incolla: circa {tokens} token questo mese ({input} letti, {output} scritti, {calls} risposte)": "Copy and paste: about {tokens} tokens this month ({input} read, {output} written, {calls} replies)",
+ "Nessun consumo di token in questo progetto.": "No token usage in this project.",
+ "Nessun consumo questo mese.": "No usage this month.",
+ "Questo progetto:": "This project:",
+ "Sono stime: questi token li consuma la tua chat (abbonamento o piano gratuito), non l’app. Contano il testo che l’app manda e riceve; ogni nuovo messaggio nella stessa conversazione rilegge anche i precedenti, quindi il consumo reale è più alto. Per risparmiare usa una conversazione nuova per ogni progetto.": "These are estimates: your chat (subscription or free plan) uses these tokens, not the app. They count the text the app sends and receives; every new message in the same conversation also rereads the previous ones, so real usage is higher. To save tokens, use a new conversation for each project.",
+ "Token con la tua chat": "Tokens with your chat",
+ "Token stimati per questo progetto: {tokens}": "Estimated tokens for this project: {tokens}"
 }

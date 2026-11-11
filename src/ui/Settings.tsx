@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
-import { store, useStore } from '../app/store';
+import { store, useStore, type ProjectUsage } from '../app/store';
 import { Budget } from '../agent/budget';
 import { MODELS } from '../agent/config';
 import { AiModePicker } from './AiModePicker';
-import { t } from '../i18n';
+import { fmtNum, t } from '../i18n';
 import { LanguagePicker } from './LanguagePicker';
 import { SeaButton, SeaIconButton, SeaSwitch } from './sea/controls';
 
@@ -17,11 +17,39 @@ function useSpend() {
   return { rec: new Budget(localStorage, settings.monthlyCapUsd).current(), cap: settings.monthlyCapUsd };
 }
 
-export function BudgetBadge() {
+/** Token in forma breve: 850, 12,4k, 1,2M. */
+export function fmtTokens(n: number): string {
+  if (n < 1000) return fmtNum(n, 0);
+  if (n < 1_000_000) return `${fmtNum(n / 1000, n < 10_000 ? 1 : 0, 0)}k`;
+  return `${fmtNum(n / 1_000_000, 1, 0)}M`;
+}
+
+/** Riepilogo del consumo di un progetto, una riga per modalità usata. */
+export function projectUsageText(u: ProjectUsage | undefined): string {
+  const lines: string[] = [];
+  if (u?.api?.calls) lines.push(t('Chiavi API: {tokens} token, {usd} dollari ({calls} richieste)', { tokens: fmtTokens(u.api.inputTokens + u.api.outputTokens), usd: fmtNum(u.api.usd, 3, 2), calls: u.api.calls }));
+  if (u?.manual?.calls) lines.push(t('Copia e incolla: circa {tokens} token ({calls} risposte)', { tokens: fmtTokens(u.manual.inputTokens + u.manual.outputTokens), calls: u.manual.calls }));
+  if (u?.connector?.calls) lines.push(t('Connettore: circa {tokens} token ({calls} chiamate)', { tokens: fmtTokens(u.connector.inputTokens + u.connector.outputTokens), calls: u.connector.calls }));
+  return lines.length ? lines.join('\n') : t('Nessun consumo di token in questo progetto.');
+}
+
+/** Spesa del mese (chiavi API) o token stimati del progetto (copia e incolla, connettore). */
+export function BudgetBadge({ usage }: { usage?: ProjectUsage }) {
+  const { settings } = useStore();
   const { rec, cap } = useSpend();
+  const detail = `${t('Questo progetto:')}\n${projectUsageText(usage)}`;
+  if (settings.aiMode !== 'api') {
+    const est = settings.aiMode === 'manual' ? usage?.manual : usage?.connector;
+    const n = (est?.inputTokens ?? 0) + (est?.outputTokens ?? 0);
+    return (
+      <span className="budget" title={detail} aria-label={t('Token stimati per questo progetto: {tokens}', { tokens: fmtTokens(n) })}>
+        ≈{fmtTokens(n)}
+      </span>
+    );
+  }
   const pct = Math.min(100, (rec.usd / cap) * 100);
   return (
-    <span className={`budget ${pct > 80 ? 'hot' : ''}`} title={t('Spesa del mese: ${spent} su ${cap}', { spent: rec.usd.toFixed(3), cap })}>
+    <span className={`budget ${pct > 80 ? 'hot' : ''}`} title={`${t('Spesa del mese: ${spent} su ${cap}', { spent: rec.usd.toFixed(3), cap })}\n\n${detail}`}>
       ${rec.usd.toFixed(2)}
     </span>
   );
@@ -48,6 +76,22 @@ export function SettingsDialog({ onClose, onEditSetup }: { onClose: () => void; 
           <h3>{t('Assistente AI')}</h3>
           <AiModePicker />
         </section>
+
+        {(rec.manual?.calls || rec.connector?.calls || settings.aiMode !== 'api') && (
+        <section>
+          <h3>{t('Token con la tua chat')}</h3>
+          <div className="spend">
+            {rec.manual?.calls ? (
+              <div>{t('Copia e incolla: circa {tokens} token questo mese ({input} letti, {output} scritti, {calls} risposte)', { tokens: fmtTokens(rec.manual.inputTokens + rec.manual.outputTokens), input: fmtTokens(rec.manual.inputTokens), output: fmtTokens(rec.manual.outputTokens), calls: rec.manual.calls })}</div>
+            ) : null}
+            {rec.connector?.calls ? (
+              <div>{t('Connettore: circa {tokens} token questo mese ({input} letti, {output} scritti, {calls} chiamate)', { tokens: fmtTokens(rec.connector.inputTokens + rec.connector.outputTokens), input: fmtTokens(rec.connector.inputTokens), output: fmtTokens(rec.connector.outputTokens), calls: rec.connector.calls })}</div>
+            ) : null}
+            {!rec.manual?.calls && !rec.connector?.calls && <div>{t('Nessun consumo questo mese.')}</div>}
+            <div className="muted small">{t('Sono stime: questi token li consuma la tua chat (abbonamento o piano gratuito), non l’app. Contano il testo che l’app manda e riceve; ogni nuovo messaggio nella stessa conversazione rilegge anche i precedenti, quindi il consumo reale è più alto. Per risparmiare usa una conversazione nuova per ogni progetto.')}</div>
+          </div>
+        </section>
+        )}
 
         {settings.aiMode === 'api' && (
         <section>

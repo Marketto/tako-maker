@@ -5,10 +5,22 @@ import type { Question } from '../core/types';
 import type { SearchResult } from '../agent/tools';
 import { t } from '../i18n';
 import { CHAT_LINKS } from '../agent/manual';
-import { useStore } from '../app/store';
+import { useStore, type ChatItem } from '../app/store';
+import { fmtTokens } from './Settings';
 import { SeaChoice, SeaError, SeaGlass } from './sea/controls';
 import { GLOW } from './sea/shapes';
 import { connectorBase, mcpUrl } from '../app/connector';
+
+/** Sotto una risposta: costo (chiavi API) e token, esatti o stimati. */
+function costLine(m: ChatItem): string {
+  const parts: string[] = [];
+  if (m.costUsd) parts.push(`$${m.costUsd.toFixed(4)}`);
+  if (m.tokens) {
+    const n = fmtTokens(m.tokens.input + m.tokens.output);
+    parts.push(m.tokens.estimated ? t('circa {tokens} token', { tokens: n }) : t('{tokens} token', { tokens: n }));
+  }
+  return parts.join(' · ');
+}
 
 export function ChatPanel({ session, snap }: { session: ProjectSession; snap: Snapshot }) {
   const [text, setText] = useState('');
@@ -46,7 +58,7 @@ export function ChatPanel({ session, snap }: { session: ProjectSession; snap: Sn
           <div key={m.id} className={`msg ${m.role}`}>
             {m.text && <div className="bubble">{m.text}</div>}
             {m.results && <Results session={session} results={m.results} />}
-            {m.role === 'assistant' && m.costUsd !== undefined && m.costUsd > 0 && <div className="cost">${m.costUsd.toFixed(4)}</div>}
+            {m.role === 'assistant' && (m.costUsd || m.tokens) ? <div className="cost">{costLine(m)}</div> : null}
           </div>
         ))}
         {snap.questions.map((q) => (

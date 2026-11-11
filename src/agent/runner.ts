@@ -1,6 +1,7 @@
 import type { Question } from '../core/types';
 import type { AiClient, ApiResponse, ContentBlock, Message } from './client';
 import { withCache } from './client';
+import { tokensOf } from './budget';
 import { LIMITS, type ModelTier } from './config';
 import type { Skill } from './skills';
 import { runTool, toolsFor, type SearchResult, type ToolEnv } from './tools';
@@ -32,6 +33,12 @@ export interface AgentState {
   costUsd: number;
 }
 
+/** Token letti e scritti dal modello in tutto il ciclo. */
+export interface Tokens {
+  input: number;
+  output: number;
+}
+
 export interface AgentOutcome {
   text: string;
   results?: SearchResult[];
@@ -39,6 +46,7 @@ export interface AgentOutcome {
   /** Presente se il ciclo è in pausa in attesa di una risposta. */
   state?: AgentState;
   costUsd: number;
+  tokens: Tokens;
 }
 
 export interface RunInput {
@@ -92,6 +100,8 @@ async function loop(input: RunInput, state: AgentState): Promise<AgentOutcome> {
   const system = systemBlocks(skill, input.env.setup, input.env.printer);
   const tools = withCache(toolsFor(skill.tools));
   let cost = state.costUsd;
+  // Solo i token di questo tratto del ciclo (dopo una domanda si riparte da zero).
+  const tokens: Tokens = { input: 0, output: 0 };
   const messages = state.messages;
   const texts: string[] = [];
 
@@ -102,6 +112,11 @@ async function loop(input: RunInput, state: AgentState): Promise<AgentOutcome> {
       input.signal,
     );
     cost += res.costUsd;
+    if (res.usage) {
+      const u = tokensOf(res.usage);
+      tokens.input += u.input;
+      tokens.output += u.output;
+    }
     messages.push({ role: 'assistant', content: res.content });
     const said = textOf(res);
     if (said) texts.push(said);
@@ -110,7 +125,7 @@ async function loop(input: RunInput, state: AgentState): Promise<AgentOutcome> {
     const uses = res.content.filter((b): b is Extract<ContentBlock, { type: 'tool_use' }> => b.type === 'tool_use');
     if (!uses.length || res.stop_reason !== 'tool_use') {
       if (res.stop_reason === 'max_tokens') texts.push(t('(Risposta interrotta: richiesta troppo lunga. Prova a dividerla in passi più piccoli.)'));
-      return { text: texts.join('\n\n'), costUsd: cost };
+      return { text: texts.join('\n\n'), costUsd: cost, tokens };
     }
 
     const results: ContentBlock[] = [];
@@ -118,10 +133,10 @@ async function loop(input: RunInput, state: AgentState): Promise<AgentOutcome> {
       input.onEvent?.({ type: 'tool', label: TOOL_LABEL[u.name] ? t(TOOL_LABEL[u.name]) : u.name });
       const out = await runTool(u.name, u.input, input.env);
       if (out.kind === 'question') {
-        return { text: texts.join('\n\n'), question: out.question, costUsd: cost, state: { ...state, messages, pendingToolUseId: u.id, partialResults: results, costUsd: cost } };
+        return { text: texts.join('\n\n'), question: out.question, costUsd: cost, tokens, state: { ...state, messages, pendingToolUseId: u.id, partialResults: results, costUsd: cost } };
       }
       if (out.kind === 'results') {
-        return { text: texts.join('\n\n'), results: out.results, costUsd: cost };
+        return { text: texts.join('\n\n'), results: out.results, costUsd: cost, tokens };
       }
       if (u.name === 'edit_design' && !out.isError) input.onEvent?.({ type: 'design', label: t('Anteprima aggiornata') });
       results.push({ type: 'tool_result', tool_use_id: u.id, content: out.content, is_error: out.isError });
@@ -129,5 +144,5 @@ async function loop(input: RunInput, state: AgentState): Promise<AgentOutcome> {
     messages.push({ role: 'user', content: results });
   }
   texts.push(t('(Mi sono fermato per non consumare troppo credito. Dimmi se vuoi che continui.)'));
-  return { text: texts.join('\n\n'), costUsd: cost };
+  return { text: texts.join('\n\n'), costUsd: cost, tokens };
 }

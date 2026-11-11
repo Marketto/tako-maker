@@ -1,5 +1,6 @@
 import type { Design, PrinterSpec, UserSetup } from '../core/types';
 import type { SearchResult } from '../agent/tools';
+import type { TokenTally } from '../agent/budget';
 
 /* Stato condiviso tra la PWA e il connettore (server MCP su Cloudflare Worker).
    La PWA lo crea con un codice di abbinamento; l'assistente nella chat lo legge
@@ -29,6 +30,8 @@ export interface ConnectorState {
   notes: ConnectorNote[];
   /** Prima volta che la chat ha aperto il progetto: l'app capisce che il collegamento è avvenuto. */
   openedAt?: number;
+  /** Stima cumulativa dei token scambiati con la chat (testo degli strumenti in entrata e in uscita). */
+  usage?: TokenTally;
 }
 
 /** Codice di abbinamento: 10 caratteri senza lettere ambigue, es. "K7QM-2XPA-9D". */

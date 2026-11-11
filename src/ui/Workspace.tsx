@@ -77,7 +77,7 @@ function WorkspaceInner({ session, onBack, onSettings }: { session: ProjectSessi
         <SeaIconButton shell="dollar" small onClick={onBack} aria-label={t('Torna ai modelli')}>‹</SeaIconButton>
         <div className="title" title={snap.project.design.name}>{snap.project.design.name}</div>
         <div className="row gap">
-          <BudgetBadge />
+          <BudgetBadge usage={snap.project.usage} />
           <MusicButton sea small />
           <SeaIconButton shell="dollar" small disabled={!snap.project.undo.length || !!snap.busy} onClick={() => session.undo()} aria-label={t('Annulla ultima modifica')} title={t('Annulla')}>↶</SeaIconButton>
           <SeaIconButton shell="dollar" small onClick={onSettings} aria-label={t('Impostazioni')}>⚙</SeaIconButton>
