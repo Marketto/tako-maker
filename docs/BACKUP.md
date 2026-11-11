@@ -8,13 +8,16 @@ ci sono due strade, entrambe in **Impostazioni → Backup dei progetti**:
 - **Cloud (facoltativo)**: Dropbox o Google Drive. Ogni modifica viene caricata dopo qualche secondo;
   all’avvio e all’apertura della home l’app scarica i progetti che mancano o sono più recenti nel cloud.
   Dopo aver pulito il browser (o su un altro dispositivo) basta ricollegare lo stesso account, anche dal
-  benvenuto del wizard: tornano stampante, filamenti e progetti.
+  benvenuto del wizard: tornano stampante, filamenti, impostazioni e progetti.
 
 ## Come funziona
 
 - Tutto avviene nel browser, con il token dell’utente: l’app non ha un server e non vede i file.
 - Un file per progetto, `<id>.printopus` (JSON compresso con gzip, mesh in base64), più l’indice
-  `progetti.json` con nomi, date e la configurazione della stampante (`src/app/cloud/archive.ts`).
+  `progetti.json` con nomi, date, stampante, filamenti e impostazioni (`src/app/cloud/archive.ts`).
+- Impostazioni salvate: solo quelle in `SYNCED_SETTINGS`. Le chiavi API e i codici d’accesso restano sul dispositivo.
+  Stampante e impostazioni hanno ciascuna l’ora dell’ultima modifica (`setupAt`, `settingsAt`; in locale
+  `m3d.cloud.at`): vince la più recente. Su un dispositivo nuovo si prende quella del cloud.
 - Dropbox usa una **cartella dell’app** (`Apps/<nome app>`): l’app vede solo quella. Google Drive usa il
   permesso `drive.file` e una cartella «Printopus»: l’app vede solo i file che ha creato.
 - In caso di conflitto vince la versione più recente; le modifiche locali non ancora caricate non vengono

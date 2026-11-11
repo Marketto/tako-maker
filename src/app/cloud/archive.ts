@@ -1,7 +1,7 @@
 import { gunzipSync, gzipSync, strFromU8, strToU8 } from 'fflate';
 import type { UserSetup } from '../../core/types';
 import { msg } from '../../i18n';
-import type { Project, StoredMesh } from '../store';
+import type { Project, Settings, StoredMesh } from '../store';
 
 /* Formato dei file di backup (cloud o file scaricato): JSON compresso con gzip.
    Un file per progetto, con le mesh importate; un indice con nomi e date per
@@ -39,10 +39,69 @@ export interface CloudIndex {
   version: 1;
   /** Stampante e filamenti, per ripristinarli su un dispositivo nuovo. */
   setup?: UserSetup;
+  /** Impostazioni dell'app (mai le chiavi API). */
+  settings?: SyncedSettings;
+  /** Quando sono stati cambiati l'ultima volta (vince il più recente). */
+  setupAt?: number;
+  settingsAt?: number;
   projects: IndexEntry[];
 }
 
+/* ---------- configurazione: stampante, filamenti, impostazioni ---------- */
+
+/** Impostazioni salvate nel cloud: le chiavi API e i codici d'accesso restano sul dispositivo. */
+export const SYNCED_SETTINGS = [
+  'monthlyCapUsd',
+  'economy',
+  'smartRouting',
+  'searchFirst',
+  'rememberKey',
+  'musicOn',
+  'musicVolume',
+  'mascotOn',
+  'aiMode',
+  'connectorUrl',
+  'language',
+] as const satisfies readonly (keyof Settings)[];
+
+export type SyncedSettings = Partial<Pick<Settings, (typeof SYNCED_SETTINGS)[number]>>;
+
+export function syncedSettings(s: Partial<Settings>): SyncedSettings {
+  const out: Record<string, unknown> = {};
+  for (const k of SYNCED_SETTINGS) if (s[k] !== undefined) out[k] = s[k];
+  return out as SyncedSettings;
+}
+
+/** Quando ogni parte della configurazione è stata cambiata su questo dispositivo (0 = mai). */
+export interface ConfigTimes {
+  setup: number;
+  settings: number;
+}
+
+/** Confronta configurazione locale e cloud: cosa prendere dal cloud e cosa caricare. */
+export function configPlan(index: CloudIndex, local: ConfigTimes, hasLocalSetup: boolean) {
+  const takeSetup = !!index.setup && (!hasLocalSetup || (index.setupAt ?? 0) > local.setup);
+  const takeSettings = !!index.settings && (index.settingsAt ?? 0) > local.settings;
+  const upload = (!takeSetup && hasLocalSetup && (!index.setup || local.setup > (index.setupAt ?? 0))) || (!takeSettings && (!index.settings || local.settings > (index.settingsAt ?? 0)));
+  return { takeSetup, takeSettings, upload };
+}
+
 export const emptyIndex = (): CloudIndex => ({ format: INDEX_FORMAT, version: 1, projects: [] });
+
+/** Mette nell'indice la configurazione locale; quella mai cambiata qui (tempo 0) non copre quella del cloud.
+    Segna in `times` l'ora del primo caricamento. */
+export function withConfig(i: CloudIndex, setup: UserSetup | null, settings: SyncedSettings, times: ConfigTimes): CloudIndex {
+  const out = { ...i };
+  if (setup && (times.setup || !i.setup)) {
+    times.setup ||= Date.now();
+    Object.assign(out, { setup, setupAt: times.setup });
+  }
+  if (times.settings || !i.settings) {
+    times.settings ||= Date.now();
+    Object.assign(out, { settings, settingsAt: times.settings });
+  }
+  return out;
+}
 
 /* ---------- base64 per gli array delle mesh ---------- */
 
