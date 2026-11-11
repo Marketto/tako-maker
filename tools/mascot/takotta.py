@@ -312,7 +312,8 @@ def icon_svg(size, pad=0.0, bg='#ffcf2e'):
 BACKUP_STYLES = {
     # sfondo (centro, bordo), puntini, cartone (fronte, ombra, luce, interno), nastro, nuvola
     'cartone': dict(bg=('#fff3b8', '#ffcf2e'), dots='#ffffff', card=('#e0a66a', '#b97a45', '#f3c995', '#5a3a22'), tape='#f7e2b8', cloud='#7fd3ff'),
-    'blu': dict(bg=('#3d8bff', '#0050d8'), dots=None, card=('#e8f1ff', '#9cc0ff', '#ffffff', '#0b2a6b'), tape='#cfe0ff', cloud='#3d8bff'),
+    # piatta: scatola geometrica blu senza contorni su fondo chiaro (nessun logo di terzi)
+    'blu': dict(bg=('#ffffff', '#dce9ff'), dots=None, card=('#0061fe', '#0047c2', '#3d8bff', '#00245f'), tape=None, cloud='#ffffff', flat=True),
 }
 
 
@@ -328,8 +329,17 @@ def backup_icon_svg(size=256, style='cartone'):
     bg0, bg1, tape, cloud = st['bg'][0], st['bg'][1], st['tape'], st['cloud']
     dots = '<rect width="400" height="400" fill="url(#bk-dots)"/>' if st['dots'] else ''
     box_dots = '<path d="M64,262 L336,262 L326,384 L74,384Z" fill="url(#bk-dots)" fill-opacity=".35"/>' if st['dots'] else ''
-    stroke = f'stroke="{lc}" stroke-width="5" stroke-linejoin="round"'
+    stroke = 'stroke="none"' if st.get('flat') else f'stroke="{lc}" stroke-width="5" stroke-linejoin="round"'
     m = 'translate(52,22) scale(.74)'
+    cloud_d = 'M-24,12 a14,14 0 0 1 2,-27 a20,20 0 0 1 38,2 a13,13 0 0 1 8,25z'
+    arrow = 'M0,8 v-18 m-8,8 l8,-8 l8,8'
+    if st.get('flat'):
+        label = (f'<g transform="translate(200,336) scale(1.5)"><path d="{cloud_d}" fill="{cloud}"/>'
+                 f'<path d="{arrow}" fill="none" stroke="{card}" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></g>')
+    else:
+        label = (f'<g transform="translate(200,340)"><rect x="-58" y="-28" width="116" height="56" rx="10" fill="#ffffff" {stroke}/>'
+                 f'<path d="{cloud_d}" fill="{cloud}" stroke="{lc}" stroke-width="3.5" stroke-linejoin="round"/>'
+                 f'<path d="{arrow}" fill="none" stroke="{lc}" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></g>')
     return (f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="{size}" height="{size}">'
             f'<defs><clipPath id="bk-clip"><rect width="400" height="400" rx="88"/></clipPath>'
             f'<radialGradient id="bk-glow" cx="50%" cy="34%" r="62%"><stop offset="0" stop-color="{bg0}"/><stop offset="1" stop-color="{bg1}"/></radialGradient>'
@@ -346,12 +356,10 @@ def backup_icon_svg(size=256, style='cartone'):
             f'<path d="M64,262 L336,262 L326,384 L74,384Z" fill="{card}" {stroke}/>'
             f'{box_dots}'
             f'<path d="M64,262 L336,262 L346,296 L54,296Z" fill="{card_l}" {stroke}/>'
-            f'<path d="M180,262 h40 l2,34 h-44z" fill="{tape}" fill-opacity=".85"/>'
+            + (f'<path d="M180,262 h40 l2,34 h-44z" fill="{tape}" fill-opacity=".85"/>' if tape else '') +
             f'<g transform="{m}">{grip}</g>'
             # etichetta con nuvola e freccia: il backup
-            f'<g transform="translate(200,340)"><rect x="-58" y="-28" width="116" height="56" rx="10" fill="#ffffff" {stroke}/>'
-            f'<path d="M-24,12 a14,14 0 0 1 2,-27 a20,20 0 0 1 38,2 a13,13 0 0 1 8,25z" fill="{cloud}" stroke="{lc}" stroke-width="3.5" stroke-linejoin="round"/>'
-            f'<path d="M0,8 v-18 m-8,8 l8,-8 l8,8" fill="none" stroke="{lc}" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></g>'
+            + label +
             f'</g></svg>')
 
 
