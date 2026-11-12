@@ -1,4 +1,4 @@
-import type { ConnectorState } from '../connector/state';
+import type { ConnectorReport, ConnectorState } from '../connector/state';
 import { store } from './store';
 
 /* Client della PWA per il connettore MCP (Cloudflare Worker): crea la sessione
@@ -40,4 +40,10 @@ export async function putSession(code: string, baseV: number, state: ConnectorSt
   if (r.status === 409 && r.body?.state) return { conflict: r.body.state };
   if (r.status !== 200) throw new Error(r.body?.error ?? `HTTP ${r.status}`);
   return { v: r.body.v };
+}
+
+/** Rimanda l'analisi calcolata qui: la chat la legge dopo ogni modifica (il connettore non calcola la geometria). */
+export async function postReport(code: string, report: Omit<ConnectorReport, 'at'>): Promise<boolean> {
+  const r = await call<{ ok?: boolean }>(`/sessione/${code}/analisi`, { method: 'POST', body: JSON.stringify(report) });
+  return r.status === 200;
 }

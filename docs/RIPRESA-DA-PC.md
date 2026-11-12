@@ -12,6 +12,9 @@ e la riga che lo cita in `CLAUDE.md`.
 - Backup nel cloud: registrare le app Dropbox e Google e salvare `DROPBOX_APP_KEY` / `GOOGLE_CLIENT_ID`
   come variabili del repository ([BACKUP.md](BACKUP.md)), poi provare collegamento, ripristino dal wizard
   dopo aver pulito il browser e «Ricollega» di Google dopo un'ora. Senza le variabili resta solo il backup su file.
+- Connettore su Durable Object (PR del 12 novembre): dopo la pubblicazione provare una conversazione lunga con l'app aperta
+  (nessun «Non riuscito», nessuna modifica persa) e con l'app chiusa (la chat deve dire «salvata, non ripeterla»).
+  Dal 19 novembre togliere il recupero dal KV (`wrangler.toml`, `src/connector/worker.ts`, `connector.yml`, CONNETTORE.md).
 - Consumo di token: con il connettore, controllare che badge e impostazioni mostrino la stima dopo `printopus_apri`
   (serve il connettore ripubblicato, che parte da solo con il push su `main`).
 

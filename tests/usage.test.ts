@@ -1,9 +1,10 @@
 import { describe, expect, it } from 'vitest';
 import { Budget, diffTally, estimateTokens, tokensOf, type KV } from '../src/agent/budget';
-import { handleRpc, SETUP_TOKENS, type ConnectorStore } from '../src/connector/server';
-import { newCode, type ConnectorState } from '../src/connector/state';
+import { handleRpc, SETUP_TOKENS } from '../src/connector/server';
+import { newCode } from '../src/connector/state';
+import { connectorSession } from './connectorApp';
 import { emptyDesign } from '../src/core/types';
-import { manifold, printer, setup } from './fixtures';
+import { printer, setup } from './fixtures';
 
 const memKV = (): KV => {
   const m = new Map<string, string>();
@@ -40,11 +41,9 @@ describe('consumo di token', () => {
 
 describe('consumo del connettore', () => {
   async function session() {
-    const data = new Map<string, ConnectorState>();
-    const store: ConnectorStore = { get: async (c) => structuredClone(data.get(c) ?? null), put: async (c, s) => void data.set(c, structuredClone(s)) };
     const code = newCode();
-    data.set(code, { v: 1, updatedAt: 0, setup, printer: printer('bambu-a1'), design: emptyDesign('Prova'), answered: [], language: 'it', languageName: 'Italian', notes: [] });
-    const deps = { store, manifold, appUrl: 'https://example.org/app/' };
+    const { deps, state } = await connectorSession(code, { v: 1, updatedAt: 0, setup, printer: printer('bambu-a1'), design: emptyDesign('Prova'), answered: [], language: 'it', languageName: 'Italian', notes: [] });
+    const data = { get: (_c: string) => state() };
     const call = async (name: string, args: Record<string, unknown>) => {
       const r = (await handleRpc({ jsonrpc: '2.0', id: 1, method: 'tools/call', params: { name, arguments: { codice: code, ...args } } }, deps)) as { result: { content: { text: string }[] } };
       return r.result.content[0].text;

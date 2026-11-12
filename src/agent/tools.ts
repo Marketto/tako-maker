@@ -119,7 +119,7 @@ export function reportText(r: AnalysisReport): string {
   return lines.join('\n');
 }
 
-function partsText(d: Design, parts: PartStat[], setup: UserSetup): string {
+export function partsText(d: Design, parts: PartStat[], setup: UserSetup): string {
   const fil = new Map(setup.filaments.map((f) => [f.id, `${f.material} ${f.colorName}`]));
   return parts
     .map((p) => {
@@ -130,13 +130,18 @@ function partsText(d: Design, parts: PartStat[], setup: UserSetup): string {
     .join('; ');
 }
 
+/** Parti e analisi in testo per l'AI (usato anche dall'app per il connettore). */
+export function analysisText(d: Design, parts: PartStat[], setup: UserSetup, r: AnalysisReport): string {
+  return `Parti: ${partsText(d, parts, setup)}\nAnalisi:\n${reportText(r)}\n${r.summary}`;
+}
+
 export type ToolOutcome =
   | { kind: 'result'; content: string; isError?: boolean }
   | { kind: 'question'; question: Question }
   | { kind: 'results'; results: SearchResult[] };
 
 /** Le scelte sugli elementi da acquistare spettano all'utente: l'AI non può impostarle. */
-function withoutUserChoices(o: DesignOp): DesignOp {
+export function withoutUserChoices(o: DesignOp): DesignOp {
   if (o && o.op === 'update_hardware' && o.patch && 'decision' in o.patch) {
     const { decision: _d, ...patch } = o.patch;
     return { ...o, patch };

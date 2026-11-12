@@ -1,25 +1,22 @@
 import { describe, expect, it } from 'vitest';
-import { handleRpc, type ConnectorStore } from '../src/connector/server';
-import { newCode, normalizeCode, CODE_RE, type ConnectorState } from '../src/connector/state';
+import { apiCreate, apiPut, apiReport, handleRpc } from '../src/connector/server';
+import { designKey, newCode, normalizeCode, CODE_RE, type ConnectorState } from '../src/connector/state';
 import { emptyDesign } from '../src/core/types';
-import { manifold, printer, setup } from './fixtures';
+import { printer, setup } from './fixtures';
+import { connectorSession } from './connectorApp';
 
-function memStore(): ConnectorStore & { data: Map<string, ConnectorState> } {
-  const data = new Map<string, ConnectorState>();
-  return { data, get: async (c) => structuredClone(data.get(c) ?? null), put: async (c, s) => void data.set(c, structuredClone(s)) };
-}
+const initial = (): ConnectorState => ({ v: 1, updatedAt: 0, setup: { ...setup, hasMulti: true }, printer: printer('bambu-a1'), design: emptyDesign('Prova'), answered: [], language: 'de', languageName: 'German', notes: [] });
+const box = (id: string, z = 0) => ({ op: 'add_part', part: { id, name: id, filamentId: 'f1', shape: { op: 'box', size: [20, 20, 10], at: [0, 0, z] } } });
 
-async function setupSession() {
-  const store = memStore();
+async function setupSession(opts: { appOpen?: boolean } = {}) {
   const code = newCode();
-  store.data.set(code, { v: 1, updatedAt: 0, setup: { ...setup, hasMulti: true }, printer: printer('bambu-a1'), design: emptyDesign('Prova'), answered: [], language: 'de', languageName: 'German', notes: [] });
-  const deps = { store, manifold, appUrl: 'https://example.org/app/' };
+  const { store, deps, state } = await connectorSession(code, initial(), opts);
   let id = 0;
   const call = async (name: string, args: Record<string, unknown>) => {
     const r = (await handleRpc({ jsonrpc: '2.0', id: ++id, method: 'tools/call', params: { name, arguments: { codice: code, ...args } } }, deps)) as { result: { content: { text: string }[]; isError?: boolean } };
     return { text: r.result.content[0].text, isError: !!r.result.isError };
   };
-  return { store, code, deps, call };
+  return { store, code, deps, call, state };
 }
 
 describe('connettore MCP', () => {
@@ -52,18 +49,17 @@ describe('connettore MCP', () => {
   });
 
   it('alla prima apertura segna il collegamento e cambia versione, una volta sola', async () => {
-    const { call, store, code } = await setupSession();
-    const v0 = (await store.get(code))!.v;
+    const { call, state } = await setupSession();
+    const v0 = state().v;
     await call('printopus_apri', {});
-    const s1 = (await store.get(code))!;
-    expect(s1.openedAt).toBeGreaterThan(0);
-    expect(s1.v).toBe(v0 + 1);
+    expect(state().openedAt).toBeDefined();
+    expect(state().v).toBe(v0 + 1);
     await call('printopus_apri', {});
-    expect((await store.get(code))!.v).toBe(v0 + 1);
+    expect(state().v).toBe(v0 + 1);
   });
 
   it('modifica il modello, salva la nuova versione e propone le domande dell’app', async () => {
-    const { call, store, code } = await setupSession();
+    const { call, state } = await setupSession();
     const r = await call('printopus_modifica', {
       riassunto: 'scatola',
       messaggio: 'Ecco la scatola.',
@@ -74,7 +70,7 @@ describe('connettore MCP', () => {
       ],
     });
     expect(r.isError).toBe(false);
-    const s = store.data.get(code)!;
+    const s = state();
     expect(s.v).toBe(2);
     expect(s.design.parts).toHaveLength(2);
     expect(s.design.hardware![0].decision).toBeUndefined();
@@ -84,21 +80,59 @@ describe('connettore MCP', () => {
     const key = r.text.match(/\[(hardware:[^\]]+)\]/)![1];
     const a = await call('printopus_rispondi', { domanda: key, opzioni: ['buy'] });
     expect(a.isError).toBe(false);
-    expect(store.data.get(code)!.design.hardware![0].decision).toBe('buy');
-    expect(store.data.get(code)!.answered).toContain(key);
+    expect(state().design.hardware![0].decision).toBe('buy');
+    expect(state().answered).toContain(key);
 
     const bad = await call('printopus_modifica', { ops: [{ op: 'remove_part', id: 'nope' }] });
     expect(bad.isError).toBe(true);
-    expect(store.data.get(code)!.v).toBe(3);
+    expect(state().v).toBe(3);
   });
 
   it('mostra i risultati di ricerca e rifiuta codici sconosciuti', async () => {
-    const { call, store, code, deps } = await setupSession();
+    const { call, state, deps } = await setupSession();
     const r = await call('printopus_mostra_risultati', { risultati: [{ title: 'Vaso', url: 'https://www.printables.com/model/1', license: 'CC BY', summary: 'Un vaso' }] });
     expect(r.isError).toBe(false);
-    expect(store.data.get(code)!.notes.at(-1)!.results).toHaveLength(1);
+    expect(state().notes.at(-1)!.results).toHaveLength(1);
     const out = (await handleRpc({ jsonrpc: '2.0', id: 9, method: 'tools/call', params: { name: 'printopus_apri', arguments: { codice: 'AAAA-BBBB-CC' } } }, deps)) as { result: { isError: boolean; content: { text: string }[] } };
     expect(out.result.isError).toBe(true);
     expect(out.result.content[0].text).toMatch(/scaduto|Nessun progetto/);
+  });
+
+  it('due modifiche contemporanee non si cancellano a vicenda', async () => {
+    const { call, state } = await setupSession();
+    const [a, b] = await Promise.all([call('printopus_modifica', { ops: [box('a')] }), call('printopus_modifica', { ops: [box('b', 30)] })]);
+    expect(a.isError || b.isError).toBe(false);
+    expect(state().design.parts.map((p) => p.id).sort()).toEqual(['a', 'b']);
+    expect(state().v).toBe(3);
+  });
+
+  it('con l’app chiusa salva la modifica e dice di non ripeterla', async () => {
+    const { call, state } = await setupSession({ appOpen: false });
+    const r = await call('printopus_modifica', { ops: [box('a')] });
+    expect(r.isError).toBe(false);
+    expect(r.text).toMatch(/salvata.*non ripeterla/);
+    expect(r.text).toMatch(/non risponde/);
+    expect(state().design.parts).toHaveLength(1);
+    const q = await call('printopus_rispondi', { domanda: 'x', opzioni: ['y'] });
+    expect(q.isError).toBe(true);
+  });
+
+  it('API dell’app: versione vecchia rifiutata, analisi solo per il modello attuale', async () => {
+    const { deps, code, state, call } = await setupSession();
+    await call('printopus_modifica', { ops: [box('a')] });
+    const v = state().v;
+    const stale = await apiPut(deps, code, { baseV: v - 1, state: { ...state(), design: emptyDesign('Vecchio') } });
+    expect(stale.status).toBe(409);
+    expect(state().design.parts).toHaveLength(1);
+    const ok = await apiPut(deps, code, { baseV: v, state: { ...state(), design: { ...state().design, name: 'Nuovo' } } });
+    expect(ok.status).toBe(200);
+    expect(state().v).toBe(v + 1);
+    const old = await apiReport(deps, code, { key: 'vecchia', text: '', questions: [], errors: [] });
+    expect(old.status).toBe(409);
+    const cur = await apiReport(deps, code, { key: designKey(state()), text: 'Analisi', questions: [], errors: [] });
+    expect(cur.status).toBe(200);
+    expect(state().report!.text).toBe('Analisi');
+    const created = await apiCreate(deps, initial(), () => code);
+    expect(created.status).toBe(503);
   });
 });
