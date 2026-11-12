@@ -29,10 +29,30 @@ Un Cloudflare Worker (`connector/`) espone:
 
 - `POST /mcp`: server MCP (trasporto streamable HTTP con risposte JSON, senza stato). Gli strumenti sono:
   - `printopus_apri`: regole, stampante, modello, analisi e domande aperte;
-  - `printopus_modifica`: operazioni del Design DSL, validate e calcolate con manifold nel Worker;
+  - `printopus_modifica`: operazioni del Design DSL, validate e salvate dal Worker;
   - `printopus_rispondi`: risposta a una domanda automatica dell'app;
   - `printopus_mostra_risultati`: modelli trovati con la ricerca web della chat.
-- `POST /sessione`, `GET` e `PUT /sessione/<codice>`: la PWA crea la sessione condivisa e la sincronizza ogni 4 secondi mentre è aperta.
+- `POST /sessione`, `GET` e `PUT /sessione/<codice>`: la PWA crea la sessione condivisa e la sincronizza ogni 2,5 secondi mentre è aperta e in primo piano.
+- `POST /sessione/<codice>/analisi`: la PWA rimanda l'analisi del modello che ha calcolato.
+
+### Chi calcola cosa
+
+- **La geometria la calcola l'app, non il Worker.** Nel piano gratuito un Worker ha circa 10 ms di CPU per richiesta: con manifold
+  bastavano pochi pezzi per superarli (errore `1102`, «Non riuscito» nella chat).
+- **Il Worker** valida e applica le operazioni (`applyOps`, leggero), salva e aspetta fino a 20 secondi l'analisi della nuova versione.
+  L'attesa non consuma CPU. L'analisi è legata al modello da un'impronta (`designKey`): una vecchia viene rifiutata.
+- **Se l'app è chiusa** o il telefono è in standby, la modifica resta salvata e la chat riceve «salvata, non ripeterla, apri l'app».
+  Le domande automatiche (`printopus_rispondi`) servono invece l'app aperta, perché le prepara lei.
+
+### Archivio delle sessioni
+
+- **Ogni sessione è un Durable Object** (`SessionStore`, con SQLite, incluso nel piano gratuito): letture coerenti e scritture in fila.
+- **Scrittura condizionata.** Ogni scrittura riporta la revisione letta: se nel frattempo è cambiata, si rilegge e si riprova
+  (`update` in `src/connector/state.ts`). Così una modifica della chat non cancella quella appena prima.
+- **Perché non KV.** Prima le sessioni stavano in Cloudflare KV, che tiene i valori in cache per circa 60 secondi in ogni sede:
+  due chiamate vicine potevano leggere una versione vecchia e riscriverla sopra quella nuova.
+- **Recupero dal KV.** Le sessioni create prima del passaggio si spostano dal KV al Durable Object alla prima lettura.
+  Dopo il 19 novembre 2026 sono tutte scadute: si possono togliere il KV da `wrangler.toml`, da `worker.ts` e dalla action.
 
 ### Flusso per l'utente
 
@@ -50,7 +70,7 @@ sviluppatore è disponibile, solo in lettura.
 
 ### Pubblicazione
 
-1. **Account e KV.** Account Cloudflare gratuito. Crea il KV con `npx wrangler kv namespace create SESSIONS` e annota l'id.
+1. **Account.** Account Cloudflare gratuito. Il Durable Object si crea da solo alla prima pubblicazione (migrazione `v1` in `wrangler.toml`). La variabile `CONNECTOR_KV_ID` serve ancora alla action finché resta il recupero dal KV.
 2. **Impostazioni del repository GitHub.**
    - Secret `CLOUDFLARE_API_TOKEN` (permesso *Workers Scripts: Edit* e *Workers KV Storage: Edit*) e `CLOUDFLARE_ACCOUNT_ID`.
    - Variabile `CONNECTOR_KV_ID` con l'id del KV.
@@ -80,7 +100,9 @@ Serve per la prima volta o quando la action non è configurata:
 
 1. `POST /mcp` con il metodo `initialize` deve rispondere 200 con `serverInfo.name` uguale a `printopus`.
 2. Nell'app, premi «Collega alla chat» in un nuovo modello: deve comparire il codice.
-3. Chiama lo strumento `printopus_modifica` con quel codice e un `add_part`: entro pochi secondi nell'app devono comparire anteprima e messaggio.
+3. Con l'app aperta, chiama lo strumento `printopus_modifica` con quel codice e un `add_part`. Entro pochi secondi:
+   - nell'app compaiono anteprima e messaggio;
+   - la risposta dello strumento contiene «OK. Parti:» con l'analisi.
 
 ### Dati del proprio account
 
@@ -94,6 +116,6 @@ Il runtime locale di Cloudflare richiede macOS 13.5 o successivo: sulle versioni
 
 ### Limiti e privacy
 
-- **Dati salvati:** nel KV restano solo stampante, filamenti, modello, ultimi messaggi e stima dei token scambiati, per 7 giorni dall'ultima modifica, sotto un codice casuale. Nessuna chiave e nessun dato personale.
-- **Piano gratuito di Cloudflare KV:** 1.000 scritture al giorno. Ogni chiamata di uno strumento è una scrittura (anche `printopus_apri`, che aggiorna la stima dei token in `usage`), più una per ogni modifica fatta nell’app.
+- **Dati salvati:** nel Durable Object restano solo stampante, filamenti, modello, analisi, ultimi messaggi e stima dei token scambiati, per 7 giorni dall'ultima modifica (poi un allarme cancella tutto), sotto un codice casuale. Nessuna chiave e nessun dato personale.
+- **Piano gratuito dei Durable Object:** 100.000 richieste al giorno. L'app aperta ne fa circa 1.400 l'ora (una lettura ogni 2,5 secondi); ogni chiamata della chat ne fa qualcuna in più mentre aspetta l'analisi.
 - **Mesh importate da file:** non vengono inviate al connettore. Per modificarle si usa la chiave API o il copia e incolla.

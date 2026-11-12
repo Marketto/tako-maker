@@ -20,7 +20,7 @@ import { LIMITS } from '../agent/config';
 import { route, routeByRules } from '../agent/router';
 import { resumeAgent, runAgent, type AgentState, type RunInput } from '../agent/runner';
 import { SKILLS, type SkillName } from '../agent/skills';
-import { runTool, type SearchResult, type ToolEnv } from '../agent/tools';
+import { analysisText, runTool, type SearchResult, type ToolEnv } from '../agent/tools';
 import type { ImportedMeshInfo } from '../agent/context';
 import { cachedSearch, loadMesh, printerOf, saveMesh, saveProject, store, storeSearch, uid, type ChatItem, type Project } from './store';
 import { localeInfo, t } from '../i18n';
@@ -28,8 +28,8 @@ import { shoppingListText } from '../core/hardware';
 import { printedTogether } from '../core/design/links';
 import { plateKeepFree } from '../core/plate';
 import { buildManualPrompt, correctionPrompt, parseManualReply } from '../agent/manual';
-import { createSession, getSession, putSession } from './connector';
-import type { ConnectorState } from '../connector/state';
+import { createSession, getSession, postReport, putSession } from './connector';
+import { designKey, type ConnectorReport, type ConnectorState } from '../connector/state';
 
 /* Orchestratore di un progetto aperto: collega UI, router, agente,
    geometria (worker) e analisi locali. La UI si limita a leggere lo snapshot. */
@@ -120,14 +120,16 @@ export class ProjectSession {
   async refresh() {
     const seq = ++this.evalSeq;
     const d = this.snap.project.design;
+    const answered = this.snap.project.answered;
     if (!d.parts.length) {
       this.set({ parts: [], report: null, assembly: null, questions: this.pendingQuestions(), geometryErrors: [] });
+      this.setConnectorReport({ key: designKey({ design: d, answered }), text: 'Il modello è vuoto.', questions: [], errors: [] });
       return;
     }
     try {
       const r = await this.evaluate(d);
       if (seq !== this.evalSeq) return; // nel frattempo è arrivata una modifica più recente
-      const report = analyze(d, r.parts, this.setup, this.printer, new Set(this.snap.project.answered), { connectors: r.connectors, overlaps: r.overlaps, buttons: r.buttons, printStats: r.printStats });
+      const report = analyze(d, r.parts, this.setup, this.printer, new Set(answered), { connectors: r.connectors, overlaps: r.overlaps, buttons: r.buttons, printStats: r.printStats });
       const assembly = d.printPlan.strategy === 'separate' ? planAssembly(d, r.parts.map((p) => ({ id: p.id, box: p.contactBox })), d.printPlan.connection, r.connectors) : null;
       const meshInfo = this.snap.project.meshIds.map((id) => {
         const part = r.parts.find((p) => d.parts.find((x) => x.id === p.id)?.shape.op === 'mesh' && (d.parts.find((x) => x.id === p.id)!.shape as { ref: string }).ref === id);
@@ -142,8 +144,10 @@ export class ProjectSession {
         meshInfo,
         questions: [...this.pendingQuestions(), ...report.questions],
       });
+      this.setConnectorReport({ key: designKey({ design: d, answered }), text: analysisText(d, r.parts, this.setup, report), questions: report.questions, errors: r.errors });
     } catch (e) {
       this.set({ error: t('Errore nel calcolo della geometria: {error}', { error: (e as Error).message }) });
+      if (seq === this.evalSeq) this.setConnectorReport({ key: designKey({ design: d, answered }), text: '', questions: [], errors: [(e as Error).message] });
     }
   }
 
@@ -163,6 +167,27 @@ export class ProjectSession {
   private pushTimer: ReturnType<typeof setTimeout> | null = null;
   private lastSynced = '';
   private syncing = false;
+  /** Ultima analisi calcolata qui, da rimandare alla chat (il connettore non calcola la geometria). */
+  private connectorReport: Omit<ConnectorReport, 'at'> | null = null;
+  private reportSent = '';
+
+  private setConnectorReport(r: Omit<ConnectorReport, 'at'>) {
+    // Si tiene anche senza collegamento: se l'utente collega dopo, il primo pull la manda.
+    this.connectorReport = r;
+    void this.sendReport();
+  }
+
+  /** Manda l'analisi se riguarda il modello salvato nel connettore (altrimenti il connettore la rifiuta). */
+  private async sendReport(force = false) {
+    const c = this.snap.project.connector;
+    const r = this.connectorReport;
+    if (!c || !r || (!force && r.key === this.reportSent)) return;
+    try {
+      if (await postReport(c.code, r)) this.reportSent = r.key;
+    } catch {
+      /* rete assente: ci pensa il prossimo giro di pull */
+    }
+  }
 
   private syncSig(p: Project) {
     return JSON.stringify([p.design, p.answered]);
@@ -198,7 +223,7 @@ export class ProjectSession {
   startSync() {
     if (this.syncTimer || !this.snap.project.connector) return;
     this.lastSynced = this.syncSig(this.snap.project);
-    this.syncTimer = setInterval(() => void this.pull(), 4000);
+    this.syncTimer = setInterval(() => void this.pull(), 2500);
     void this.pull();
   }
 
@@ -226,6 +251,8 @@ export class ProjectSession {
       }
       await this.trackConnectorUsage(remote);
       if (remote.v > c.v) await this.applyRemote(remote);
+      // La chat aspetta l'analisi di questa versione: se manca e qui c'è, la si manda.
+      else if (this.connectorReport && remote.report?.key !== this.connectorReport.key && designKey(remote) === this.connectorReport.key) await this.sendReport(true);
     } catch {
       /* rete assente: si riprova al prossimo giro */
     } finally {
@@ -284,6 +311,7 @@ export class ProjectSession {
       const now = this.snap.project;
       this.set({ project: { ...now, connector: { ...now.connector!, v: r.v } } });
       await saveProject(this.snap.project);
+      await this.sendReport(true);
     } catch {
       this.schedulePush();
     }
