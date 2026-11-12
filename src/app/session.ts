@@ -147,6 +147,7 @@ export class ProjectSession {
       this.setConnectorReport({ key: designKey({ design: d, answered }), text: analysisText(d, r.parts, this.setup, report), questions: report.questions, errors: r.errors });
     } catch (e) {
       this.set({ error: t('Errore nel calcolo della geometria: {error}', { error: (e as Error).message }) });
+      if (seq === this.evalSeq) this.setConnectorReport({ key: designKey({ design: d, answered }), text: '', questions: [], errors: [(e as Error).message] });
     }
   }
 
@@ -171,7 +172,7 @@ export class ProjectSession {
   private reportSent = '';
 
   private setConnectorReport(r: Omit<ConnectorReport, 'at'>) {
-    if (!this.snap.project.connector) return;
+    // Si tiene anche senza collegamento: se l'utente collega dopo, il primo pull la manda.
     this.connectorReport = r;
     void this.sendReport();
   }
