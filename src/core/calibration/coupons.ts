@@ -142,7 +142,7 @@ function rotaryCoupon(tag: string, n: number, filament: Filament, detent: boolea
     radius: 5,
     detent: detent ? { enabled: true, anglesDeg: [0, 90, 180, 270] } : { enabled: false },
   };
-  // B ruotato sul piatto accanto ad A: la faccia con gli incavi dello scatto resta sotto, come nel montaggio.
+  // B spostato sul piatto accanto ad A (senza ruotarlo): la faccia con gli incavi dello scatto resta sotto, come nel montaggio.
   return { design: couponDesign(tag, parts, [joint]), partOffset: { b: [20, -2, -top] }, size: [40, 16] };
 }
 
