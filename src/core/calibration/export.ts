@@ -37,7 +37,7 @@ export async function buildCalibrationFiles(design: Design, setup: UserSetup, pr
   for (const s of series) {
     for (const c of seriesCoupons(s)) {
       const res = await evaluate(c.design, c.tol);
-      const r = arrangePieces(res.map((p) => ({ name: p.name, mesh: p.mesh })), c.arrange);
+      const r = arrangePieces(res.filter((p) => !c.drop?.includes(p.id)).map((p) => ({ name: p.name, mesh: p.mesh })), c.arrange);
       if (!r.pieces.length) continue;
       c.size = r.size;
       placed.set(c.id, r.pieces);

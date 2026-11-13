@@ -58,6 +58,7 @@ function consolle(): Design {
   };
 }
 
+const c0 = (s: { id: string }) => (s.id.endsWith('sterzo') ? 's1' : 's2');
 const boxesOf = async (d: Design) => Object.fromEntries(evaluateDesign(await manifold(), d).parts.map((p) => [p.id, { ...p.bbox, mesh: p.mesh }]));
 
 describe('campioni di prova', () => {
@@ -96,7 +97,9 @@ describe('campioni di prova', () => {
     expect(files.readme).toMatch(/Ruota/);
     expect(files.readme).toMatch(/Fetta della base/);
     const model = strFromU8(unzipSync(files.data)['3D/3dmodel.model']);
-    expect(model.match(/<object /g)!.length).toBeGreaterThanOrEqual(3 * 2 + 3 * 2 + 2 + 1);
+    // Un solo pezzo con il perno per serie: (1 + 3) + (1 + 3) pezzi per i giunti, 2 per l'aggancio, 1 per la fetta.
+    expect(model.match(/<object /g)!.length).toBe(4 + 4 + 2 + 1);
+    expect(files.readme).toMatch(/Un solo pezzo con il perno/);
   }, 120_000);
   it('perno rotante: asse in verticale, perno in alto, pezzo forato accanto', async () => {
     const d = consolle();
@@ -127,7 +130,20 @@ describe('campioni di prova', () => {
     for (let k = 0; k < p.length; k += 3) if (p[k + 2] > a.max[2] - 0.5) [lo, hi] = [Math.min(lo, p[k]), Math.max(hi, p[k])];
     expect(hi - lo).toBeLessThan((a.max[0] - a.min[0]) / 2);
   });
-  it('flat: ogni pezzo nel verso con meno sporgenze', async () => {
+  it('il perno è uguale nelle 3 varianti: si stampa una volta sola', async () => {
+    const d = consolle();
+    const [rot, det] = planSamples(d, setup, await boxesOf(d));
+    for (const s of [rot, det]) {
+      expect(s.sharedPin).toBe(true);
+      expect(seriesCoupons(s).map((c) => c.drop)).toEqual([undefined, [c0(s)], [c0(s)]]);
+    }
+    // Prova del gioco su un giunto con scatto: il dentino del perno si sposta col gioco, quindi niente perno condiviso.
+    d.joints = [d.joints[1]];
+    const only = planSamples(d, setup, await boxesOf(d)).find((s) => s.kind === 'rotary')!;
+    expect(only.sharedPin).toBe(false);
+    expect(seriesCoupons(only).every((c) => !c.drop)).toBe(true);
+  });
+    it('flat: ogni pezzo nel verso con meno sporgenze', async () => {
     // Una T (gambo sotto, piano sopra) va capovolta: il piano finisce sul piatto.
     const d: Design = { ...toyLaptop(), joints: [], parts: [{ id: 't', name: 'T', shape: { op: 'union', children: [{ op: 'box', size: [4, 4, 10], at: [8, 8, 0] }, { op: 'box', size: [20, 20, 3], at: [0, 0, 10] }] } }] };
     const mesh = evaluateDesign(await manifold(), d).parts[0].mesh;

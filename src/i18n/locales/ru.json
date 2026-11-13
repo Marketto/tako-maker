@@ -583,5 +583,6 @@
  "Dove ci sono 3 campioni, i segni (da 1 a 3) indicano il gioco provato.": "Где 3 образца, метки (от 1 до 3) показывают проверяемый зазор.",
  "Monta i pezzi: se entrano a fatica o ballano, dillo all’assistente prima di stampare il modello.": "Собери детали: если они входят с трудом или болтаются, скажи ассистенту до печати модели.",
  "Sono pezzi del tuo modello ritagliati attorno alle parti incerte.": "Это куски твоей модели, вырезанные вокруг сомнительных мест.",
- "Sono pezzi del tuo modello: dove ce ne sono 3, i segni (da 1 a 3) indicano il gioco. Dopo la stampa indica il migliore nella scheda Stampa → Campioni di prova.": "Это куски твоей модели: где их 3, метки (от 1 до 3) показывают зазор. После печати укажи лучший в разделе Печать → Тестовые образцы."
+ "Sono pezzi del tuo modello: dove ce ne sono 3, i segni (da 1 a 3) indicano il gioco. Dopo la stampa indica il migliore nella scheda Stampa → Campioni di prova.": "Это куски твоей модели: где их 3, метки (от 1 до 3) показывают зазор. После печати укажи лучший в разделе Печать → Тестовые образцы.",
+ "Un solo pezzo con il perno: infila sullo stesso perno i pezzi forati, uno alla volta.": "Только одна деталь со штифтом: надевай детали с отверстием на тот же штифт по одной."
 }

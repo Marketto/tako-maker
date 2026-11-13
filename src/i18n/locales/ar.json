@@ -583,5 +583,6 @@
  "Dove ci sono 3 campioni, i segni (da 1 a 3) indicano il gioco provato.": "حيث توجد 3 عينات، تشير العلامات (من 1 إلى 3) إلى الخلوص المجرَّب.",
  "Monta i pezzi: se entrano a fatica o ballano, dillo all’assistente prima di stampare il modello.": "ركّب القطع: إذا دخلت بصعوبة أو كانت مرتخية، أخبر المساعد قبل طباعة النموذج.",
  "Sono pezzi del tuo modello ritagliati attorno alle parti incerte.": "هذه قطع من نموذجك مقطوعة حول الأجزاء غير المؤكدة.",
- "Sono pezzi del tuo modello: dove ce ne sono 3, i segni (da 1 a 3) indicano il gioco. Dopo la stampa indica il migliore nella scheda Stampa → Campioni di prova.": "هذه قطع من نموذجك: حيث توجد 3، تشير العلامات (من 1 إلى 3) إلى الخلوص. بعد الطباعة اختر الأفضل في الطباعة → عينات الاختبار."
+ "Sono pezzi del tuo modello: dove ce ne sono 3, i segni (da 1 a 3) indicano il gioco. Dopo la stampa indica il migliore nella scheda Stampa → Campioni di prova.": "هذه قطع من نموذجك: حيث توجد 3، تشير العلامات (من 1 إلى 3) إلى الخلوص. بعد الطباعة اختر الأفضل في الطباعة → عينات الاختبار.",
+ "Un solo pezzo con il perno: infila sullo stesso perno i pezzi forati, uno alla volta.": "قطعة واحدة فقط بها المسمار: ركّب القطع المثقوبة على المسمار نفسه، واحدة تلو الأخرى."
 }

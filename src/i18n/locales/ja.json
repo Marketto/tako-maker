@@ -583,5 +583,6 @@
  "Dove ci sono 3 campioni, i segni (da 1 a 3) indicano il gioco provato.": "3個あるものは、印（1〜3）が試したすき間を示します。",
  "Monta i pezzi: se entrano a fatica o ballano, dillo all’assistente prima di stampare il modello.": "ピースを組み立ててください。入りにくかったりガタついたりしたら、モデルを印刷する前にアシスタントに伝えてください。",
  "Sono pezzi del tuo modello ritagliati attorno alle parti incerte.": "モデルの不確かな部分のまわりを切り出したピースです。",
- "Sono pezzi del tuo modello: dove ce ne sono 3, i segni (da 1 a 3) indicano il gioco. Dopo la stampa indica il migliore nella scheda Stampa → Campioni di prova.": "モデルから切り出したピースです。3個あるものは、印（1〜3）がすき間を示します。印刷後、印刷 → テストピースでいちばん良いものを選んでください。"
+ "Sono pezzi del tuo modello: dove ce ne sono 3, i segni (da 1 a 3) indicano il gioco. Dopo la stampa indica il migliore nella scheda Stampa → Campioni di prova.": "モデルから切り出したピースです。3個あるものは、印（1〜3）がすき間を示します。印刷後、印刷 → テストピースでいちばん良いものを選んでください。",
+ "Un solo pezzo con il perno: infila sullo stesso perno i pezzi forati, uno alla volta.": "ピン付きのピースは1つだけです。穴あきピースを同じピンに1つずつ差し込んでください。"
 }

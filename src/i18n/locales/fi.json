@@ -583,5 +583,6 @@
  "Dove ci sono 3 campioni, i segni (da 1 a 3) indicano il gioco provato.": "Kun kappaleita on 3, merkit (1–3) kertovat testatun välyksen.",
  "Monta i pezzi: se entrano a fatica o ballano, dillo all’assistente prima di stampare il modello.": "Kokoa kappaleet: jos ne menevät tiukasti tai heiluvat, kerro avustajalle ennen mallin tulostamista.",
  "Sono pezzi del tuo modello ritagliati attorno alle parti incerte.": "Nämä ovat mallisi paloja, leikattu epävarmojen kohtien ympäriltä.",
- "Sono pezzi del tuo modello: dove ce ne sono 3, i segni (da 1 a 3) indicano il gioco. Dopo la stampa indica il migliore nella scheda Stampa → Campioni di prova.": "Nämä ovat mallisi paloja: kun niitä on 3, merkit (1–3) kertovat välyksen. Valitse tulostuksen jälkeen paras kohdassa Tulostus → Testikappaleet."
+ "Sono pezzi del tuo modello: dove ce ne sono 3, i segni (da 1 a 3) indicano il gioco. Dopo la stampa indica il migliore nella scheda Stampa → Campioni di prova.": "Nämä ovat mallisi paloja: kun niitä on 3, merkit (1–3) kertovat välyksen. Valitse tulostuksen jälkeen paras kohdassa Tulostus → Testikappaleet.",
+ "Un solo pezzo con il perno: infila sullo stesso perno i pezzi forati, uno alla volta.": "Vain yksi tappikappale: pujota reiälliset kappaleet samaan tappiin yksi kerrallaan."
 }

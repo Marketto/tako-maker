@@ -136,10 +136,12 @@ export interface SampleSeries {
   filament: Filament;
   /** Valori provati (3 per i giochi); assenti per le prove di misura (1 campione). */
   values?: number[];
+  /** Il pezzo con il perno è uguale in tutte le varianti: se ne stampa uno solo (cambia solo il foro). */
+  sharedPin?: boolean;
 }
 
 interface SeriesBuilder extends SampleSeries {
-  build(index: number, value?: number): { design: Design; tol: Record<string, Tolerances>; arrange: Arrange; size: [number, number] };
+  build(index: number, value?: number): { design: Design; tol: Record<string, Tolerances>; arrange: Arrange; size: [number, number]; drop?: string[] };
 }
 
 export interface Coupon {
@@ -154,6 +156,8 @@ export interface Coupon {
   arrange: Arrange;
   /** Ingombro sul piatto [x, y]: stimato, poi ricalcolato dopo aver sistemato i pezzi. */
   size: [number, number];
+  /** Parti calcolate ma non stampate (il perno condiviso, già presente nella prima variante). */
+  drop?: string[];
 }
 
 const box = (size: Vec3, at?: Vec3, radius = 0.6): ShapeNode => ({ op: 'box', size, at, radius });
@@ -219,6 +223,9 @@ function jointSeries(kind: TestKind, j: Joint, design: Design, setup: UserSetup,
   const fil = new Map(setup.filaments.map((f) => [f.id, f.material]));
   const tolOf = (p: Part) => tolerancesFor(fil.get(p.filamentId ?? '') ?? material, setup);
   const name = `${t(TEST_LABEL[kind])}: ${partB.name}`;
+  // Nei perni rotanti il gioco sta tutto nel foro di B: il pezzo A è identico nelle 3 varianti.
+  // Fa eccezione la prova del gioco su un giunto con scatto, dove il dentino di A si sposta col gioco.
+  const sharedPin = !hinge && !(kind === 'rotary' && j.detent?.enabled);
   return {
     id: `${kind}:${j.id}`,
     kind,
@@ -227,6 +234,7 @@ function jointSeries(kind: TestKind, j: Joint, design: Design, setup: UserSetup,
     material,
     filament,
     values,
+    sharedPin,
     build(index, value) {
       const n = index + 1;
       let marksA: ShapeNode[];
@@ -237,7 +245,7 @@ function jointSeries(kind: TestKind, j: Joint, design: Design, setup: UserSetup,
       } else {
         // Perno rotante: segni sulle facce lontane dal giunto, fuori dal foro.
         const s = R * 0.5 + 1.6;
-        marksA = axisMarks(n, a, j.origin, j.origin[a] - dir * half, s, 1.8, 0.7);
+        marksA = sharedPin ? [] : axisMarks(n, a, j.origin, j.origin[a] - dir * half, s, 1.8, 0.7);
         marksB = axisMarks(n, a, j.origin, j.origin[a] + dir * half, s, 1.8, 0.7);
       }
       const parts = [cropped(partA, region, partA.id, marksA), cropped(partB, region, partB.id, marksB)];
@@ -246,7 +254,13 @@ function jointSeries(kind: TestKind, j: Joint, design: Design, setup: UserSetup,
       const tag = `${name} ${value === undefined ? '' : VALUE_LABEL(value)} ${DOT_LABEL(n)}`;
       const arrange: Arrange = hinge ? { mode: 'asis' } : { mode: 'axis', axis: a as 0 | 1 | 2, dir };
       const w = 2 * (R + 5);
-      return { design: couponDesign(tag, parts, [{ ...j }]), tol, arrange, size: hinge ? [region.max[0] - region.min[0], region.max[1] - region.min[1]] : [2 * w + 4, w] };
+      return {
+        design: couponDesign(tag, parts, [{ ...j }]),
+        tol,
+        arrange,
+        size: hinge ? [region.max[0] - region.min[0], region.max[1] - region.min[1]] : [2 * w + 4, w],
+        drop: sharedPin && index > 0 ? [partA.id] : undefined,
+      };
     },
   };
 }
@@ -262,11 +276,12 @@ function pegSeries(kind: 'snap' | 'glue', material: string, filament: Filament, 
     material,
     filament,
     values: testValues(kind, material),
+    sharedPin: true,
     build(index, value = 0) {
       const n = index + 1;
       const tag = `${name} ${VALUE_LABEL(value)} ${DOT_LABEL(n)}`;
       const parts: Part[] = [
-        { id: 'a', name: t('perno'), filamentId: filament.id, shape: { op: 'union', children: [box([16, 16, 5]), { op: 'cylinder', h: 5, r: 2.5, at: [8, 8, 4] }, ...dots(n, 5)] } },
+        { id: 'a', name: t('perno'), filamentId: filament.id, shape: { op: 'union', children: [box([16, 16, 5]), { op: 'cylinder', h: 5, r: 2.5, at: [8, 8, 4] }] } },
         {
           id: 'b',
           name: t('foro'),
@@ -275,7 +290,7 @@ function pegSeries(kind: 'snap' | 'glue', material: string, filament: Filament, 
         },
       ];
       const tol = { ...tolerancesFor(material, setup), ...applyTestValue(kind, value) };
-      return { design: couponDesign(tag, parts), tol: { a: tol, b: tol }, arrange: { mode: 'asis' }, size: [38, 16] };
+      return { design: couponDesign(tag, parts), tol: { a: tol, b: tol }, arrange: { mode: 'asis' }, size: [38, 16], drop: index > 0 ? ['a'] : undefined };
     },
   };
 }
@@ -401,7 +416,7 @@ export function seriesCoupons(s: SampleSeries): Coupon[] {
   const values: (number | undefined)[] = s.values ?? [undefined];
   return values.map((value, index) => {
     const r = b.build(index, value);
-    return { id: `${s.id}#${index + 1}`, series: s, index, value, material: s.material, design: r.design, tol: r.tol, arrange: r.arrange, size: r.size };
+    return { id: `${s.id}#${index + 1}`, series: s, index, value, material: s.material, design: r.design, tol: r.tol, arrange: r.arrange, size: r.size, drop: r.drop };
   });
 }
 
@@ -458,6 +473,7 @@ export function readmeText(plates: PlateLayout[]): string {
     const coupons = ps.flatMap((p) => p.items.map((i) => i.coupon));
     for (const s of [...new Map(coupons.map((c) => [c.series.id, c.series])).values()]) {
       lines.push(`${s.name}: ${s.howto}`);
+      if (s.sharedPin && s.values?.length) lines.push(`  ${t('Un solo pezzo con il perno: infila sullo stesso perno i pezzi forati, uno alla volta.')}`);
       for (const c of coupons.filter((x) => x.series.id === s.id && x.value !== undefined)) lines.push(`  ${DOT_LABEL(c.index + 1).padEnd(4)} = ${VALUE_LABEL(c.value!)}`);
     }
     lines.push('');
