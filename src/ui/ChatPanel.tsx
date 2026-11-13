@@ -259,11 +259,19 @@ function ConnectorPanel({ session, snap }: { session: ProjectSession; snap: Snap
     );
   }
   const starter = t('Usa Printopus con il codice {code}.', { code: c.code });
+  // Chat nuova con la frase già scritta (e copiata, se Claude non la precompila): ogni messaggio rilegge tutta la conversazione,
+  // quindi quando è lunga conviene ripartire. Modello e ultimi messaggi restano nel connettore.
+  const newChat = (
+    <a className="btn small ghost" href={`https://claude.ai/new?q=${encodeURIComponent(starter)}`} target="_blank" rel="noreferrer" onClick={() => void copy('start', starter)} title={t('Apre una conversazione nuova con il codice: consuma meno token di una chat lunga.')}>
+      {t('Nuova chat')} ↗
+    </a>
+  );
   // Quando la chat ha aperto il progetto il pannello si chiude: restano «Scollega» ed «Espandi».
   if (c.linked && !help) {
     return (
       <div className="connector compact">
         <span className="connector-dot" aria-hidden="true" />
+        {newChat}
         <button className="link small" onClick={() => void session.disconnect()}>{t('Scollega')}</button>
         <button className="link small" aria-expanded="false" onClick={() => setHelp(true)}>{t('Espandi')}</button>
       </div>
@@ -288,11 +296,15 @@ function ConnectorPanel({ session, snap }: { session: ProjectSession; snap: Snap
           <div className="row gap wrap">
             <code className="connector-url">{starter}</code>
             <button className="btn small primary" onClick={() => void copy('start', starter)}>{copied === 'start' ? t('Copiato ✓') : t('Copia')}</button>
-            <a className="btn small ghost" href="https://claude.ai/new" target="_blank" rel="noreferrer">Claude ↗</a>
+            <a className="btn small ghost" href={`https://claude.ai/new?q=${encodeURIComponent(starter)}`} target="_blank" rel="noreferrer">Claude ↗</a>
           </div>
         </li>
         <li>
           <span>{t('Le modifiche compaiono qui da sole, con le domande dell’app: puoi rispondere qui o in chat.')}</span>
+        </li>
+        <li>
+          <span>{t('Quando la conversazione diventa lunga, continua in una chat nuova: il progetto resta salvato e consumi meno token.')}</span>
+          <div className="row gap wrap">{newChat}</div>
         </li>
       </ol>
       <div className="row gap wrap">

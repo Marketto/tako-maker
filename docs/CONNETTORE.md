@@ -28,12 +28,26 @@ primo avvio):
 Un Cloudflare Worker (`connector/`) espone:
 
 - `POST /mcp`: server MCP (trasporto streamable HTTP con risposte JSON, senza stato). Gli strumenti sono:
-  - `printopus_apri`: regole, stampante, modello, analisi e domande aperte;
+  - `printopus_apri`: regole, stampante, modello, analisi, domande aperte e ultimi messaggi, una volta per conversazione;
+  - `printopus_stato`: solo modello, analisi e domande (leggero, per rileggere dopo un cambio nell'app);
   - `printopus_modifica`: operazioni del Design DSL, validate e salvate dal Worker;
   - `printopus_rispondi`: risposta a una domanda automatica dell'app;
   - `printopus_mostra_risultati`: modelli trovati con la ricerca web della chat.
 - `POST /sessione`, `GET` e `PUT /sessione/<codice>`: la PWA crea la sessione condivisa e la sincronizza ogni 2,5 secondi mentre è aperta e in primo piano.
 - `POST /sessione/<codice>/analisi`: la PWA rimanda l'analisi del modello che ha calcolato.
+
+### Consumo di token nella chat
+
+- **Ogni messaggio rilegge tutta la conversazione**, risposte degli strumenti comprese: il consumo cresce sempre più in fretta.
+  `printopus_apri` è il pezzo più grosso (circa 30.000 caratteri tra regole, DSL, catalogo e modello).
+- **Una sola apertura.** Le istruzioni dicono di chiamare `printopus_apri` una volta e poi `printopus_stato`, che contiene
+  solo modello e analisi. `printopus_modifica` restituisce già l'analisi.
+- **Chat nuova invece della compattazione.** Su claude.ai non c'è un comando per compattare la conversazione. Il progetto però vive
+  nel connettore, quindi si può ripartire da zero:
+  - dopo `LONG_CHAT_CALLS` chiamate (12) dall'ultima apertura, il connettore chiede a Claude di proporre una chat nuova, e lo ripete ogni 6;
+  - `printopus_apri` riporta gli ultimi messaggi, così la chat nuova sa a che punto si era;
+  - nell'app il pulsante «Nuova chat» apre claude.ai con la frase del codice già scritta (e la copia).
+- **Il contatore dell'app** stima solo il testo degli strumenti, non le riletture: il consumo reale è più alto.
 
 ### Chi calcola cosa
 

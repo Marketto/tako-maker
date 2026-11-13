@@ -576,5 +576,8 @@
  "Sincronizzo con {provider}…": "Qed nissinkronizza ma' {provider}…",
  "Sincronizzo…": "Qed nissinkronizza…",
  "Tutto salvato · ultima sincronizzazione {time}": "Kollox maħżun · l-aħħar sinkronizzazzjoni {time}",
- "Ultimo tentativo non riuscito ({error}): riprovo alla prossima modifica.": "L-aħħar tentattiv falla ({error}): se nerġa' nipprova mal-bidla li jmiss."
+ "Ultimo tentativo non riuscito ({error}): riprovo alla prossima modifica.": "L-aħħar tentattiv falla ({error}): se nerġa' nipprova mal-bidla li jmiss.",
+ "Apre una conversazione nuova con il codice: consuma meno token di una chat lunga.": "Jiftaħ konversazzjoni ġdida bil-kodiċi: tuża inqas tokens minn chat twil.",
+ "Nuova chat": "Chat ġdid",
+ "Quando la conversazione diventa lunga, continua in una chat nuova: il progetto resta salvato e consumi meno token.": "Meta l-konversazzjoni ssir twila, kompli f'chat ġdid: il-proġett jibqa' salvat u tuża inqas tokens."
 }

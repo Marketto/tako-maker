@@ -576,5 +576,8 @@
  "Sincronizzo con {provider}…": "Ag sioncrónú le {provider}…",
  "Sincronizzo…": "Ag sioncrónú…",
  "Tutto salvato · ultima sincronizzazione {time}": "Gach rud sábháilte · an sioncrónú deireanach {time}",
- "Ultimo tentativo non riuscito ({error}): riprovo alla prossima modifica.": "Theip ar an iarracht dheireanach ({error}): bainfidh mé triail eile as ag an athrú dár gcionn."
+ "Ultimo tentativo non riuscito ({error}): riprovo alla prossima modifica.": "Theip ar an iarracht dheireanach ({error}): bainfidh mé triail eile as ag an athrú dár gcionn.",
+ "Apre una conversazione nuova con il codice: consuma meno token di una chat lunga.": "Osclaíonn sé comhrá nua leis an gcód: úsáideann sé níos lú comharthaí ná comhrá fada.",
+ "Nuova chat": "Comhrá nua",
+ "Quando la conversazione diventa lunga, continua in una chat nuova: il progetto resta salvato e consumi meno token.": "Nuair a éiríonn an comhrá fada, lean ar aghaidh i gcomhrá nua: fanann an tionscadal sábháilte agus úsáideann tú níos lú comharthaí."
 }

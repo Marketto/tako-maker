@@ -576,5 +576,8 @@
  "Sincronizzo con {provider}…": "Sinhroniziram s {provider}…",
  "Sincronizzo…": "Sinhroniziram…",
  "Tutto salvato · ultima sincronizzazione {time}": "Sve je spremljeno · posljednja sinhronizacija {time}",
- "Ultimo tentativo non riuscito ({error}): riprovo alla prossima modifica.": "Posljednji pokušaj nije uspio ({error}): pokušat ću ponovo pri sljedećoj izmjeni."
+ "Ultimo tentativo non riuscito ({error}): riprovo alla prossima modifica.": "Posljednji pokušaj nije uspio ({error}): pokušat ću ponovo pri sljedećoj izmjeni.",
+ "Apre una conversazione nuova con il codice: consuma meno token di una chat lunga.": "Otvara novi razgovor s kodom: troši manje tokena od dugog chata.",
+ "Nuova chat": "Novi chat",
+ "Quando la conversazione diventa lunga, continua in una chat nuova: il progetto resta salvato e consumi meno token.": "Kada razgovor postane dug, nastavi u novom chatu: projekat ostaje sačuvan i trošiš manje tokena."
 }

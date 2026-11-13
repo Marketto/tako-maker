@@ -576,5 +576,8 @@
  "Sincronizzo con {provider}…": "Ech synchroniséieren mat {provider}…",
  "Sincronizzo…": "Ech synchroniséieren…",
  "Tutto salvato · ultima sincronizzazione {time}": "Alles gespäichert · lescht Synchronisatioun {time}",
- "Ultimo tentativo non riuscito ({error}): riprovo alla prossima modifica.": "Leschte Versuch ass feelgeschloen ({error}): ech probéieren et bei der nächster Ännerung nach eng Kéier."
+ "Ultimo tentativo non riuscito ({error}): riprovo alla prossima modifica.": "Leschte Versuch ass feelgeschloen ({error}): ech probéieren et bei der nächster Ännerung nach eng Kéier.",
+ "Apre una conversazione nuova con il codice: consuma meno token di una chat lunga.": "Mécht eng nei Konversatioun mam Code op: verbraucht manner Tokens wéi e laange Chat.",
+ "Nuova chat": "Neie Chat",
+ "Quando la conversazione diventa lunga, continua in una chat nuova: il progetto resta salvato e consumi meno token.": "Wann d'Konversatioun laang gëtt, fuer an engem neie Chat weider: de Projet bleift gespäichert an du verbrauchs manner Tokens."
 }

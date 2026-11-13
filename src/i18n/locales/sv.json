@@ -576,5 +576,8 @@
  "Sincronizzo con {provider}…": "Synkroniserar med {provider}…",
  "Sincronizzo…": "Synkroniserar…",
  "Tutto salvato · ultima sincronizzazione {time}": "Allt sparat · senaste synkronisering {time}",
- "Ultimo tentativo non riuscito ({error}): riprovo alla prossima modifica.": "Senaste försöket misslyckades ({error}): jag försöker igen vid nästa ändring."
+ "Ultimo tentativo non riuscito ({error}): riprovo alla prossima modifica.": "Senaste försöket misslyckades ({error}): jag försöker igen vid nästa ändring.",
+ "Apre una conversazione nuova con il codice: consuma meno token di una chat lunga.": "Öppnar en ny konversation med koden: använder färre tokens än en lång chatt.",
+ "Nuova chat": "Ny chatt",
+ "Quando la conversazione diventa lunga, continua in una chat nuova: il progetto resta salvato e consumi meno token.": "När konversationen blir lång, fortsätt i en ny chatt: projektet förblir sparat och du använder färre tokens."
 }

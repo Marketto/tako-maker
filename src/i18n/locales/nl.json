@@ -576,5 +576,8 @@
  "Sincronizzo con {provider}…": "Synchroniseren met {provider}…",
  "Sincronizzo…": "Synchroniseren…",
  "Tutto salvato · ultima sincronizzazione {time}": "Alles opgeslagen · laatste synchronisatie {time}",
- "Ultimo tentativo non riuscito ({error}): riprovo alla prossima modifica.": "Laatste poging mislukt ({error}): ik probeer het opnieuw bij de volgende wijziging."
+ "Ultimo tentativo non riuscito ({error}): riprovo alla prossima modifica.": "Laatste poging mislukt ({error}): ik probeer het opnieuw bij de volgende wijziging.",
+ "Apre una conversazione nuova con il codice: consuma meno token di una chat lunga.": "Opent een nieuw gesprek met de code: verbruikt minder tokens dan een lange chat.",
+ "Nuova chat": "Nieuwe chat",
+ "Quando la conversazione diventa lunga, continua in una chat nuova: il progetto resta salvato e consumi meno token.": "Als het gesprek lang wordt, ga verder in een nieuwe chat: het project blijft bewaard en je verbruikt minder tokens."
 }

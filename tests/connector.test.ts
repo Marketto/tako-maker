@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { apiCreate, apiPut, apiReport, handleRpc } from '../src/connector/server';
+import { apiCreate, apiPut, apiReport, handleRpc, LONG_CHAT_CALLS } from '../src/connector/server';
 import { designKey, newCode, normalizeCode, CODE_RE, type ConnectorState } from '../src/connector/state';
 import { emptyDesign } from '../src/core/types';
 import { printer, setup } from './fixtures';
@@ -33,7 +33,7 @@ describe('connettore MCP', () => {
     expect(init.result.instructions).toMatch(/codice/);
     expect(await handleRpc({ jsonrpc: '2.0', method: 'notifications/initialized' }, deps)).toBeNull();
     const list = (await handleRpc({ jsonrpc: '2.0', id: 2, method: 'tools/list' }, deps)) as { result: { tools: { name: string }[] } };
-    expect(list.result.tools.map((t) => t.name)).toEqual(['printopus_apri', 'printopus_modifica', 'printopus_rispondi', 'printopus_mostra_risultati']);
+    expect(list.result.tools.map((t) => t.name)).toEqual(['printopus_apri', 'printopus_stato', 'printopus_modifica', 'printopus_rispondi', 'printopus_mostra_risultati']);
     const bad = (await handleRpc({ jsonrpc: '2.0', id: 3, method: 'resources/list' }, deps)) as { error: { code: number } };
     expect(bad.error.code).toBe(-32601);
   });
@@ -134,5 +134,20 @@ describe('connettore MCP', () => {
     expect(state().report!.text).toBe('Analisi');
     const created = await apiCreate(deps, initial(), () => code);
     expect(created.status).toBe(503);
+  });
+
+  it('stato leggero, ultimi messaggi in apertura e consiglio di una chat nuova quando è lunga', async () => {
+    const { call, code } = await setupSession();
+    const opened = await call('printopus_apri', {});
+    await call('printopus_modifica', { ops: [box('a')], messaggio: 'Ecco il primo cubo.' });
+    const stato = await call('printopus_stato', {});
+    expect(stato.isError).toBe(false);
+    expect(stato.text).toContain('## Analisi di stampa');
+    expect(stato.text.length).toBeLessThan(opened.text.length / 3);
+    expect((await call('printopus_apri', {})).text).toContain('Assistente: Ecco il primo cubo.');
+    const texts: string[] = [];
+    for (let i = 1; i < LONG_CHAT_CALLS; i++) texts.push((await call('printopus_stato', {})).text);
+    expect(texts.slice(0, -1).some((t) => t.includes('chat nuova'))).toBe(false);
+    expect(texts.at(-1)).toContain(`Usa Printopus con il codice ${code}`);
   });
 });

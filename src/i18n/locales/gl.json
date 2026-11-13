@@ -576,5 +576,8 @@
  "Sincronizzo con {provider}…": "Sincronizando con {provider}…",
  "Sincronizzo…": "Sincronizando…",
  "Tutto salvato · ultima sincronizzazione {time}": "Todo gardado · última sincronización {time}",
- "Ultimo tentativo non riuscito ({error}): riprovo alla prossima modifica.": "O último intento fallou ({error}): volverei tentalo no seguinte cambio."
+ "Ultimo tentativo non riuscito ({error}): riprovo alla prossima modifica.": "O último intento fallou ({error}): volverei tentalo no seguinte cambio.",
+ "Apre una conversazione nuova con il codice: consuma meno token di una chat lunga.": "Abre unha conversa nova co código: consome menos tokens ca un chat longo.",
+ "Nuova chat": "Chat novo",
+ "Quando la conversazione diventa lunga, continua in una chat nuova: il progetto resta salvato e consumi meno token.": "Cando a conversa se faga longa, continúa nun chat novo: o proxecto queda gardado e consomes menos tokens."
 }

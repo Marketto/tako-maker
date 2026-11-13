@@ -576,5 +576,8 @@
  "Sincronizzo con {provider}…": "{provider}와(과) 동기화 중…",
  "Sincronizzo…": "동기화 중…",
  "Tutto salvato · ultima sincronizzazione {time}": "모두 저장됨 · 마지막 동기화 {time}",
- "Ultimo tentativo non riuscito ({error}): riprovo alla prossima modifica.": "마지막 시도에 실패했습니다({error}). 다음 변경 시 다시 시도합니다."
+ "Ultimo tentativo non riuscito ({error}): riprovo alla prossima modifica.": "마지막 시도에 실패했습니다({error}). 다음 변경 시 다시 시도합니다.",
+ "Apre una conversazione nuova con il codice: consuma meno token di una chat lunga.": "코드로 새 대화를 엽니다. 긴 채팅보다 토큰을 적게 씁니다.",
+ "Nuova chat": "새 채팅",
+ "Quando la conversazione diventa lunga, continua in una chat nuova: il progetto resta salvato e consumi meno token.": "대화가 길어지면 새 채팅에서 이어 가세요. 프로젝트는 저장된 채로 남고 토큰도 적게 씁니다."
 }

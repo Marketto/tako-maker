@@ -576,5 +576,8 @@
  "Sincronizzo con {provider}…": "Szinkronizálás: {provider}…",
  "Sincronizzo…": "Szinkronizálás…",
  "Tutto salvato · ultima sincronizzazione {time}": "Minden mentve · utolsó szinkronizálás: {time}",
- "Ultimo tentativo non riuscito ({error}): riprovo alla prossima modifica.": "Az utolsó próbálkozás nem sikerült ({error}): a következő módosításnál újrapróbálom."
+ "Ultimo tentativo non riuscito ({error}): riprovo alla prossima modifica.": "Az utolsó próbálkozás nem sikerült ({error}): a következő módosításnál újrapróbálom.",
+ "Apre una conversazione nuova con il codice: consuma meno token di una chat lunga.": "Új beszélgetést nyit a kóddal: kevesebb tokent használ, mint egy hosszú csevegés.",
+ "Nuova chat": "Új csevegés",
+ "Quando la conversazione diventa lunga, continua in una chat nuova: il progetto resta salvato e consumi meno token.": "Ha a beszélgetés hosszúra nyúlik, folytasd egy új csevegésben: a projekt mentve marad, és kevesebb tokent használsz."
 }

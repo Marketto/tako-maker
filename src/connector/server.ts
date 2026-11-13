@@ -33,8 +33,8 @@ const PROTOCOL = '2025-06-18';
 
 export const INSTRUCTIONS = [
   'Printopus aiuta a progettare oggetti da stampare in 3D sulla stampante dell’utente.',
-  'Per iniziare chiedi all’utente il codice di abbinamento mostrato nell’app Printopus (formato XXXX-XXXX-XX), poi chiama printopus_apri: riceverai regole, stampante, filamenti e modello attuale.',
-  'Modifica il modello solo con printopus_modifica. Rispondi all’utente nella sua lingua, con frasi brevi.',
+  'Per iniziare chiedi all’utente il codice di abbinamento mostrato nell’app Printopus (formato XXXX-XXXX-XX), poi chiama printopus_apri una sola volta: riceverai regole, stampante, filamenti e modello attuale.',
+  'Per rileggere modello e analisi usa printopus_stato, più leggero. Modifica il modello solo con printopus_modifica. Rispondi all’utente nella sua lingua, con frasi brevi.',
 ].join(' ');
 
 const codeProp = { codice: { type: 'string', description: 'Codice di abbinamento mostrato nell’app Printopus, es. K7QM-2XPA-9D' } };
@@ -43,7 +43,14 @@ export const TOOLS = [
   {
     name: 'printopus_apri',
     title: 'Apri il progetto Printopus',
-    description: 'Collega la chat al progetto aperto nell’app Printopus. Restituisce le regole da seguire, stampante e filamenti dell’utente, il modello attuale (Design DSL) e l’analisi di stampa. Chiamalo all’inizio e quando l’utente dice di aver cambiato qualcosa nell’app.',
+    description: 'Collega la chat al progetto aperto nell’app Printopus. Restituisce le regole da seguire, stampante e filamenti dell’utente, il modello attuale (Design DSL), l’analisi di stampa e gli ultimi messaggi. Chiamalo una sola volta, all’inizio della conversazione: è lungo.',
+    inputSchema: { type: 'object', properties: codeProp, required: ['codice'] },
+    annotations: { readOnlyHint: true },
+  },
+  {
+    name: 'printopus_stato',
+    title: 'Leggi modello e analisi',
+    description: 'Solo modello attuale, analisi di stampa e domande aperte, senza regole. Usalo quando l’utente dice di aver cambiato qualcosa nell’app. Non serve dopo printopus_modifica, che restituisce già l’analisi.',
     inputSchema: { type: 'object', properties: codeProp, required: ['codice'] },
     annotations: { readOnlyHint: true },
   },
@@ -203,34 +210,47 @@ function changed(deps: ServerDeps, s: ConnectorState, patch: Partial<ConnectorSt
   return { ...s, ...patch, v: s.v + 1, updatedAt: now, notes: note ? [...s.notes, { ...note, at: now }].slice(-MAX_NOTES) : s.notes };
 }
 
-/** Somma la stima dei token della chiamata (non cambia versione). */
-async function trackUsage(deps: ServerDeps, code: string, res: ToolText, args: Json, firstOpen: boolean) {
-  await update(deps.store, code, (s) => ({
-    out: null,
-    next: {
-      ...s,
-      usage: addTally(s.usage, {
-        calls: 1,
-        inputTokens: estimateTokens(res.content.map((c) => c.text).join('\n')) + (firstOpen ? SETUP_TOKENS : 0),
-        outputTokens: estimateTokens(JSON.stringify(args)),
-      }),
-    },
-  })).catch(() => null);
+/** Dopo quante chiamate nella stessa conversazione si consiglia di continuare in una chat nuova. */
+export const LONG_CHAT_CALLS = 12;
+
+/** Somma la stima dei token della chiamata (non cambia versione) e conta le chiamate della conversazione. */
+async function trackUsage(deps: ServerDeps, code: string, res: ToolText, args: Json, opened: boolean): Promise<number> {
+  const r = await update(deps.store, code, (s) => {
+    const calls = opened ? 1 : (s.callsSinceOpen ?? 0) + 1;
+    return {
+      out: calls,
+      next: {
+        ...s,
+        callsSinceOpen: calls,
+        usage: addTally(s.usage, {
+          calls: 1,
+          // Ogni apertura è una conversazione nuova: la chat rilegge anche istruzioni e definizioni degli strumenti.
+          inputTokens: estimateTokens(res.content.map((c) => c.text).join('\n')) + (opened ? SETUP_TOKENS : 0),
+          outputTokens: estimateTokens(JSON.stringify(args)),
+        }),
+      },
+    };
+  }).catch(() => null);
+  return r?.out ?? 0;
 }
+
+/** Ogni messaggio rilegge tutta la conversazione: quando è lunga conviene ripartire, il progetto resta salvato. */
+const longChat = (code: string) =>
+  `Nota per te: la conversazione è lunga e ogni messaggio la rilegge tutta. Alla fine della risposta proponi all’utente, in una frase, di continuare in una chat nuova scrivendo «Usa Printopus con il codice ${code}»: modello, scelte e ultimi messaggi restano salvati in Printopus (c’è anche il pulsante «Nuova chat» nell’app).`;
 
 async function callTool(name: string, args: Json, deps: ServerDeps) {
   const code = loadCode(args);
   if (typeof code !== 'string') return text(code.error, true);
   const out = await runConnectorTool(name, args, deps, code);
   if (out.missing) return text(MISSING, true);
-  await trackUsage(deps, code, out.res, args, !!out.firstOpen);
+  const calls = await trackUsage(deps, code, out.res, args, name === 'printopus_apri');
+  if (calls >= LONG_CHAT_CALLS && (calls - LONG_CHAT_CALLS) % 6 === 0) return { ...out.res, content: out.res.content.map((c, i) => (i === 0 ? { ...c, text: `${c.text}\n\n${longChat(code)}` } : c)) };
   return out.res;
 }
 
 interface ToolOut {
   res: ToolText;
   missing?: boolean;
-  firstOpen?: boolean;
 }
 const missing: ToolOut = { res: text(MISSING, true), missing: true };
 
@@ -241,6 +261,25 @@ async function afterChange(deps: ServerDeps, code: string, saved: ConnectorState
   if (report.errors.length)
     return text([head, `Modifica salvata (versione ${saved.v}), ma la geometria non è valida: ${report.errors.join(' | ')}`, 'Correggi con un’altra printopus_modifica.'].join('\n'));
   return text([head, `OK. ${report.text}`, '', questionsText(report.questions), '', `Anteprima aggiornata nell’app: ${appLink(deps, code)}`].join('\n'));
+}
+
+/** Modello attuale, analisi (calcolata dall'app) e domande aperte. */
+async function modelSection(deps: ServerDeps, code: string, state: ConnectorState): Promise<string[]> {
+  if (!state.design.parts.length) return ['## Modello attuale', 'Il modello è vuoto: chiedi all’utente cosa vuole stampare (o crealo se l’ha già detto).'];
+  const out = ['## Modello attuale', compactDesign(state.design), '', '## Analisi di stampa'];
+  const report = await waitReport(deps, code, designKey(state), 6000);
+  if (report) out.push(report.errors.length ? `Geometria non valida: ${report.errors.join(' | ')}` : report.text, '', questionsText(report.questions));
+  else out.push(noApp(deps, code));
+  return out;
+}
+
+/** Gli ultimi messaggi, accorciati: una chat nuova sa a che punto si era arrivati. */
+function recentNotes(state: ConnectorState): string {
+  return state.notes
+    .filter((n) => n.text.trim())
+    .slice(-8)
+    .map((n) => `- ${n.role === 'user' ? 'Utente' : 'Assistente'}: ${n.text.length > 200 ? `${n.text.slice(0, 200)}…` : n.text}`)
+    .join('\n');
 }
 
 async function runConnectorTool(name: string, args: Json, deps: ServerDeps, code: string): Promise<ToolOut> {
@@ -267,6 +306,7 @@ async function runConnectorTool(name: string, args: Json, deps: ServerDeps, code
         '- print_report → l’analisi è qui sotto e arriva dopo ogni modifica (la calcola l’app aperta).',
         '- consulta_catalogo → il catalogo dei dettagli è qui sotto: rispetta quelle misure per meccanismi, supporti e piatto.',
         '- Le domande automatiche dell’app (strategia, colori, scatti, pulsanti, elementi da acquistare) sono elencate dopo ogni modifica: chiedile all’utente e registra la scelta con printopus_rispondi.',
+        '- Non richiamare printopus_apri: per rileggere modello e analisi (es. l’utente ha cambiato qualcosa nell’app) usa printopus_stato.',
         '- Le parti importate da file (mesh) non sono disponibili qui: chiedi all’utente di modificarle dall’app con la chiave API o il copia e incolla.',
         '- Se uno strumento dice che la modifica è salvata, non ripeterla: l’app la riceve da sola.',
         '',
@@ -278,15 +318,16 @@ async function runConnectorTool(name: string, args: Json, deps: ServerDeps, code
         '## Catalogo dei dettagli provati in stampa',
         catalogText(),
       ];
-      if (state.design.parts.length) {
-        const report = await waitReport(deps, code, designKey(state), 6000);
-        parts.push('', '## Modello attuale', compactDesign(state.design), '', '## Analisi di stampa');
-        if (report) parts.push(report.errors.length ? `Geometria non valida: ${report.errors.join(' | ')}` : report.text, '', questionsText(report.questions));
-        else parts.push(noApp(deps, code));
-      } else {
-        parts.push('', '## Modello attuale', 'Il modello è vuoto: chiedi all’utente cosa vuole stampare (o crealo se l’ha già detto).');
-      }
-      return { res: text(parts.join('\n')), firstOpen: opened.out };
+      const recent = recentNotes(state);
+      if (recent) parts.push('', '## Ultimi messaggi (conversazioni precedenti su questo progetto)', recent);
+      parts.push('', ...(await modelSection(deps, code, state)));
+      return { res: text(parts.join('\n')) };
+    }
+
+    case 'printopus_stato': {
+      const cur = await deps.store.get(code);
+      if (!cur) return missing;
+      return { res: text((await modelSection(deps, code, cur.state)).join('\n')) };
     }
 
     case 'printopus_modifica': {

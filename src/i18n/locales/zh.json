@@ -576,5 +576,8 @@
  "Sincronizzo con {provider}…": "正在与 {provider} 同步…",
  "Sincronizzo…": "正在同步…",
  "Tutto salvato · ultima sincronizzazione {time}": "全部已保存 · 上次同步 {time}",
- "Ultimo tentativo non riuscito ({error}): riprovo alla prossima modifica.": "上次尝试失败（{error}）：下次修改时再试。"
+ "Ultimo tentativo non riuscito ({error}): riprovo alla prossima modifica.": "上次尝试失败（{error}）：下次修改时再试。",
+ "Apre una conversazione nuova con il codice: consuma meno token di una chat lunga.": "用代码打开新对话：比长对话消耗更少的令牌。",
+ "Nuova chat": "新对话",
+ "Quando la conversazione diventa lunga, continua in una chat nuova: il progetto resta salvato e consumi meno token.": "对话变长时，在新对话中继续：项目会保存下来，令牌消耗也更少。"
 }

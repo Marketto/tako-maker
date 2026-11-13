@@ -576,5 +576,8 @@
  "Sincronizzo con {provider}…": "{provider} と同期中…",
  "Sincronizzo…": "同期中…",
  "Tutto salvato · ultima sincronizzazione {time}": "すべて保存済み · 最終同期 {time}",
- "Ultimo tentativo non riuscito ({error}): riprovo alla prossima modifica.": "前回の試行に失敗しました（{error}）。次の変更時に再試行します。"
+ "Ultimo tentativo non riuscito ({error}): riprovo alla prossima modifica.": "前回の試行に失敗しました（{error}）。次の変更時に再試行します。",
+ "Apre una conversazione nuova con il codice: consuma meno token di una chat lunga.": "コード付きで新しい会話を開きます。長いチャットよりトークンの消費が少なくなります。",
+ "Nuova chat": "新しいチャット",
+ "Quando la conversazione diventa lunga, continua in una chat nuova: il progetto resta salvato e consumi meno token.": "会話が長くなったら新しいチャットで続けましょう。プロジェクトは保存されたままで、トークンの消費も減ります。"
 }
