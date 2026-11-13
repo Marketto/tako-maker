@@ -22,6 +22,9 @@ albanese, serbo, svedese, turco, ucraino), più russo, arabo, cinese semplificat
 1. Scrivi la frase nel codice con `t()` o `msg()`. Frasi intere: non comporre pezzi (`'punt' + (n === 1 ? 'o' : 'i')`), usa due frasi per singolare e plurale.
 2. `npm run i18n:extract` aggiorna `src/i18n/source.json`.
 3. Aggiungi la traduzione in ogni file di `src/i18n/locales/`.
+   - Le chiavi mancanti sono quelle di `src/i18n/source.json` che non compaiono in `src/i18n/locales/en.json`.
+   - Con molte frasi, conviene dividere le lingue in due gruppi e dare a ciascun gruppo una breve nota di contesto per ogni frase: i termini di stampa 3D da usare e i segnaposti da lasciare invariati.
+   - I file JSON usano un rientro di 1 spazio (`JSON.stringify(dati, null, 1)`): con un rientro diverso il diff diventa enorme.
 4. `npm run i18n:check-locales` segnala frasi mancanti, in più o con segnaposti diversi. Gli stessi controlli girano in `npm test`.
 
 ## Correggere una traduzione

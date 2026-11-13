@@ -1,7 +1,7 @@
 # Generatori dei mockup «tema marino»
 
 Script Python usati per disegnare i mockup del tema B2 (canvas privato, link in
-[docs/RIPRESA-DA-PC.md](../../docs/RIPRESA-DA-PC.md)). Producono stringhe SVG; servono come riferimento
+[docs/COMPLETED.md](../../docs/COMPLETED.md)). Producono stringhe SVG; servono come riferimento
 per i componenti React. Rocce, balani, stella, lumachina, vetro di mare, tentacolo, capasanta, dollaro della sabbia, granchio e bottiglia
 sono già portati in
 `src/ui/sea/shapes.ts` (usati da `src/ui/sea/controls.tsx`); il kelp è ancora solo qui.

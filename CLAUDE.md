@@ -28,7 +28,7 @@ Esegui sempre `npm test && npm run build` prima di proporre un commit.
 
 ## Lavoro in sospeso
 
-Prima di iniziare leggi `docs/RIPRESA-DA-PC.md`: unione delle PR, attivazione del connettore Cloudflare e verifiche ancora da fare.
+Prima di iniziare leggi `docs/TODO.md`: attività in corso, da fare e da verificare. Quando una è conclusa, spostala in `docs/COMPLETED.md`.
 
 ## Struttura
 
