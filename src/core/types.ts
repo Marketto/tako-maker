@@ -161,6 +161,17 @@ export interface Hardware {
   decision?: 'buy' | 'printed';
 }
 
+/** Prova di misura: pezzi ritagliati dal modello, da stampare per controllare un accoppiamento
+    che l'app non vede da sola (un oggetto esterno da calzare, due copie dello stesso pezzo da agganciare…). */
+export interface Sample {
+  id: string;
+  name: string;
+  /** Cosa controllare dopo la stampa. */
+  check?: string;
+  /** Zone da ritagliare (coordinate del modello, mm): ogni zona diventa un pezzo. */
+  regions: { part: string; min: Vec3; max: Vec3 }[];
+}
+
 export interface Design {
   version: 1;
   name: string;
@@ -171,6 +182,8 @@ export interface Design {
   joints: Joint[];
   /** Elementi da comprare a parte. */
   hardware?: Hardware[];
+  /** Prove di misura da stampare prima del modello (zone delle parti da ritagliare). */
+  samples?: Sample[];
   printPlan: {
     strategy: PrintStrategy;
     connection: Connection;

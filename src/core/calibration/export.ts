@@ -3,10 +3,12 @@ import type { Design, PrinterSpec, Tolerances, UserSetup } from '../types';
 import type { PartResult } from '../geometry/evaluate';
 import { build3MF, flavorForSlicer, slicerProfileFor, type ExportPart } from '../export/threemf';
 import { bedOf } from '../analysis/estimate';
-import { buildCoupons, detentStyle, layoutPlates, materialsToTest, neededTests, readmeText, type TestKind } from './coupons';
+import { layoutPlates, readmeText, samplesToPrint, seriesCoupons, type PartBox, type Coupon, type SampleSeries, type TestKind } from './coupons';
+import { arrangePieces, type Piece } from './arrange';
 import { t } from '../../i18n';
 
-/* File dei campioni di prova: un piatto per materiale (più piatti se non ci stanno).
+/* File dei campioni di prova: pezzi del modello ritagliati attorno alle parti incerte
+   (vedi coupons.ts), un piatto per materiale (più piatti se non ci stanno).
    - Bambu Studio e derivati (Anycubic, Orca, Creality…): un solo 3MF con tutti i piatti.
    - PrusaSlicer (senza piatti multipli): un 3MF per piatto, raccolti in uno zip con le istruzioni. */
 
@@ -20,18 +22,35 @@ export interface CalibrationFiles {
   plates: number;
   materials: string[];
   kinds: TestKind[];
+  series: SampleSeries[];
 }
 
-export async function buildCalibrationFiles(design: Design, setup: UserSetup, printer: PrinterSpec, evaluate: Evaluate): Promise<CalibrationFiles> {
-  const kinds = neededTests(design);
-  if (!kinds.length) throw new Error(t('Il modello non ha parti mobili né incastri da provare.'));
-  const mats = materialsToTest(design, setup);
-  if (!mats.length) throw new Error(t('Nessun filamento disponibile per i campioni.'));
+export async function buildCalibrationFiles(design: Design, setup: UserSetup, printer: PrinterSpec, evaluate: Evaluate, boxes: Record<string, PartBox> = {}): Promise<CalibrationFiles> {
+  const series = samplesToPrint(design, setup, boxes);
+  if (!series.length) throw new Error(t('Il modello non ha parti mobili né incastri da provare.'));
   const bed = bedOf(setup, printer);
-  const groups = mats.map(({ material, filament }) => ({ material, filament, coupons: kinds.flatMap((k) => buildCoupons(k, material, filament, setup, detentStyle(design))) }));
-  const plates = layoutPlates(groups, bed);
-  const readme = readmeText(plates, kinds);
   const flavor = flavorForSlicer(printer.slicer);
+
+  // Prima si calcolano e si sistemano i pezzi: l'ingombro vero serve per disporli sui piatti.
+  const placed = new Map<string, Piece[]>();
+  const groups = new Map<string, { material: string; filament: SampleSeries['filament']; coupons: Coupon[] }>();
+  for (const s of series) {
+    for (const c of seriesCoupons(s)) {
+      const res = await evaluate(c.design, c.tol);
+      const r = arrangePieces(res.map((p) => ({ name: p.name, mesh: p.mesh })), c.arrange);
+      if (!r.pieces.length) continue;
+      c.size = r.size;
+      placed.set(c.id, r.pieces);
+      const g = groups.get(s.material) ?? { material: s.material, filament: s.filament, coupons: [] };
+      g.coupons.push(c);
+      groups.set(s.material, g);
+    }
+  }
+  if (!groups.size) throw new Error(t('Il modello non ha parti mobili né incastri da provare.'));
+  const mats = [...groups.values()];
+  const plates = layoutPlates(mats, bed);
+  const readme = readmeText(plates);
+  const kinds = [...new Set(series.map((s) => s.kind).filter((k): k is TestKind => k !== 'fit'))];
 
   const files: { name: string; data: Uint8Array }[] = [];
   const all: ExportPart[] = [];
@@ -39,16 +58,15 @@ export async function buildCalibrationFiles(design: Design, setup: UserSetup, pr
     const parts: ExportPart[] = [];
     const extruder = setup.filaments.indexOf(plate.filament) + 1 || 1;
     for (const { coupon, offset } of plate.items) {
-      const res = await evaluate(coupon.design, { a: coupon.tol, b: coupon.tol });
-      for (const r of res) {
+      const label = `${coupon.series.name}${coupon.value === undefined ? '' : ` ${'●'.repeat(coupon.index + 1)}`}`;
+      for (const r of placed.get(coupon.id) ?? []) {
         const pos = new Float32Array(r.mesh.positions);
-        const extra = coupon.partOffset?.[r.id] ?? [0, 0, 0];
         for (let i = 0; i < pos.length; i += 3) {
-          pos[i] += offset[0] + extra[0];
-          pos[i + 1] += offset[1] + extra[1];
-          pos[i + 2] += offset[2] + extra[2];
+          pos[i] += offset[0];
+          pos[i + 1] += offset[1];
+          pos[i + 2] += offset[2];
         }
-        parts.push({ name: r.name, mesh: { positions: pos, indices: r.mesh.indices }, filament: plate.filament, extruder, group: coupon.id, plate: pi + 1 });
+        parts.push({ name: `${label} – ${r.name}`, mesh: { positions: pos, indices: r.mesh.indices }, filament: plate.filament, extruder, group: coupon.id, plate: pi + 1 });
       }
     }
     all.push(...parts);
@@ -65,12 +83,12 @@ export async function buildCalibrationFiles(design: Design, setup: UserSetup, pr
   const materials = mats.map((m) => m.material);
   if (flavor === 'orca') {
     const data = build3MF(all, { title: t('Campioni di prova'), flavor, strategy: 'separate', bed, keepPositions: true, plateStride: printer.plateStride, slicerProfile: slicerProfileFor(setup, printer), filaments: setup.filaments, extraFiles: { 'Metadata/LEGGIMI.txt': readme } });
-    return { filename: 'campioni-di-prova.3mf', data, mime: 'model/3mf', readme, plates: plates.length, materials, kinds };
+    return { filename: 'campioni-di-prova.3mf', data, mime: 'model/3mf', readme, plates: plates.length, materials, kinds, series };
   }
   if (files.length === 1) {
-    return { filename: files[0].name, data: files[0].data, mime: 'model/3mf', readme, plates: 1, materials, kinds };
+    return { filename: files[0].name, data: files[0].data, mime: 'model/3mf', readme, plates: 1, materials, kinds, series };
   }
   const zip: Record<string, Uint8Array> = { 'LEGGIMI.txt': strToU8(readme) };
   for (const f of files) zip[f.name] = f.data;
-  return { filename: 'campioni-di-prova.zip', data: zipSync(zip), mime: 'application/zip', readme, plates: files.length, materials, kinds };
+  return { filename: 'campioni-di-prova.zip', data: zipSync(zip), mime: 'application/zip', readme, plates: files.length, materials, kinds, series };
 }

@@ -668,13 +668,14 @@ export class ProjectSession {
   async downloadCalibration(): Promise<CalibrationFiles | null> {
     this.set({ busy: t('Preparo i campioni di prova…'), error: null });
     try {
-      const files = await buildCalibrationFiles(this.snap.project.design, this.setup, this.printer, async (d, tol) => (await evaluateInWorker(d, {}, tol)).parts);
+      const boxes = Object.fromEntries(this.snap.parts.map((p) => [p.id, { ...p.bbox, mesh: p.mesh }]));
+      const files = await buildCalibrationFiles(this.snap.project.design, this.setup, this.printer, async (d, tol) => (await evaluateInWorker(d, this.meshes, tol)).parts, boxes);
       downloadBlob(new Blob([files.data as BlobPart], { type: files.mime }), files.filename);
       await this.pushChat({
         role: 'assistant',
         text:
           `${files.plates === 1 ? t('Ecco i campioni di prova: 1 piatto ({materials}).', { materials: files.materials.join(', ') }) : t('Ecco i campioni di prova: {n} piatti ({materials}).', { n: files.plates, materials: files.materials.join(', ') })} ` +
-          t('Ogni campione ha da 1 a 5 puntini: dopo la stampa prova quale funziona meglio e indicalo nella scheda Stampa → Campioni di prova.') +
+          t('Sono pezzi del tuo modello: dove ce ne sono 3, i segni (da 1 a 3) indicano il gioco. Dopo la stampa indica il migliore nella scheda Stampa → Campioni di prova.') +
           '\n\n' +
           files.readme
             .split('\n')

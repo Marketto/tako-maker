@@ -29,7 +29,7 @@ Il modello è un documento JSON (`Design` in `src/core/types.ts`). La specifica 
 ## Operazioni (`src/core/design/ops.ts`)
 
 `set_meta`, `add_part`, `update_part`, `move_part`, `remove_part`, `add_joint`, `update_joint`,
-`remove_joint`, `set_plan`, `add_hardware`, `update_hardware`, `remove_hardware`. Sono **atomiche**: si applicano a una copia, poi si valida tutto
+`remove_joint`, `set_plan`, `add_hardware`, `update_hardware`, `remove_hardware`, `add_sample`, `remove_sample`. Sono **atomiche**: si applicano a una copia, poi si valida tutto
 (id unici, filamenti esistenti, misure tra 0,2 e 1000 mm, max 40 parti e 600 nodi, profondità max 12).
 Se qualcosa non va, il design resta invariato e l’AI riceve il messaggio d’errore.
 
@@ -60,6 +60,19 @@ L'AI dichiara così tutto ciò che non si stampa (viti, magneti, molle, cuscinet
 - `printed` → l'assistente riceve la richiesta di sostituirlo con una soluzione stampata e poi lo rimuove.
 
 Se l'AI cambia nome, quantità o misure di un elemento, la conferma viene richiesta di nuovo. Max 20 elementi, quantità 1-100.
+
+## Prove di misura (`samples`)
+
+```json
+{ "id": "sella", "name": "Fetta della sella", "check": "Calzala sul bracciolo: deve stringere senza forzare",
+  "regions": [{ "part": "sella", "min": [-60, 20, -1], "max": [100, 35, 90] }] }
+```
+
+Ogni zona ritaglia la parte indicata (coordinate del modello, lati da 1 a 200 mm) e diventa un pezzo del
+campione, stampato nel verso con meno sporgenze. Servono per ciò che l'app non trova da sola: un pezzo da
+calzare su un oggetto esterno, due copie dello stesso pezzo da agganciare. Giunti e agganci tra parti diverse
+li ritaglia già l'app (vedi `docs/ANALISI.md`). Max 6 prove, da 1 a 4 zone ciascuna; rimuovendo una parte
+spariscono le prove che la usano.
 
 ## Geometria generata automaticamente (`src/core/geometry/evaluate.ts`)
 

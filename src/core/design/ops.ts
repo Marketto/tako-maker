@@ -1,4 +1,4 @@
-import type { ButtonSpec, Design, Hardware, Joint, Part, ShapeNode, Vec3, PrintStrategy, Connection } from '../types';
+import type { ButtonSpec, Design, Hardware, Joint, Part, Sample, ShapeNode, Vec3, PrintStrategy, Connection } from '../types';
 
 /* Operazioni di modifica del Design. L'agente invia una lista di queste
    operazioni (tool "edit_design") invece di riscrivere tutto il documento:
@@ -16,13 +16,16 @@ export type DesignOp =
   | { op: 'set_plan'; strategy?: PrintStrategy; connection?: Connection }
   | { op: 'add_hardware'; item: Hardware }
   | { op: 'update_hardware'; id: string; patch: Partial<Omit<Hardware, 'id'>> }
-  | { op: 'remove_hardware'; id: string };
+  | { op: 'remove_hardware'; id: string }
+  | { op: 'add_sample'; sample: Sample }
+  | { op: 'remove_sample'; id: string };
 
 export const LIMITS = {
   maxParts: 40,
   maxNodes: 600,
   maxDepth: 12,
   maxHardware: 20,
+  maxSamples: 6,
   maxSizeMm: 1000,
   minSizeMm: 0.2,
 };
@@ -111,6 +114,20 @@ export function validateDesign(d: Design, filamentIds?: Set<string>): void {
     if (!Number.isInteger(h.qty) || h.qty < 1 || h.qty > 100) throw new DesignError(`L'elemento "${h.id}" ha una quantità non valida (1-100)`);
     if (h.decision !== undefined && h.decision !== 'buy' && h.decision !== 'printed') throw new DesignError(`L'elemento "${h.id}" ha una scelta non valida`);
   }
+  const samples = d.samples ?? [];
+  if (samples.length > LIMITS.maxSamples) throw new DesignError(`Troppe prove di misura (max ${LIMITS.maxSamples})`);
+  const sids = new Set<string>();
+  for (const s of samples) {
+    if (!s.id || sids.has(s.id)) throw new DesignError(`Id prova duplicato o vuoto: "${s.id}"`);
+    sids.add(s.id);
+    if (typeof s.name !== 'string' || !s.name.trim()) throw new DesignError(`La prova "${s.id}" non ha un nome`);
+    if (!Array.isArray(s.regions) || !s.regions.length || s.regions.length > 4) throw new DesignError(`La prova "${s.id}" deve avere da 1 a 4 zone`);
+    for (const r of s.regions) {
+      if (!ids.has(r.part)) throw new DesignError(`La prova "${s.id}" usa una parte inesistente: "${r.part}"`);
+      if (!isVec3(r.min) || !isVec3(r.max) || [0, 1, 2].some((k) => !(r.max[k] - r.min[k] >= 1 && r.max[k] - r.min[k] <= 200)))
+        throw new DesignError(`La prova "${s.id}" ha una zona non valida: min e max in mm, ogni lato tra 1 e 200`);
+    }
+  }
   const plan = d.printPlan;
   if (!plan) return;
   if (!['single', 'multicolor', 'separate', 'layer-swap'].includes(plan.strategy)) throw new DesignError(`Strategia di stampa non valida: "${plan.strategy}"`);
@@ -155,6 +172,7 @@ export function applyOps(design: Design, ops: DesignOp[], filamentIds?: Set<stri
       case 'remove_part':
         d.parts.splice(findIndex(d.parts, o.id, 'Parte'), 1);
         d.joints = d.joints.filter((j) => j.partA !== o.id && j.partB !== o.id);
+        if (d.samples) d.samples = d.samples.filter((x) => x.regions.every((r) => r.part !== o.id));
         break;
       case 'add_joint':
         if (d.joints.some((j) => j.id === o.joint.id)) throw new DesignError(`Il giunto "${o.joint.id}" esiste già`);
@@ -192,6 +210,17 @@ export function applyOps(design: Design, ops: DesignOp[], filamentIds?: Set<stri
       case 'remove_hardware': {
         const list = d.hardware ?? [];
         list.splice(findIndex(list, o.id, 'Elemento da acquistare'), 1);
+        break;
+      }
+      case 'add_sample': {
+        const list = (d.samples ??= []);
+        if (list.some((x) => x.id === o.sample?.id)) throw new DesignError(`La prova "${o.sample.id}" esiste già`);
+        list.push({ ...o.sample, name: String(o.sample?.name ?? '').slice(0, 60), check: o.sample?.check?.slice(0, 160) });
+        break;
+      }
+      case 'remove_sample': {
+        const list = d.samples ?? [];
+        list.splice(findIndex(list, o.id, 'Prova'), 1);
         break;
       }
       default:
