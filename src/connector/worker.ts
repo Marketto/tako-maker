@@ -26,14 +26,9 @@ interface DurableObjectNamespace {
   idFromName(name: string): unknown;
   get(id: unknown): DurableObjectStub;
 }
-/** KV usato fino a novembre 2026: solo per recuperare le sessioni create prima del passaggio. */
-interface KVNamespace {
-  get<T>(key: string, type: 'json'): Promise<T | null>;
-}
 
 interface Env {
   SESSION: DurableObjectNamespace;
-  SESSIONS?: KVNamespace;
   /** Origine della PWA ammessa per le chiamate /sessione (es. https://marketto.github.io). */
   ALLOWED_ORIGIN?: string;
   /** Indirizzo della PWA per i link nelle risposte. */
@@ -68,22 +63,13 @@ const MAX_BODY = 512 * 1024;
 
 function doStore(env: Env): ConnectorStore {
   const stub = (code: string) => env.SESSION.get(env.SESSION.idFromName(code));
-  const put = async (code: string, state: ConnectorState, rev: number | null) => {
-    const r = await stub(code).fetch('https://do/', { method: 'PUT', body: JSON.stringify({ state, rev }) });
-    return ((await r.json()) as { ok: boolean }).ok;
-  };
   return {
-    put,
-    report: async (code, key) => (await (await stub(code).fetch(`https://do/?analisi=${encodeURIComponent(key)}`)).json()) as ReportCheck | null,
-    async get(code) {
-      const r = (await (await stub(code).fetch('https://do/')).json()) as Stored | null;
-      if (r || !env.SESSIONS) return r;
-      // Sessione creata prima del passaggio ai Durable Object: la si sposta alla prima lettura.
-      const old = await env.SESSIONS.get<ConnectorState>(code, 'json').catch(() => null);
-      if (!old) return null;
-      await put(code, old, null);
-      return (await (await stub(code).fetch('https://do/')).json()) as Stored | null;
+    async put(code, state, rev) {
+      const r = await stub(code).fetch('https://do/', { method: 'PUT', body: JSON.stringify({ state, rev }) });
+      return ((await r.json()) as { ok: boolean }).ok;
     },
+    report: async (code, key) => (await (await stub(code).fetch(`https://do/?analisi=${encodeURIComponent(key)}`)).json()) as ReportCheck | null,
+    get: async (code) => (await (await stub(code).fetch('https://do/')).json()) as Stored | null,
   };
 }
 

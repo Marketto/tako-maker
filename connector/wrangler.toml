@@ -11,12 +11,6 @@ class_name = "SessionStore"
 tag = "v1"
 new_sqlite_classes = ["SessionStore"]
 
-# KV usato prima dei Durable Object: serve solo a recuperare le sessioni vecchie (scadono entro 7 giorni).
-# La GitHub Action sostituisce l'id; senza id la riga resta il segnaposto e il recupero non serve.
-[[kv_namespaces]]
-binding = "SESSIONS"
-id = "SOSTITUISCI_CON_ID_DEL_KV"
-
 [vars]
 APP_URL = "https://marketto.github.io/tako-maker/"
 ALLOWED_ORIGIN = "https://marketto.github.io"

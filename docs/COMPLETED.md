@@ -4,6 +4,7 @@ Attività concluse, le più recenti in alto. Quelle ancora aperte sono in [TODO.
 
 ## Novembre 2026
 
+- **13/11 – Tolto il KV del connettore.** Le sessioni stanno solo nei Durable Object; tolti il recupero dal vecchio archivio e la variabile `CONNECTOR_KV_ID`.
 - **13/11 – Campioni di prova ritagliati dal modello** (PR #44, #45, #46).
   - Una serie per tipo di giunto (cerniera, rotazione, scatto) e materiale, con 3 varianti di gioco.
   - Un campione per ogni incastro progettato e per i campioni chiesti alla chat (`add_sample`).

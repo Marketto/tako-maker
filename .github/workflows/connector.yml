@@ -1,7 +1,7 @@
 name: Connettore per la chat (Cloudflare Worker)
 
 # Pubblica il server MCP di Printopus solo se sono configurati i secret di Cloudflare
-# e la variabile CONNECTOR_KV_ID (vedi docs/CONNETTORE.md). Altrimenti il job viene saltato.
+# (vedi docs/CONNETTORE.md). Altrimenti il job viene saltato.
 
 on:
   push:
@@ -16,11 +16,11 @@ jobs:
   deploy-connector:
     runs-on: ubuntu-latest
     env:
-      HAS_CF: ${{ secrets.CLOUDFLARE_API_TOKEN != '' && vars.CONNECTOR_KV_ID != '' }}
+      HAS_CF: ${{ secrets.CLOUDFLARE_API_TOKEN != '' }}
     steps:
       - name: Configurazione mancante
         if: env.HAS_CF != 'true'
-        run: echo "Connettore non pubblicato - servono i secret CLOUDFLARE_API_TOKEN e CLOUDFLARE_ACCOUNT_ID e la variabile CONNECTOR_KV_ID (facoltativo)."
+        run: echo "Connettore non pubblicato - servono i secret CLOUDFLARE_API_TOKEN e CLOUDFLARE_ACCOUNT_ID."
       - uses: actions/checkout@v4
         if: env.HAS_CF == 'true'
       - uses: actions/setup-node@v4
@@ -32,11 +32,10 @@ jobs:
         run: npm ci
       - if: env.HAS_CF == 'true'
         run: npm run build:connettore
-      - name: Imposta KV e indirizzi
+      - name: Imposta gli indirizzi
         if: env.HAS_CF == 'true'
         working-directory: connector
         run: |
-          sed -i "s/SOSTITUISCI_CON_ID_DEL_KV/${{ vars.CONNECTOR_KV_ID }}/" wrangler.toml
           # Gli host GitHub Pages sono in minuscolo, come l'origine che manda il browser.
           OWNER=$(echo "${{ github.repository_owner }}" | tr '[:upper:]' '[:lower:]')
           APP="https://$OWNER.github.io/${{ github.event.repository.name }}/"

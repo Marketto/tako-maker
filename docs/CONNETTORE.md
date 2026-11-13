@@ -65,8 +65,6 @@ Un Cloudflare Worker (`connector/`) espone:
   (`update` in `src/connector/state.ts`). Così una modifica della chat non cancella quella appena prima.
 - **Perché non KV.** Prima le sessioni stavano in Cloudflare KV, che tiene i valori in cache per circa 60 secondi in ogni sede:
   due chiamate vicine potevano leggere una versione vecchia e riscriverla sopra quella nuova.
-- **Recupero dal KV.** Le sessioni create prima del passaggio si spostano dal KV al Durable Object alla prima lettura.
-  Dopo il 19 novembre 2026 sono tutte scadute: si possono togliere il KV da `wrangler.toml`, da `worker.ts` e dalla action.
 
 ### Flusso per l'utente
 
@@ -84,16 +82,15 @@ sviluppatore è disponibile, solo in lettura.
 
 ### Pubblicazione
 
-1. **Account.** Account Cloudflare gratuito. Il Durable Object si crea da solo alla prima pubblicazione (migrazione `v1` in `wrangler.toml`). La variabile `CONNECTOR_KV_ID` serve ancora alla action finché resta il recupero dal KV.
+1. **Account.** Account Cloudflare gratuito. Il Durable Object si crea da solo alla prima pubblicazione (migrazione `v1` in `wrangler.toml`).
 2. **Impostazioni del repository GitHub.**
-   - Secret `CLOUDFLARE_API_TOKEN` (permesso *Workers Scripts: Edit* e *Workers KV Storage: Edit*) e `CLOUDFLARE_ACCOUNT_ID`.
-   - Variabile `CONNECTOR_KV_ID` con l'id del KV.
+   - Secret `CLOUDFLARE_API_TOKEN` (permesso *Workers Scripts: Edit*) e `CLOUDFLARE_ACCOUNT_ID`.
    - Variabile `CONNECTOR_URL` con l'indirizzo del Worker (es. `https://printopus-connettore.<nome>.workers.dev`), così la PWA lo conosce.
 3. **Pubblicazione automatica.** A ogni push su `main` la action `connector.yml` costruisce (`npm run build:connettore`) e pubblica il Worker.
 
 Cose da sapere:
 
-- **Action verde non vuol dire Worker pubblicato.** Senza `CLOUDFLARE_API_TOKEN` o `CONNECTOR_KV_ID` la action salta la pubblicazione e finisce comunque con successo. Lo stesso controllo non guarda `CLOUDFLARE_ACCOUNT_ID`: salva anche quello.
+- **Action verde non vuol dire Worker pubblicato.** Senza `CLOUDFLARE_API_TOKEN` la action salta la pubblicazione e finisce comunque con successo. Lo stesso controllo non guarda `CLOUDFLARE_ACCOUNT_ID`: salva anche quello.
 - **L'indirizzo entra nel sito durante la build.** Dopo aver cambiato `CONNECTOR_URL`, rilancia `deploy.yml` (*Actions → Run workflow*), altrimenti il sito resta senza l'indirizzo o con quello vecchio.
 - **Il token si crea sul sito di Cloudflare** (*My Profile → API Tokens → Create Token*). Il login di `wrangler` vale solo sul tuo computer, non nella action, e non può creare token.
   - Nome: libero, serve solo a riconoscerlo (es. `tako-maker-github-actions`).
@@ -108,7 +105,7 @@ Serve per la prima volta o quando la action non è configurata:
 
 1. `npx wrangler login`, poi `npx wrangler whoami` per controllare l'account.
 2. `npm run build:connettore`.
-3. In `connector/`, crea una copia di `wrangler.toml` con l'id del KV al posto del segnaposto e pubblica con `npx wrangler deploy --config <copia>`. Poi cancella la copia: `wrangler.toml` nel repository tiene il segnaposto.
+3. In `connector/`, pubblica con `npx wrangler deploy`.
 
 ### Controllo dopo la pubblicazione
 
@@ -120,7 +117,7 @@ Serve per la prima volta o quando la action non è configurata:
 
 ### Dati del proprio account
 
-Indirizzo del Worker, id del KV e id dell'account stanno in `connector/cloudflare.local`, ignorato da Git. Il token e l'id dell'account per le action stanno in `.env.cloudflare`, anch'esso ignorato da Git e con permessi `600`: non vanno mai in un file versionato. Per cambiare token, crea quello nuovo, rilancia `tools/cloudflare/token.sh` e revoca il vecchio su Cloudflare.
+Indirizzo del Worker e id dell'account stanno in `connector/cloudflare.local`, ignorato da Git. Il token e l'id dell'account per le action stanno in `.env.cloudflare`, anch'esso ignorato da Git e con permessi `600`: non vanno mai in un file versionato. Per cambiare token, crea quello nuovo, rilancia `tools/cloudflare/token.sh` e revoca il vecchio su Cloudflare.
 
 ### Prova in locale
 
