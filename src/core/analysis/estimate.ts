@@ -27,6 +27,8 @@ export interface PartStat {
   volume: number;
   bbox: { min: Vec3; max: Vec3 };
   contactBox?: { min: Vec3; max: Vec3 };
+  /** Mesh calcolata, se disponibile (zona esatta degli agganci per i campioni). */
+  mesh?: { positions: Float32Array };
 }
 
 export interface StrategyEstimate {

@@ -5,8 +5,7 @@ import { findContacts, overhangBeyond, PEG_SPACING, type PrintStats, type BodySt
 import { printedTogether } from '../design/links';
 import { material } from '../../data/materials';
 import { bondsPoorly, guideline, MAX_SLENDERNESS, MIN_CONTACT_MM2, minWall, SMALL_PART_BRIM_MM, SUPPORT_MIN_AREA_MM2, supportInterfaceFor, plaSupportWeakensPetg, LARGE_FLAT_MM2, LARGE_FLAT_MAX_H, MIXED_PLA_PETG_C } from '../../data/guidelines';
-import { materialsToTest, neededTests, TEST_KEYS, TEST_LABEL } from '../calibration/coupons';
-import { isCalibrated } from '../calibration/tolerances';
+import { pendingSamples } from '../calibration/coupons';
 import { bedOf, estimateStrategies, fitsBed, fmtTime, STRATEGY_LABEL, type PartStat, type StrategyEstimate } from './estimate';
 import { fmtNum, t } from '../../i18n';
 import { hardwareLabel, hardwareOf, toBuy } from '../hardware';
@@ -481,19 +480,18 @@ export function analyze(
     else warnings.push(t('Tra "{a}" e "{b}" non ho potuto mettere perni: {reason}.', { a: pname(c.a), b: pname(c.b), reason: t(c.reason ?? 'spazio insufficiente', Object.fromEntries(Object.entries(c.reasonVars ?? {}).map(([k, v]) => [k, fmtNum(v, 1)]))) }));
   }
 
-  /* ---- Campioni di prova per giunti e incastri ---- */
-  const kinds = neededTests(design);
-  if (kinds.length && parts.length) {
-    const mats = materialsToTest(design, setup);
-    const todo = mats.filter((m) => kinds.some((k) => !isCalibrated(m.material, setup, TEST_KEYS[k])));
-    const key = `calib:${kinds.join(',')}:${todo.map((m) => m.material).join(',')}`;
+  /* ---- Campioni di prova: pezzi ritagliati attorno alle parti incerte ---- */
+  if (parts.length) {
+    const todo = pendingSamples(design, setup, Object.fromEntries(parts.map((p) => [p.id, { ...p.bbox, mesh: p.mesh }])));
+    const key = `calib:${todo.map((s) => s.id).join(',')}`;
     if (todo.length && !answered.has(key)) {
+      const count = todo.reduce((n, s) => n + (s.values?.length ?? 1), 0);
       questions.push({
         id: key,
         key,
         source: 'analysis',
-        text: t('Ci sono parti mobili o incastri: vuoi stampare prima dei campioni di prova per trovare il gioco giusto per la tua stampante?'),
-        detail: t('Prove: {tests} · materiali: {materials}. Pochi minuti di stampa, poi scegli il campione migliore.', { tests: kinds.map((k) => t(TEST_LABEL[k]).toLowerCase()).join(', '), materials: todo.map((m) => m.material).join(', ') }),
+        text: t('Ci sono parti mobili o incastri: vuoi stampare prima dei campioni di prova, ritagliati dal modello, per controllare i giochi e le misure?'),
+        detail: t('{n} campioni: {tests}. Pochi minuti di stampa, poi scegli il campione migliore.', { n: count, tests: todo.map((s) => `${s.name} (${s.values?.length ?? 1})`).join(', ') }),
         options: [
           { id: 'yes', label: t('Sì, prepara i campioni'), hint: t('un piatto per materiale'), action: 'calibration' },
           { id: 'no', label: t('No, uso i valori consigliati') },

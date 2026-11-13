@@ -68,20 +68,27 @@ Le stesse regole, con le tolleranze effettive, sono nel blocco “Linee guida da
 Tolleranza effettiva = base → delta del materiale → valore calibrato dall'utente (`UserSetup.tolerances[materiale]`).
 Per ogni coppia di parti si usa la tolleranza più larga dei due materiali.
 
-Con giunti o incastri (e materiali non ancora calibrati) l'app chiede se stampare i campioni.
-Si propongono solo le prove dei giunti presenti nel modello:
+I campioni sono **pezzi del modello ritagliati** attorno alle parti incerte (`planSamples`), non forme generiche:
 
-| Prova | Quando | Campione | Valori |
+| Prova | Quando | Campione | Quanti |
 |---|---|---|---|
-| Cerniera | giunti `hinge` | due placchette con cerniera stampata montata | consigliato ±0,1 mm (5 valori) |
-| Perno rotante | giunti `rotary` | base con perno e blocco forato stampato accanto, da infilare (stessa geometria del giunto) | `pinClearance` consigliato ±0,1 mm |
-| Scatto | giunti con scatto | come la cerniera con scatti a 0°, 90°, 180°; se il modello non ha cerniere con scatto, come il perno rotante con scatti ogni 90° | consigliato ±0,1 mm |
-| Incastro a pressione | collegamento a incastro | perno + blocco con foro | consigliato ±0,1 mm (min 0) |
-| Perno da incollare | collegamento a colla | perno + blocco con foro | consigliato ±0,1 mm |
+| Cerniera | giunti `hinge` | ritaglio dei due pezzi lungo la cerniera, stampato montato | 3 (consigliato −0,1 / 0 / +0,1 mm) |
+| Perno rotante | giunti `rotary` (preferito quello senza scatto) | ritaglio attorno al perno; asse in verticale, perno verso l'alto, pezzo forato accanto | 3 (`pinClearance`) |
+| Scatto | giunti con scatto | ritaglio del giunto con scatto | 3 (`detentClearance`) |
+| Incastro a pressione / Perno da incollare | collegamento `snap` / `glue` | perno + blocco con foro (i perni li aggiunge l'app) | 3 |
+| Aggancio | parti separate con collegamento `designed` i cui ingombri si compenetrano (senza giunto) | ritaglio della zona comune dei due pezzi; agganci uguali ripetuti si provano una volta | 1 |
+| Prova di misura | `design.samples` dichiarate dall'AI (oggetti esterni, copie dello stesso pezzo) | le zone indicate | 1 |
 
-Il numero di puntini in rilievo (1–5) identifica il campione. Un 3MF per piatto, un materiale per piatto;
-con più piatti si scarica uno zip con `LEGGIMI.txt`. La scelta del campione migliore si fa nella scheda
-Stampa → Campioni di prova.
+Per ogni tipo di giunto e materiale si sceglie un solo giunto, il più piccolo. I campioni da 3 hanno da 1 a
+3 segni incavati sulle facce lontane dal giunto. I pezzi delle prove da 1 si stampano affiancati, ciascuno
+nel verso (dritto o capovolto) con meno sporgenze (`arrange.ts`).
+
+L'app chiede se stampare i campioni quando ci sono giochi non ancora tarati per quel materiale o prove di
+misura nuove: la chiave della domanda contiene gli id delle prove, quindi una prova nuova la ripropone.
+Si scaricano solo i giochi non tarati e le prove di misura (tutto, se è già tutto tarato). Un 3MF per
+piatto, un materiale per piatto; con più piatti si scarica uno zip con `LEGGIMI.txt`. La scelta del
+campione migliore si fa nella scheda Stampa → Campioni di prova; le prove di misura non salvano valori:
+se un aggancio non va, lo si dice all'assistente.
 
 ## Coerenza della forma e perni di incastro
 

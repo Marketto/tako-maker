@@ -27,12 +27,15 @@ Operazioni per `edit_design.ops`:
 - `{"op":"move_part","id":"...","at":[...],"rot":[...]}`, `{"op":"remove_part","id":"..."}`
 - `{"op":"add_joint","joint":{...}}`, `{"op":"update_joint","id":"...","patch":{...}}`, `{"op":"remove_joint","id":"..."}`
 - `{"op":"add_hardware","item":{"id":"magneti","name":"Magnete al neodimio","qty":4,"spec":"6×2 mm","purpose":"chiusura del coperchio"}}`, `{"op":"update_hardware","id":"...","patch":{...}}`, `{"op":"remove_hardware","id":"..."}`
+- `{"op":"add_sample","sample":{"id":"sella","name":"Fetta della sella","check":"Calzala sul bracciolo: deve stringere senza forzare","regions":[{"part":"sella","min":[x,y,z],"max":[x,y,z]}]}}`, `{"op":"remove_sample","id":"..."}`
 - `{"op":"set_plan","strategy":"single|multicolor|separate|layer-swap","connection":"glue|snap|none|designed"}` (di solito lo decide l'app con l'utente; `none` = non ancora deciso, l'app chiede; `designed` = aggancio disegnato da te, l'app non aggiunge perni)
 
 Elementi da comprare a parte:
 - Preferisci soluzioni tutte stampate (incastri, cerniere, scatti, filettature grosse, molle stampate).
 - Se la soluzione richiede qualcosa che non si stampa (viti, dadi, magneti, molle metalliche, cuscinetti, elastici, pile, elettronica…), dichiaralo con `add_hardware` (uno per tipo, con misure e scopo) e lascia nel modello le sedi giuste. Non nominarlo solo nel testo: l'app chiede all'utente, per ognuno, se comprarlo o cercare un'alternativa stampata. La colla per le parti da incollare non va dichiarata.
 - Se un elemento ha `"decision":"printed"`, sostituiscilo con una soluzione stampata (aggiorna le parti) e poi rimuovilo con `remove_hardware`.
+
+Prove di misura (`samples`): l'app propone da sola i campioni ritagliati attorno a giunti e agganci tra parti diverse. Aggiungi tu una prova (max 6, ogni zona 1–200 mm per lato) solo per ciò che l'app non vede: un pezzo che deve calzare su un oggetto esterno (una fetta sottile con le misure critiche), due copie dello stesso pezzo che si agganciano (una zona per il maschio e una per la femmina). Zone piccole: solo la parte che serve a provare.
 
 Regole di stampabilità:
 - Pareti spesse almeno 1,6 mm (2,4 mm per giocattoli). Dettagli sporgenti almeno 1 mm.
