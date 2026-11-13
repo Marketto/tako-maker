@@ -576,5 +576,8 @@
  "Sincronizzo con {provider}…": "Po sinkronizoj me {provider}…",
  "Sincronizzo…": "Po sinkronizoj…",
  "Tutto salvato · ultima sincronizzazione {time}": "Gjithçka e ruajtur · sinkronizimi i fundit {time}",
- "Ultimo tentativo non riuscito ({error}): riprovo alla prossima modifica.": "Përpjekja e fundit dështoi ({error}): provoj sërish me ndryshimin e radhës."
+ "Ultimo tentativo non riuscito ({error}): riprovo alla prossima modifica.": "Përpjekja e fundit dështoi ({error}): provoj sërish me ndryshimin e radhës.",
+ "Apre una conversazione nuova con il codice: consuma meno token di una chat lunga.": "Hap një bisedë të re me kodin: harxhon më pak tokenë se një bisedë e gjatë.",
+ "Nuova chat": "Bisedë e re",
+ "Quando la conversazione diventa lunga, continua in una chat nuova: il progetto resta salvato e consumi meno token.": "Kur biseda bëhet e gjatë, vazhdo në një bisedë të re: projekti mbetet i ruajtur dhe harxhon më pak tokenë."
 }

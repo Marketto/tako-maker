@@ -576,5 +576,8 @@
  "Sincronizzo con {provider}…": "Synchronisation avec {provider}…",
  "Sincronizzo…": "Synchronisation…",
  "Tutto salvato · ultima sincronizzazione {time}": "Tout est enregistré · dernière synchronisation {time}",
- "Ultimo tentativo non riuscito ({error}): riprovo alla prossima modifica.": "Le dernier essai a échoué ({error}) : je réessaie à la prochaine modification."
+ "Ultimo tentativo non riuscito ({error}): riprovo alla prossima modifica.": "Le dernier essai a échoué ({error}) : je réessaie à la prochaine modification.",
+ "Apre una conversazione nuova con il codice: consuma meno token di una chat lunga.": "Ouvre une nouvelle conversation avec le code : consomme moins de tokens qu’un long chat.",
+ "Nuova chat": "Nouveau chat",
+ "Quando la conversazione diventa lunga, continua in una chat nuova: il progetto resta salvato e consumi meno token.": "Quand la conversation devient longue, continue dans un nouveau chat : le projet reste enregistré et tu consommes moins de tokens."
 }

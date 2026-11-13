@@ -576,5 +576,8 @@
  "Sincronizzo con {provider}…": "{provider} ile eşitleniyor…",
  "Sincronizzo…": "Eşitleniyor…",
  "Tutto salvato · ultima sincronizzazione {time}": "Her şey kaydedildi · son eşitleme {time}",
- "Ultimo tentativo non riuscito ({error}): riprovo alla prossima modifica.": "Son deneme başarısız oldu ({error}): bir sonraki değişiklikte yeniden denerim."
+ "Ultimo tentativo non riuscito ({error}): riprovo alla prossima modifica.": "Son deneme başarısız oldu ({error}): bir sonraki değişiklikte yeniden denerim.",
+ "Apre una conversazione nuova con il codice: consuma meno token di una chat lunga.": "Kodla yeni bir sohbet açar: uzun bir sohbetten daha az token harcar.",
+ "Nuova chat": "Yeni sohbet",
+ "Quando la conversazione diventa lunga, continua in una chat nuova: il progetto resta salvato e consumi meno token.": "Sohbet uzadığında yeni bir sohbette devam et: proje kayıtlı kalır ve daha az token harcarsın."
 }

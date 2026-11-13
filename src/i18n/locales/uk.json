@@ -576,5 +576,8 @@
  "Sincronizzo con {provider}…": "Синхронізую з {provider}…",
  "Sincronizzo…": "Синхронізую…",
  "Tutto salvato · ultima sincronizzazione {time}": "Усе збережено · остання синхронізація {time}",
- "Ultimo tentativo non riuscito ({error}): riprovo alla prossima modifica.": "Остання спроба не вдалася ({error}): спробую знову під час наступної зміни."
+ "Ultimo tentativo non riuscito ({error}): riprovo alla prossima modifica.": "Остання спроба не вдалася ({error}): спробую знову під час наступної зміни.",
+ "Apre una conversazione nuova con il codice: consuma meno token di una chat lunga.": "Відкриває нову розмову з кодом: витрачає менше токенів, ніж довгий чат.",
+ "Nuova chat": "Новий чат",
+ "Quando la conversazione diventa lunga, continua in una chat nuova: il progetto resta salvato e consumi meno token.": "Коли розмова стає довгою, продовжуй у новому чаті: проєкт лишається збереженим, а токенів витрачається менше."
 }

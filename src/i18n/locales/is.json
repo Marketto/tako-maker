@@ -576,5 +576,8 @@
  "Sincronizzo con {provider}…": "Samstilli við {provider}…",
  "Sincronizzo…": "Samstilli…",
  "Tutto salvato · ultima sincronizzazione {time}": "Allt vistað · síðasta samstilling {time}",
- "Ultimo tentativo non riuscito ({error}): riprovo alla prossima modifica.": "Síðasta tilraun mistókst ({error}): ég reyni aftur við næstu breytingu."
+ "Ultimo tentativo non riuscito ({error}): riprovo alla prossima modifica.": "Síðasta tilraun mistókst ({error}): ég reyni aftur við næstu breytingu.",
+ "Apre una conversazione nuova con il codice: consuma meno token di una chat lunga.": "Opnar nýtt samtal með kóðanum: notar færri tóka en langt spjall.",
+ "Nuova chat": "Nýtt spjall",
+ "Quando la conversazione diventa lunga, continua in una chat nuova: il progetto resta salvato e consumi meno token.": "Þegar samtalið verður langt skaltu halda áfram í nýju spjalli: verkefnið helst vistað og þú notar færri tóka."
 }

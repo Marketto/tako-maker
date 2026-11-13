@@ -576,5 +576,8 @@
  "Sincronizzo con {provider}…": "Sinchronizuoju su {provider}…",
  "Sincronizzo…": "Sinchronizuoju…",
  "Tutto salvato · ultima sincronizzazione {time}": "Viskas išsaugota · paskutinė sinchronizacija {time}",
- "Ultimo tentativo non riuscito ({error}): riprovo alla prossima modifica.": "Paskutinis bandymas nepavyko ({error}): bandysiu iš naujo po kito pakeitimo."
+ "Ultimo tentativo non riuscito ({error}): riprovo alla prossima modifica.": "Paskutinis bandymas nepavyko ({error}): bandysiu iš naujo po kito pakeitimo.",
+ "Apre una conversazione nuova con il codice: consuma meno token di una chat lunga.": "Atidaro naują pokalbį su kodu: sunaudoja mažiau žetonų nei ilgas pokalbis.",
+ "Nuova chat": "Naujas pokalbis",
+ "Quando la conversazione diventa lunga, continua in una chat nuova: il progetto resta salvato e consumi meno token.": "Kai pokalbis tampa ilgas, tęsk naujame pokalbyje: projektas lieka išsaugotas, o žetonų sunaudoji mažiau."
 }

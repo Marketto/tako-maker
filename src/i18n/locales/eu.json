@@ -576,5 +576,8 @@
  "Sincronizzo con {provider}…": "{provider}-rekin sinkronizatzen…",
  "Sincronizzo…": "Sinkronizatzen…",
  "Tutto salvato · ultima sincronizzazione {time}": "Dena gordeta · azken sinkronizazioa {time}",
- "Ultimo tentativo non riuscito ({error}): riprovo alla prossima modifica.": "Azken saiakerak huts egin du ({error}): hurrengo aldaketan berriro saiatuko naiz."
+ "Ultimo tentativo non riuscito ({error}): riprovo alla prossima modifica.": "Azken saiakerak huts egin du ({error}): hurrengo aldaketan berriro saiatuko naiz.",
+ "Apre una conversazione nuova con il codice: consuma meno token di una chat lunga.": "Elkarrizketa berri bat irekitzen du kodearekin: txat luze batek baino token gutxiago kontsumitzen ditu.",
+ "Nuova chat": "Txat berria",
+ "Quando la conversazione diventa lunga, continua in una chat nuova: il progetto resta salvato e consumi meno token.": "Elkarrizketa luzea bihurtzen denean, jarraitu txat berri batean: proiektua gordeta geratzen da eta token gutxiago kontsumitzen dituzu."
 }

@@ -576,5 +576,8 @@
  "Sincronizzo con {provider}…": "Sinhronizēju ar {provider}…",
  "Sincronizzo…": "Sinhronizēju…",
  "Tutto salvato · ultima sincronizzazione {time}": "Viss saglabāts · pēdējā sinhronizācija {time}",
- "Ultimo tentativo non riuscito ({error}): riprovo alla prossima modifica.": "Pēdējais mēģinājums neizdevās ({error}): mēģināšu vēlreiz pie nākamajām izmaiņām."
+ "Ultimo tentativo non riuscito ({error}): riprovo alla prossima modifica.": "Pēdējais mēģinājums neizdevās ({error}): mēģināšu vēlreiz pie nākamajām izmaiņām.",
+ "Apre una conversazione nuova con il codice: consuma meno token di una chat lunga.": "Atver jaunu sarunu ar kodu: patērē mazāk marķieru nekā gara tērzēšana.",
+ "Nuova chat": "Jauna tērzēšana",
+ "Quando la conversazione diventa lunga, continua in una chat nuova: il progetto resta salvato e consumi meno token.": "Kad saruna kļūst gara, turpini jaunā tērzēšanā: projekts paliek saglabāts, un tu patērē mazāk marķieru."
 }

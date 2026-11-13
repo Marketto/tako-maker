@@ -576,5 +576,8 @@
  "Viola": "Фіялетавы",
  "Volume della musica": "Гучнасць музыкі",
  "Volume di stampa (mm)": "Вобласць друку (mm)",
- "Wow, sei proprio un maker!": "Ого, ды ты сапраўдны мейкер!"
+ "Wow, sei proprio un maker!": "Ого, ды ты сапраўдны мейкер!",
+ "Apre una conversazione nuova con il codice: consuma meno token di una chat lunga.": "Адкрывае новую размову з кодам: яна расходуе менш токенаў, чым доўгі чат.",
+ "Nuova chat": "Новы чат",
+ "Quando la conversazione diventa lunga, continua in una chat nuova: il progetto resta salvato e consumi meno token.": "Калі размова становіцца доўгай, працягвай у новым чаце: праект застаецца захаваным, і ты расходуеш менш токенаў."
 }

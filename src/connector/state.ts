@@ -32,6 +32,8 @@ export interface ConnectorState {
   openedAt?: number;
   /** Stima cumulativa dei token scambiati con la chat (testo degli strumenti in entrata e in uscita). */
   usage?: TokenTally;
+  /** Chiamate dall'ultimo printopus_apri (cioè nella conversazione attuale): oltre una soglia si consiglia una chat nuova. */
+  callsSinceOpen?: number;
   /** Analisi calcolata dall'app (geometria e stime): il Worker non calcola la geometria. */
   report?: ConnectorReport;
 }
