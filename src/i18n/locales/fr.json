@@ -579,5 +579,7 @@
  "Ultimo tentativo non riuscito ({error}): riprovo alla prossima modifica.": "Le dernier essai a échoué ({error}) : je réessaie à la prochaine modification.",
  "Apre una conversazione nuova con il codice: consuma meno token di una chat lunga.": "Ouvre une nouvelle conversation avec le code : consomme moins de tokens qu’un long chat.",
  "Nuova chat": "Nouveau chat",
- "Quando la conversazione diventa lunga, continua in una chat nuova: il progetto resta salvato e consumi meno token.": "Quand la conversation devient longue, continue dans un nouveau chat : le projet reste enregistré et tu consommes moins de tokens."
+ "Quando la conversazione diventa lunga, continua in una chat nuova: il progetto resta salvato e consumi meno token.": "Quand la conversation devient longue, continue dans un nouveau chat : le projet reste enregistré et tu consommes moins de tokens.",
+ "Infila il pezzo forato sul perno: scegli il gioco più piccolo con cui gira libero senza ballare.": "Enfile la pièce percée sur l’axe : choisis le jeu le plus petit avec lequel elle tourne librement sans prendre de jeu latéral.",
+ "Perno rotante (gioco)": "Axe rotatif (jeu)"
 }

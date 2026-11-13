@@ -579,5 +579,7 @@
  "Ultimo tentativo non riuscito ({error}): riprovo alla prossima modifica.": "Methodd y cais diwethaf ({error}): rhoi cynnig arall ar y newid nesaf.",
  "Apre una conversazione nuova con il codice: consuma meno token di una chat lunga.": "Yn agor sgwrs newydd gyda'r cod: mae'n defnyddio llai o docynnau na sgwrs hir.",
  "Nuova chat": "Sgwrs newydd",
- "Quando la conversazione diventa lunga, continua in una chat nuova: il progetto resta salvato e consumi meno token.": "Pan fydd y sgwrs yn mynd yn hir, parha mewn sgwrs newydd: mae'r prosiect yn aros wedi'i gadw ac rwyt ti'n defnyddio llai o docynnau."
+ "Quando la conversazione diventa lunga, continua in una chat nuova: il progetto resta salvato e consumi meno token.": "Pan fydd y sgwrs yn mynd yn hir, parha mewn sgwrs newydd: mae'r prosiect yn aros wedi'i gadw ac rwyt ti'n defnyddio llai o docynnau.",
+ "Infila il pezzo forato sul perno: scegli il gioco più piccolo con cui gira libero senza ballare.": "Gwthia'r darn â thwll ar y pin: dewisa'r bwlch lleiaf lle mae'n troi'n rhydd heb siglo.",
+ "Perno rotante (gioco)": "Pin troi (bwlch)"
 }

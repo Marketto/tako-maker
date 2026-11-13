@@ -579,5 +579,7 @@
  "Ultimo tentativo non riuscito ({error}): riprovo alla prossima modifica.": "فشلت المحاولة الأخيرة ({error}): سأعيد المحاولة عند التغيير التالي.",
  "Apre una conversazione nuova con il codice: consuma meno token di una chat lunga.": "يفتح محادثة جديدة بالرمز: تستهلك رموزًا أقل من محادثة طويلة.",
  "Nuova chat": "محادثة جديدة",
- "Quando la conversazione diventa lunga, continua in una chat nuova: il progetto resta salvato e consumi meno token.": "عندما تطول المحادثة، تابع في محادثة جديدة: يبقى المشروع محفوظًا وتستهلك رموزًا أقل."
+ "Quando la conversazione diventa lunga, continua in una chat nuova: il progetto resta salvato e consumi meno token.": "عندما تطول المحادثة، تابع في محادثة جديدة: يبقى المشروع محفوظًا وتستهلك رموزًا أقل.",
+ "Infila il pezzo forato sul perno: scegli il gioco più piccolo con cui gira libero senza ballare.": "أدخل القطعة المثقوبة على المحور: اختر أصغر خلوص تدور معه بحرية دون أن تتخلخل.",
+ "Perno rotante (gioco)": "محور دوّار (الخلوص)"
 }

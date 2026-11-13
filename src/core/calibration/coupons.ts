@@ -6,10 +6,14 @@ import { fmtNum, msg, t } from '../../i18n';
    Ogni serie ha 5 campioni con valori centrati sul consigliato per il materiale;
    il numero di puntini in rilievo (1–5) identifica il campione dopo la stampa. */
 
-export type TestKind = 'hinge' | 'detent' | 'snap' | 'glue';
+export type TestKind = 'hinge' | 'rotary' | 'detent' | 'snap' | 'glue';
+
+/** Forma dei campioni di scatto: come i giunti del modello (cerniera o perno rotante). */
+export type DetentStyle = 'hinge' | 'rotary';
 
 export const TEST_LABEL: Record<TestKind, string> = {
   hinge: msg('Cerniera (gioco)'),
+  rotary: msg('Perno rotante (gioco)'),
   detent: msg('Scatto'),
   snap: msg('Incastro a pressione'),
   glue: msg('Perno da incollare'),
@@ -17,6 +21,7 @@ export const TEST_LABEL: Record<TestKind, string> = {
 
 export const TEST_HOWTO: Record<TestKind, string> = {
   hinge: msg('Muovi le cerniere: scegli il gioco più piccolo che si sblocca e gira liscio.'),
+  rotary: msg('Infila il pezzo forato sul perno: scegli il gioco più piccolo con cui gira libero senza ballare.'),
   detent: msg('Scegli lo scatto più netto che si muove ancora senza forzare troppo.'),
   snap: msg('Inserisci i perni: scegli quello che entra premendo con decisione e poi non si sfila da solo.'),
   glue: msg('Scegli il perno che entra a mano senza forzare, con il minimo gioco.'),
@@ -30,6 +35,8 @@ export function applyTestValue(kind: TestKind, v: number): Partial<Tolerances> {
   switch (kind) {
     case 'hinge':
       return { hingeGap: v, pinClearance: r2(Math.max(0.1, v - 0.05)) };
+    case 'rotary':
+      return { pinClearance: v };
     case 'detent':
       return { detentClearance: v };
     case 'snap':
@@ -40,7 +47,7 @@ export function applyTestValue(kind: TestKind, v: number): Partial<Tolerances> {
 }
 
 export function centerValue(kind: TestKind, t: Tolerances): number {
-  return kind === 'hinge' ? t.hingeGap : kind === 'detent' ? t.detentClearance : kind === 'snap' ? t.pegSnap : t.pegGlue;
+  return kind === 'hinge' ? t.hingeGap : kind === 'rotary' ? t.pinClearance : kind === 'detent' ? t.detentClearance : kind === 'snap' ? t.pegSnap : t.pegGlue;
 }
 
 export function testValues(kind: TestKind, material: string): number[] {
@@ -52,20 +59,27 @@ export function testValues(kind: TestKind, material: string): number[] {
 
 export const TEST_KEYS: Record<TestKind, (keyof Tolerances)[]> = {
   hinge: ['hingeGap', 'pinClearance'],
+  rotary: ['pinClearance'],
   detent: ['detentClearance'],
   snap: ['pegSnap'],
   glue: ['pegGlue'],
 };
 
-/** Prove utili per il modello corrente. */
+/** Prove utili per il modello corrente: solo i tipi di giunto che ci sono davvero. */
 export function neededTests(design: Design): TestKind[] {
   const out: TestKind[] = [];
   const articulated = design.joints.filter((j) => j.type === 'hinge' || j.type === 'rotary');
-  if (articulated.length) out.push('hinge');
+  if (articulated.some((j) => j.type === 'hinge')) out.push('hinge');
+  if (articulated.some((j) => j.type === 'rotary')) out.push('rotary');
   if (articulated.some((j) => j.detent?.enabled)) out.push('detent');
   if (design.printPlan.strategy === 'separate' && design.printPlan.connection === 'snap') out.push('snap');
   if (design.printPlan.strategy === 'separate' && design.printPlan.connection === 'glue') out.push('glue');
   return out;
+}
+
+/** Gli scatti si provano a cerniera solo se nel modello ci sono cerniere con scatto. */
+export function detentStyle(design: Design): DetentStyle {
+  return design.joints.some((j) => j.type === 'hinge' && j.detent?.enabled) ? 'hinge' : 'rotary';
 }
 
 /** Materiali delle parti coinvolte in giunti o incastri, con il filamento da usare per i campioni. */
@@ -92,6 +106,8 @@ export interface Coupon {
   design: Design;
   tol: Tolerances;
   size: [number, number];
+  /** Spostamento di singole parti dopo il calcolo: il pezzo forato si stampa accanto al perno, non infilato. */
+  partOffset?: Record<string, Vec3>;
 }
 
 const box = (size: Vec3, at?: Vec3, radius = 0.6): ShapeNode => ({ op: 'box', size, at, radius });
@@ -107,13 +123,40 @@ function couponDesign(name: string, parts: Part[], joints: Design['joints'] = []
   return { version: 1, name, intendedUse: { children: false }, parts, joints, printPlan: { strategy: 'separate', connection: 'none' } };
 }
 
-export function buildCoupons(kind: TestKind, material: string, filament: Filament, setup: UserSetup): Coupon[] {
+/** Perno rotante come nel modello (rotaryGeometry): base A con perno, blocco B forato che si stampa accanto e poi si infila. */
+function rotaryCoupon(tag: string, n: number, filament: Filament, detent: boolean): { design: Design; partOffset: Record<string, Vec3>; size: [number, number] } {
+  const L = 8;
+  const top = 3;
+  const parts: Part[] = [
+    { id: 'a', name: `${tag} – ${t('perno')}`, filamentId: filament.id, shape: { op: 'union', children: [box([20, 16, top]), ...dots(n, top)] } },
+    { id: 'b', name: `${tag} – ${t('foro')}`, filamentId: filament.id, shape: { op: 'union', children: [box([16, 16, L], [4, 2, top]), ...dots(n, top + L, 6, 4.5)] } },
+  ];
+  const joint = {
+    id: 'j',
+    type: 'rotary' as const,
+    partA: 'a',
+    partB: 'b',
+    axis: 'z' as const,
+    origin: [12, 10, top + L / 2] as Vec3,
+    length: L,
+    radius: 5,
+    detent: detent ? { enabled: true, anglesDeg: [0, 90, 180, 270] } : { enabled: false },
+  };
+  // B spostato sul piatto accanto ad A (senza ruotarlo): la faccia con gli incavi dello scatto resta sotto, come nel montaggio.
+  return { design: couponDesign(tag, parts, [joint]), partOffset: { b: [20, -2, -top] }, size: [40, 16] };
+}
+
+export function buildCoupons(kind: TestKind, material: string, filament: Filament, setup: UserSetup, style: DetentStyle = 'hinge'): Coupon[] {
   const base = tolerancesFor(material, setup);
   return testValues(kind, material).map((value, index) => {
     const n = index + 1;
     const tol: Tolerances = { ...base, ...applyTestValue(kind, value) };
     const tag = `${t(TEST_LABEL[kind])} ${VALUE_LABEL(value)} ${DOT_LABEL(n)}`;
     const id = `${material}-${kind}-${n}`;
+    if (kind === 'rotary' || (kind === 'detent' && style === 'rotary')) {
+      const r = rotaryCoupon(tag, n, filament, kind === 'detent');
+      return { id, kind, index, value, material, design: r.design, tol, size: r.size, partOffset: r.partOffset };
+    }
     if (kind === 'hinge' || kind === 'detent') {
       const R = 3.5;
       const parts: Part[] = [

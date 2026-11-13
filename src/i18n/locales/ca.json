@@ -579,5 +579,7 @@
  "Ultimo tentativo non riuscito ({error}): riprovo alla prossima modifica.": "L'últim intent ha fallat ({error}): ho tornaré a provar al pròxim canvi.",
  "Apre una conversazione nuova con il codice: consuma meno token di una chat lunga.": "Obre una conversa nova amb el codi: consumeix menys tokens que un xat llarg.",
  "Nuova chat": "Xat nou",
- "Quando la conversazione diventa lunga, continua in una chat nuova: il progetto resta salvato e consumi meno token.": "Quan la conversa es fa llarga, continua en un xat nou: el projecte queda desat i consumeixes menys tokens."
+ "Quando la conversazione diventa lunga, continua in una chat nuova: il progetto resta salvato e consumi meno token.": "Quan la conversa es fa llarga, continua en un xat nou: el projecte queda desat i consumeixes menys tokens.",
+ "Infila il pezzo forato sul perno: scegli il gioco più piccolo con cui gira libero senza ballare.": "Encaixa la peça foradada al passador: tria el joc més petit amb què gira lliure sense ballar.",
+ "Perno rotante (gioco)": "Passador giratori (joc)"
 }

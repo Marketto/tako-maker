@@ -579,5 +579,7 @@
  "Ultimo tentativo non riuscito ({error}): riprovo alla prossima modifica.": "Posljednji pokušaj nije uspio ({error}): pokušat ću ponovno pri sljedećoj promjeni.",
  "Apre una conversazione nuova con il codice: consuma meno token di una chat lunga.": "Otvara novi razgovor s kodom: troši manje tokena od dugog chata.",
  "Nuova chat": "Novi chat",
- "Quando la conversazione diventa lunga, continua in una chat nuova: il progetto resta salvato e consumi meno token.": "Kad razgovor postane dug, nastavi u novom chatu: projekt ostaje spremljen i trošiš manje tokena."
+ "Quando la conversazione diventa lunga, continua in una chat nuova: il progetto resta salvato e consumi meno token.": "Kad razgovor postane dug, nastavi u novom chatu: projekt ostaje spremljen i trošiš manje tokena.",
+ "Infila il pezzo forato sul perno: scegli il gioco più piccolo con cui gira libero senza ballare.": "Navuci dio s rupom na osovinu: odaberi najmanju zračnost s kojom se slobodno okreće bez klimanja.",
+ "Perno rotante (gioco)": "Okretna osovina (zračnost)"
 }

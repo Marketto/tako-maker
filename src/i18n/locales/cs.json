@@ -579,5 +579,7 @@
  "Ultimo tentativo non riuscito ({error}): riprovo alla prossima modifica.": "Poslední pokus se nezdařil ({error}): zkusím to znovu při další změně.",
  "Apre una conversazione nuova con il codice: consuma meno token di una chat lunga.": "Otevře novou konverzaci s kódem: spotřebuje méně tokenů než dlouhý chat.",
  "Nuova chat": "Nový chat",
- "Quando la conversazione diventa lunga, continua in una chat nuova: il progetto resta salvato e consumi meno token.": "Když je konverzace dlouhá, pokračuj v novém chatu: projekt zůstane uložený a spotřebuješ méně tokenů."
+ "Quando la conversazione diventa lunga, continua in una chat nuova: il progetto resta salvato e consumi meno token.": "Když je konverzace dlouhá, pokračuj v novém chatu: projekt zůstane uložený a spotřebuješ méně tokenů.",
+ "Infila il pezzo forato sul perno: scegli il gioco più piccolo con cui gira libero senza ballare.": "Nasaď díl s otvorem na čep: vyber nejmenší vůli, se kterou se volně otáčí a neviklá se.",
+ "Perno rotante (gioco)": "Otočný čep (vůle)"
 }

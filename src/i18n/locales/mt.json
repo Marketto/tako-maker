@@ -579,5 +579,7 @@
  "Ultimo tentativo non riuscito ({error}): riprovo alla prossima modifica.": "L-aħħar tentattiv falla ({error}): se nerġa' nipprova mal-bidla li jmiss.",
  "Apre una conversazione nuova con il codice: consuma meno token di una chat lunga.": "Jiftaħ konversazzjoni ġdida bil-kodiċi: tuża inqas tokens minn chat twil.",
  "Nuova chat": "Chat ġdid",
- "Quando la conversazione diventa lunga, continua in una chat nuova: il progetto resta salvato e consumi meno token.": "Meta l-konversazzjoni ssir twila, kompli f'chat ġdid: il-proġett jibqa' salvat u tuża inqas tokens."
+ "Quando la conversazione diventa lunga, continua in una chat nuova: il progetto resta salvato e consumi meno token.": "Meta l-konversazzjoni ssir twila, kompli f'chat ġdid: il-proġett jibqa' salvat u tuża inqas tokens.",
+ "Infila il pezzo forato sul perno: scegli il gioco più piccolo con cui gira libero senza ballare.": "Daħħal il-biċċa bit-toqba fuq il-pin: agħżel l-iżgħar spazju li bih iddur liberament mingħajr ma titħawwad.",
+ "Perno rotante (gioco)": "Pin li jdur (spazju)"
 }

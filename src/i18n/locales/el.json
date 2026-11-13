@@ -579,5 +579,7 @@
  "Ultimo tentativo non riuscito ({error}): riprovo alla prossima modifica.": "Η τελευταία προσπάθεια απέτυχε ({error}): θα ξαναδοκιμάσω στην επόμενη αλλαγή.",
  "Apre una conversazione nuova con il codice: consuma meno token di una chat lunga.": "Ανοίγει νέα συνομιλία με τον κωδικό: καταναλώνει λιγότερα tokens από μια μεγάλη συνομιλία.",
  "Nuova chat": "Νέα συνομιλία",
- "Quando la conversazione diventa lunga, continua in una chat nuova: il progetto resta salvato e consumi meno token.": "Όταν η συνομιλία μεγαλώσει, συνέχισε σε νέα συνομιλία: το έργο μένει αποθηκευμένο και καταναλώνεις λιγότερα tokens."
+ "Quando la conversazione diventa lunga, continua in una chat nuova: il progetto resta salvato e consumi meno token.": "Όταν η συνομιλία μεγαλώσει, συνέχισε σε νέα συνομιλία: το έργο μένει αποθηκευμένο και καταναλώνεις λιγότερα tokens.",
+ "Infila il pezzo forato sul perno: scegli il gioco più piccolo con cui gira libero senza ballare.": "Πέρασε το κομμάτι με την τρύπα στον πείρο: διάλεξε το μικρότερο διάκενο με το οποίο γυρίζει ελεύθερα χωρίς να κουνιέται.",
+ "Perno rotante (gioco)": "Περιστρεφόμενος πείρος (διάκενο)"
 }

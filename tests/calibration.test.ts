@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { strFromU8, unzipSync } from 'fflate';
 import { evaluateDesign } from '../src/core/geometry/evaluate';
 import { analyze } from '../src/core/analysis';
-import { buildCoupons, layoutPlates, materialsToTest, neededTests, testValues } from '../src/core/calibration/coupons';
+import { buildCoupons, detentStyle, layoutPlates, materialsToTest, neededTests, testValues } from '../src/core/calibration/coupons';
 import { buildCalibrationFiles } from '../src/core/calibration/export';
 import { tolerancesByPart, tolerancesFor } from '../src/core/calibration/tolerances';
 import { bondsPoorly, minWall } from '../src/data/guidelines';
@@ -44,13 +44,55 @@ describe('campioni di prova', () => {
   it('ogni campione si costruisce senza errori', async () => {
     const w = await manifold();
     const f = setup.filaments[0];
-    for (const kind of ['hinge', 'detent', 'snap', 'glue'] as const) {
-      for (const c of buildCoupons(kind, f.material, f, setup)) {
+    for (const [kind, style] of [['hinge', 'hinge'], ['rotary', 'hinge'], ['detent', 'hinge'], ['detent', 'rotary'], ['snap', 'hinge'], ['glue', 'hinge']] as const) {
+      for (const c of buildCoupons(kind, f.material, f, setup, style)) {
         const r = evaluateDesign(w, c.design, {}, { a: c.tol, b: c.tol });
         expect(r.errors).toEqual([]);
         expect(r.parts).toHaveLength(2);
       }
     }
+  }, 120_000); // 30 campioni con manifold: con tutti i test in parallelo può superare i 30 s
+  it('giunti rotanti: campioni a perno rotante, non a cerniera', () => {
+    const d = toyLaptop();
+    d.joints[0] = { ...d.joints[0], type: 'rotary', detent: { enabled: true } };
+    expect(neededTests(d)).toEqual(['rotary', 'detent']);
+    expect(detentStyle(d)).toBe('rotary');
+  });
+  it('perno rotante: il pezzo forato si stampa accanto al perno, appoggiato sul piatto', async () => {
+    const w = await manifold();
+    const f = setup.filaments[0];
+    const c = buildCoupons('detent', f.material, f, setup, 'rotary')[0];
+    const r = evaluateDesign(w, c.design, {}, { a: c.tol, b: c.tol });
+    const box = (id: string) => {
+      const p = r.parts.find((x) => x.id === id)!.bbox;
+      const o = c.partOffset?.[id] ?? [0, 0, 0];
+      return { min: p.min.map((v, k) => v + o[k]), max: p.max.map((v, k) => v + o[k]) };
+    };
+    const a = box('a');
+    const b = box('b');
+    expect(a.max[2]).toBeGreaterThan(10); // il perno sporge dalla base
+    expect(b.min[2]).toBeCloseTo(0, 1);
+    expect(b.min[0]).toBeGreaterThan(a.max[0]); // accanto, non infilato
+    expect(Math.max(a.max[0], b.max[0])).toBeLessThanOrEqual(c.size[0] + 0.01);
+  });
+  it('la cerniera ha il perno anche dentro la nocca centrale', async () => {
+    const w = await manifold();
+    const f = setup.filaments[0];
+    const c = buildCoupons('hinge', f.material, f, setup)[0];
+    const r = evaluateDesign(w, c.design, {}, { a: c.tol, b: c.tol });
+    const j = c.design.joints[0];
+    const L = j.length!, R = j.radius!, g = c.tol.hingeGap;
+    const seg = (L - 2 * g) / 3;
+    const lo = j.origin[0] - L / 2 + seg + g;
+    const hi = lo + seg;
+    // Superficie della parte A vicino all'asse nel tratto della nocca B: c'è solo se il perno la attraversa.
+    const { positions: pos, indices: idx } = r.parts.find((p) => p.id === 'a')!.mesh;
+    let found = false;
+    for (let t = 0; t < idx.length && !found; t += 3) {
+      const c3 = [0, 1, 2].map((k) => (pos[idx[t] * 3 + k] + pos[idx[t + 1] * 3 + k] + pos[idx[t + 2] * 3 + k]) / 3);
+      found = c3[0] > lo && c3[0] < hi && Math.hypot(c3[1] - j.origin[1], c3[2] - j.origin[2]) < R * 0.6;
+    }
+    expect(found).toBe(true);
   });
   it('un piatto per materiale, più piatti se non entrano', () => {
     const [pla, , petg] = setup.filaments;

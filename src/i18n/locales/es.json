@@ -579,5 +579,7 @@
  "Ultimo tentativo non riuscito ({error}): riprovo alla prossima modifica.": "El último intento falló ({error}): lo reintentaré en el próximo cambio.",
  "Apre una conversazione nuova con il codice: consuma meno token di una chat lunga.": "Abre una conversación nueva con el código: consume menos tokens que un chat largo.",
  "Nuova chat": "Chat nuevo",
- "Quando la conversazione diventa lunga, continua in una chat nuova: il progetto resta salvato e consumi meno token.": "Cuando la conversación se haga larga, sigue en un chat nuevo: el proyecto queda guardado y consumes menos tokens."
+ "Quando la conversazione diventa lunga, continua in una chat nuova: il progetto resta salvato e consumi meno token.": "Cuando la conversación se haga larga, sigue en un chat nuevo: el proyecto queda guardado y consumes menos tokens.",
+ "Infila il pezzo forato sul perno: scegli il gioco più piccolo con cui gira libero senza ballare.": "Mete la pieza con agujero en el pasador: elige la holgura más pequeña con la que gira libre sin bailar.",
+ "Perno rotante (gioco)": "Pasador giratorio (holgura)"
 }

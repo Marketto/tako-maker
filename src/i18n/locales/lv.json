@@ -579,5 +579,7 @@
  "Ultimo tentativo non riuscito ({error}): riprovo alla prossima modifica.": "Pēdējais mēģinājums neizdevās ({error}): mēģināšu vēlreiz pie nākamajām izmaiņām.",
  "Apre una conversazione nuova con il codice: consuma meno token di una chat lunga.": "Atver jaunu sarunu ar kodu: patērē mazāk marķieru nekā gara tērzēšana.",
  "Nuova chat": "Jauna tērzēšana",
- "Quando la conversazione diventa lunga, continua in una chat nuova: il progetto resta salvato e consumi meno token.": "Kad saruna kļūst gara, turpini jaunā tērzēšanā: projekts paliek saglabāts, un tu patērē mazāk marķieru."
+ "Quando la conversazione diventa lunga, continua in una chat nuova: il progetto resta salvato e consumi meno token.": "Kad saruna kļūst gara, turpini jaunā tērzēšanā: projekts paliek saglabāts, un tu patērē mazāk marķieru.",
+ "Infila il pezzo forato sul perno: scegli il gioco più piccolo con cui gira libero senza ballare.": "Uzmauc detaļu ar caurumu uz tapas: izvēlies mazāko spraugu, ar kuru tā brīvi griežas un nekustas.",
+ "Perno rotante (gioco)": "Rotējoša tapa (sprauga)"
 }

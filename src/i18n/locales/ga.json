@@ -579,5 +579,7 @@
  "Ultimo tentativo non riuscito ({error}): riprovo alla prossima modifica.": "Theip ar an iarracht dheireanach ({error}): bainfidh mé triail eile as ag an athrú dár gcionn.",
  "Apre una conversazione nuova con il codice: consuma meno token di una chat lunga.": "Osclaíonn sé comhrá nua leis an gcód: úsáideann sé níos lú comharthaí ná comhrá fada.",
  "Nuova chat": "Comhrá nua",
- "Quando la conversazione diventa lunga, continua in una chat nuova: il progetto resta salvato e consumi meno token.": "Nuair a éiríonn an comhrá fada, lean ar aghaidh i gcomhrá nua: fanann an tionscadal sábháilte agus úsáideann tú níos lú comharthaí."
+ "Quando la conversazione diventa lunga, continua in una chat nuova: il progetto resta salvato e consumi meno token.": "Nuair a éiríonn an comhrá fada, lean ar aghaidh i gcomhrá nua: fanann an tionscadal sábháilte agus úsáideann tú níos lú comharthaí.",
+ "Infila il pezzo forato sul perno: scegli il gioco più piccolo con cui gira libero senza ballare.": "Brúigh an píosa le poll air ar an mbiorán: roghnaigh an bhearna is lú a ligeann dó casadh go saor gan luascadh.",
+ "Perno rotante (gioco)": "Biorán rothlach (bearna)"
 }

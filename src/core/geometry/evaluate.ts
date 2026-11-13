@@ -231,6 +231,8 @@ interface JointGeometry {
   subA: Manifold[];
   addB: Manifold[];
   subB: Manifold[];
+  /** Aggiunte ad A dopo le sottrazioni (il perno della cerniera, che attraversa lo spazio libero attorno alla nocca di B). */
+  postA?: Manifold[];
 }
 
 /** Cerniera stampabile già montata: nocche A-B-A con perno integrato in A. */
@@ -249,8 +251,9 @@ export function hingeGeometry(ctx: Ctx, j: Joint, tol: Tolerances = TOL): JointG
   const kA2 = cyl(seg, R, z0 + 2 * (seg + g));
   const pin = cyl(L - 0.2, pinR, z0 + 0.1);
 
-  const out: JointGeometry = { addA: [], subA: [], addB: [], subB: [] };
-  out.addA.push(placeOnAxis(ctx, kA1, j), placeOnAxis(ctx, kA2, j), placeOnAxis(ctx, pin, j));
+  // Il perno va aggiunto dopo aver scavato lo spazio attorno alla nocca B, altrimenti lo scavo ne toglie il tratto centrale.
+  const out: JointGeometry = { addA: [], subA: [], addB: [], subB: [], postA: [placeOnAxis(ctx, pin, j)] };
+  out.addA.push(placeOnAxis(ctx, kA1, j), placeOnAxis(ctx, kA2, j));
   // Con l'asse orizzontale gli archi stampati sopra perno e nocche si abbassano un po':
   // foro "ovale" con gioco extra in alto (vedi ARCH_SAG_MM).
   const withSag = (m: Manifold): Manifold[] => (j.axis === 'z' ? [m] : [m, ctx.keep(m.translate([0, 0, ARCH_SAG_MM]))]);
@@ -644,6 +647,7 @@ export function evaluateDesign(
       push(sub, j.partA, g.subA);
       push(add, j.partB, g.addB);
       push(sub, j.partB, g.subB);
+      if (g.postA?.length) push(post, j.partA, g.postA);
     } catch (e) {
       errors.push(`Giunto "${j.id}": ${(e as Error).message}`);
     }

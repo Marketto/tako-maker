@@ -579,5 +579,7 @@
  "Ultimo tentativo non riuscito ({error}): riprovo alla prossima modifica.": "Az utolsó próbálkozás nem sikerült ({error}): a következő módosításnál újrapróbálom.",
  "Apre una conversazione nuova con il codice: consuma meno token di una chat lunga.": "Új beszélgetést nyit a kóddal: kevesebb tokent használ, mint egy hosszú csevegés.",
  "Nuova chat": "Új csevegés",
- "Quando la conversazione diventa lunga, continua in una chat nuova: il progetto resta salvato e consumi meno token.": "Ha a beszélgetés hosszúra nyúlik, folytasd egy új csevegésben: a projekt mentve marad, és kevesebb tokent használsz."
+ "Quando la conversazione diventa lunga, continua in una chat nuova: il progetto resta salvato e consumi meno token.": "Ha a beszélgetés hosszúra nyúlik, folytasd egy új csevegésben: a projekt mentve marad, és kevesebb tokent használsz.",
+ "Infila il pezzo forato sul perno: scegli il gioco più piccolo con cui gira libero senza ballare.": "Húzd a furatos darabot a csapra: válaszd a legkisebb hézagot, amellyel szabadon forog, de nem lötyög.",
+ "Perno rotante (gioco)": "Forgócsap (hézag)"
 }
