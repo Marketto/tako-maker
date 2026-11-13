@@ -579,5 +579,7 @@
  "Ultimo tentativo non riuscito ({error}): riprovo alla prossima modifica.": "Ultima încercare a eșuat ({error}): reîncerc la următoarea modificare.",
  "Apre una conversazione nuova con il codice: consuma meno token di una chat lunga.": "Deschide o conversație nouă cu codul: consumă mai puțini tokeni decât un chat lung.",
  "Nuova chat": "Chat nou",
- "Quando la conversazione diventa lunga, continua in una chat nuova: il progetto resta salvato e consumi meno token.": "Când conversația devine lungă, continuă într-un chat nou: proiectul rămâne salvat și consumi mai puțini tokeni."
+ "Quando la conversazione diventa lunga, continua in una chat nuova: il progetto resta salvato e consumi meno token.": "Când conversația devine lungă, continuă într-un chat nou: proiectul rămâne salvat și consumi mai puțini tokeni.",
+ "Infila il pezzo forato sul perno: scegli il gioco più piccolo con cui gira libero senza ballare.": "Introdu piesa cu gaură pe știft: alege cel mai mic joc la care se rotește liber fără să se clatine.",
+ "Perno rotante (gioco)": "Știft rotativ (joc)"
 }

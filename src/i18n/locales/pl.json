@@ -579,5 +579,7 @@
  "Ultimo tentativo non riuscito ({error}): riprovo alla prossima modifica.": "Ostatnia próba nie powiodła się ({error}): spróbuję ponownie przy następnej zmianie.",
  "Apre una conversazione nuova con il codice: consuma meno token di una chat lunga.": "Otwiera nową rozmowę z kodem: zużywa mniej tokenów niż długi czat.",
  "Nuova chat": "Nowy czat",
- "Quando la conversazione diventa lunga, continua in una chat nuova: il progetto resta salvato e consumi meno token.": "Gdy rozmowa robi się długa, kontynuuj w nowym czacie: projekt zostaje zapisany, a zużywasz mniej tokenów."
+ "Quando la conversazione diventa lunga, continua in una chat nuova: il progetto resta salvato e consumi meno token.": "Gdy rozmowa robi się długa, kontynuuj w nowym czacie: projekt zostaje zapisany, a zużywasz mniej tokenów.",
+ "Infila il pezzo forato sul perno: scegli il gioco più piccolo con cui gira libero senza ballare.": "Nasuń część z otworem na trzpień: wybierz najmniejszy luz, przy którym obraca się swobodnie i się nie chwieje.",
+ "Perno rotante (gioco)": "Trzpień obrotowy (luz)"
 }

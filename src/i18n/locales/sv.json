@@ -579,5 +579,7 @@
  "Ultimo tentativo non riuscito ({error}): riprovo alla prossima modifica.": "Senaste försöket misslyckades ({error}): jag försöker igen vid nästa ändring.",
  "Apre una conversazione nuova con il codice: consuma meno token di una chat lunga.": "Öppnar en ny konversation med koden: använder färre tokens än en lång chatt.",
  "Nuova chat": "Ny chatt",
- "Quando la conversazione diventa lunga, continua in una chat nuova: il progetto resta salvato e consumi meno token.": "När konversationen blir lång, fortsätt i en ny chatt: projektet förblir sparat och du använder färre tokens."
+ "Quando la conversazione diventa lunga, continua in una chat nuova: il progetto resta salvato e consumi meno token.": "När konversationen blir lång, fortsätt i en ny chatt: projektet förblir sparat och du använder färre tokens.",
+ "Infila il pezzo forato sul perno: scegli il gioco più piccolo con cui gira libero senza ballare.": "Trä på delen med hålet på tappen: välj det minsta spelet där den snurrar fritt utan att glappa.",
+ "Perno rotante (gioco)": "Vridtapp (spel)"
 }

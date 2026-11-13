@@ -68,14 +68,16 @@ Le stesse regole, con le tolleranze effettive, sono nel blocco “Linee guida da
 Tolleranza effettiva = base → delta del materiale → valore calibrato dall'utente (`UserSetup.tolerances[materiale]`).
 Per ogni coppia di parti si usa la tolleranza più larga dei due materiali.
 
-Con giunti o incastri (e materiali non ancora calibrati) l'app chiede se stampare i campioni:
+Con giunti o incastri (e materiali non ancora calibrati) l'app chiede se stampare i campioni.
+Si propongono solo le prove dei giunti presenti nel modello:
 
-| Prova | Campione | Valori |
-|---|---|---|
-| Cerniera | due placchette con cerniera stampata montata | consigliato ±0,1 mm (5 valori) |
-| Scatto | come sopra, con scatti a 0°, 90°, 180° | consigliato ±0,1 mm |
-| Incastro a pressione | perno + blocco con foro | consigliato ±0,1 mm (min 0) |
-| Perno da incollare | perno + blocco con foro | consigliato ±0,1 mm |
+| Prova | Quando | Campione | Valori |
+|---|---|---|---|
+| Cerniera | giunti `hinge` | due placchette con cerniera stampata montata | consigliato ±0,1 mm (5 valori) |
+| Perno rotante | giunti `rotary` | base con perno e blocco forato stampato accanto, da infilare (stessa geometria del giunto) | `pinClearance` consigliato ±0,1 mm |
+| Scatto | giunti con scatto | come la cerniera con scatti a 0°, 90°, 180°; se il modello non ha cerniere con scatto, come il perno rotante con scatti ogni 90° | consigliato ±0,1 mm |
+| Incastro a pressione | collegamento a incastro | perno + blocco con foro | consigliato ±0,1 mm (min 0) |
+| Perno da incollare | collegamento a colla | perno + blocco con foro | consigliato ±0,1 mm |
 
 Il numero di puntini in rilievo (1–5) identifica il campione. Un 3MF per piatto, un materiale per piatto;
 con più piatti si scarica uno zip con `LEGGIMI.txt`. La scelta del campione migliore si fa nella scheda

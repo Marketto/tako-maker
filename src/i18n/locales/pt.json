@@ -579,5 +579,7 @@
  "Ultimo tentativo non riuscito ({error}): riprovo alla prossima modifica.": "A última tentativa falhou ({error}): volto a tentar na próxima alteração.",
  "Apre una conversazione nuova con il codice: consuma meno token di una chat lunga.": "Abre uma conversa nova com o código: consome menos tokens do que um chat longo.",
  "Nuova chat": "Novo chat",
- "Quando la conversazione diventa lunga, continua in una chat nuova: il progetto resta salvato e consumi meno token.": "Quando a conversa ficar longa, continua num chat novo: o projeto fica guardado e consomes menos tokens."
+ "Quando la conversazione diventa lunga, continua in una chat nuova: il progetto resta salvato e consumi meno token.": "Quando a conversa ficar longa, continua num chat novo: o projeto fica guardado e consomes menos tokens.",
+ "Infila il pezzo forato sul perno: scegli il gioco più piccolo con cui gira libero senza ballare.": "Encaixa a peça com furo no pino: escolhe a folga mais pequena com que roda livre sem abanar.",
+ "Perno rotante (gioco)": "Pino rotativo (folga)"
 }

@@ -579,5 +579,7 @@
  "Ultimo tentativo non riuscito ({error}): riprovo alla prossima modifica.": "Viimane katse ebaõnnestus ({error}): proovin uuesti järgmisel muudatusel.",
  "Apre una conversazione nuova con il codice: consuma meno token di una chat lunga.": "Avab koodiga uue vestluse: kulutab vähem tokeneid kui pikk vestlus.",
  "Nuova chat": "Uus vestlus",
- "Quando la conversazione diventa lunga, continua in una chat nuova: il progetto resta salvato e consumi meno token.": "Kui vestlus läheb pikaks, jätka uues vestluses: projekt jääb salvestatuks ja kulutad vähem tokeneid."
+ "Quando la conversazione diventa lunga, continua in una chat nuova: il progetto resta salvato e consumi meno token.": "Kui vestlus läheb pikaks, jätka uues vestluses: projekt jääb salvestatuks ja kulutad vähem tokeneid.",
+ "Infila il pezzo forato sul perno: scegli il gioco più piccolo con cui gira libero senza ballare.": "Lükka augustatud detail tihvti otsa: vali väikseim lõtk, millega see pöörleb vabalt ega loksu.",
+ "Perno rotante (gioco)": "Pöördtihvt (lõtk)"
 }

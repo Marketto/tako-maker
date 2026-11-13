@@ -579,5 +579,7 @@
  "Ultimo tentativo non riuscito ({error}): riprovo alla prossima modifica.": "Përpjekja e fundit dështoi ({error}): provoj sërish me ndryshimin e radhës.",
  "Apre una conversazione nuova con il codice: consuma meno token di una chat lunga.": "Hap një bisedë të re me kodin: harxhon më pak tokenë se një bisedë e gjatë.",
  "Nuova chat": "Bisedë e re",
- "Quando la conversazione diventa lunga, continua in una chat nuova: il progetto resta salvato e consumi meno token.": "Kur biseda bëhet e gjatë, vazhdo në një bisedë të re: projekti mbetet i ruajtur dhe harxhon më pak tokenë."
+ "Quando la conversazione diventa lunga, continua in una chat nuova: il progetto resta salvato e consumi meno token.": "Kur biseda bëhet e gjatë, vazhdo në një bisedë të re: projekti mbetet i ruajtur dhe harxhon më pak tokenë.",
+ "Infila il pezzo forato sul perno: scegli il gioco più piccolo con cui gira libero senza ballare.": "Fute pjesën me vrimë në kunj: zgjidh boshllëkun më të vogël me të cilin rrotullohet lirshëm pa u lëkundur.",
+ "Perno rotante (gioco)": "Kunj rrotullues (boshllëk)"
 }

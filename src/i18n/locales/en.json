@@ -579,5 +579,7 @@
  "Ultimo tentativo non riuscito ({error}): riprovo alla prossima modifica.": "Last attempt failed ({error}): I'll retry on the next change.",
  "Apre una conversazione nuova con il codice: consuma meno token di una chat lunga.": "Opens a new conversation with the code: uses fewer tokens than a long chat.",
  "Nuova chat": "New chat",
- "Quando la conversazione diventa lunga, continua in una chat nuova: il progetto resta salvato e consumi meno token.": "When the conversation gets long, continue in a new chat: the project stays saved and you use fewer tokens."
+ "Quando la conversazione diventa lunga, continua in una chat nuova: il progetto resta salvato e consumi meno token.": "When the conversation gets long, continue in a new chat: the project stays saved and you use fewer tokens.",
+ "Infila il pezzo forato sul perno: scegli il gioco più piccolo con cui gira libero senza ballare.": "Push the part with the hole onto the pin: pick the smallest gap at which it turns freely without wobbling.",
+ "Perno rotante (gioco)": "Rotating pin (gap)"
 }

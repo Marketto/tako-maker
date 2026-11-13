@@ -579,5 +579,7 @@
  "Ultimo tentativo non riuscito ({error}): riprovo alla prossima modifica.": "Azken saiakerak huts egin du ({error}): hurrengo aldaketan berriro saiatuko naiz.",
  "Apre una conversazione nuova con il codice: consuma meno token di una chat lunga.": "Elkarrizketa berri bat irekitzen du kodearekin: txat luze batek baino token gutxiago kontsumitzen ditu.",
  "Nuova chat": "Txat berria",
- "Quando la conversazione diventa lunga, continua in una chat nuova: il progetto resta salvato e consumi meno token.": "Elkarrizketa luzea bihurtzen denean, jarraitu txat berri batean: proiektua gordeta geratzen da eta token gutxiago kontsumitzen dituzu."
+ "Quando la conversazione diventa lunga, continua in una chat nuova: il progetto resta salvato e consumi meno token.": "Elkarrizketa luzea bihurtzen denean, jarraitu txat berri batean: proiektua gordeta geratzen da eta token gutxiago kontsumitzen dituzu.",
+ "Infila il pezzo forato sul perno: scegli il gioco più piccolo con cui gira libero senza ballare.": "Sartu zulodun pieza ardatzean: aukeratu askatasunez biratzen den eta dantzatzen ez den jokorik txikiena.",
+ "Perno rotante (gioco)": "Ardatz birakaria (jokoa)"
 }

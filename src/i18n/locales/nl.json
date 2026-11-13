@@ -579,5 +579,7 @@
  "Ultimo tentativo non riuscito ({error}): riprovo alla prossima modifica.": "Laatste poging mislukt ({error}): ik probeer het opnieuw bij de volgende wijziging.",
  "Apre una conversazione nuova con il codice: consuma meno token di una chat lunga.": "Opent een nieuw gesprek met de code: verbruikt minder tokens dan een lange chat.",
  "Nuova chat": "Nieuwe chat",
- "Quando la conversazione diventa lunga, continua in una chat nuova: il progetto resta salvato e consumi meno token.": "Als het gesprek lang wordt, ga verder in een nieuwe chat: het project blijft bewaard en je verbruikt minder tokens."
+ "Quando la conversazione diventa lunga, continua in una chat nuova: il progetto resta salvato e consumi meno token.": "Als het gesprek lang wordt, ga verder in een nieuwe chat: het project blijft bewaard en je verbruikt minder tokens.",
+ "Infila il pezzo forato sul perno: scegli il gioco più piccolo con cui gira libero senza ballare.": "Schuif het onderdeel met het gat op de pen: kies de kleinste speling waarbij het vrij draait zonder te wiebelen.",
+ "Perno rotante (gioco)": "Draaipen (speling)"
 }

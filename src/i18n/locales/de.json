@@ -579,5 +579,7 @@
  "Ultimo tentativo non riuscito ({error}): riprovo alla prossima modifica.": "Letzter Versuch fehlgeschlagen ({error}): Ich versuche es bei der nächsten Änderung erneut.",
  "Apre una conversazione nuova con il codice: consuma meno token di una chat lunga.": "Öffnet eine neue Unterhaltung mit dem Code: verbraucht weniger Tokens als ein langer Chat.",
  "Nuova chat": "Neuer Chat",
- "Quando la conversazione diventa lunga, continua in una chat nuova: il progetto resta salvato e consumi meno token.": "Wenn die Unterhaltung lang wird, mach in einem neuen Chat weiter: Das Projekt bleibt gespeichert und du verbrauchst weniger Tokens."
+ "Quando la conversazione diventa lunga, continua in una chat nuova: il progetto resta salvato e consumi meno token.": "Wenn die Unterhaltung lang wird, mach in einem neuen Chat weiter: Das Projekt bleibt gespeichert und du verbrauchst weniger Tokens.",
+ "Infila il pezzo forato sul perno: scegli il gioco più piccolo con cui gira libero senza ballare.": "Steck das Teil mit dem Loch auf den Stift: Wähl das kleinste Spiel, bei dem es sich frei dreht, ohne zu wackeln.",
+ "Perno rotante (gioco)": "Drehstift (Spiel)"
 }

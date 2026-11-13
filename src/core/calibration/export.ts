@@ -3,7 +3,7 @@ import type { Design, PrinterSpec, Tolerances, UserSetup } from '../types';
 import type { PartResult } from '../geometry/evaluate';
 import { build3MF, flavorForSlicer, slicerProfileFor, type ExportPart } from '../export/threemf';
 import { bedOf } from '../analysis/estimate';
-import { buildCoupons, layoutPlates, materialsToTest, neededTests, readmeText, type TestKind } from './coupons';
+import { buildCoupons, detentStyle, layoutPlates, materialsToTest, neededTests, readmeText, type TestKind } from './coupons';
 import { t } from '../../i18n';
 
 /* File dei campioni di prova: un piatto per materiale (più piatti se non ci stanno).
@@ -28,7 +28,7 @@ export async function buildCalibrationFiles(design: Design, setup: UserSetup, pr
   const mats = materialsToTest(design, setup);
   if (!mats.length) throw new Error(t('Nessun filamento disponibile per i campioni.'));
   const bed = bedOf(setup, printer);
-  const groups = mats.map(({ material, filament }) => ({ material, filament, coupons: kinds.flatMap((k) => buildCoupons(k, material, filament, setup)) }));
+  const groups = mats.map(({ material, filament }) => ({ material, filament, coupons: kinds.flatMap((k) => buildCoupons(k, material, filament, setup, detentStyle(design))) }));
   const plates = layoutPlates(groups, bed);
   const readme = readmeText(plates, kinds);
   const flavor = flavorForSlicer(printer.slicer);
@@ -42,10 +42,11 @@ export async function buildCalibrationFiles(design: Design, setup: UserSetup, pr
       const res = await evaluate(coupon.design, { a: coupon.tol, b: coupon.tol });
       for (const r of res) {
         const pos = new Float32Array(r.mesh.positions);
+        const extra = coupon.partOffset?.[r.id] ?? [0, 0, 0];
         for (let i = 0; i < pos.length; i += 3) {
-          pos[i] += offset[0];
-          pos[i + 1] += offset[1];
-          pos[i + 2] += offset[2];
+          pos[i] += offset[0] + extra[0];
+          pos[i + 1] += offset[1] + extra[1];
+          pos[i + 2] += offset[2] + extra[2];
         }
         parts.push({ name: r.name, mesh: { positions: pos, indices: r.mesh.indices }, filament: plate.filament, extruder, group: coupon.id, plate: pi + 1 });
       }
