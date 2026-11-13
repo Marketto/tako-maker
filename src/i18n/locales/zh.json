@@ -583,5 +583,6 @@
  "Dove ci sono 3 campioni, i segni (da 1 a 3) indicano il gioco provato.": "有 3 个样件时，标记（1 到 3）表示所测试的间隙。",
  "Monta i pezzi: se entrano a fatica o ballano, dillo all’assistente prima di stampare il modello.": "把零件装起来：如果很难装进去或有晃动，请在打印模型前告诉助手。",
  "Sono pezzi del tuo modello ritagliati attorno alle parti incerte.": "这些是从模型中不确定部位周围切下的部分。",
- "Sono pezzi del tuo modello: dove ce ne sono 3, i segni (da 1 a 3) indicano il gioco. Dopo la stampa indica il migliore nella scheda Stampa → Campioni di prova.": "这些是从你的模型上切下的部分：有 3 个时，标记（1 到 3）表示间隙。打印后在 打印 → 测试样件 中选出最好的。"
+ "Sono pezzi del tuo modello: dove ce ne sono 3, i segni (da 1 a 3) indicano il gioco. Dopo la stampa indica il migliore nella scheda Stampa → Campioni di prova.": "这些是从你的模型上切下的部分：有 3 个时，标记（1 到 3）表示间隙。打印后在 打印 → 测试样件 中选出最好的。",
+ "Un solo pezzo con il perno: infila sullo stesso perno i pezzi forati, uno alla volta.": "带销的零件只有一个：把带孔的零件逐个套到同一个销上。"
 }

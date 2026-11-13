@@ -583,5 +583,6 @@
  "Dove ci sono 3 campioni, i segni (da 1 a 3) indicano il gioco provato.": "Where there are 3 samples, the marks (1 to 3) show the clearance tested.",
  "Monta i pezzi: se entrano a fatica o ballano, dillo all’assistente prima di stampare il modello.": "Assemble the pieces: if they go in with difficulty or wobble, tell the assistant before printing the model.",
  "Sono pezzi del tuo modello ritagliati attorno alle parti incerte.": "These are pieces of your model cut around the uncertain parts.",
- "Sono pezzi del tuo modello: dove ce ne sono 3, i segni (da 1 a 3) indicano il gioco. Dopo la stampa indica il migliore nella scheda Stampa → Campioni di prova.": "These are pieces of your model: where there are 3, the marks (1 to 3) show the clearance. After printing, select the best one in Print → Test samples."
+ "Sono pezzi del tuo modello: dove ce ne sono 3, i segni (da 1 a 3) indicano il gioco. Dopo la stampa indica il migliore nella scheda Stampa → Campioni di prova.": "These are pieces of your model: where there are 3, the marks (1 to 3) show the clearance. After printing, select the best one in Print → Test samples.",
+ "Un solo pezzo con il perno: infila sullo stesso perno i pezzi forati, uno alla volta.": "Only one piece with the pin: fit the drilled pieces on the same pin, one at a time."
 }

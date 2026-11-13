@@ -79,7 +79,10 @@ I campioni sono **pezzi del modello ritagliati** attorno alle parti incerte (`pl
 | Aggancio | parti separate con collegamento `designed` i cui ingombri si compenetrano (senza giunto) | ritaglio della zona comune dei due pezzi; agganci uguali ripetuti si provano una volta | 1 |
 | Prova di misura | `design.samples` dichiarate dall'AI (oggetti esterni, copie dello stesso pezzo) | le zone indicate | 1 |
 
-Per ogni tipo di giunto e materiale si sceglie un solo giunto, il più piccolo. I campioni da 3 hanno da 1 a
+Per ogni tipo di giunto e materiale si sceglie un solo giunto, il più piccolo. Nei perni rotanti e nei perni
+dell'app il gioco sta tutto nel foro: si stampa **un solo pezzo con il perno** e 3 pezzi forati da provare uno
+alla volta (`sharedPin`, `Coupon.drop`). Fa eccezione la prova del gioco su un giunto con scatto: il dentino
+del perno si sposta col gioco, quindi ogni variante ha il suo perno. I campioni da 3 hanno da 1 a
 3 segni incavati sulle facce lontane dal giunto. I pezzi delle prove da 1 si stampano affiancati, ciascuno
 nel verso (dritto o capovolto) con meno sporgenze (`arrange.ts`).
 

@@ -583,5 +583,6 @@
  "Dove ci sono 3 campioni, i segni (da 1 a 3) indicano il gioco provato.": "Là où il y a 3 échantillons, les marques (de 1 à 3) indiquent le jeu testé.",
  "Monta i pezzi: se entrano a fatica o ballano, dillo all’assistente prima di stampare il modello.": "Assemble les pièces : si elles entrent difficilement ou ont du jeu, dis-le à l’assistant avant d’imprimer le modèle.",
  "Sono pezzi del tuo modello ritagliati attorno alle parti incerte.": "Ce sont des morceaux de ton modèle découpés autour des parties incertaines.",
- "Sono pezzi del tuo modello: dove ce ne sono 3, i segni (da 1 a 3) indicano il gioco. Dopo la stampa indica il migliore nella scheda Stampa → Campioni di prova.": "Ce sont des morceaux de ton modèle : là où il y en a 3, les marques (de 1 à 3) indiquent le jeu. Après l’impression, indique le meilleur dans Impression → Échantillons de test."
+ "Sono pezzi del tuo modello: dove ce ne sono 3, i segni (da 1 a 3) indicano il gioco. Dopo la stampa indica il migliore nella scheda Stampa → Campioni di prova.": "Ce sont des morceaux de ton modèle : là où il y en a 3, les marques (de 1 à 3) indiquent le jeu. Après l’impression, indique le meilleur dans Impression → Échantillons de test.",
+ "Un solo pezzo con il perno: infila sullo stesso perno i pezzi forati, uno alla volta.": "Une seule pièce avec l’axe : enfile les pièces percées sur le même axe, une à la fois."
 }
