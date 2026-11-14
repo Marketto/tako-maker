@@ -4,6 +4,7 @@ Attività concluse, le più recenti in alto. Quelle ancora aperte sono in [TODO.
 
 ## Novembre 2026
 
+- **14/11 – Più colori di filamento.** Circa 70 colori del mercato in `src/data/colors.ts` (famiglie e finiture, limitati ai materiali in cui esistono), con ricerca, categorie e colore personalizzato nel wizard (`ui/ColorPicker.tsx`).
 - **14/11 – Supporti, ponti e istruzioni dei campioni di prova.** I ponti corti (cielo di un foro, tasca, arco) non chiedono più supporti, nel modello e nei campioni; i campioni hanno i supporti quando servono (prima mai); tolte le briciole del ritaglio; ogni pezzo dice ruolo e parte d'origine e ogni prova elenca i suoi pezzi.
 - **14/11 – Campioni senza regioni fluttuanti** (PR #48). I pezzi sospesi di un ritaglio si posano accanto; gli oggetti nello slicer hanno il nome del campione.
 - **13/11 – Tolto il KV del connettore.** Le sessioni stanno solo nei Durable Object; tolti il recupero dal vecchio archivio e la variabile `CONNECTOR_KV_ID`.
