@@ -98,7 +98,8 @@ describe('campioni di prova', () => {
     expect(files.readme).toMatch(/Fetta della base/);
     const model = strFromU8(unzipSync(files.data)['3D/3dmodel.model']);
     // Un solo pezzo con il perno per serie: (1 + 3) + (1 + 3) pezzi per i giunti, 2 per l'aggancio, 1 per la fetta.
-    expect(model.match(/<object /g)!.length).toBe(4 + 4 + 2 + 1);
+    // Il ritaglio del supporto della leva ha un pezzetto sopra la leva: si posa accanto (+1).
+    expect(model.match(/<object /g)!.length).toBe(4 + 5 + 2 + 1);
     expect(files.readme).toMatch(/Un solo pezzo con il perno/);
   }, 120_000);
   it('perno rotante: asse in verticale, perno in alto, pezzo forato accanto', async () => {
@@ -206,6 +207,10 @@ describe('campioni di prova', () => {
     const cfg = strFromU8(unzipSync(files.data)['Metadata/model_settings.config']);
     expect(cfg.match(/<plate>/g)).toHaveLength(2);
     expect(cfg).toMatch(/Cerniera/);
+    // Ogni oggetto porta il nome del suo campione: gli avvisi dello slicer dicono quale.
+    const names = [...cfg.matchAll(/<object id="\d+">\s*<metadata key="name" value="([^"]*)"/g)].map((m) => m[1]);
+    expect(names.length).toBeGreaterThan(1);
+    expect(names).not.toContain('Campioni di prova');
   }, 60_000);
   it('PrusaSlicer: uno zip con un 3MF per materiale e le istruzioni', async () => {
     const d = toyLaptop();

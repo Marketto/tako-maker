@@ -23,6 +23,8 @@ export interface PlatedPart {
   extruder: number;
   /** Parti con la stessa chiave formano un unico oggetto (es. modello montato, cerniera). */
   objectKey: string;
+  /** Nome dell'oggetto quando ha più parti (se assente, il titolo del file). */
+  objectName?: string;
   /** Piatto (1 = primo). */
   plate: number;
   /** Traslazione dell'oggetto dentro il suo piatto. */
@@ -152,7 +154,7 @@ export function bambuFiles(parts: PlatedPart[], opt: BambuOptions): Record<strin
     const first = members[0];
     const [ox, oy] = plateOrigin(first.plate - 1, plates, opt.bed, opt.plateStride);
     const tr = `1 0 0 0 1 0 0 0 1 ${f(ox + first.offset[0] + c[0])} ${f(oy + first.offset[1] + c[1])} ${f(first.offset[2] + c[2])}`;
-    const name = members.length > 1 ? opt.title : first.name;
+    const name = members.length > 1 ? (first.objectName ?? opt.title) : first.name;
     objects.push(`  <object id="${id}" p:UUID="${uuid(id, 3)}" type="model">\n   <components>\n    ${comps.join('\n    ')}\n   </components>\n  </object>`);
     build.push(`  <item objectid="${id}" p:UUID="${uuid(id, 4)}" transform="${tr}" printable="1"/>`);
     settings.push(

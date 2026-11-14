@@ -31,14 +31,9 @@ function componentOf(m: RawMesh): { comp: Int32Array; count: number } {
   return { comp, count: ids.size };
 }
 
-/**
- * Abbassa sul piatto i pezzi staccati che stanno più in alto del resto della parte, purché
- * sotto di loro (in pianta) non ci sia un altro pezzo. Restituisce la mesh originale se non
- * c'è nulla da spostare.
- */
-export function settleIslands(m: RawMesh): RawMesh {
-  const { comp, count } = componentOf(m);
-  if (count < 2) return m;
+type Box = { min: number[]; max: number[] };
+
+function boxesOf(m: RawMesh, comp: Int32Array, count: number): Box[] {
   const p = m.positions;
   const box = Array.from({ length: count }, () => ({ min: [Infinity, Infinity, Infinity], max: [-Infinity, -Infinity, -Infinity] }));
   for (let i = 0; i < comp.length; i++) {
@@ -48,6 +43,75 @@ export function settleIslands(m: RawMesh): RawMesh {
       b.max[k] = Math.max(b.max[k], p[i * 3 + k]);
     }
   }
+  return box;
+}
+
+/**
+ * Divide una mesh nei pezzi da posare ciascuno sul piatto: il primo contiene tutto ciò che
+ * poggia già sul piatto, gli altri sono i pezzi sospesi sopra un altro pezzo (che non possono
+ * scendere in verticale). I gusci contenuti in un altro pezzo (cavità, perni dentro un anello)
+ * restano con il pezzo che li contiene. Una mesh senza pezzi sospesi torna intera.
+ */
+export function splitFloating(m: RawMesh): RawMesh[] {
+  const { comp, count } = componentOf(m);
+  if (count < 2) return [m];
+  const box = boxesOf(m, comp, count);
+  const inside = (a: Box, b: Box) => [0, 1, 2].every((k) => a.min[k] >= b.min[k] - 0.01 && a.max[k] <= b.max[k] + 0.01);
+  const vol = (b: Box) => (b.max[0] - b.min[0]) * (b.max[1] - b.min[1]) * (b.max[2] - b.min[2]);
+  // Ogni pezzo va con il più piccolo che lo contiene, risalendo fino a un pezzo libero.
+  const parent = box.map((b, c) => {
+    let best = -1;
+    box.forEach((o, j) => {
+      if (j !== c && inside(b, o) && !(inside(o, b) && j > c) && (best < 0 || vol(o) < vol(box[best]))) best = j;
+    });
+    return best;
+  });
+  const root = (c: number): number => {
+    for (let n = 0; parent[c] >= 0 && n < count; n++) c = parent[c];
+    return c;
+  };
+  const bedZ = Math.min(...box.map((b) => b.min[2]));
+  const group = new Map<number, number>(); // pezzo libero → gruppo
+  for (let c = 0; c < count; c++) {
+    if (parent[c] >= 0) continue;
+    group.set(c, box[c].min[2] <= bedZ + 0.05 ? 0 : -1);
+  }
+  let next = 1;
+  for (const [c, g] of group) if (g < 0) group.set(c, next++);
+  if (next === 1) return [m];
+  const of = Array.from({ length: count }, (_, c) => group.get(root(c))!);
+  const ix = m.indices;
+  return Array.from({ length: next }, (_, g) => {
+    const remap = new Map<number, number>();
+    const pos: number[] = [];
+    const idx: number[] = [];
+    for (let t = 0; t < ix.length; t += 3) {
+      if (of[comp[ix[t]]] !== g) continue;
+      for (let k = 0; k < 3; k++) {
+        const v = ix[t + k];
+        let n = remap.get(v);
+        if (n === undefined) {
+          n = remap.size;
+          remap.set(v, n);
+          pos.push(m.positions[v * 3], m.positions[v * 3 + 1], m.positions[v * 3 + 2]);
+        }
+        idx.push(n);
+      }
+    }
+    return { positions: new Float32Array(pos), indices: new Uint32Array(idx) };
+  }).filter((p) => p.indices.length);
+}
+
+/**
+ * Abbassa sul piatto i pezzi staccati che stanno più in alto del resto della parte, purché
+ * sotto di loro (in pianta) non ci sia un altro pezzo. Restituisce la mesh originale se non
+ * c'è nulla da spostare.
+ */
+export function settleIslands(m: RawMesh): RawMesh {
+  const { comp, count } = componentOf(m);
+  if (count < 2) return m;
+  const p = m.positions;
+  const box = boxesOf(m, comp, count);
   const bedZ = Math.min(...box.map((b) => b.min[2]));
   const footprintsTouch = (a: (typeof box)[number], b: (typeof box)[number]) =>
     a.min[0] < b.max[0] + 0.01 && b.min[0] < a.max[0] + 0.01 && a.min[1] < b.max[1] + 0.01 && b.min[1] < a.max[1] + 0.01;

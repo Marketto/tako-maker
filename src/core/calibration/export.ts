@@ -66,7 +66,7 @@ export async function buildCalibrationFiles(design: Design, setup: UserSetup, pr
           pos[i + 1] += offset[1];
           pos[i + 2] += offset[2];
         }
-        parts.push({ name: `${label} – ${r.name}`, mesh: { positions: pos, indices: r.mesh.indices }, filament: plate.filament, extruder, group: coupon.id, plate: pi + 1 });
+        parts.push({ name: `${label} – ${r.name}`, mesh: { positions: pos, indices: r.mesh.indices }, filament: plate.filament, extruder, group: coupon.id, groupName: label, plate: pi + 1 });
       }
     }
     all.push(...parts);
