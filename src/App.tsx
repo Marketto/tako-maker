@@ -5,6 +5,7 @@ import { Wizard } from './ui/Wizard';
 import { Home } from './ui/Home';
 import { Workspace } from './ui/Workspace';
 import { SettingsDialog } from './ui/Settings';
+import { FilamentsDialog } from './ui/FilamentsEditor';
 import { ConnectRoute } from './ui/ConnectRoute';
 import { SeaTransitionLayer } from './ui/sea/SeaTransitionLayer';
 import { seaGo } from './ui/sea/transition';
@@ -37,6 +38,7 @@ export function App() {
   const [hash, go] = useHashRoute();
   const [settings, setSettings] = useState(false);
   const [editSetup, setEditSetup] = useState(false);
+  const [filaments, setFilaments] = useState(false);
 
   if (!setup || editSetup) return <Wizard initial={setup} onDone={() => setEditSetup(false)} />;
 
@@ -49,11 +51,15 @@ export function App() {
       ) : projectId ? (
         <Workspace key={projectId} projectId={projectId} onBack={() => go('')} onSettings={() => setSettings(true)} />
       ) : (
-        <Home onOpen={(id) => go(`/p/${id}`)} onSettings={() => setSettings(true)} />
+        <Home onOpen={(id) => go(`/p/${id}`)} onSettings={() => setSettings(true)} onFilaments={() => setFilaments(true)} />
       )}
       {settings && (
         <SettingsDialog
           onClose={() => setSettings(false)}
+          onFilaments={() => {
+            setSettings(false);
+            setFilaments(true);
+          }}
           onEditSetup={() =>
             seaGo(() => {
               setSettings(false);
@@ -62,6 +68,7 @@ export function App() {
           }
         />
       )}
+      {filaments && <FilamentsDialog onClose={() => setFilaments(false)} />}
     </>
   );
 }

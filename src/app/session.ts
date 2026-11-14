@@ -12,7 +12,7 @@ import { build3MF, flavorForSlicer, slicerProfileFor } from '../core/export/thre
 import { buildSTLZip } from '../core/export/stl';
 import { bedOf } from '../core/analysis/estimate';
 import { settleIslands } from '../core/geometry/islands';
-import type { Design, Question } from '../core/types';
+import type { Design, Filament, Question } from '../core/types';
 import { Budget, addTally, diffTally, estimateTokens, type EstimatedMode, type TokenTally } from '../agent/budget';
 import type { AiClient } from '../agent/client';
 import { KeyRouter } from '../agent/providers/keyRouter';
@@ -30,6 +30,8 @@ import { plateKeepFree } from '../core/plate';
 import { buildManualPrompt, correctionPrompt, parseManualReply } from '../agent/manual';
 import { createSession, getSession, postReport, putSession } from './connector';
 import { designKey, type ConnectorReport, type ConnectorState } from '../connector/state';
+import { reassignMissingFilaments } from '../core/design/filaments';
+import { openProjectIds } from './filaments';
 
 /* Orchestratore di un progetto aperto: collega UI, router, agente,
    geometria (worker) e analisi locali. La UI si limita a leggere lo snapshot. */
@@ -77,13 +79,29 @@ export class ProjectSession {
   private pendingManual: { question: Question; skill: SkillName; text: string } | null = null;
   private abort: AbortController | null = null;
   private evalSeq = 0;
+  private filaments: Filament[] = [];
+  private unsubStore: (() => void) | null = null;
 
   private constructor(project: Project) {
     this.snap = { project, parts: [], geometryErrors: [], report: null, assembly: null, questions: [], busy: null, error: null, meshInfo: [], manual: null };
   }
 
+  /** Se l'utente toglie un filamento usato, i pezzi passano a uno rimasto (stesso materiale se c'è). */
+  private syncFilaments(reevaluate = true) {
+    const now = store.get().setup?.filaments ?? [];
+    if (now === this.filaments) return;
+    const removed = this.filaments.filter((f) => !now.some((x) => x.id === f.id));
+    this.filaments = now;
+    const design = reassignMissingFilaments(this.snap.project.design, now, removed);
+    if (!design) return;
+    void this.persist({ ...this.snap.project, design }).then(() => (reevaluate ? this.refresh() : undefined));
+  }
+
   static async open(project: Project): Promise<ProjectSession> {
     const s = new ProjectSession(project);
+    openProjectIds.add(project.id);
+    s.syncFilaments(false);
+    s.unsubStore = store.subscribe(() => s.syncFilaments());
     for (const id of project.meshIds) {
       const m = await loadMesh(id);
       if (m) s.meshes[id] = m.mesh;
@@ -235,6 +253,8 @@ export class ProjectSession {
 
   dispose() {
     this.stopSync();
+    this.unsubStore?.();
+    openProjectIds.delete(this.snap.project.id);
   }
 
   /** Legge lo stato condiviso e applica le modifiche arrivate dalla chat. */

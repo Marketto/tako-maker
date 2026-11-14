@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
-import { PRINTERS, store, uid, useStore } from '../app/store';
-import { MATERIALS } from '../data/materials';
-import { ColorPicker } from './ColorPicker';
+import { PRINTERS, useStore } from '../app/store';
+import { FilamentsEditor } from './FilamentsEditor';
+import { saveSetup } from '../app/filaments';
 import type { Filament, UserSetup, Vec3 } from '../core/types';
 import { Takotta } from './mascot/Takotta';
 import { MusicButton } from './MusicButton';
@@ -49,7 +49,6 @@ export function Wizard({ initial, onDone }: { initial?: UserSetup | null; onDone
   const [customBed, setCustomBed] = useState<Vec3>(initial?.customBed ?? [220, 220, 250]);
   const [custom, setCustom] = useState<NonNullable<UserSetup['custom']>>(initial?.custom ?? { enclosed: false, kinematics: 'bedslinger', multiSlots: 1 });
   const [filaments, setFilaments] = useState<Filament[]>(initial?.filaments ?? []);
-  const [mat, setMat] = useState('PLA');
   const printer = PRINTERS.find((p) => p.id === printerId);
   // Il sistema multicolore integrato (non opzionale) non si chiede: c'è sempre.
   const askMulti = !!printer?.multi && printer.multi.optional;
@@ -57,11 +56,6 @@ export function Wizard({ initial, onDone }: { initial?: UserSetup | null; onDone
   const idx = steps.indexOf(step);
   const next = () => goStep(steps[Math.min(idx + 1, steps.length - 1)]);
   const back = () => goStep(idx <= 0 ? 'welcome' : steps[idx - 1]);
-
-  const toggleColor = (c: { name: string; hex: string }) => {
-    const exists = filaments.find((f) => f.material === mat && f.colorName === c.name);
-    setFilaments(exists ? filaments.filter((f) => f !== exists) : [...filaments, { id: `f${uid().slice(0, 4)}`, material: mat, colorName: c.name, hex: c.hex }]);
-  };
 
   const finish = () => seaGo(() => {
     const isCustom = printerId === 'custom';
@@ -72,7 +66,7 @@ export function Wizard({ initial, onDone }: { initial?: UserSetup | null; onDone
       customBed: isCustom ? customBed : undefined,
       custom: isCustom ? custom : undefined,
     };
-    store.setSetup(setup);
+    void saveSetup(setup);
     onDone?.();
   });
 
@@ -202,24 +196,7 @@ export function Wizard({ initial, onDone }: { initial?: UserSetup | null; onDone
             <h2>{t('Quali filamenti hai?')}</h2>
           </div>
           <p className="muted">{t('Scegli il materiale, poi tocca i colori che possiedi.')}</p>
-          <div className="segmented" role="tablist">
-            {MATERIALS.slice(0, 7).map((m) => (
-              <SeaPebble key={m.id} role="tab" aria-selected={mat === m.id} on={mat === m.id} onClick={() => setMat(m.id)}>
-                {m.short}
-              </SeaPebble>
-            ))}
-          </div>
-          <ColorPicker material={mat} isOn={(name) => filaments.some((f) => f.material === mat && f.colorName === name)} onToggle={toggleColor} />
-          {filaments.length > 0 && (
-            <div className="chips">
-              {filaments.map((f) => (
-                <span key={f.id} className="chip">
-                  <span className="dot" style={{ background: f.hex }} /> {f.material} {t(f.colorName)}
-                  <button aria-label={t('Rimuovi {name}', { name: `${f.material} ${t(f.colorName)}` })} onClick={() => setFilaments(filaments.filter((x) => x !== f))}>×</button>
-                </span>
-              ))}
-            </div>
-          )}
+          <FilamentsEditor filaments={filaments} onChange={setFilaments} />
           <Nav back={back} next={filaments.length ? next : undefined} nextLabel={filaments.length ? t('Avanti') : t('Scegli almeno un filamento')} />
         </section>
       )}

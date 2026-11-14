@@ -4,6 +4,7 @@ Attività concluse, le più recenti in alto. Quelle ancora aperte sono in [TODO.
 
 ## Novembre 2026
 
+- **14/11 – Modifica dei filamenti senza wizard.** Pulsante «Modifica filamenti» in Home e in Impostazioni (`ui/FilamentsEditor.tsx`, condiviso con il wizard). Se si toglie un filamento usato, i pezzi passano a uno rimasto dello stesso materiale (`core/design/filaments.ts`), nei progetti salvati e in quello aperto. Prima un progetto con un filamento tolto non accettava più modifiche.
 - **14/11 – Più colori di filamento.** Circa 70 colori del mercato in `src/data/colors.ts` (famiglie e finiture, limitati ai materiali in cui esistono), con ricerca, categorie e colore personalizzato nel wizard (`ui/ColorPicker.tsx`).
 - **14/11 – Supporti, ponti e istruzioni dei campioni di prova.** I ponti corti (cielo di un foro, tasca, arco) non chiedono più supporti, nel modello e nei campioni; i campioni hanno i supporti quando servono (prima mai); tolte le briciole del ritaglio; ogni pezzo dice ruolo e parte d'origine e ogni prova elenca i suoi pezzi.
 - **14/11 – Campioni senza regioni fluttuanti** (PR #48). I pezzi sospesi di un ritaglio si posano accanto; gli oggetti nello slicer hanno il nome del campione.

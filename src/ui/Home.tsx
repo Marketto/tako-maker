@@ -9,7 +9,7 @@ import { CloudHomeNotice } from './CloudBackup';
 import { cloud, CLOUD_NAME, useCloud } from '../app/cloud';
 import { SeaBackdrop, SeaButton, SeaChoice, SeaDelete, SeaIconButton, SeaNotice, SeaSlab } from './sea/controls';
 
-export function Home({ onOpen, onSettings }: { onOpen: (id: string) => void; onSettings: () => void }) {
+export function Home({ onOpen, onSettings, onFilaments }: { onOpen: (id: string) => void; onSettings: () => void; onFilaments: () => void }) {
   const { setup, keys } = useStore();
   const [projects, setProjects] = useState<Project[] | null>(null);
   const c = useCloud();
@@ -56,6 +56,7 @@ export function Home({ onOpen, onSettings }: { onOpen: (id: string) => void; onS
             {setup?.filaments.map((f) => (
               <span key={f.id} className="chip small"><span className="dot" style={{ background: f.hex }} />{f.material} {t(f.colorName)}</span>
             ))}
+            <button className="chip small edit-filaments" onClick={onFilaments}>{t('Modifica filamenti')}</button>
           </div>
         </SeaSlab>
 
