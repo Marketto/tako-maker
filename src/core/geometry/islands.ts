@@ -111,14 +111,7 @@ export function settleIslands(m: RawMesh): RawMesh {
   const { comp, count } = componentOf(m);
   if (count < 2) return m;
   const p = m.positions;
-  const box = Array.from({ length: count }, () => ({ min: [Infinity, Infinity, Infinity], max: [-Infinity, -Infinity, -Infinity] }));
-  for (let i = 0; i < comp.length; i++) {
-    const b = box[comp[i]];
-    for (let k = 0; k < 3; k++) {
-      b.min[k] = Math.min(b.min[k], p[i * 3 + k]);
-      b.max[k] = Math.max(b.max[k], p[i * 3 + k]);
-    }
-  }
+  const box = boxesOf(m, comp, count);
   const bedZ = Math.min(...box.map((b) => b.min[2]));
   const footprintsTouch = (a: (typeof box)[number], b: (typeof box)[number]) =>
     a.min[0] < b.max[0] + 0.01 && b.min[0] < a.max[0] + 0.01 && a.min[1] < b.max[1] + 0.01 && b.min[1] < a.max[1] + 0.01;
