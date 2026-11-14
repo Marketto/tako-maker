@@ -80,6 +80,12 @@ export function roundShape(shape: ShapeNode, radius = CHILD_RADIUS, subtractive 
   return shape;
 }
 
+/** Supporti necessari: corpo sospeso o sporgenze oltre l'angolo tollerato dal materiale più delicato. */
+export function needsSupports(s: BodyStats, materials: string[]): boolean {
+  const deg = Math.min(...materials.map((m) => guideline(m).overhangDeg));
+  return s.floating || overhangBeyond(s, deg) > SUPPORT_MIN_AREA_MM2;
+}
+
 export function analyze(
   design: Design,
   parts: PartStat[],
@@ -619,7 +625,7 @@ export function analyze(
       const deg = Math.min(...mats.map((m) => guideline(m).overhangDeg));
       const bridge = Math.min(...mats.map((m) => guideline(m).bridgeMm));
       const over = overhangBeyond(s, deg);
-      const supports = s.floating || over > SUPPORT_MIN_AREA_MM2;
+      const supports = needsSupports(s, mats);
       const side = Math.sqrt(Math.max(s.contactArea, 1));
       const unstable = !s.floating && (s.contactArea < MIN_CONTACT_MM2 || s.height > MAX_SLENDERNESS * side);
       let interfaceFilamentId: string | undefined;

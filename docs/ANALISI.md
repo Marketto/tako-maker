@@ -84,7 +84,10 @@ dell'app il gioco sta tutto nel foro: si stampa **un solo pezzo con il perno** e
 alla volta (`sharedPin`, `Coupon.drop`). Fa eccezione la prova del gioco su un giunto con scatto: il dentino
 del perno si sposta col gioco, quindi ogni variante ha il suo perno. I campioni da 3 hanno da 1 a
 3 segni incavati sulle facce lontane dal giunto. I pezzi delle prove da 1 si stampano affiancati, ciascuno
-nel verso (dritto o capovolto) con meno sporgenze (`arrange.ts`).
+nel verso (dritto o capovolto) con meno sporgenze (`arrange.ts`). Gli agganci e le prove dichiarate
+sono forme libere: nel file dei campioni hanno i supporti se servono, con la stessa regola del modello
+(`needsSupports`). I campioni dei giunti no: l'unica sporgenza è il cielo del foro, un ponte corto.
+Le briciole del ritaglio (pezzetti sotto i 2 mm, `dropCrumbs`) non si stampano.
 
 L'app chiede se stampare i campioni quando ci sono giochi non ancora tarati per quel materiale o prove di
 misura nuove: la chiave della domanda contiene gli id delle prove, quindi una prova nuova la ripropone.

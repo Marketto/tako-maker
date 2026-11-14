@@ -103,6 +103,23 @@ export function splitFloating(m: RawMesh): RawMesh[] {
 }
 
 /**
+ * Toglie le briciole: pezzi staccati più piccoli di `minMm` in ogni direzione (avanzi di un ritaglio).
+ * I gusci dentro un altro pezzo (cavità) restano: sono le pareti di un vuoto, non pezzi da stampare.
+ */
+export function dropCrumbs(m: RawMesh, minMm: number): RawMesh {
+  const { comp, count } = componentOf(m);
+  if (count < 2) return m;
+  const box = boxesOf(m, comp, count);
+  const inside = (a: Box, b: Box) => [0, 1, 2].every((k) => a.min[k] >= b.min[k] - 0.01 && a.max[k] <= b.max[k] + 0.01);
+  const crumb = box.map((b, c) => [0, 1, 2].every((k) => b.max[k] - b.min[k] < minMm) && !box.some((o, j) => j !== c && inside(b, o)));
+  if (!crumb.some(Boolean) || crumb.every(Boolean)) return m;
+  const ix = m.indices;
+  const idx: number[] = [];
+  for (let t = 0; t < ix.length; t += 3) if (!crumb[comp[ix[t]]]) idx.push(ix[t], ix[t + 1], ix[t + 2]);
+  return { positions: m.positions, indices: new Uint32Array(idx) };
+}
+
+/**
  * Abbassa sul piatto i pezzi staccati che stanno più in alto del resto della parte, purché
  * sotto di loro (in pianta) non ci sia un altro pezzo. Restituisce la mesh originale se non
  * c'è nulla da spostare.
