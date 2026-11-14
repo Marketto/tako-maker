@@ -1,12 +1,13 @@
 import type { RawMesh } from '../geometry/evaluate';
-import { settleIslands } from '../geometry/islands';
+import { settleIslands, splitFloating } from '../geometry/islands';
 import type { Arrange } from './coupons';
 
 /* Sistema sul piatto i pezzi di un campione dopo il calcolo:
    - asis: tutti insieme, appoggiati (cerniere stampate montate, campioni già disposti);
    - axis: asse del giunto in verticale con il perno di A verso l'alto, pezzi affiancati;
-   - flat: pezzi affiancati, ciascuno nel verso (dritto o capovolto) con meno sporgenze da sostenere;
-     i pezzetti staccati dal ritaglio scendono sul piatto invece di restare sospesi.
+   - flat: pezzi affiancati, ciascuno nel verso (dritto o capovolto) con meno sporgenze da sostenere.
+   Con axis e flat i pezzetti staccati dal ritaglio scendono sul piatto; quelli sospesi sopra un altro
+   pezzo si posano accanto: lo slicer non deve trovare regioni fluttuanti.
    Solo rotazioni (niente specchiature), così l'orientamento dei triangoli resta corretto. */
 
 export interface Piece {
@@ -89,15 +90,16 @@ export function arrangePieces(pieces: Piece[], arrange: Arrange, gap = 4): { pie
       return overhangArea(turned) < overhangArea(p.mesh) - 1 ? turned : p.mesh;
     });
   }
+  // I pezzetti staccati scendono sul piatto; quelli sospesi sopra un altro pezzo si posano accanto.
+  const items = oriented.flatMap((m, i) => splitFloating(settleIslands(m)).map((mesh) => ({ name: live[i].name, mesh })));
   let x = 0;
   let depth = 0;
-  const out: Piece[] = oriented.map((m, i) => {
-    const b = bounds(m);
+  const out: Piece[] = items.map(({ name, mesh }) => {
+    const b = bounds(mesh);
     const dx = x - b.min[0];
     x += b.max[0] - b.min[0] + gap;
     depth = Math.max(depth, b.max[1] - b.min[1]);
-    const placed = transform(m, (px, py, pz) => [px + dx, py - b.min[1], pz - b.min[2]]);
-    return { name: live[i].name, mesh: arrange.mode === 'flat' ? settleIslands(placed) : placed };
+    return { name, mesh: transform(mesh, (px, py, pz) => [px + dx, py - b.min[1], pz - b.min[2]]) };
   });
   return { pieces: out, size: [x - gap, depth] };
 }

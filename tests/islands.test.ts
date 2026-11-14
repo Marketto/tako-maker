@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { settleIslands } from '../src/core/geometry/islands';
+import { settleIslands, splitFloating } from '../src/core/geometry/islands';
 import { bodyStats } from '../src/core/geometry/evaluate';
 
 /** Cubi di lato s con l'angolo in (x, y, z), in un'unica mesh. */
@@ -36,5 +36,18 @@ describe('pezzi staccati di una parte stampata da sola', () => {
   it('una parte in un solo pezzo non cambia', () => {
     const m = cubes([10, 0, 0, 5]);
     expect(settleIslands(m)).toBe(m);
+  });
+
+  it('un pezzo sospeso sopra un altro si separa, così si posa da solo sul piatto', () => {
+    const m = cubes([10, 0, 0, 0], [10, 0, 0, 15], [4, 20, 0, 0]);
+    const out = splitFloating(m);
+    expect(out).toHaveLength(2);
+    expect(out[0].indices.length).toBe(72); // i due cubi sul piatto restano insieme
+    expect(minZ(out[1], 0, 8)).toBe(15);
+  });
+
+  it('un guscio dentro un altro pezzo (cavità) resta con il suo pezzo', () => {
+    const m = cubes([10, 0, 0, 0], [4, 3, 3, 3]);
+    expect(splitFloating(m)).toEqual([m]);
   });
 });

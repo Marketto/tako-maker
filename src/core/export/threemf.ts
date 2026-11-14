@@ -22,6 +22,8 @@ export interface ExportPart {
   extruder: number;
   /** Parti con lo stesso gruppo restano montate tra loro anche se si stampa separato (cerniere). */
   group?: string;
+  /** Nome dell'oggetto formato dal gruppo nello slicer (se assente, il titolo del file). */
+  groupName?: string;
   /** Piatto (1 = primo) quando le posizioni sono già decise (keepPositions), es. campioni di prova. */
   plate?: number;
   /** Impostazioni di stampa calcolate dall'analisi (supporti, brim, interfaccia dei supporti). */
@@ -342,7 +344,7 @@ export function build3MF(input: ExportPart[], opt: ExportOptions): Uint8Array {
     Object.assign(
       files,
       bambuFiles(
-        parts.map((p, i) => ({ name: p.name, mesh: p.mesh, extruder: p.extruder, objectKey: keyOf(p, i), plate: placed[i].plate, offset: placed[i].offset, objectMeta: metaByKey.get(keyOf(p, i)) })),
+        parts.map((p, i) => ({ name: p.name, mesh: p.mesh, extruder: p.extruder, objectKey: keyOf(p, i), objectName: p.groupName, plate: placed[i].plate, offset: placed[i].offset, objectMeta: metaByKey.get(keyOf(p, i)) })),
         { title: opt.title, bed: opt.bed, plateStride: opt.plateStride, meta: meta.filter((m) => !m.includes('name="Application"')), settings },
       ),
     );
