@@ -81,6 +81,16 @@ export interface BodyStats {
   height: number;
   /** true se il corpo non tocca il piatto (sospeso sopra altre parti o in aria). */
   floating: boolean;
+  /** Soffitti piani ancorati da due lati opposti (cielo di un foro, tasca, arco): già contati in `overhang`,
+   * si stampano a ponte se la luce non supera quella del materiale. */
+  bridges?: Bridge[];
+}
+
+export interface Bridge {
+  /** Area del soffitto (mm²). */
+  area: number;
+  /** Luce: distanza tra i due appoggi (mm). */
+  span: number;
 }
 
 export interface PrintStats {
@@ -98,6 +108,7 @@ export function bodyStats(raw: RawMesh, bedZ: number): BodyStats {
   const ix = raw.indices;
   const overhang = new Array<number>(BUCKETS).fill(0);
   let contactArea = 0;
+  const flat: number[] = [];
   let minZ = Infinity, maxZ = -Infinity;
   for (let i = 2; i < p.length; i += 3) {
     minZ = Math.min(minZ, p[i]);
@@ -122,13 +133,88 @@ export function bodyStats(raw: RawMesh, bedZ: number): BodyStats {
     if (cz < bedZ + 0.3) continue;
     const deg = (Math.asin(Math.min(1, -z)) * 180) / Math.PI;
     overhang[Math.min(BUCKETS - 1, Math.floor(deg / 5))] += area;
+    if (z < -0.99) flat.push(t);
   }
-  return { contactArea, overhang, height: maxZ - bedZ, floating: minZ > bedZ + 0.05 };
+  return { contactArea, overhang, height: maxZ - bedZ, floating: minZ > bedZ + 0.05, bridges: findBridges(raw, flat) };
 }
 
-/** Area di sporgenza oltre l'angolo indicato (gradi dalla verticale). */
-export function overhangBeyond(s: BodyStats, deg: number): number {
-  return s.overhang.reduce((sum, a, i) => (i * 5 + 2.5 > deg ? sum + a : sum), 0);
+/**
+ * Soffitti piani stampabili a ponte. I triangoli piani rivolti in basso (`flat`) si raggruppano in
+ * soffitti collegati; un lato del bordo è un appoggio se la faccia accanto scende sotto il soffitto
+ * (parete di un foro o di una tasca). È un ponte se gli appoggi stanno ai due estremi di una direzione
+ * (x o y): la luce è la larghezza in quella direzione. Una mensola, appoggiata da un lato solo, non lo è.
+ */
+function findBridges(raw: RawMesh, flat: number[]): Bridge[] {
+  if (!flat.length) return [];
+  const p = raw.positions;
+  const ix = raw.indices;
+  const key = (a: number, b: number) => (a < b ? `${a}_${b}` : `${b}_${a}`);
+  const edgeTris = new Map<string, number[]>();
+  for (let t = 0; t < ix.length; t += 3)
+    for (let k = 0; k < 3; k++) {
+      const e = key(ix[t + k], ix[t + ((k + 1) % 3)]);
+      const l = edgeTris.get(e);
+      if (l) l.push(t);
+      else edgeTris.set(e, [t]);
+    }
+  const isFlat = new Set(flat);
+  const zOf = (t: number) => p[ix[t] * 3 + 2];
+  const minZ = (t: number) => Math.min(p[ix[t] * 3 + 2], p[ix[t + 1] * 3 + 2], p[ix[t + 2] * 3 + 2]);
+  const seen = new Set<number>();
+  const out: Bridge[] = [];
+  for (const start of flat) {
+    if (seen.has(start)) continue;
+    const z = zOf(start);
+    const region: number[] = [];
+    const stack = [start];
+    seen.add(start);
+    while (stack.length) {
+      const t = stack.pop()!;
+      region.push(t);
+      for (let k = 0; k < 3; k++)
+        for (const o of edgeTris.get(key(ix[t + k], ix[t + ((k + 1) % 3)])) ?? [])
+          if (!seen.has(o) && isFlat.has(o) && Math.abs(zOf(o) - z) < 0.02) {
+            seen.add(o);
+            stack.push(o);
+          }
+    }
+    const inRegion = new Set(region);
+    const lo = [Infinity, Infinity], hi = [-Infinity, -Infinity];
+    const anchors: [number, number, number, number][] = []; // x1, y1, x2, y2
+    let area = 0;
+    for (const t of region) {
+      const v = [ix[t], ix[t + 1], ix[t + 2]];
+      const ux = p[v[1] * 3] - p[v[0] * 3], uy = p[v[1] * 3 + 1] - p[v[0] * 3 + 1];
+      const wx = p[v[2] * 3] - p[v[0] * 3], wy = p[v[2] * 3 + 1] - p[v[0] * 3 + 1];
+      area += Math.abs(ux * wy - uy * wx) / 2;
+      for (let k = 0; k < 3; k++) {
+        const [a, b] = [v[k], v[(k + 1) % 3]];
+        for (const d of [0, 1]) {
+          lo[d] = Math.min(lo[d], p[a * 3 + d]);
+          hi[d] = Math.max(hi[d], p[a * 3 + d]);
+        }
+        const others = (edgeTris.get(key(a, b)) ?? []).filter((o) => !inRegion.has(o));
+        if (others.some((o) => minZ(o) < z - 0.02)) anchors.push([p[a * 3], p[a * 3 + 1], p[b * 3], p[b * 3 + 1]]);
+      }
+    }
+    const spans = [0, 1].filter((d) => {
+      // Appoggio su quel lato: il lato del bordo sta tutto lì (non basta toccarlo con un estremo).
+      const near = (c: number) => anchors.some((e) => Math.abs(e[d] - c) < 0.5 && Math.abs(e[d + 2] - c) < 0.5);
+      return near(lo[d]) && near(hi[d]);
+    });
+    if (spans.length) out.push({ area, span: Math.min(...spans.map((d) => hi[d] - lo[d])) });
+  }
+  return out;
+}
+
+/**
+ * Area di sporgenza oltre l'angolo indicato (gradi dalla verticale). Con `bridgeMm` non conta i
+ * soffitti stampabili a ponte (luce entro quella del materiale).
+ */
+export function overhangBeyond(s: BodyStats, deg: number, bridgeMm = 0): number {
+  const all = s.overhang.reduce((sum, a, i) => (i * 5 + 2.5 > deg ? sum + a : sum), 0);
+  const bridged = (s.bridges ?? []).filter((b) => b.span <= bridgeMm).reduce((sum, b) => sum + b.area, 0);
+  return Math.max(0, all - bridged);
 }
 
 /** Tolleranze di base (le effettive dipendono dal materiale: core/calibration/tolerances.ts). */

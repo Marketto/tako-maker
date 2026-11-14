@@ -10,6 +10,7 @@ import { tolerancesByPart, tolerancesFor } from '../src/core/calibration/toleran
 import { bondsPoorly, minWall } from '../src/data/guidelines';
 import { printerBlock } from '../src/agent/context';
 import type { Design, Part, ShapeNode, UserSetup } from '../src/core/types';
+import type { RawMesh } from '../src/core/geometry/evaluate';
 import { manifold, printer, setup, toyLaptop } from './fixtures';
 
 const evalFn = async (d: Design, tol: Record<string, ReturnType<typeof tolerancesFor>>) => evaluateDesign(await manifold(), d, {}, tol).parts;
@@ -98,9 +99,13 @@ describe('campioni di prova', () => {
     expect(files.readme).toMatch(/Fetta della base/);
     const model = strFromU8(unzipSync(files.data)['3D/3dmodel.model']);
     // Un solo pezzo con il perno per serie: (1 + 3) + (1 + 3) pezzi per i giunti, 2 per l'aggancio, 1 per la fetta.
-    // Il ritaglio del supporto della leva ha un pezzetto sopra la leva: si posa accanto (+1).
-    expect(model.match(/<object /g)!.length).toBe(4 + 5 + 2 + 1);
+    // Il ritaglio del supporto della leva lascia una briciola di 1,2 mm: si scarta.
+    expect(model.match(/<object /g)!.length).toBe(4 + 4 + 2 + 1);
     expect(files.readme).toMatch(/Un solo pezzo con il perno/);
+    // Ogni prova dice quali pezzi contiene; i pezzi portano il ruolo e la parte d'origine.
+    expect(files.readme).toMatch(/Pezzi: Un blocco con il perno, ritagliato da «Supporto s1», e 3 blocchi forati ritagliati da «Ruota»/);
+    expect(files.readme).toMatch(/Pezzi: Ritagli del modello nella zona da provare: «Base», «Supporto s1»\./);
+    expect(files.readme).toMatch(/non sono supporti di stampa/);
   }, 120_000);
   it('perno rotante: asse in verticale, perno in alto, pezzo forato accanto', async () => {
     const d = consolle();
@@ -212,6 +217,35 @@ describe('campioni di prova', () => {
     expect(names.length).toBeGreaterThan(1);
     expect(names).not.toContain('Campioni di prova');
   }, 60_000);
+  it('supporti attivi solo sui ritagli del modello che ne hanno bisogno', async () => {
+    const d = consolle();
+    // Una mensola sporgente sul supporto s1, dentro la zona dell'aggancio con la base.
+    d.parts[1].shape = { op: 'union', children: [d.parts[1].shape, { op: 'box', size: [30, 4, 3], at: [5, 10, 30] }] };
+    const files = await buildCalibrationFiles(d, setup, printer('bambu-a1'), evalFn, await boxesOf(d));
+    const cfg = strFromU8(unzipSync(files.data)['Metadata/model_settings.config']);
+    const objects = cfg.split('<object id=').slice(1);
+    const withSupports = objects.filter((o) => o.includes('key="enable_support" value="1"')).map((o) => o.match(/key="name" value="([^"]*)"/)![1]);
+    expect(withSupports).toEqual([expect.stringMatching(/Aggancio/)]);
+    // I pezzi nello slicer dicono il ruolo: «perno da …», «foro da …», «ritaglio di …».
+    expect(cfg).toMatch(/perno da «Supporto s1»/);
+    expect(cfg).toMatch(/foro da «Ruota»/);
+    expect(cfg).toMatch(/ritaglio di «Base»/);
+  }, 120_000);
+  it('le briciole del ritaglio non si stampano', () => {
+    const cube = (s: number, x: number): RawMesh => {
+      const v = [0, 1].flatMap((k) => [0, 1].flatMap((j) => [0, 1].flatMap((i) => [x + i * s, j * s, k * s])));
+      const f = [0, 2, 1, 1, 2, 3, 4, 5, 6, 5, 7, 6, 0, 1, 4, 1, 5, 4, 2, 6, 3, 3, 6, 7, 0, 4, 2, 2, 4, 6, 1, 3, 5, 3, 7, 5];
+      return { positions: new Float32Array(v), indices: new Uint32Array(f) };
+    };
+    const merged = (a: RawMesh, b: RawMesh): RawMesh => ({ positions: new Float32Array([...a.positions, ...b.positions]), indices: new Uint32Array([...a.indices, ...[...b.indices].map((i) => i + a.positions.length / 3)]) });
+    // Briciola accanto al pezzo: sparisce (il campione resta largo 10 mm).
+    const out = arrangePieces([{ name: 'P', mesh: merged(cube(10, 0), cube(1.2, 20)) }], { mode: 'flat' });
+    expect(out.pieces).toHaveLength(1);
+    expect(out.size[0]).toBeCloseTo(10);
+    // Un guscio piccolo dentro il pezzo è una cavità: resta.
+    const hollow = merged(cube(10, 0), cube(1.2, 4));
+    expect(arrangePieces([{ name: 'P', mesh: hollow }], { mode: 'flat' }).pieces[0].mesh.indices.length).toBe(hollow.indices.length);
+  });
   it('PrusaSlicer: uno zip con un 3MF per materiale e le istruzioni', async () => {
     const d = toyLaptop();
     d.printPlan = { strategy: 'separate', connection: 'snap' };

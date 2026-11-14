@@ -584,5 +584,15 @@
  "Monta i pezzi: se entrano a fatica o ballano, dillo all’assistente prima di stampare il modello.": "Sett sammen bitene: hvis de går tungt inn eller slarker, si det til assistenten før du skriver ut modellen.",
  "Sono pezzi del tuo modello ritagliati attorno alle parti incerte.": "Dette er biter av modellen din, skåret ut rundt de usikre delene.",
  "Sono pezzi del tuo modello: dove ce ne sono 3, i segni (da 1 a 3) indicano il gioco. Dopo la stampa indica il migliore nella scheda Stampa → Campioni di prova.": "Dette er biter av modellen din: der det er 3, viser merkene (1 til 3) klaringen. Velg den beste under Utskrift → Testprøver etter utskrift.",
- "Un solo pezzo con il perno: infila sullo stesso perno i pezzi forati, uno alla volta.": "Bare én bit med tappen: sett de borede bitene på den samme tappen, én om gangen."
+ "Un solo pezzo con il perno: infila sullo stesso perno i pezzi forati, uno alla volta.": "Bare én bit med tappen: sett de borede bitene på den samme tappen, én om gangen.",
+ "3 cerniere già montate, ritagliate da «{a}» e «{b}», segnate da ● a ●●●.": "3 ferdigmonterte hengsler, skåret ut av «{a}» og «{b}», merket fra ● til ●●●.",
+ "3 coppie di perno e blocco forato, ritagliate da «{a}» e «{b}», segnate da ● a ●●●.": "3 par med pinne og blokk med hull, skåret ut av «{a}» og «{b}», merket fra ● til ●●●.",
+ "foro da «{part}»": "hull fra «{part}»",
+ "Ogni pezzo porta il nome della parte del modello da cui viene: non sono supporti di stampa.": "Hvert stykke har navnet til modelldelen det kommer fra: det er ikke støttestrukturer for utskrift.",
+ "perno da «{part}»": "pinne fra «{part}»",
+ "Pezzi: {pieces}": "Stykker: {pieces}",
+ "Ritagli del modello nella zona da provare: {parts}.": "Utsnitt av modellen i området som skal testes: {parts}.",
+ "ritaglio di «{part}»": "utsnitt av «{part}»",
+ "Un blocco con il perno e 3 blocchi forati, segnati da ● a ●●●.": "En blokk med pinnen og 3 blokker med hull, merket fra ● til ●●●.",
+ "Un blocco con il perno, ritagliato da «{a}», e 3 blocchi forati ritagliati da «{b}», segnati da ● a ●●●.": "En blokk med pinnen, skåret ut av «{a}», og 3 blokker med hull skåret ut av «{b}», merket fra ● til ●●●."
 }

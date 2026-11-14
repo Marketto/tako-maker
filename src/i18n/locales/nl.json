@@ -584,5 +584,15 @@
  "Monta i pezzi: se entrano a fatica o ballano, dillo all’assistente prima di stampare il modello.": "Zet de stukken in elkaar: als ze moeilijk passen of wiebelen, zeg het tegen de assistent voordat je het model print.",
  "Sono pezzi del tuo modello ritagliati attorno alle parti incerte.": "Dit zijn stukken van je model, uitgesneden rond de onzekere delen.",
  "Sono pezzi del tuo modello: dove ce ne sono 3, i segni (da 1 a 3) indicano il gioco. Dopo la stampa indica il migliore nella scheda Stampa → Campioni di prova.": "Dit zijn stukken van je model: waar er 3 zijn, geven de markeringen (1 tot 3) de speling aan. Kies na het printen de beste in Printen → Testsamples.",
- "Un solo pezzo con il perno: infila sullo stesso perno i pezzi forati, uno alla volta.": "Maar één stuk met de pen: schuif de doorboorde stukken één voor één op dezelfde pen."
+ "Un solo pezzo con il perno: infila sullo stesso perno i pezzi forati, uno alla volta.": "Maar één stuk met de pen: schuif de doorboorde stukken één voor één op dezelfde pen.",
+ "3 cerniere già montate, ritagliate da «{a}» e «{b}», segnate da ● a ●●●.": "3 al gemonteerde scharnieren, uitgesneden uit «{a}» en «{b}», gemarkeerd met ● tot ●●●.",
+ "3 coppie di perno e blocco forato, ritagliate da «{a}» e «{b}», segnate da ● a ●●●.": "3 paren van pen en blok met gat, uitgesneden uit «{a}» en «{b}», gemarkeerd met ● tot ●●●.",
+ "foro da «{part}»": "gat uit «{part}»",
+ "Ogni pezzo porta il nome della parte del modello da cui viene: non sono supporti di stampa.": "Elk stuk draagt de naam van het modeldeel waar het vandaan komt: het zijn geen printondersteuningen.",
+ "perno da «{part}»": "pen uit «{part}»",
+ "Pezzi: {pieces}": "Stukken: {pieces}",
+ "Ritagli del modello nella zona da provare: {parts}.": "Uitsneden van het model in het te testen gebied: {parts}.",
+ "ritaglio di «{part}»": "uitsnede van «{part}»",
+ "Un blocco con il perno e 3 blocchi forati, segnati da ● a ●●●.": "Een blok met de pen en 3 blokken met een gat, gemarkeerd met ● tot ●●●.",
+ "Un blocco con il perno, ritagliato da «{a}», e 3 blocchi forati ritagliati da «{b}», segnati da ● a ●●●.": "Een blok met de pen, uitgesneden uit «{a}», en 3 blokken met een gat, uitgesneden uit «{b}», gemarkeerd met ● tot ●●●."
 }

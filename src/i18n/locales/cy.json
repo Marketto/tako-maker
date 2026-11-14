@@ -584,5 +584,15 @@
  "Monta i pezzi: se entrano a fatica o ballano, dillo all’assistente prima di stampare il modello.": "Rho’r darnau at ei gilydd: os ydyn nhw’n mynd i mewn yn galed neu’n siglo, dywed wrth y cynorthwyydd cyn argraffu’r model.",
  "Sono pezzi del tuo modello ritagliati attorno alle parti incerte.": "Darnau o dy fodel yw’r rhain, wedi’u torri o gwmpas y rhannau ansicr.",
  "Sono pezzi del tuo modello: dove ce ne sono 3, i segni (da 1 a 3) indicano il gioco. Dopo la stampa indica il migliore nella scheda Stampa → Campioni di prova.": "Darnau o dy fodel yw’r rhain: lle mae 3, mae’r marciau (1 i 3) yn dangos y bwlch. Ar ôl argraffu, dewis yr orau yn Argraffu → Samplau prawf.",
- "Un solo pezzo con il perno: infila sullo stesso perno i pezzi forati, uno alla volta.": "Dim ond un darn gyda’r pin: rho’r darnau â thwll ar yr un pin, un ar y tro."
+ "Un solo pezzo con il perno: infila sullo stesso perno i pezzi forati, uno alla volta.": "Dim ond un darn gyda’r pin: rho’r darnau â thwll ar yr un pin, un ar y tro.",
+ "3 cerniere già montate, ritagliate da «{a}» e «{b}», segnate da ● a ●●●.": "3 colfach wedi’u cydosod yn barod, wedi’u torri o «{a}» a «{b}», wedi’u marcio o ● i ●●●.",
+ "3 coppie di perno e blocco forato, ritagliate da «{a}» e «{b}», segnate da ● a ●●●.": "3 pâr o bin a bloc â thwll, wedi’u torri o «{a}» a «{b}», wedi’u marcio o ● i ●●●.",
+ "foro da «{part}»": "twll o «{part}»",
+ "Ogni pezzo porta il nome della parte del modello da cui viene: non sono supporti di stampa.": "Mae pob darn wedi’i enwi ar ôl y rhan o’r model y daw ohoni: nid cynhalwyr argraffu ydyn nhw.",
+ "perno da «{part}»": "pin o «{part}»",
+ "Pezzi: {pieces}": "Darnau: {pieces}",
+ "Ritagli del modello nella zona da provare: {parts}.": "Darnau wedi’u torri o’r model yn yr ardal i’w phrofi: {parts}.",
+ "ritaglio di «{part}»": "toriad o «{part}»",
+ "Un blocco con il perno e 3 blocchi forati, segnati da ● a ●●●.": "Bloc gyda’r pin a 3 bloc â thwll, wedi’u marcio o ● i ●●●.",
+ "Un blocco con il perno, ritagliato da «{a}», e 3 blocchi forati ritagliati da «{b}», segnati da ● a ●●●.": "Bloc gyda’r pin, wedi’i dorri o «{a}», a 3 bloc â thwll wedi’u torri o «{b}», wedi’u marcio o ● i ●●●."
 }

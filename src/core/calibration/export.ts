@@ -3,6 +3,8 @@ import type { Design, PrinterSpec, Tolerances, UserSetup } from '../types';
 import type { PartResult } from '../geometry/evaluate';
 import { build3MF, flavorForSlicer, slicerProfileFor, type ExportPart } from '../export/threemf';
 import { bedOf } from '../analysis/estimate';
+import { needsSupports } from '../analysis';
+import { bodyStats } from '../geometry/evaluate';
 import { layoutPlates, readmeText, samplesToPrint, seriesCoupons, type PartBox, type Coupon, type SampleSeries, type TestKind } from './coupons';
 import { arrangePieces, type Piece } from './arrange';
 import { t } from '../../i18n';
@@ -66,7 +68,10 @@ export async function buildCalibrationFiles(design: Design, setup: UserSetup, pr
           pos[i + 1] += offset[1];
           pos[i + 2] += offset[2];
         }
-        parts.push({ name: `${label} – ${r.name}`, mesh: { positions: pos, indices: r.mesh.indices }, filament: plate.filament, extruder, group: coupon.id, groupName: label, plate: pi + 1 });
+        // Ritagli del modello: stesse sporgenze del pezzo vero, quindi supporti con la stessa regola
+        // dell'analisi (il cielo di un foro è un ponte corto e non li chiede).
+        const supports = needsSupports(bodyStats(r.mesh, 0), [plate.material]);
+        parts.push({ name: `${label} – ${r.name}`, mesh: { positions: pos, indices: r.mesh.indices }, filament: plate.filament, extruder, group: coupon.id, groupName: label, plate: pi + 1, print: { supports, brim: 0 } });
       }
     }
     all.push(...parts);

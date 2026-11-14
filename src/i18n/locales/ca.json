@@ -584,5 +584,15 @@
  "Monta i pezzi: se entrano a fatica o ballano, dillo all’assistente prima di stampare il modello.": "Munta les peces: si entren amb dificultat o ballen, digues-ho a l’assistent abans d’imprimir el model.",
  "Sono pezzi del tuo modello ritagliati attorno alle parti incerte.": "Són trossos del teu model retallats al voltant de les parts dubtoses.",
  "Sono pezzi del tuo modello: dove ce ne sono 3, i segni (da 1 a 3) indicano il gioco. Dopo la stampa indica il migliore nella scheda Stampa → Campioni di prova.": "Són trossos del teu model: on n’hi ha 3, les marques (de 1 a 3) indiquen el joc. Després d’imprimir, indica la millor a Impressió → Mostres de prova.",
- "Un solo pezzo con il perno: infila sullo stesso perno i pezzi forati, uno alla volta.": "Només una peça amb el pern: posa les peces foradades al mateix pern, una a una."
+ "Un solo pezzo con il perno: infila sullo stesso perno i pezzi forati, uno alla volta.": "Només una peça amb el pern: posa les peces foradades al mateix pern, una a una.",
+ "3 cerniere già montate, ritagliate da «{a}» e «{b}», segnate da ● a ●●●.": "3 frontisses ja muntades, retallades de «{a}» i «{b}», marcades de ● a ●●●.",
+ "3 coppie di perno e blocco forato, ritagliate da «{a}» e «{b}», segnate da ● a ●●●.": "3 parells de passador i bloc foradat, retallats de «{a}» i «{b}», marcats de ● a ●●●.",
+ "foro da «{part}»": "forat de «{part}»",
+ "Ogni pezzo porta il nome della parte del modello da cui viene: non sono supporti di stampa.": "Cada peça porta el nom de la part del model d’on prové: no són suports d’impressió.",
+ "perno da «{part}»": "passador de «{part}»",
+ "Pezzi: {pieces}": "Peces: {pieces}",
+ "Ritagli del modello nella zona da provare: {parts}.": "Retalls del model a la zona que cal provar: {parts}.",
+ "ritaglio di «{part}»": "retall de «{part}»",
+ "Un blocco con il perno e 3 blocchi forati, segnati da ● a ●●●.": "Un bloc amb el passador i 3 blocs foradats, marcats de ● a ●●●.",
+ "Un blocco con il perno, ritagliato da «{a}», e 3 blocchi forati ritagliati da «{b}», segnati da ● a ●●●.": "Un bloc amb el passador, retallat de «{a}», i 3 blocs foradats retallats de «{b}», marcats de ● a ●●●."
 }

@@ -584,5 +584,15 @@
  "Monta i pezzi: se entrano a fatica o ballano, dillo all’assistente prima di stampare il modello.": "Assemble the pieces: if they go in with difficulty or wobble, tell the assistant before printing the model.",
  "Sono pezzi del tuo modello ritagliati attorno alle parti incerte.": "These are pieces of your model cut around the uncertain parts.",
  "Sono pezzi del tuo modello: dove ce ne sono 3, i segni (da 1 a 3) indicano il gioco. Dopo la stampa indica il migliore nella scheda Stampa → Campioni di prova.": "These are pieces of your model: where there are 3, the marks (1 to 3) show the clearance. After printing, select the best one in Print → Test samples.",
- "Un solo pezzo con il perno: infila sullo stesso perno i pezzi forati, uno alla volta.": "Only one piece with the pin: fit the drilled pieces on the same pin, one at a time."
+ "Un solo pezzo con il perno: infila sullo stesso perno i pezzi forati, uno alla volta.": "Only one piece with the pin: fit the drilled pieces on the same pin, one at a time.",
+ "3 cerniere già montate, ritagliate da «{a}» e «{b}», segnate da ● a ●●●.": "3 pre-assembled hinges, cut from «{a}» and «{b}», marked ● to ●●●.",
+ "3 coppie di perno e blocco forato, ritagliate da «{a}» e «{b}», segnate da ● a ●●●.": "3 pairs of pin and block with a hole, cut from «{a}» and «{b}», marked ● to ●●●.",
+ "foro da «{part}»": "hole from «{part}»",
+ "Ogni pezzo porta il nome della parte del modello da cui viene: non sono supporti di stampa.": "Each piece is named after the model part it comes from: they are not print supports.",
+ "perno da «{part}»": "pin from «{part}»",
+ "Pezzi: {pieces}": "Pieces: {pieces}",
+ "Ritagli del modello nella zona da provare: {parts}.": "Cut-outs of the model in the area to test: {parts}.",
+ "ritaglio di «{part}»": "cut from «{part}»",
+ "Un blocco con il perno e 3 blocchi forati, segnati da ● a ●●●.": "A block with the pin and 3 blocks with holes, marked ● to ●●●.",
+ "Un blocco con il perno, ritagliato da «{a}», e 3 blocchi forati ritagliati da «{b}», segnati da ● a ●●●.": "A block with the pin, cut from «{a}», and 3 blocks with holes cut from «{b}», marked ● to ●●●."
 }

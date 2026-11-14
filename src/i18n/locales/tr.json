@@ -584,5 +584,15 @@
  "Monta i pezzi: se entrano a fatica o ballano, dillo all’assistente prima di stampare il modello.": "Parçaları birleştir: zor giriyor veya oynuyorsa, modeli basmadan önce asistana söyle.",
  "Sono pezzi del tuo modello ritagliati attorno alle parti incerte.": "Bunlar modelinin belirsiz kısımlarının çevresinden kesilmiş parçalar.",
  "Sono pezzi del tuo modello: dove ce ne sono 3, i segni (da 1 a 3) indicano il gioco. Dopo la stampa indica il migliore nella scheda Stampa → Campioni di prova.": "Bunlar modelinin parçaları: 3 tane olan yerlerde işaretler (1’den 3’e) boşluğu gösterir. Baskıdan sonra en iyisini Baskı → Test numuneleri bölümünde seç.",
- "Un solo pezzo con il perno: infila sullo stesso perno i pezzi forati, uno alla volta.": "Pimli tek parça var: delikli parçaları aynı pime tek tek tak."
+ "Un solo pezzo con il perno: infila sullo stesso perno i pezzi forati, uno alla volta.": "Pimli tek parça var: delikli parçaları aynı pime tek tek tak.",
+ "3 cerniere già montate, ritagliate da «{a}» e «{b}», segnate da ● a ●●●.": "Takılı olarak basılan 3 menteşe, “{a}” ve “{b}” parçalarından kesildi, ● ile ●●● arasında işaretli.",
+ "3 coppie di perno e blocco forato, ritagliate da «{a}» e «{b}», segnate da ● a ●●●.": "3 pim ve delikli blok çifti, “{a}” ve “{b}” parçalarından kesildi, ● ile ●●● arasında işaretli.",
+ "foro da «{part}»": "“{part}” deliği",
+ "Ogni pezzo porta il nome della parte del modello da cui viene: non sono supporti di stampa.": "Her parça, geldiği model parçasının adını taşır: bunlar baskı destekleri değildir.",
+ "perno da «{part}»": "“{part}” pimi",
+ "Pezzi: {pieces}": "Parçalar: {pieces}",
+ "Ritagli del modello nella zona da provare: {parts}.": "Modelin denenecek bölgesinden kesitler: {parts}.",
+ "ritaglio di «{part}»": "“{part}” kesiti",
+ "Un blocco con il perno e 3 blocchi forati, segnati da ● a ●●●.": "Pimli bir blok ve 3 delikli blok, ● ile ●●● arasında işaretli.",
+ "Un blocco con il perno, ritagliato da «{a}», e 3 blocchi forati ritagliati da «{b}», segnati da ● a ●●●.": "“{a}” parçasından kesilmiş pimli bir blok ve “{b}” parçasından kesilmiş 3 delikli blok, ● ile ●●● arasında işaretli."
 }

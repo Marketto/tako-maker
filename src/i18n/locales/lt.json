@@ -584,5 +584,15 @@
  "Monta i pezzi: se entrano a fatica o ballano, dillo all’assistente prima di stampare il modello.": "Surink detales: jei jos sunkiai lenda arba kliba, pasakyk asistentui prieš spausdindamas modelį.",
  "Sono pezzi del tuo modello ritagliati attorno alle parti incerte.": "Tai tavo modelio gabalai, iškirpti aplink neaiškias vietas.",
  "Sono pezzi del tuo modello: dove ce ne sono 3, i segni (da 1 a 3) indicano il gioco. Dopo la stampa indica il migliore nella scheda Stampa → Campioni di prova.": "Tai tavo modelio gabalai: kur yra 3, žymės (nuo 1 iki 3) rodo tarpelį. Po spausdinimo pažymėk geriausią skiltyje Spausdinimas → Bandomieji pavyzdžiai.",
- "Un solo pezzo con il perno: infila sullo stesso perno i pezzi forati, uno alla volta.": "Tik viena detalė su kaiščiu: po vieną užmauk detales su skyle ant to paties kaiščio."
+ "Un solo pezzo con il perno: infila sullo stesso perno i pezzi forati, uno alla volta.": "Tik viena detalė su kaiščiu: po vieną užmauk detales su skyle ant to paties kaiščio.",
+ "3 cerniere già montate, ritagliate da «{a}» e «{b}», segnate da ● a ●●●.": "3 jau sumontuoti vyriai, išpjauti iš dalių «{a}» ir «{b}», pažymėti nuo ● iki ●●●.",
+ "3 coppie di perno e blocco forato, ritagliate da «{a}» e «{b}», segnate da ● a ●●●.": "3 kaiščio ir bloko su skyle poros, išpjautos iš dalių «{a}» ir «{b}», pažymėtos nuo ● iki ●●●.",
+ "foro da «{part}»": "skylė iš «{part}»",
+ "Ogni pezzo porta il nome della parte del modello da cui viene: non sono supporti di stampa.": "Kiekviena detalė pavadinta pagal modelio dalį, iš kurios ji paimta: tai nėra spausdinimo atramos.",
+ "perno da «{part}»": "kaištis iš «{part}»",
+ "Pezzi: {pieces}": "Detalės: {pieces}",
+ "Ritagli del modello nella zona da provare: {parts}.": "Modelio išpjovos bandomoje srityje: {parts}.",
+ "ritaglio di «{part}»": "išpjova iš «{part}»",
+ "Un blocco con il perno e 3 blocchi forati, segnati da ● a ●●●.": "Blokas su kaiščiu ir 3 blokai su skyle, pažymėti nuo ● iki ●●●.",
+ "Un blocco con il perno, ritagliato da «{a}», e 3 blocchi forati ritagliati da «{b}», segnati da ● a ●●●.": "Blokas su kaiščiu, išpjautas iš dalies «{a}», ir 3 blokai su skyle, išpjauti iš dalies «{b}», pažymėti nuo ● iki ●●●."
 }

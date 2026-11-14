@@ -584,5 +584,15 @@
  "Monta i pezzi: se entrano a fatica o ballano, dillo all’assistente prima di stampare il modello.": "Sätt ihop bitarna: om de går trögt eller glappar, säg det till assistenten innan du skriver ut modellen.",
  "Sono pezzi del tuo modello ritagliati attorno alle parti incerte.": "Det här är bitar av din modell, utskurna runt de osäkra delarna.",
  "Sono pezzi del tuo modello: dove ce ne sono 3, i segni (da 1 a 3) indicano il gioco. Dopo la stampa indica il migliore nella scheda Stampa → Campioni di prova.": "Det här är bitar av din modell: där det finns 3 visar markeringarna (1 till 3) spelet. Välj den bästa under Utskrift → Testbitar efter utskrift.",
- "Un solo pezzo con il perno: infila sullo stesso perno i pezzi forati, uno alla volta.": "Bara en bit med tappen: trä de borrade bitarna på samma tapp, en i taget."
+ "Un solo pezzo con il perno: infila sullo stesso perno i pezzi forati, uno alla volta.": "Bara en bit med tappen: trä de borrade bitarna på samma tapp, en i taget.",
+ "3 cerniere già montate, ritagliate da «{a}» e «{b}», segnate da ● a ●●●.": "3 färdigmonterade gångjärn, utskurna ur «{a}» och «{b}», märkta från ● till ●●●.",
+ "3 coppie di perno e blocco forato, ritagliate da «{a}» e «{b}», segnate da ● a ●●●.": "3 par med tapp och block med hål, utskurna ur «{a}» och «{b}», märkta från ● till ●●●.",
+ "foro da «{part}»": "hål från «{part}»",
+ "Ogni pezzo porta il nome della parte del modello da cui viene: non sono supporti di stampa.": "Varje bit har namnet på den modelldel den kommer från: det är inte stödmaterial för utskrift.",
+ "perno da «{part}»": "tapp från «{part}»",
+ "Pezzi: {pieces}": "Bitar: {pieces}",
+ "Ritagli del modello nella zona da provare: {parts}.": "Utsnitt av modellen i området som ska testas: {parts}.",
+ "ritaglio di «{part}»": "utsnitt ur «{part}»",
+ "Un blocco con il perno e 3 blocchi forati, segnati da ● a ●●●.": "Ett block med tappen och 3 block med hål, märkta från ● till ●●●.",
+ "Un blocco con il perno, ritagliato da «{a}», e 3 blocchi forati ritagliati da «{b}», segnati da ● a ●●●.": "Ett block med tappen, utskuret ur «{a}», och 3 block med hål utskurna ur «{b}», märkta från ● till ●●●."
 }

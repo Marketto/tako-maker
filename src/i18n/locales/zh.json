@@ -584,5 +584,15 @@
  "Monta i pezzi: se entrano a fatica o ballano, dillo all’assistente prima di stampare il modello.": "把零件装起来：如果很难装进去或有晃动，请在打印模型前告诉助手。",
  "Sono pezzi del tuo modello ritagliati attorno alle parti incerte.": "这些是从模型中不确定部位周围切下的部分。",
  "Sono pezzi del tuo modello: dove ce ne sono 3, i segni (da 1 a 3) indicano il gioco. Dopo la stampa indica il migliore nella scheda Stampa → Campioni di prova.": "这些是从你的模型上切下的部分：有 3 个时，标记（1 到 3）表示间隙。打印后在 打印 → 测试样件 中选出最好的。",
- "Un solo pezzo con il perno: infila sullo stesso perno i pezzi forati, uno alla volta.": "带销的零件只有一个：把带孔的零件逐个套到同一个销上。"
+ "Un solo pezzo con il perno: infila sullo stesso perno i pezzi forati, uno alla volta.": "带销的零件只有一个：把带孔的零件逐个套到同一个销上。",
+ "3 cerniere già montate, ritagliate da «{a}» e «{b}», segnate da ● a ●●●.": "3 个已装配好打印的铰链，从“{a}”和“{b}”中裁出，标记为 ● 到 ●●●。",
+ "3 coppie di perno e blocco forato, ritagliate da «{a}» e «{b}», segnate da ● a ●●●.": "3 组销钉和带孔块，从“{a}”和“{b}”中裁出，标记为 ● 到 ●●●。",
+ "foro da «{part}»": "来自“{part}”的孔",
+ "Ogni pezzo porta il nome della parte del modello da cui viene: non sono supporti di stampa.": "每个零件都以其来源的模型部件命名：它们不是打印支撑。",
+ "perno da «{part}»": "来自“{part}”的销钉",
+ "Pezzi: {pieces}": "零件：{pieces}",
+ "Ritagli del modello nella zona da provare: {parts}.": "模型中待测试区域的裁切件：{parts}。",
+ "ritaglio di «{part}»": "“{part}”的裁切件",
+ "Un blocco con il perno e 3 blocchi forati, segnati da ● a ●●●.": "一个带销钉的块和 3 个带孔块，标记为 ● 到 ●●●。",
+ "Un blocco con il perno, ritagliato da «{a}», e 3 blocchi forati ritagliati da «{b}», segnati da ● a ●●●.": "一个带销钉的块（从“{a}”中裁出）和 3 个带孔块（从“{b}”中裁出），标记为 ● 到 ●●●。"
 }

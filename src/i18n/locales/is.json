@@ -584,5 +584,15 @@
  "Monta i pezzi: se entrano a fatica o ballano, dillo all’assistente prima di stampare il modello.": "Settu bitana saman: ef þeir fara treglega inn eða vagga, segðu aðstoðarmanninum það áður en þú prentar líkanið.",
  "Sono pezzi del tuo modello ritagliati attorno alle parti incerte.": "Þetta eru bitar úr líkaninu þínu, skornir í kringum óvissu hlutana.",
  "Sono pezzi del tuo modello: dove ce ne sono 3, i segni (da 1 a 3) indicano il gioco. Dopo la stampa indica il migliore nella scheda Stampa → Campioni di prova.": "Þetta eru bitar úr líkaninu þínu: þar sem eru 3 sýna merkin (1 til 3) bilið. Eftir prentun velurðu bestu í Prentun → Prufur.",
- "Un solo pezzo con il perno: infila sullo stesso perno i pezzi forati, uno alla volta.": "Aðeins einn biti með pinna: settu boruðu bitana á sama pinnann, einn í einu."
+ "Un solo pezzo con il perno: infila sullo stesso perno i pezzi forati, uno alla volta.": "Aðeins einn biti með pinna: settu boruðu bitana á sama pinnann, einn í einu.",
+ "3 cerniere già montate, ritagliate da «{a}» e «{b}», segnate da ● a ●●●.": "3 lamir, þegar samsettar, skornar úr «{a}» og «{b}», merktar frá ● til ●●●.",
+ "3 coppie di perno e blocco forato, ritagliate da «{a}» e «{b}», segnate da ● a ●●●.": "3 pör af pinna og kubbi með gati, skorin úr «{a}» og «{b}», merkt frá ● til ●●●.",
+ "foro da «{part}»": "gat úr «{part}»",
+ "Ogni pezzo porta il nome della parte del modello da cui viene: non sono supporti di stampa.": "Hvert stykki ber nafn þess hluta líkansins sem það kemur úr: þetta eru ekki prentstoðir.",
+ "perno da «{part}»": "pinni úr «{part}»",
+ "Pezzi: {pieces}": "Stykki: {pieces}",
+ "Ritagli del modello nella zona da provare: {parts}.": "Bútar skornir úr líkaninu á svæðinu sem á að prófa: {parts}.",
+ "ritaglio di «{part}»": "bútur úr «{part}»",
+ "Un blocco con il perno e 3 blocchi forati, segnati da ● a ●●●.": "Kubbur með pinnanum og 3 kubbar með gati, merktir frá ● til ●●●.",
+ "Un blocco con il perno, ritagliato da «{a}», e 3 blocchi forati ritagliati da «{b}», segnati da ● a ●●●.": "Kubbur með pinnanum, skorinn úr «{a}», og 3 kubbar með gati, skornir úr «{b}», merktir frá ● til ●●●."
 }

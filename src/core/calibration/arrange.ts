@@ -1,5 +1,5 @@
 import type { RawMesh } from '../geometry/evaluate';
-import { settleIslands, splitFloating } from '../geometry/islands';
+import { dropCrumbs, settleIslands, splitFloating } from '../geometry/islands';
 import type { Arrange } from './coupons';
 
 /* Sistema sul piatto i pezzi di un campione dopo il calcolo:
@@ -7,7 +7,7 @@ import type { Arrange } from './coupons';
    - axis: asse del giunto in verticale con il perno di A verso l'alto, pezzi affiancati;
    - flat: pezzi affiancati, ciascuno nel verso (dritto o capovolto) con meno sporgenze da sostenere.
    Con axis e flat i pezzetti staccati dal ritaglio scendono sul piatto; quelli sospesi sopra un altro
-   pezzo si posano accanto: lo slicer non deve trovare regioni fluttuanti.
+   pezzo si posano accanto: lo slicer non deve trovare regioni fluttuanti. Le briciole si scartano.
    Solo rotazioni (niente specchiature), così l'orientamento dei triangoli resta corretto. */
 
 export interface Piece {
@@ -60,6 +60,9 @@ export function overhangArea(mesh: RawMesh): number {
   return area;
 }
 
+/** Sotto questa misura (in ogni direzione) un pezzetto staccato è una briciola: non si stampa. */
+export const CRUMB_MM = 2;
+
 const flip: Map3 = (x, y, z) => [x, -y, -z]; // mezzo giro attorno a X
 
 export function arrangePieces(pieces: Piece[], arrange: Arrange, gap = 4): { pieces: Piece[]; size: [number, number] } {
@@ -91,7 +94,8 @@ export function arrangePieces(pieces: Piece[], arrange: Arrange, gap = 4): { pie
     });
   }
   // I pezzetti staccati scendono sul piatto; quelli sospesi sopra un altro pezzo si posano accanto.
-  const items = oriented.flatMap((m, i) => splitFloating(settleIslands(m)).map((mesh) => ({ name: live[i].name, mesh })));
+  // Le briciole del ritaglio (spigoli di pochi decimi, es. un dente dello scatto tagliato) non servono a niente.
+  const items = oriented.flatMap((m, i) => splitFloating(settleIslands(dropCrumbs(m, CRUMB_MM))).map((mesh) => ({ name: live[i].name, mesh })));
   let x = 0;
   let depth = 0;
   const out: Piece[] = items.map(({ name, mesh }) => {

@@ -584,5 +584,15 @@
  "Monta i pezzi: se entrano a fatica o ballano, dillo all’assistente prima di stampare il modello.": "ركّب القطع: إذا دخلت بصعوبة أو كانت مرتخية، أخبر المساعد قبل طباعة النموذج.",
  "Sono pezzi del tuo modello ritagliati attorno alle parti incerte.": "هذه قطع من نموذجك مقطوعة حول الأجزاء غير المؤكدة.",
  "Sono pezzi del tuo modello: dove ce ne sono 3, i segni (da 1 a 3) indicano il gioco. Dopo la stampa indica il migliore nella scheda Stampa → Campioni di prova.": "هذه قطع من نموذجك: حيث توجد 3، تشير العلامات (من 1 إلى 3) إلى الخلوص. بعد الطباعة اختر الأفضل في الطباعة → عينات الاختبار.",
- "Un solo pezzo con il perno: infila sullo stesso perno i pezzi forati, uno alla volta.": "قطعة واحدة فقط بها المسمار: ركّب القطع المثقوبة على المسمار نفسه، واحدة تلو الأخرى."
+ "Un solo pezzo con il perno: infila sullo stesso perno i pezzi forati, uno alla volta.": "قطعة واحدة فقط بها المسمار: ركّب القطع المثقوبة على المسمار نفسه، واحدة تلو الأخرى.",
+ "3 cerniere già montate, ritagliate da «{a}» e «{b}», segnate da ● a ●●●.": "3 مفصلات مطبوعة مركّبة مسبقًا، مقتطعة من «{a}» و«{b}»، معلَّمة من ● إلى ●●●.",
+ "3 coppie di perno e blocco forato, ritagliate da «{a}» e «{b}», segnate da ● a ●●●.": "3 أزواج من مسمار وكتلة مثقوبة، مقتطعة من «{a}» و«{b}»، معلَّمة من ● إلى ●●●.",
+ "foro da «{part}»": "ثقب من «{part}»",
+ "Ogni pezzo porta il nome della parte del modello da cui viene: non sono supporti di stampa.": "كل قطعة تحمل اسم جزء النموذج الذي جاءت منه: ليست دعامات طباعة.",
+ "perno da «{part}»": "مسمار من «{part}»",
+ "Pezzi: {pieces}": "القطع: {pieces}",
+ "Ritagli del modello nella zona da provare: {parts}.": "مقتطعات من النموذج في المنطقة المراد تجربتها: {parts}.",
+ "ritaglio di «{part}»": "مقتطع من «{part}»",
+ "Un blocco con il perno e 3 blocchi forati, segnati da ● a ●●●.": "كتلة واحدة بمسمار و3 كتل مثقوبة، معلَّمة من ● إلى ●●●.",
+ "Un blocco con il perno, ritagliato da «{a}», e 3 blocchi forati ritagliati da «{b}», segnati da ● a ●●●.": "كتلة واحدة بمسمار، مقتطعة من «{a}»، و3 كتل مثقوبة مقتطعة من «{b}»، معلَّمة من ● إلى ●●●."
 }

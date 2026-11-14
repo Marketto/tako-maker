@@ -584,5 +584,15 @@
  "Monta i pezzi: se entrano a fatica o ballano, dillo all’assistente prima di stampare il modello.": "Συναρμολόγησε τα κομμάτια: αν μπαίνουν δύσκολα ή παίζουν, πες το στον βοηθό πριν τυπώσεις το μοντέλο.",
  "Sono pezzi del tuo modello ritagliati attorno alle parti incerte.": "Είναι κομμάτια του μοντέλου σου κομμένα γύρω από τα αβέβαια σημεία.",
  "Sono pezzi del tuo modello: dove ce ne sono 3, i segni (da 1 a 3) indicano il gioco. Dopo la stampa indica il migliore nella scheda Stampa → Campioni di prova.": "Είναι κομμάτια του μοντέλου σου: όπου υπάρχουν 3, τα σημάδια (από 1 έως 3) δείχνουν την ανοχή. Μετά την εκτύπωση διάλεξε το καλύτερο στο Εκτύπωση → Δείγματα δοκιμής.",
- "Un solo pezzo con il perno: infila sullo stesso perno i pezzi forati, uno alla volta.": "Μόνο ένα κομμάτι με πείρο: πέρασε τα τρυπημένα κομμάτια στον ίδιο πείρο, ένα κάθε φορά."
+ "Un solo pezzo con il perno: infila sullo stesso perno i pezzi forati, uno alla volta.": "Μόνο ένα κομμάτι με πείρο: πέρασε τα τρυπημένα κομμάτια στον ίδιο πείρο, ένα κάθε φορά.",
+ "3 cerniere già montate, ritagliate da «{a}» e «{b}», segnate da ● a ●●●.": "3 μεντεσέδες τυπωμένοι ήδη συναρμολογημένοι, κομμένοι από «{a}» και «{b}», με σήμανση από ● έως ●●●.",
+ "3 coppie di perno e blocco forato, ritagliate da «{a}» e «{b}», segnate da ● a ●●●.": "3 ζεύγη πείρου και μπλοκ με τρύπα, κομμένα από «{a}» και «{b}», με σήμανση από ● έως ●●●.",
+ "foro da «{part}»": "τρύπα από «{part}»",
+ "Ogni pezzo porta il nome della parte del modello da cui viene: non sono supporti di stampa.": "Κάθε κομμάτι έχει το όνομα του μέρους του μοντέλου από το οποίο προέρχεται: δεν είναι στηρίγματα εκτύπωσης.",
+ "perno da «{part}»": "πείρος από «{part}»",
+ "Pezzi: {pieces}": "Κομμάτια: {pieces}",
+ "Ritagli del modello nella zona da provare: {parts}.": "Αποκόμματα του μοντέλου στο σημείο που δοκιμάζεται: {parts}.",
+ "ritaglio di «{part}»": "απόκομμα από «{part}»",
+ "Un blocco con il perno e 3 blocchi forati, segnati da ● a ●●●.": "Ένα μπλοκ με πείρο και 3 μπλοκ με τρύπα, με σήμανση από ● έως ●●●.",
+ "Un blocco con il perno, ritagliato da «{a}», e 3 blocchi forati ritagliati da «{b}», segnati da ● a ●●●.": "Ένα μπλοκ με πείρο, κομμένο από «{a}», και 3 μπλοκ με τρύπα κομμένα από «{b}», με σήμανση από ● έως ●●●."
 }
