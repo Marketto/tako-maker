@@ -29,20 +29,3 @@ export const MATERIALS: MaterialInfo[] = [
 export function material(id: string): MaterialInfo {
   return MATERIALS.find((m) => m.id === id) ?? MATERIALS[0];
 }
-
-/** Colori proposti nel wizard (nome italiano → esadecimale). */
-export const COMMON_COLORS: { name: string; hex: string }[] = [
-  { name: msg('Bianco'), hex: '#f4f4f0' },
-  { name: msg('Nero'), hex: '#222222' },
-  { name: msg('Grigio'), hex: '#8a8d91' },
-  { name: msg('Rosso'), hex: '#d63a32' },
-  { name: msg('Arancione'), hex: '#f08a24' },
-  { name: msg('Giallo'), hex: '#f5cf2d' },
-  { name: msg('Verde'), hex: '#3aa655' },
-  { name: msg('Azzurro'), hex: '#4fb3e8' },
-  { name: msg('Blu'), hex: '#2a55c9' },
-  { name: msg('Viola'), hex: '#8b52c7' },
-  { name: msg('Rosa'), hex: '#f39ac0' },
-  { name: msg('Marrone'), hex: '#8a5a3b' },
-  { name: msg('Trasparente'), hex: '#d9eef2' },
-];

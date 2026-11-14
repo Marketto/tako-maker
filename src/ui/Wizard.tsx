@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { PRINTERS, store, uid, useStore } from '../app/store';
-import { COMMON_COLORS, MATERIALS } from '../data/materials';
+import { MATERIALS } from '../data/materials';
+import { ColorPicker } from './ColorPicker';
 import type { Filament, UserSetup, Vec3 } from '../core/types';
 import { Takotta } from './mascot/Takotta';
 import { MusicButton } from './MusicButton';
@@ -10,7 +11,7 @@ import { LanguagePicker } from './LanguagePicker';
 import { useInstall } from './Install';
 import { RestoreChoices } from './CloudBackup';
 import { seaGo } from './sea/transition';
-import { PearlProgress, SeaBackdrop, SeaButton, SeaChoice, SeaGlass, SeaPebble } from './sea/controls';
+import { PearlProgress, SeaBackdrop, SeaButton, SeaChoice, SeaPebble } from './sea/controls';
 
 // Nomi della stampante personalizzata (da printers.json), da tradurre.
 void [msg('Altro'), msg('Stampante personalizzata')];
@@ -208,16 +209,7 @@ export function Wizard({ initial, onDone }: { initial?: UserSetup | null; onDone
               </SeaPebble>
             ))}
           </div>
-          <div className="swatches">
-            {COMMON_COLORS.map((c) => {
-              const on = filaments.some((f) => f.material === mat && f.colorName === c.name);
-              return (
-                <SeaGlass key={c.name} color={c.hex} on={on} onClick={() => toggleColor(c)}>
-                  {t(c.name)}
-                </SeaGlass>
-              );
-            })}
-          </div>
+          <ColorPicker material={mat} isOn={(name) => filaments.some((f) => f.material === mat && f.colorName === name)} onToggle={toggleColor} />
           {filaments.length > 0 && (
             <div className="chips">
               {filaments.map((f) => (

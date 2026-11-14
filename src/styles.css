@@ -147,6 +147,21 @@ code { background: var(--surface-2); padding: 0 4px; border-radius: 4px; }
 .segmented button { flex: 1 0 auto; border: 0; background: transparent; padding: 0.45rem 0.7rem; border-radius: 9px; cursor: pointer; font-size: 0.9rem; }
 .segmented button.on { background: var(--surface); box-shadow: var(--shadow); font-weight: 600; }
 .swatches { display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 0.4rem; margin: 0.6rem 0 1rem; }
+.color-picker { display: flex; flex-direction: column; gap: 0.5rem; margin: 0.6rem 0 1rem; min-width: 0; }
+.color-picker .swatches { margin: 0; }
+.color-search { width: 100%; min-height: 44px; }
+.color-cats { display: flex; gap: 0.35rem; overflow-x: auto; padding-bottom: 0.25rem; scrollbar-width: thin; -webkit-overflow-scrolling: touch; }
+.color-cats button { flex: none; min-height: 40px; padding: 0.4rem 0.8rem; border-radius: 20px; border: 1.5px solid var(--line); background: var(--surface-2); cursor: pointer; font-size: 0.88rem; white-space: nowrap; }
+.color-cats button.on { background: var(--surface); font-weight: 600; box-shadow: var(--shadow); }
+.color-custom summary { cursor: pointer; min-height: 40px; display: flex; align-items: center; }
+.color-custom .row { flex-wrap: wrap; align-items: center; }
+.color-custom input[type="color"] { width: 48px; height: 44px; padding: 0; border: 0; background: none; cursor: pointer; }
+.color-custom input.text { flex: 1 1 10rem; min-width: 0; min-height: 44px; }
+.sea .color-cats button { background: #0c1838; border-color: #3a4a7e; color: var(--sea-muted); }
+.sea .color-cats button.on { background: rgb(127 240 242 / 0.16); border-color: var(--sea-glow); color: var(--sea-ink); box-shadow: 0 0 10px rgb(127 240 242 / 0.35); }
+.sea .color-cats button:focus-visible, .sea .color-custom summary:focus-visible { outline: 3px solid var(--sea-glow); outline-offset: 2px; }
+.sea .color-search, .sea .color-custom input.text { background: #0c1838; border: 0; box-shadow: inset 0 3px 6px rgb(0 0 0 / 0.6), 0 0 0 1.5px #3a4a7e; color: var(--sea-ink); border-radius: 12px; padding: 0.5rem 0.8rem; }
+.sea .color-custom summary { color: var(--sea-glow); }
 .swatch { display: flex; align-items: center; gap: 0.45rem; border: 1.5px solid var(--line); background: var(--surface); border-radius: 10px; padding: 0.5rem 0.6rem; cursor: pointer; font-size: 0.9rem; }
 .swatch.on { border-color: var(--brand); background: var(--brand-soft); font-weight: 600; }
 .tip { font-size: 0.85rem; background: var(--brand-soft); border-radius: 10px; padding: 0.55rem 0.75rem; }
