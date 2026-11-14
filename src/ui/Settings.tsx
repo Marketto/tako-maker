@@ -56,7 +56,7 @@ export function BudgetBadge({ usage }: { usage?: ProjectUsage }) {
   );
 }
 
-export function SettingsDialog({ onClose, onEditSetup }: { onClose: () => void; onEditSetup: () => void }) {
+export function SettingsDialog({ onClose, onEditSetup, onFilaments }: { onClose: () => void; onEditSetup: () => void; onFilaments: () => void }) {
   const { settings } = useStore();
   const { rec } = useSpend();
   useEffect(() => {
@@ -133,7 +133,10 @@ export function SettingsDialog({ onClose, onEditSetup }: { onClose: () => void; 
 
         <section>
           <h3>{t('Attrezzatura')}</h3>
-          <SeaButton variant="secondary" onClick={onEditSetup}>{t('Cambia stampante o filamenti')}</SeaButton>
+          <div className="row gap wrap">
+            <SeaButton variant="secondary" onClick={onFilaments}>{t('Modifica filamenti')}</SeaButton>
+            <SeaButton variant="secondary" onClick={onEditSetup}>{t('Cambia stampante o filamenti')}</SeaButton>
+          </div>
         </section>
 
         <p className="muted small">
