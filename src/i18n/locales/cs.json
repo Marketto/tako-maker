@@ -584,5 +584,15 @@
  "Monta i pezzi: se entrano a fatica o ballano, dillo all’assistente prima di stampare il modello.": "Sestav díly: pokud jdou ztuha nebo se viklají, řekni to asistentovi, než model vytiskneš.",
  "Sono pezzi del tuo modello ritagliati attorno alle parti incerte.": "Jsou to kusy tvého modelu vyříznuté kolem nejistých míst.",
  "Sono pezzi del tuo modello: dove ce ne sono 3, i segni (da 1 a 3) indicano il gioco. Dopo la stampa indica il migliore nella scheda Stampa → Campioni di prova.": "Jsou to kusy tvého modelu: kde jsou 3, značky (1 až 3) ukazují vůli. Po tisku vyber nejlepší v Tisk → Testovací vzorky.",
- "Un solo pezzo con il perno: infila sullo stesso perno i pezzi forati, uno alla volta.": "Jen jeden díl s čepem: nasazuj díly s otvorem na stejný čep, jeden po druhém."
+ "Un solo pezzo con il perno: infila sullo stesso perno i pezzi forati, uno alla volta.": "Jen jeden díl s čepem: nasazuj díly s otvorem na stejný čep, jeden po druhém.",
+ "3 cerniere già montate, ritagliate da «{a}» e «{b}», segnate da ● a ●●●.": "3 panty vytištěné už složené, vyříznuté z „{a}“ a „{b}“, označené od ● do ●●●.",
+ "3 coppie di perno e blocco forato, ritagliate da «{a}» e «{b}», segnate da ● a ●●●.": "3 dvojice čepu a bloku s otvorem, vyříznuté z „{a}“ a „{b}“, označené od ● do ●●●.",
+ "foro da «{part}»": "otvor z „{part}“",
+ "Ogni pezzo porta il nome della parte del modello da cui viene: non sono supporti di stampa.": "Každý kus nese název části modelu, ze které pochází: nejsou to tiskové podpěry.",
+ "perno da «{part}»": "čep z „{part}“",
+ "Pezzi: {pieces}": "Kusy: {pieces}",
+ "Ritagli del modello nella zona da provare: {parts}.": "Výřezy modelu v místě k vyzkoušení: {parts}.",
+ "ritaglio di «{part}»": "výřez z „{part}“",
+ "Un blocco con il perno e 3 blocchi forati, segnati da ● a ●●●.": "Jeden blok s čepem a 3 bloky s otvorem, označené od ● do ●●●.",
+ "Un blocco con il perno, ritagliato da «{a}», e 3 blocchi forati ritagliati da «{b}», segnati da ● a ●●●.": "Jeden blok s čepem, vyříznutý z „{a}“, a 3 bloky s otvorem vyříznuté z „{b}“, označené od ● do ●●●."
 }

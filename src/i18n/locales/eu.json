@@ -584,5 +584,15 @@
  "Monta i pezzi: se entrano a fatica o ballano, dillo all’assistente prima di stampare il modello.": "Muntatu piezak: nekez sartzen badira edo dantzan badaude, esan laguntzaileari eredua inprimatu aurretik.",
  "Sono pezzi del tuo modello ritagliati attorno alle parti incerte.": "Zure ereduaren zatiak dira, zalantzazko atalen inguruan moztuta.",
  "Sono pezzi del tuo modello: dove ce ne sono 3, i segni (da 1 a 3) indicano il gioco. Dopo la stampa indica il migliore nella scheda Stampa → Campioni di prova.": "Zure ereduaren zatiak dira: 3 dauden lekuan, markek (1etik 3ra) jokoa adierazten dute. Inprimatu ondoren, adierazi onena hemen: Inprimatu → Proba-laginak.",
- "Un solo pezzo con il perno: infila sullo stesso perno i pezzi forati, uno alla volta.": "Ardatzdun pieza bakarra: sartu pieza zulatuak ardatz berean, banan-banan."
+ "Un solo pezzo con il perno: infila sullo stesso perno i pezzi forati, uno alla volta.": "Ardatzdun pieza bakarra: sartu pieza zulatuak ardatz berean, banan-banan.",
+ "3 cerniere già montate, ritagliate da «{a}» e «{b}», segnate da ● a ●●●.": "Aurretik muntatutako 3 giltzadura, «{a}» eta «{b}» zatietatik ebakiak, ●-tik ●●●-ra markatuta.",
+ "3 coppie di perno e blocco forato, ritagliate da «{a}» e «{b}», segnate da ● a ●●●.": "Ardatz eta bloke zulatu bateko 3 bikote, «{a}» eta «{b}» zatietatik ebakiak, ●-tik ●●●-ra markatuta.",
+ "foro da «{part}»": "zuloa «{part}» zatitik",
+ "Ogni pezzo porta il nome della parte del modello da cui viene: non sono supporti di stampa.": "Pieza bakoitzak datorren modeloaren zatiaren izena darama: ez dira inprimatzeko euskarriak.",
+ "perno da «{part}»": "ardatza «{part}» zatitik",
+ "Pezzi: {pieces}": "Piezak: {pieces}",
+ "Ritagli del modello nella zona da provare: {parts}.": "Probatu beharreko eremuko modeloaren ebakiak: {parts}.",
+ "ritaglio di «{part}»": "ebakia «{part}» zatitik",
+ "Un blocco con il perno e 3 blocchi forati, segnati da ● a ●●●.": "Ardatzdun bloke bat eta 3 bloke zulatu, ●-tik ●●●-ra markatuta.",
+ "Un blocco con il perno, ritagliato da «{a}», e 3 blocchi forati ritagliati da «{b}», segnati da ● a ●●●.": "Ardatzdun bloke bat, «{a}» zatitik ebakia, eta 3 bloke zulatu, «{b}» zatitik ebakiak, ●-tik ●●●-ra markatuta."
 }

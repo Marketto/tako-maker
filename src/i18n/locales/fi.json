@@ -584,5 +584,15 @@
  "Monta i pezzi: se entrano a fatica o ballano, dillo all’assistente prima di stampare il modello.": "Kokoa kappaleet: jos ne menevät tiukasti tai heiluvat, kerro avustajalle ennen mallin tulostamista.",
  "Sono pezzi del tuo modello ritagliati attorno alle parti incerte.": "Nämä ovat mallisi paloja, leikattu epävarmojen kohtien ympäriltä.",
  "Sono pezzi del tuo modello: dove ce ne sono 3, i segni (da 1 a 3) indicano il gioco. Dopo la stampa indica il migliore nella scheda Stampa → Campioni di prova.": "Nämä ovat mallisi paloja: kun niitä on 3, merkit (1–3) kertovat välyksen. Valitse tulostuksen jälkeen paras kohdassa Tulostus → Testikappaleet.",
- "Un solo pezzo con il perno: infila sullo stesso perno i pezzi forati, uno alla volta.": "Vain yksi tappikappale: pujota reiälliset kappaleet samaan tappiin yksi kerrallaan."
+ "Un solo pezzo con il perno: infila sullo stesso perno i pezzi forati, uno alla volta.": "Vain yksi tappikappale: pujota reiälliset kappaleet samaan tappiin yksi kerrallaan.",
+ "3 cerniere già montate, ritagliate da «{a}» e «{b}», segnate da ● a ●●●.": "3 valmiiksi koottua saranaa, leikattu osista «{a}» ja «{b}», merkitty symboleilla ● – ●●●.",
+ "3 coppie di perno e blocco forato, ritagliate da «{a}» e «{b}», segnate da ● a ●●●.": "3 paria tappia ja reiällistä palikkaa, leikattu osista «{a}» ja «{b}», merkitty symboleilla ● – ●●●.",
+ "foro da «{part}»": "reikä osasta «{part}»",
+ "Ogni pezzo porta il nome della parte del modello da cui viene: non sono supporti di stampa.": "Jokainen kappale on nimetty sen mallin osan mukaan, josta se on peräisin: ne eivät ole tulostustukia.",
+ "perno da «{part}»": "tappi osasta «{part}»",
+ "Pezzi: {pieces}": "Kappaleet: {pieces}",
+ "Ritagli del modello nella zona da provare: {parts}.": "Mallista leikatut palat testattavalta alueelta: {parts}.",
+ "ritaglio di «{part}»": "leike osasta «{part}»",
+ "Un blocco con il perno e 3 blocchi forati, segnati da ● a ●●●.": "Palikka, jossa on tappi, ja 3 reiällistä palikkaa, merkitty symboleilla ● – ●●●.",
+ "Un blocco con il perno, ritagliato da «{a}», e 3 blocchi forati ritagliati da «{b}», segnati da ● a ●●●.": "Palikka, jossa on tappi, leikattu osasta «{a}», ja 3 reiällistä palikkaa, leikattu osasta «{b}», merkitty symboleilla ● – ●●●."
 }

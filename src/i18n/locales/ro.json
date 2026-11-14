@@ -584,5 +584,15 @@
  "Monta i pezzi: se entrano a fatica o ballano, dillo all’assistente prima di stampare il modello.": "Asamblează piesele: dacă intră greu sau au joc, spune-i asistentului înainte să imprimi modelul.",
  "Sono pezzi del tuo modello ritagliati attorno alle parti incerte.": "Sunt bucăți din modelul tău decupate în jurul părților nesigure.",
  "Sono pezzi del tuo modello: dove ce ne sono 3, i segni (da 1 a 3) indicano il gioco. Dopo la stampa indica il migliore nella scheda Stampa → Campioni di prova.": "Sunt bucăți din modelul tău: unde sunt 3, semnele (de la 1 la 3) arată jocul. După imprimare, alege-o pe cea mai bună în Imprimare → Mostre de test.",
- "Un solo pezzo con il perno: infila sullo stesso perno i pezzi forati, uno alla volta.": "O singură piesă cu știft: pune piesele găurite pe același știft, pe rând."
+ "Un solo pezzo con il perno: infila sullo stesso perno i pezzi forati, uno alla volta.": "O singură piesă cu știft: pune piesele găurite pe același știft, pe rând.",
+ "3 cerniere già montate, ritagliate da «{a}» e «{b}», segnate da ● a ●●●.": "3 balamale tipărite deja asamblate, decupate din «{a}» și «{b}», marcate de la ● la ●●●.",
+ "3 coppie di perno e blocco forato, ritagliate da «{a}» e «{b}», segnate da ● a ●●●.": "3 perechi de știft și bloc cu gaură, decupate din «{a}» și «{b}», marcate de la ● la ●●●.",
+ "foro da «{part}»": "gaură din «{part}»",
+ "Ogni pezzo porta il nome della parte del modello da cui viene: non sono supporti di stampa.": "Fiecare piesă poartă numele părții din model din care provine: nu sunt suporturi de imprimare.",
+ "perno da «{part}»": "știft din «{part}»",
+ "Pezzi: {pieces}": "Piese: {pieces}",
+ "Ritagli del modello nella zona da provare: {parts}.": "Decupaje din model în zona de probat: {parts}.",
+ "ritaglio di «{part}»": "decupaj din «{part}»",
+ "Un blocco con il perno e 3 blocchi forati, segnati da ● a ●●●.": "Un bloc cu știft și 3 blocuri cu gaură, marcate de la ● la ●●●.",
+ "Un blocco con il perno, ritagliato da «{a}», e 3 blocchi forati ritagliati da «{b}», segnati da ● a ●●●.": "Un bloc cu știft, decupat din «{a}», și 3 blocuri cu gaură decupate din «{b}», marcate de la ● la ●●●."
 }

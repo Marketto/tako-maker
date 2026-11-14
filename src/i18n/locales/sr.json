@@ -584,5 +584,15 @@
  "Monta i pezzi: se entrano a fatica o ballano, dillo all’assistente prima di stampare il modello.": "Склопи делове: ако улазе тешко или се климају, реци то асистенту пре штампања модела.",
  "Sono pezzi del tuo modello ritagliati attorno alle parti incerte.": "То су комади твог модела исечени око несигурних делова.",
  "Sono pezzi del tuo modello: dove ce ne sono 3, i segni (da 1 a 3) indicano il gioco. Dopo la stampa indica il migliore nella scheda Stampa → Campioni di prova.": "То су комади твог модела: где их има 3, ознаке (од 1 до 3) показују зазор. После штампе изабери најбољи у Штампа → Пробни узорци.",
- "Un solo pezzo con il perno: infila sullo stesso perno i pezzi forati, uno alla volta.": "Само један комад са клином: натакни комаде са рупом на исти клин, један по један."
+ "Un solo pezzo con il perno: infila sullo stesso perno i pezzi forati, uno alla volta.": "Само један комад са клином: натакни комаде са рупом на исти клин, један по један.",
+ "3 cerniere già montate, ritagliate da «{a}» e «{b}», segnate da ● a ●●●.": "3 шарке одштампане већ склопљене, исечене из «{a}» и «{b}», означене од ● до ●●●.",
+ "3 coppie di perno e blocco forato, ritagliate da «{a}» e «{b}», segnate da ● a ●●●.": "3 пара клина и блока са рупом, исечена из «{a}» и «{b}», означена од ● до ●●●.",
+ "foro da «{part}»": "рупа из «{part}»",
+ "Ogni pezzo porta il nome della parte del modello da cui viene: non sono supporti di stampa.": "Сваки комад носи име дела модела из ког потиче: то нису потпоре за штампу.",
+ "perno da «{part}»": "клин из «{part}»",
+ "Pezzi: {pieces}": "Комади: {pieces}",
+ "Ritagli del modello nella zona da provare: {parts}.": "Исечци модела на месту за проверу: {parts}.",
+ "ritaglio di «{part}»": "исечак из «{part}»",
+ "Un blocco con il perno e 3 blocchi forati, segnati da ● a ●●●.": "Један блок са клином и 3 блока са рупом, означена од ● до ●●●.",
+ "Un blocco con il perno, ritagliato da «{a}», e 3 blocchi forati ritagliati da «{b}», segnati da ● a ●●●.": "Један блок са клином, исечен из «{a}», и 3 блока са рупом исечена из «{b}», означена од ● до ●●●."
 }

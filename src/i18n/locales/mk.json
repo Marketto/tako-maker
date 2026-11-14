@@ -584,5 +584,15 @@
  "Monta i pezzi: se entrano a fatica o ballano, dillo all’assistente prima di stampare il modello.": "Склопи ги деловите: ако влегуваат тешко или се клацкаат, кажи му на асистентот пред да го печатиш моделот.",
  "Sono pezzi del tuo modello ritagliati attorno alle parti incerte.": "Ова се парчиња од твојот модел исечени околу несигурните делови.",
  "Sono pezzi del tuo modello: dove ce ne sono 3, i segni (da 1 a 3) indicano il gioco. Dopo la stampa indica il migliore nella scheda Stampa → Campioni di prova.": "Ова се парчиња од твојот модел: каде што има 3, ознаките (од 1 до 3) го покажуваат зазорот. По печатењето избери го најдобриот во Печатење → Пробни примероци.",
- "Un solo pezzo con il perno: infila sullo stesso perno i pezzi forati, uno alla volta.": "Само едно парче со клин: натакнувај ги парчињата со дупка на истиот клин, едно по едно."
+ "Un solo pezzo con il perno: infila sullo stesso perno i pezzi forati, uno alla volta.": "Само едно парче со клин: натакнувај ги парчињата со дупка на истиот клин, едно по едно.",
+ "3 cerniere già montate, ritagliate da «{a}» e «{b}», segnate da ● a ●●●.": "3 шарки отпечатени веќе склопени, исечени од «{a}» и «{b}», означени од ● до ●●●.",
+ "3 coppie di perno e blocco forato, ritagliate da «{a}» e «{b}», segnate da ● a ●●●.": "3 пара клин и блок со дупка, исечени од «{a}» и «{b}», означени од ● до ●●●.",
+ "foro da «{part}»": "дупка од «{part}»",
+ "Ogni pezzo porta il nome della parte del modello da cui viene: non sono supporti di stampa.": "Секое парче го носи името на делот од моделот од кој доаѓа: тоа не се потпори за печатење.",
+ "perno da «{part}»": "клин од «{part}»",
+ "Pezzi: {pieces}": "Парчиња: {pieces}",
+ "Ritagli del modello nella zona da provare: {parts}.": "Исечоци од моделот на местото за проба: {parts}.",
+ "ritaglio di «{part}»": "исечок од «{part}»",
+ "Un blocco con il perno e 3 blocchi forati, segnati da ● a ●●●.": "Еден блок со клин и 3 блока со дупка, означени од ● до ●●●.",
+ "Un blocco con il perno, ritagliato da «{a}», e 3 blocchi forati ritagliati da «{b}», segnati da ● a ●●●.": "Еден блок со клин, исечен од «{a}», и 3 блока со дупка исечени од «{b}», означени од ● до ●●●."
 }

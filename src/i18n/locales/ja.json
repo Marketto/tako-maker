@@ -584,5 +584,15 @@
  "Monta i pezzi: se entrano a fatica o ballano, dillo all’assistente prima di stampare il modello.": "ピースを組み立ててください。入りにくかったりガタついたりしたら、モデルを印刷する前にアシスタントに伝えてください。",
  "Sono pezzi del tuo modello ritagliati attorno alle parti incerte.": "モデルの不確かな部分のまわりを切り出したピースです。",
  "Sono pezzi del tuo modello: dove ce ne sono 3, i segni (da 1 a 3) indicano il gioco. Dopo la stampa indica il migliore nella scheda Stampa → Campioni di prova.": "モデルから切り出したピースです。3個あるものは、印（1〜3）がすき間を示します。印刷後、印刷 → テストピースでいちばん良いものを選んでください。",
- "Un solo pezzo con il perno: infila sullo stesso perno i pezzi forati, uno alla volta.": "ピン付きのピースは1つだけです。穴あきピースを同じピンに1つずつ差し込んでください。"
+ "Un solo pezzo con il perno: infila sullo stesso perno i pezzi forati, uno alla volta.": "ピン付きのピースは1つだけです。穴あきピースを同じピンに1つずつ差し込んでください。",
+ "3 cerniere già montate, ritagliate da «{a}» e «{b}», segnate da ● a ●●●.": "組み立て済みで印刷する 3 つのヒンジ。「{a}」と「{b}」から切り出し、● から ●●● の印付き。",
+ "3 coppie di perno e blocco forato, ritagliate da «{a}» e «{b}», segnate da ● a ●●●.": "ピンと穴あきブロックの 3 組。「{a}」と「{b}」から切り出し、● から ●●● の印付き。",
+ "foro da «{part}»": "「{part}」の穴",
+ "Ogni pezzo porta il nome della parte del modello da cui viene: non sono supporti di stampa.": "各ピースには元になったモデルのパーツ名が付いています。印刷用のサポートではありません。",
+ "perno da «{part}»": "「{part}」のピン",
+ "Pezzi: {pieces}": "ピース：{pieces}",
+ "Ritagli del modello nella zona da provare: {parts}.": "試す部分のモデルの切り出し：{parts}。",
+ "ritaglio di «{part}»": "「{part}」の切り出し",
+ "Un blocco con il perno e 3 blocchi forati, segnati da ● a ●●●.": "ピン付きブロック 1 つと穴あきブロック 3 つ。● から ●●● の印付き。",
+ "Un blocco con il perno, ritagliato da «{a}», e 3 blocchi forati ritagliati da «{b}», segnati da ● a ●●●.": "「{a}」から切り出したピン付きブロック 1 つと、「{b}」から切り出した穴あきブロック 3 つ。● から ●●● の印付き。"
 }

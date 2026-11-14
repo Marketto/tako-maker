@@ -84,10 +84,13 @@ dell'app il gioco sta tutto nel foro: si stampa **un solo pezzo con il perno** e
 alla volta (`sharedPin`, `Coupon.drop`). Fa eccezione la prova del gioco su un giunto con scatto: il dentino
 del perno si sposta col gioco, quindi ogni variante ha il suo perno. I campioni da 3 hanno da 1 a
 3 segni incavati sulle facce lontane dal giunto. I pezzi delle prove da 1 si stampano affiancati, ciascuno
-nel verso (dritto o capovolto) con meno sporgenze (`arrange.ts`). Gli agganci e le prove dichiarate
-sono forme libere: nel file dei campioni hanno i supporti se servono, con la stessa regola del modello
-(`needsSupports`). I campioni dei giunti no: l'unica sporgenza è il cielo del foro, un ponte corto.
-Le briciole del ritaglio (pezzetti sotto i 2 mm, `dropCrumbs`) non si stampano.
+nel verso (dritto o capovolto) con meno sporgenze (`arrange.ts`).
+Ogni pezzo nel file dei campioni ha i supporti se servono, con la stessa regola del modello
+(`needsSupports`, vedi sotto: il cielo di un foro è un ponte e non li chiede). Le briciole del ritaglio
+(pezzetti sotto i 2 mm, `dropCrumbs`) non si stampano. I pezzi nello slicer dicono ruolo e parte
+d'origine («perno da …», «foro da …», «ritaglio di …») e ogni prova, nel `LEGGIMI.txt` e nella chat,
+elenca i pezzi che contiene (`SampleSeries.pieces`): una parte del modello chiamata «Supporto…» non
+va confusa con i supporti di stampa.
 
 L'app chiede se stampare i campioni quando ci sono giochi non ancora tarati per quel materiale o prove di
 misura nuove: la chiave della domanda contiene gli id delle prove, quindi una prova nuova la ripropone.
@@ -140,6 +143,9 @@ Dopo ogni modifica il Worker della geometria misura, per ogni corpo come verrebb
 
 - l'**area d'appoggio** sul piatto;
 - le **sporgenze**: area delle facce rivolte verso il basso, per angolo dalla verticale;
+- i **ponti**: soffitti piani appoggiati da due lati opposti (cielo di un foro, tasca, arco tra due
+  pilastri), con la luce tra gli appoggi. Un lato del soffitto è un appoggio se la faccia accanto scende
+  (parete sotto); una mensola, appoggiata da un lato solo, resta una sporgenza;
 - se il corpo **non tocca il piatto**.
 
 Quale corpo si misura dipende dalla strategia:
@@ -150,7 +156,7 @@ Con le soglie di `src/data/guidelines.ts` l'analisi decide:
 
 | Caso | Cosa fa l'app |
 |---|---|
-| Sporgenze oltre l'angolo massimo del materiale (> 15 mm²) o corpo sospeso | supporti ad albero attivati nel 3MF (`enable_support`, `support_type` per Bambu/Orca; `support_material` per PrusaSlicer) e consiglio |
+| Sporgenze oltre l'angolo massimo del materiale (> 15 mm², esclusi i ponti entro la luce del materiale, `bridgeMm`) o corpo sospeso (`needsSupports`) | supporti ad albero attivati nel 3MF (`enable_support`, `support_type` per Bambu/Orca; `support_material` per PrusaSlicer) e consiglio |
 | Appoggio < 40 mm² o pezzo snello (altezza > 6 × lato d'appoggio) | brim di 5 mm nel 3MF e avviso |
 | Supporti su un pezzo in PLA e l'utente ha anche PETG | interfaccia dei supporti nel materiale opposto (non aderisce, si stacca pulita): impostata nel 3MF se c'è un sistema multicolore (`support_interface_filament` / `support_material_interface_extruder`), altrimenti solo consigliata |
 | Supporti su un pezzo in PETG e l'utente ha anche PLA | interfaccia in PLA **solo** con più ugelli (doppio ugello, cambio utensile: `multi.multiNozzle`). Con un ugello solo (AMS, ACE, CFS…) negli strati in cui si alternano i materiali la temperatura scende e il PETG vicino ai supporti si salda male e si divide: l'app usa supporti in PETG e lo spiega |

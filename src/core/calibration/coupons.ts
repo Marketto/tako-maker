@@ -132,6 +132,8 @@ export interface SampleSeries {
   name: string;
   /** Istruzioni per l'utente, già tradotte. */
   howto: string;
+  /** Quali pezzi si stampano e da quali parti del modello vengono, già tradotto. */
+  pieces: string;
   material: string;
   filament: Filament;
   /** Valori provati (3 per i giochi); assenti per le prove di misura (1 campione). */
@@ -179,10 +181,10 @@ function clipBox(b: Box3): ShapeNode {
   return { op: 'box', size: [0, 1, 2].map((k) => b.max[k] - b.min[k]) as Vec3, at: b.min };
 }
 
-/** La parte ritagliata nella scatola, con eventuali segni incavati. */
-function cropped(p: Part, region: Box3, id = p.id, marks: ShapeNode[] = []): Part {
+/** La parte ritagliata nella scatola, con eventuali segni incavati. Il nome dice il ruolo e la parte d'origine. */
+function cropped(p: Part, region: Box3, id = p.id, marks: ShapeNode[] = [], name = t('ritaglio di «{part}»', { part: p.name })): Part {
   const clip: ShapeNode = { op: 'intersection', children: [p.shape, clipBox(region)] };
-  return { id, name: p.name, filamentId: p.filamentId, shape: marks.length ? { op: 'difference', children: [clip, ...marks] } : clip };
+  return { id, name, filamentId: p.filamentId, shape: marks.length ? { op: 'difference', children: [clip, ...marks] } : clip };
 }
 
 /** n segni (sfere incavate) sul piano perpendicolare all'asse alla quota `at`, in fila a partire da `start` dall'asse. */
@@ -226,11 +228,18 @@ function jointSeries(kind: TestKind, j: Joint, design: Design, setup: UserSetup,
   // Nei perni rotanti il gioco sta tutto nel foro di B: il pezzo A è identico nelle 3 varianti.
   // Fa eccezione la prova del gioco su un giunto con scatto, dove il dentino di A si sposta col gioco.
   const sharedPin = !hinge && !(kind === 'rotary' && j.detent?.enabled);
+  const names = { a: partA.name, b: partB.name };
+  const pieces = hinge
+    ? t('3 cerniere già montate, ritagliate da «{a}» e «{b}», segnate da ● a ●●●.', names)
+    : sharedPin
+      ? t('Un blocco con il perno, ritagliato da «{a}», e 3 blocchi forati ritagliati da «{b}», segnati da ● a ●●●.', names)
+      : t('3 coppie di perno e blocco forato, ritagliate da «{a}» e «{b}», segnate da ● a ●●●.', names);
   return {
     id: `${kind}:${j.id}`,
     kind,
     name,
     howto: t(TEST_HOWTO[kind]),
+    pieces,
     material,
     filament,
     values,
@@ -248,7 +257,12 @@ function jointSeries(kind: TestKind, j: Joint, design: Design, setup: UserSetup,
         marksA = sharedPin ? [] : axisMarks(n, a, j.origin, j.origin[a] - dir * half, s, 1.8, 0.7);
         marksB = axisMarks(n, a, j.origin, j.origin[a] + dir * half, s, 1.8, 0.7);
       }
-      const parts = [cropped(partA, region, partA.id, marksA), cropped(partB, region, partB.id, marksB)];
+      const parts = hinge
+        ? [cropped(partA, region, partA.id, marksA), cropped(partB, region, partB.id, marksB)]
+        : [
+            cropped(partA, region, partA.id, marksA, t('perno da «{part}»', { part: partA.name })),
+            cropped(partB, region, partB.id, marksB, t('foro da «{part}»', { part: partB.name })),
+          ];
       const extra = value === undefined ? {} : applyTestValue(kind, value);
       const tol = { [partA.id]: { ...tolOf(partA), ...extra }, [partB.id]: { ...tolOf(partB), ...extra } };
       const tag = `${name} ${value === undefined ? '' : VALUE_LABEL(value)} ${DOT_LABEL(n)}`;
@@ -273,6 +287,7 @@ function pegSeries(kind: 'snap' | 'glue', material: string, filament: Filament, 
     kind,
     name,
     howto: t(TEST_HOWTO[kind]),
+    pieces: t('Un blocco con il perno e 3 blocchi forati, segnati da ● a ●●●.'),
     material,
     filament,
     values: testValues(kind, material),
@@ -302,6 +317,7 @@ function fitSeries(id: string, name: string, howto: string, regions: { part: Par
     kind: 'fit',
     name,
     howto,
+    pieces: t('Ritagli del modello nella zona da provare: {parts}.', { parts: [...new Set(regions.map((r) => `«${r.part.name}»`))].join(', ') }),
     material: filament.material,
     filament,
     build() {
@@ -462,6 +478,7 @@ export function readmeText(plates: PlateLayout[]): string {
     '================================',
     '',
     t('Sono pezzi del tuo modello ritagliati attorno alle parti incerte.'),
+    t('Ogni pezzo porta il nome della parte del modello da cui viene: non sono supporti di stampa.'),
     t('Dove ci sono 3 campioni, i segni (da 1 a 3) indicano il gioco provato.'),
     t('Stampa con lo stesso profilo che userai per il modello (stesso filamento, stessa altezza strato).'),
     '',
@@ -473,6 +490,7 @@ export function readmeText(plates: PlateLayout[]): string {
     const coupons = ps.flatMap((p) => p.items.map((i) => i.coupon));
     for (const s of [...new Map(coupons.map((c) => [c.series.id, c.series])).values()]) {
       lines.push(`${s.name}: ${s.howto}`);
+      lines.push(`  ${t('Pezzi: {pieces}', { pieces: s.pieces })}`);
       if (s.sharedPin && s.values?.length) lines.push(`  ${t('Un solo pezzo con il perno: infila sullo stesso perno i pezzi forati, uno alla volta.')}`);
       for (const c of coupons.filter((x) => x.series.id === s.id && x.value !== undefined)) lines.push(`  ${DOT_LABEL(c.index + 1).padEnd(4)} = ${VALUE_LABEL(c.value!)}`);
     }

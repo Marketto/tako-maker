@@ -584,5 +584,15 @@
  "Monta i pezzi: se entrano a fatica o ballano, dillo all’assistente prima di stampare il modello.": "Pane tükid kokku: kui need lähevad raskelt või loksuvad, ütle seda assistendile enne mudeli printimist.",
  "Sono pezzi del tuo modello ritagliati attorno alle parti incerte.": "Need on sinu mudeli tükid, lõigatud välja ebakindlate osade ümbert.",
  "Sono pezzi del tuo modello: dove ce ne sono 3, i segni (da 1 a 3) indicano il gioco. Dopo la stampa indica il migliore nella scheda Stampa → Campioni di prova.": "Need on sinu mudeli tükid: kus on 3, näitavad märgid (1 kuni 3) lõtku. Pärast printimist vali parim jaotises Printimine → Proovitükid.",
- "Un solo pezzo con il perno: infila sullo stesso perno i pezzi forati, uno alla volta.": "Ainult üks tihvtiga tükk: pane auguga tükid ükshaaval samale tihvtile."
+ "Un solo pezzo con il perno: infila sullo stesso perno i pezzi forati, uno alla volta.": "Ainult üks tihvtiga tükk: pane auguga tükid ükshaaval samale tihvtile.",
+ "3 cerniere già montate, ritagliate da «{a}» e «{b}», segnate da ● a ●●●.": "3 juba kokkupandud hinge, välja lõigatud osadest «{a}» ja «{b}», tähistatud märkidega ● kuni ●●●.",
+ "3 coppie di perno e blocco forato, ritagliate da «{a}» e «{b}», segnate da ● a ●●●.": "3 paari tihvti ja auguga plokki, välja lõigatud osadest «{a}» ja «{b}», tähistatud märkidega ● kuni ●●●.",
+ "foro da «{part}»": "auk osast «{part}»",
+ "Ogni pezzo porta il nome della parte del modello da cui viene: non sono supporti di stampa.": "Iga tükk kannab selle mudeliosa nime, kust see pärineb: need ei ole printimistoed.",
+ "perno da «{part}»": "tihvt osast «{part}»",
+ "Pezzi: {pieces}": "Tükid: {pieces}",
+ "Ritagli del modello nella zona da provare: {parts}.": "Mudelist välja lõigatud tükid testitavas piirkonnas: {parts}.",
+ "ritaglio di «{part}»": "väljalõige osast «{part}»",
+ "Un blocco con il perno e 3 blocchi forati, segnati da ● a ●●●.": "Tihvtiga plokk ja 3 auguga plokki, tähistatud märkidega ● kuni ●●●.",
+ "Un blocco con il perno, ritagliato da «{a}», e 3 blocchi forati ritagliati da «{b}», segnati da ● a ●●●.": "Tihvtiga plokk, välja lõigatud osast «{a}», ja 3 auguga plokki, välja lõigatud osast «{b}», tähistatud märkidega ● kuni ●●●."
 }

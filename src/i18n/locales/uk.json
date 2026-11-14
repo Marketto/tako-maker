@@ -584,5 +584,15 @@
  "Monta i pezzi: se entrano a fatica o ballano, dillo all’assistente prima di stampare il modello.": "Збери деталі: якщо вони входять туго або хитаються, скажи асистентові до друку моделі.",
  "Sono pezzi del tuo modello ritagliati attorno alle parti incerte.": "Це шматки твоєї моделі, вирізані навколо сумнівних місць.",
  "Sono pezzi del tuo modello: dove ce ne sono 3, i segni (da 1 a 3) indicano il gioco. Dopo la stampa indica il migliore nella scheda Stampa → Campioni di prova.": "Це шматки твоєї моделі: де їх 3, позначки (від 1 до 3) показують зазор. Після друку вкажи найкращий у розділі Друк → Тестові зразки.",
- "Un solo pezzo con il perno: infila sullo stesso perno i pezzi forati, uno alla volta.": "Лише одна деталь зі штифтом: надягай деталі з отвором на той самий штифт по одній."
+ "Un solo pezzo con il perno: infila sullo stesso perno i pezzi forati, uno alla volta.": "Лише одна деталь зі штифтом: надягай деталі з отвором на той самий штифт по одній.",
+ "3 cerniere già montate, ritagliate da «{a}» e «{b}», segnate da ● a ●●●.": "3 завіси, надруковані вже зібраними, вирізані з «{a}» і «{b}», позначені від ● до ●●●.",
+ "3 coppie di perno e blocco forato, ritagliate da «{a}» e «{b}», segnate da ● a ●●●.": "3 пари штифта й блока з отвором, вирізані з «{a}» і «{b}», позначені від ● до ●●●.",
+ "foro da «{part}»": "отвір з «{part}»",
+ "Ogni pezzo porta il nome della parte del modello da cui viene: non sono supporti di stampa.": "Кожна деталь має назву частини моделі, з якої вона походить: це не підтримки для друку.",
+ "perno da «{part}»": "штифт з «{part}»",
+ "Pezzi: {pieces}": "Деталі: {pieces}",
+ "Ritagli del modello nella zona da provare: {parts}.": "Вирізки моделі в місці для перевірки: {parts}.",
+ "ritaglio di «{part}»": "вирізка з «{part}»",
+ "Un blocco con il perno e 3 blocchi forati, segnati da ● a ●●●.": "Один блок зі штифтом і 3 блоки з отвором, позначені від ● до ●●●.",
+ "Un blocco con il perno, ritagliato da «{a}», e 3 blocchi forati ritagliati da «{b}», segnati da ● a ●●●.": "Один блок зі штифтом, вирізаний з «{a}», і 3 блоки з отвором, вирізані з «{b}», позначені від ● до ●●●."
 }

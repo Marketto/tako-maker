@@ -102,6 +102,10 @@ describe('campioni di prova', () => {
     // Il ritaglio del supporto della leva lascia una briciola di 1,2 mm: si scarta.
     expect(model.match(/<object /g)!.length).toBe(4 + 4 + 2 + 1);
     expect(files.readme).toMatch(/Un solo pezzo con il perno/);
+    // Ogni prova dice quali pezzi contiene; i pezzi portano il ruolo e la parte d'origine.
+    expect(files.readme).toMatch(/Pezzi: Un blocco con il perno, ritagliato da «Supporto s1», e 3 blocchi forati ritagliati da «Ruota»/);
+    expect(files.readme).toMatch(/Pezzi: Ritagli del modello nella zona da provare: «Base», «Supporto s1»\./);
+    expect(files.readme).toMatch(/non sono supporti di stampa/);
   }, 120_000);
   it('perno rotante: asse in verticale, perno in alto, pezzo forato accanto', async () => {
     const d = consolle();
@@ -222,6 +226,10 @@ describe('campioni di prova', () => {
     const objects = cfg.split('<object id=').slice(1);
     const withSupports = objects.filter((o) => o.includes('key="enable_support" value="1"')).map((o) => o.match(/key="name" value="([^"]*)"/)![1]);
     expect(withSupports).toEqual([expect.stringMatching(/Aggancio/)]);
+    // I pezzi nello slicer dicono il ruolo: «perno da …», «foro da …», «ritaglio di …».
+    expect(cfg).toMatch(/perno da «Supporto s1»/);
+    expect(cfg).toMatch(/foro da «Ruota»/);
+    expect(cfg).toMatch(/ritaglio di «Base»/);
   }, 120_000);
   it('le briciole del ritaglio non si stampano', () => {
     const cube = (s: number, x: number): RawMesh => {

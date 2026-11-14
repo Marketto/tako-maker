@@ -584,5 +584,15 @@
  "Monta i pezzi: se entrano a fatica o ballano, dillo all’assistente prima di stampare il modello.": "Sestavi kose: če gredo težko noter ali opletajo, povej asistentu, preden natisneš model.",
  "Sono pezzi del tuo modello ritagliati attorno alle parti incerte.": "To so kosi tvojega modela, izrezani okoli negotovih delov.",
  "Sono pezzi del tuo modello: dove ce ne sono 3, i segni (da 1 a 3) indicano il gioco. Dopo la stampa indica il migliore nella scheda Stampa → Campioni di prova.": "To so kosi tvojega modela: kjer so 3, oznake (od 1 do 3) kažejo zračnost. Po tiskanju izberi najboljšega v Tisk → Testni vzorci.",
- "Un solo pezzo con il perno: infila sullo stesso perno i pezzi forati, uno alla volta.": "Samo en kos z zatičem: natakni kose z luknjo na isti zatič, enega za drugim."
+ "Un solo pezzo con il perno: infila sullo stesso perno i pezzi forati, uno alla volta.": "Samo en kos z zatičem: natakni kose z luknjo na isti zatič, enega za drugim.",
+ "3 cerniere già montate, ritagliate da «{a}» e «{b}», segnate da ● a ●●●.": "3 tečaji, natisnjeni že sestavljeni, izrezani iz „{a}“ in „{b}“, označeni od ● do ●●●.",
+ "3 coppie di perno e blocco forato, ritagliate da «{a}» e «{b}», segnate da ● a ●●●.": "3 pari zatiča in bloka z luknjo, izrezani iz „{a}“ in „{b}“, označeni od ● do ●●●.",
+ "foro da «{part}»": "luknja iz „{part}“",
+ "Ogni pezzo porta il nome della parte del modello da cui viene: non sono supporti di stampa.": "Vsak kos nosi ime dela modela, iz katerega izhaja: to niso podpore za tisk.",
+ "perno da «{part}»": "zatič iz „{part}“",
+ "Pezzi: {pieces}": "Kosi: {pieces}",
+ "Ritagli del modello nella zona da provare: {parts}.": "Izrezi modela na mestu za preizkus: {parts}.",
+ "ritaglio di «{part}»": "izrez iz „{part}“",
+ "Un blocco con il perno e 3 blocchi forati, segnati da ● a ●●●.": "En blok z zatičem in 3 bloki z luknjo, označeni od ● do ●●●.",
+ "Un blocco con il perno, ritagliato da «{a}», e 3 blocchi forati ritagliati da «{b}», segnati da ● a ●●●.": "En blok z zatičem, izrezan iz „{a}“, in 3 bloki z luknjo, izrezani iz „{b}“, označeni od ● do ●●●."
 }

@@ -584,5 +584,15 @@
  "Monta i pezzi: se entrano a fatica o ballano, dillo all’assistente prima di stampare il modello.": "Сглоби парчетата: ако влизат трудно или се клатят, кажи на асистента, преди да отпечаташ модела.",
  "Sono pezzi del tuo modello ritagliati attorno alle parti incerte.": "Това са парчета от твоя модел, изрязани около несигурните части.",
  "Sono pezzi del tuo modello: dove ce ne sono 3, i segni (da 1 a 3) indicano il gioco. Dopo la stampa indica il migliore nella scheda Stampa → Campioni di prova.": "Това са парчета от твоя модел: където има 3, знаците (от 1 до 3) показват хлабината. След печат избери най-добрия в Печат → Пробни образци.",
- "Un solo pezzo con il perno: infila sullo stesso perno i pezzi forati, uno alla volta.": "Само едно парче с щифт: нанизвай парчетата с отвор на същия щифт, едно по едно."
+ "Un solo pezzo con il perno: infila sullo stesso perno i pezzi forati, uno alla volta.": "Само едно парче с щифт: нанизвай парчетата с отвор на същия щифт, едно по едно.",
+ "3 cerniere già montate, ritagliate da «{a}» e «{b}», segnate da ● a ●●●.": "3 панти, отпечатани вече сглобени, изрязани от «{a}» и «{b}», отбелязани от ● до ●●●.",
+ "3 coppie di perno e blocco forato, ritagliate da «{a}» e «{b}», segnate da ● a ●●●.": "3 двойки щифт и блок с отвор, изрязани от «{a}» и «{b}», отбелязани от ● до ●●●.",
+ "foro da «{part}»": "отвор от «{part}»",
+ "Ogni pezzo porta il nome della parte del modello da cui viene: non sono supporti di stampa.": "Всяко парче носи името на частта от модела, от която идва: това не са поддръжки за печат.",
+ "perno da «{part}»": "щифт от «{part}»",
+ "Pezzi: {pieces}": "Парчета: {pieces}",
+ "Ritagli del modello nella zona da provare: {parts}.": "Изрязани части от модела в зоната за проба: {parts}.",
+ "ritaglio di «{part}»": "изрязано от «{part}»",
+ "Un blocco con il perno e 3 blocchi forati, segnati da ● a ●●●.": "Един блок с щифт и 3 блока с отвор, отбелязани от ● до ●●●.",
+ "Un blocco con il perno, ritagliato da «{a}», e 3 blocchi forati ritagliati da «{b}», segnati da ● a ●●●.": "Един блок с щифт, изрязан от «{a}», и 3 блока с отвор, изрязани от «{b}», отбелязани от ● до ●●●."
 }

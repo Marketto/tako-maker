@@ -584,5 +584,15 @@
  "Monta i pezzi: se entrano a fatica o ballano, dillo all’assistente prima di stampare il modello.": "Setz d’Stécker zesummen: wa se schwéier eragoen oder wackelen, so et dem Assistent ier s du de Modell drécks.",
  "Sono pezzi del tuo modello ritagliati attorno alle parti incerte.": "Dat sinn Stécker vun dengem Modell, ronderëm déi onsécher Deeler ausgeschnidden.",
  "Sono pezzi del tuo modello: dove ce ne sono 3, i segni (da 1 a 3) indicano il gioco. Dopo la stampa indica il migliore nella scheda Stampa → Campioni di prova.": "Dat sinn Stécker vun dengem Modell: wou et 3 gëtt, weisen d’Markéierungen (1 bis 3) d’Spill. Gëff nom Drécken dat bescht ënner Drécken → Testmuster un.",
- "Un solo pezzo con il perno: infila sullo stesso perno i pezzi forati, uno alla volta.": "Nëmmen ee Stéck mam Stift: steck déi gebuerte Stécker een nom aneren op dee selwechte Stift."
+ "Un solo pezzo con il perno: infila sullo stesso perno i pezzi forati, uno alla volta.": "Nëmmen ee Stéck mam Stift: steck déi gebuerte Stécker een nom aneren op dee selwechte Stift.",
+ "3 cerniere già montate, ritagliate da «{a}» e «{b}», segnate da ● a ●●●.": "3 schonn montéiert Scharnéieren, ausgeschnidden aus «{a}» an «{b}», markéiert mat ● bis ●●●.",
+ "3 coppie di perno e blocco forato, ritagliate da «{a}» e «{b}», segnate da ● a ●●●.": "3 Puer aus Stëft a Lachblock, ausgeschnidden aus «{a}» an «{b}», markéiert mat ● bis ●●●.",
+ "foro da «{part}»": "Lach aus «{part}»",
+ "Ogni pezzo porta il nome della parte del modello da cui viene: non sono supporti di stampa.": "All Stéck dréit den Numm vum Modelldeel, aus deem et kënnt: et si keng Drockstützen.",
+ "perno da «{part}»": "Stëft aus «{part}»",
+ "Pezzi: {pieces}": "Stécker: {pieces}",
+ "Ritagli del modello nella zona da provare: {parts}.": "Ausschnëtter vum Modell an der Zone, déi getest gëtt: {parts}.",
+ "ritaglio di «{part}»": "Ausschnëtt aus «{part}»",
+ "Un blocco con il perno e 3 blocchi forati, segnati da ● a ●●●.": "E Block mam Stëft an 3 Lachblocken, markéiert mat ● bis ●●●.",
+ "Un blocco con il perno, ritagliato da «{a}», e 3 blocchi forati ritagliati da «{b}», segnati da ● a ●●●.": "E Block mam Stëft, ausgeschnidden aus «{a}», an 3 Lachblocken, ausgeschnidden aus «{b}», markéiert mat ● bis ●●●."
 }

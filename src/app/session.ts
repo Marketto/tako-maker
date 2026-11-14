@@ -677,11 +677,7 @@ export class ProjectSession {
           `${files.plates === 1 ? t('Ecco i campioni di prova: 1 piatto ({materials}).', { materials: files.materials.join(', ') }) : t('Ecco i campioni di prova: {n} piatti ({materials}).', { n: files.plates, materials: files.materials.join(', ') })} ` +
           t('Sono pezzi del tuo modello: dove ce ne sono 3, i segni (da 1 a 3) indicano il gioco. Dopo la stampa indica il migliore nella scheda Stampa → Campioni di prova.') +
           '\n\n' +
-          files.readme
-            .split('\n')
-            .filter((l) => /^ {2}●|^---|: /.test(l) && !/^Poi|^CAMPIONI/.test(l))
-            .slice(0, 16)
-            .join('\n'),
+          files.series.map((s) => `${s.name}\n${s.pieces}\n${s.howto}`).join('\n\n'),
       });
       return files;
     } catch (e) {

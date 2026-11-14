@@ -584,5 +584,15 @@
  "Monta i pezzi: se entrano a fatica o ballano, dillo all’assistente prima di stampare il modello.": "Monta las piezas: si entran con dificultad o bailan, díselo al asistente antes de imprimir el modelo.",
  "Sono pezzi del tuo modello ritagliati attorno alle parti incerte.": "Son trozos de tu modelo recortados alrededor de las partes dudosas.",
  "Sono pezzi del tuo modello: dove ce ne sono 3, i segni (da 1 a 3) indicano il gioco. Dopo la stampa indica il migliore nella scheda Stampa → Campioni di prova.": "Son trozos de tu modelo: donde hay 3, las marcas (de 1 a 3) indican la holgura. Después de imprimir, indica la mejor en Imprimir → Muestras de prueba.",
- "Un solo pezzo con il perno: infila sullo stesso perno i pezzi forati, uno alla volta.": "Solo una pieza con el perno: mete las piezas con agujero en el mismo perno, una a una."
+ "Un solo pezzo con il perno: infila sullo stesso perno i pezzi forati, uno alla volta.": "Solo una pieza con el perno: mete las piezas con agujero en el mismo perno, una a una.",
+ "3 cerniere già montate, ritagliate da «{a}» e «{b}», segnate da ● a ●●●.": "3 bisagras ya montadas, recortadas de «{a}» y «{b}», marcadas de ● a ●●●.",
+ "3 coppie di perno e blocco forato, ritagliate da «{a}» e «{b}», segnate da ● a ●●●.": "3 parejas de perno y bloque perforado, recortadas de «{a}» y «{b}», marcadas de ● a ●●●.",
+ "foro da «{part}»": "agujero de «{part}»",
+ "Ogni pezzo porta il nome della parte del modello da cui viene: non sono supporti di stampa.": "Cada pieza lleva el nombre de la parte del modelo de la que procede: no son soportes de impresión.",
+ "perno da «{part}»": "perno de «{part}»",
+ "Pezzi: {pieces}": "Piezas: {pieces}",
+ "Ritagli del modello nella zona da provare: {parts}.": "Recortes del modelo en la zona a probar: {parts}.",
+ "ritaglio di «{part}»": "recorte de «{part}»",
+ "Un blocco con il perno e 3 blocchi forati, segnati da ● a ●●●.": "Un bloque con el perno y 3 bloques perforados, marcados de ● a ●●●.",
+ "Un blocco con il perno, ritagliato da «{a}», e 3 blocchi forati ritagliati da «{b}», segnati da ● a ●●●.": "Un bloque con el perno, recortado de «{a}», y 3 bloques perforados recortados de «{b}», marcados de ● a ●●●."
 }

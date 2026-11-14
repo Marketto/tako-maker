@@ -584,5 +584,15 @@
  "Monta i pezzi: se entrano a fatica o ballano, dillo all’assistente prima di stampare il modello.": "Assemble les pièces : si elles entrent difficilement ou ont du jeu, dis-le à l’assistant avant d’imprimer le modèle.",
  "Sono pezzi del tuo modello ritagliati attorno alle parti incerte.": "Ce sont des morceaux de ton modèle découpés autour des parties incertaines.",
  "Sono pezzi del tuo modello: dove ce ne sono 3, i segni (da 1 a 3) indicano il gioco. Dopo la stampa indica il migliore nella scheda Stampa → Campioni di prova.": "Ce sont des morceaux de ton modèle : là où il y en a 3, les marques (de 1 à 3) indiquent le jeu. Après l’impression, indique le meilleur dans Impression → Échantillons de test.",
- "Un solo pezzo con il perno: infila sullo stesso perno i pezzi forati, uno alla volta.": "Une seule pièce avec l’axe : enfile les pièces percées sur le même axe, une à la fois."
+ "Un solo pezzo con il perno: infila sullo stesso perno i pezzi forati, uno alla volta.": "Une seule pièce avec l’axe : enfile les pièces percées sur le même axe, une à la fois.",
+ "3 cerniere già montate, ritagliate da «{a}» e «{b}», segnate da ● a ●●●.": "3 charnières déjà assemblées, découpées dans «{a}» et «{b}», marquées de ● à ●●●.",
+ "3 coppie di perno e blocco forato, ritagliate da «{a}» e «{b}», segnate da ● a ●●●.": "3 paires de tige et bloc percé, découpées dans «{a}» et «{b}», marquées de ● à ●●●.",
+ "foro da «{part}»": "trou de «{part}»",
+ "Ogni pezzo porta il nome della parte del modello da cui viene: non sono supporti di stampa.": "Chaque pièce porte le nom de la partie du modèle dont elle provient : ce ne sont pas des supports d’impression.",
+ "perno da «{part}»": "tige de «{part}»",
+ "Pezzi: {pieces}": "Pièces : {pieces}",
+ "Ritagli del modello nella zona da provare: {parts}.": "Découpes du modèle dans la zone à tester : {parts}.",
+ "ritaglio di «{part}»": "découpe de «{part}»",
+ "Un blocco con il perno e 3 blocchi forati, segnati da ● a ●●●.": "Un bloc avec la tige et 3 blocs percés, marqués de ● à ●●●.",
+ "Un blocco con il perno, ritagliato da «{a}», e 3 blocchi forati ritagliati da «{b}», segnati da ● a ●●●.": "Un bloc avec la tige, découpé dans «{a}», et 3 blocs percés découpés dans «{b}», marqués de ● à ●●●."
 }

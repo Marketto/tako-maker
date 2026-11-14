@@ -43,6 +43,22 @@ describe('supporti e adesione al piatto', () => {
     expect(bodyStats(r.parts[0].mesh, 0).floating).toBe(false);
   });
 
+  it('i ponti corti non chiedono supporti: cielo di un foro, arco tra due pilastri', async () => {
+    const w = await manifold();
+    const stats = (shape: Part['shape']) => evaluateDesign(w, design([{ id: 'p', name: 'P', filamentId: 'f1', shape }])).printStats.parts.p;
+    const hole = stats({ op: 'difference', children: [{ op: 'box', size: [20, 20, 14] }, { op: 'cylinder', h: 10, r: 4, at: [10, 10, -1] }] });
+    expect(hole.bridges).toHaveLength(1);
+    expect(hole.bridges![0].span).toBeCloseTo(8, 0);
+    expect(overhangBeyond(hole, 50)).toBeGreaterThan(40);
+    expect(overhangBeyond(hole, 50, 50)).toBeCloseTo(0, 0);
+    const arch = (gap: number) => stats({ op: 'union', children: [{ op: 'box', size: [6, 10, 10] }, { op: 'box', size: [6, 10, 10], at: [6 + gap, 0, 0] }, { op: 'box', size: [12 + gap, 10, 3], at: [0, 0, 10] }] });
+    expect(overhangBeyond(arch(30), 50, 50)).toBeCloseTo(0, 0);
+    expect(overhangBeyond(arch(70), 50, 50)).toBeCloseTo(700, 0); // luce oltre il limite del PLA
+    // La mensola della T poggia da un lato solo: resta una sporgenza.
+    const { r } = await run(design([tee]));
+    expect(overhangBeyond(r.printStats.parts.t, 50, 50)).toBeCloseTo(160, 0);
+  });
+
   it('attiva i supporti con l’interfaccia nel materiale opposto (PLA ↔ PETG)', async () => {
     const { rep } = await run(design([tee]));
     expect(rep.printHints.t.supports).toBe(true);

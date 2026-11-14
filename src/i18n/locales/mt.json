@@ -584,5 +584,15 @@
  "Monta i pezzi: se entrano a fatica o ballano, dillo all’assistente prima di stampare il modello.": "Għaqqad il-biċċiet: jekk jidħlu b’diffikultà jew jiċċaqilqu, għid lill-assistent qabel ma tistampa l-mudell.",
  "Sono pezzi del tuo modello ritagliati attorno alle parti incerte.": "Dawn huma biċċiet tal-mudell tiegħek maqtugħa madwar il-partijiet inċerti.",
  "Sono pezzi del tuo modello: dove ce ne sono 3, i segni (da 1 a 3) indicano il gioco. Dopo la stampa indica il migliore nella scheda Stampa → Campioni di prova.": "Dawn huma biċċiet tal-mudell tiegħek: fejn hemm 3, is-sinjali (minn 1 sa 3) juru l-ispazju. Wara l-istampar, agħżel l-aħjar f’Stampa → Kampjuni tal-prova.",
- "Un solo pezzo con il perno: infila sullo stesso perno i pezzi forati, uno alla volta.": "Biċċa waħda biss bil-pinn: daħħal il-biċċiet imtaqqbin fuq l-istess pinn, waħda waħda."
+ "Un solo pezzo con il perno: infila sullo stesso perno i pezzi forati, uno alla volta.": "Biċċa waħda biss bil-pinn: daħħal il-biċċiet imtaqqbin fuq l-istess pinn, waħda waħda.",
+ "3 cerniere già montate, ritagliate da «{a}» e «{b}», segnate da ● a ●●●.": "3 ċernieri diġà mmuntati, maqtugħa minn «{a}» u «{b}», immarkati minn ● sa ●●●.",
+ "3 coppie di perno e blocco forato, ritagliate da «{a}» e «{b}», segnate da ● a ●●●.": "3 pari ta’ pern u blokk imtaqqab, maqtugħa minn «{a}» u «{b}», immarkati minn ● sa ●●●.",
+ "foro da «{part}»": "toqba minn «{part}»",
+ "Ogni pezzo porta il nome della parte del modello da cui viene: non sono supporti di stampa.": "Kull biċċa għandha l-isem tal-parti tal-mudell li ġejja minnha: mhumiex sapporti tal-istampar.",
+ "perno da «{part}»": "pern minn «{part}»",
+ "Pezzi: {pieces}": "Biċċiet: {pieces}",
+ "Ritagli del modello nella zona da provare: {parts}.": "Biċċiet maqtugħa mill-mudell fiż-żona li trid tiġi ttestjata: {parts}.",
+ "ritaglio di «{part}»": "qatgħa minn «{part}»",
+ "Un blocco con il perno e 3 blocchi forati, segnati da ● a ●●●.": "Blokk bil-pern u 3 blokok imtaqqbin, immarkati minn ● sa ●●●.",
+ "Un blocco con il perno, ritagliato da «{a}», e 3 blocchi forati ritagliati da «{b}», segnati da ● a ●●●.": "Blokk bil-pern, maqtugħ minn «{a}», u 3 blokok imtaqqbin maqtugħa minn «{b}», immarkati minn ● sa ●●●."
 }

@@ -584,5 +584,15 @@
  "Monta i pezzi: se entrano a fatica o ballano, dillo all’assistente prima di stampare il modello.": "Saliec detaļas: ja tās ieiet grūti vai grīļojas, pasaki asistentam pirms modeļa drukāšanas.",
  "Sono pezzi del tuo modello ritagliati attorno alle parti incerte.": "Tās ir tava modeļa daļas, izgrieztas ap nedrošajām vietām.",
  "Sono pezzi del tuo modello: dove ce ne sono 3, i segni (da 1 a 3) indicano il gioco. Dopo la stampa indica il migliore nella scheda Stampa → Campioni di prova.": "Tās ir tava modeļa daļas: kur ir 3, atzīmes (no 1 līdz 3) norāda spraugu. Pēc drukas norādi labāko sadaļā Druka → Testa paraugi.",
- "Un solo pezzo con il perno: infila sullo stesso perno i pezzi forati, uno alla volta.": "Tikai viena detaļa ar tapu: uzver caurumotās detaļas uz tās pašas tapas pa vienai."
+ "Un solo pezzo con il perno: infila sullo stesso perno i pezzi forati, uno alla volta.": "Tikai viena detaļa ar tapu: uzver caurumotās detaļas uz tās pašas tapas pa vienai.",
+ "3 cerniere già montate, ritagliate da «{a}» e «{b}», segnate da ● a ●●●.": "3 jau samontētas eņģes, izgrieztas no daļām «{a}» un «{b}», apzīmētas ar ● līdz ●●●.",
+ "3 coppie di perno e blocco forato, ritagliate da «{a}» e «{b}», segnate da ● a ●●●.": "3 tapas un caurumota bloka pāri, izgriezti no daļām «{a}» un «{b}», apzīmēti ar ● līdz ●●●.",
+ "foro da «{part}»": "caurums no «{part}»",
+ "Ogni pezzo porta il nome della parte del modello da cui viene: non sono supporti di stampa.": "Katrai detaļai ir tās modeļa daļas nosaukums, no kuras tā nāk: tie nav drukas balsti.",
+ "perno da «{part}»": "tapa no «{part}»",
+ "Pezzi: {pieces}": "Detaļas: {pieces}",
+ "Ritagli del modello nella zona da provare: {parts}.": "Modeļa izgriezumi pārbaudāmajā zonā: {parts}.",
+ "ritaglio di «{part}»": "izgriezums no «{part}»",
+ "Un blocco con il perno e 3 blocchi forati, segnati da ● a ●●●.": "Bloks ar tapu un 3 caurumoti bloki, apzīmēti ar ● līdz ●●●.",
+ "Un blocco con il perno, ritagliato da «{a}», e 3 blocchi forati ritagliati da «{b}», segnati da ● a ●●●.": "Bloks ar tapu, izgriezts no daļas «{a}», un 3 caurumoti bloki, izgriezti no daļas «{b}», apzīmēti ar ● līdz ●●●."
 }

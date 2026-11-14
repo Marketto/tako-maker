@@ -584,5 +584,15 @@
  "Monta i pezzi: se entrano a fatica o ballano, dillo all’assistente prima di stampare il modello.": "Собери детали: если они входят с трудом или болтаются, скажи ассистенту до печати модели.",
  "Sono pezzi del tuo modello ritagliati attorno alle parti incerte.": "Это куски твоей модели, вырезанные вокруг сомнительных мест.",
  "Sono pezzi del tuo modello: dove ce ne sono 3, i segni (da 1 a 3) indicano il gioco. Dopo la stampa indica il migliore nella scheda Stampa → Campioni di prova.": "Это куски твоей модели: где их 3, метки (от 1 до 3) показывают зазор. После печати укажи лучший в разделе Печать → Тестовые образцы.",
- "Un solo pezzo con il perno: infila sullo stesso perno i pezzi forati, uno alla volta.": "Только одна деталь со штифтом: надевай детали с отверстием на тот же штифт по одной."
+ "Un solo pezzo con il perno: infila sullo stesso perno i pezzi forati, uno alla volta.": "Только одна деталь со штифтом: надевай детали с отверстием на тот же штифт по одной.",
+ "3 cerniere già montate, ritagliate da «{a}» e «{b}», segnate da ● a ●●●.": "3 петли, напечатанные уже собранными, вырезанные из «{a}» и «{b}», помечены от ● до ●●●.",
+ "3 coppie di perno e blocco forato, ritagliate da «{a}» e «{b}», segnate da ● a ●●●.": "3 пары штифта и блока с отверстием, вырезанные из «{a}» и «{b}», помечены от ● до ●●●.",
+ "foro da «{part}»": "отверстие из «{part}»",
+ "Ogni pezzo porta il nome della parte del modello da cui viene: non sono supporti di stampa.": "Каждая деталь носит имя части модели, из которой она взята: это не поддержки для печати.",
+ "perno da «{part}»": "штифт из «{part}»",
+ "Pezzi: {pieces}": "Детали: {pieces}",
+ "Ritagli del modello nella zona da provare: {parts}.": "Вырезки модели в месте для проверки: {parts}.",
+ "ritaglio di «{part}»": "вырезка из «{part}»",
+ "Un blocco con il perno e 3 blocchi forati, segnati da ● a ●●●.": "Один блок со штифтом и 3 блока с отверстием, помечены от ● до ●●●.",
+ "Un blocco con il perno, ritagliato da «{a}», e 3 blocchi forati ritagliati da «{b}», segnati da ● a ●●●.": "Один блок со штифтом, вырезанный из «{a}», и 3 блока с отверстием, вырезанные из «{b}», помечены от ● до ●●●."
 }

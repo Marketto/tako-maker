@@ -584,5 +584,15 @@
  "Monta i pezzi: se entrano a fatica o ballano, dillo all’assistente prima di stampare il modello.": "Sastavi dijelove: ako ulaze teško ili se klimaju, reci to asistentu prije printanja modela.",
  "Sono pezzi del tuo modello ritagliati attorno alle parti incerte.": "To su komadi tvog modela izrezani oko nesigurnih dijelova.",
  "Sono pezzi del tuo modello: dove ce ne sono 3, i segni (da 1 a 3) indicano il gioco. Dopo la stampa indica il migliore nella scheda Stampa → Campioni di prova.": "To su komadi tvog modela: gdje ih ima 3, oznake (od 1 do 3) pokazuju zazor. Nakon printanja izaberi najbolji u Print → Probni uzorci.",
- "Un solo pezzo con il perno: infila sullo stesso perno i pezzi forati, uno alla volta.": "Samo jedan komad s klinom: natakni komade s rupom na isti klin, jedan po jedan."
+ "Un solo pezzo con il perno: infila sullo stesso perno i pezzi forati, uno alla volta.": "Samo jedan komad s klinom: natakni komade s rupom na isti klin, jedan po jedan.",
+ "3 cerniere già montate, ritagliate da «{a}» e «{b}», segnate da ● a ●●●.": "3 šarke odštampane već sklopljene, izrezane iz «{a}» i «{b}», označene od ● do ●●●.",
+ "3 coppie di perno e blocco forato, ritagliate da «{a}» e «{b}», segnate da ● a ●●●.": "3 para klina i bloka s rupom, izrezana iz «{a}» i «{b}», označena od ● do ●●●.",
+ "foro da «{part}»": "rupa iz «{part}»",
+ "Ogni pezzo porta il nome della parte del modello da cui viene: non sono supporti di stampa.": "Svaki komad nosi ime dijela modela iz kojeg dolazi: to nisu potpore za štampu.",
+ "perno da «{part}»": "klin iz «{part}»",
+ "Pezzi: {pieces}": "Komadi: {pieces}",
+ "Ritagli del modello nella zona da provare: {parts}.": "Isječci modela na mjestu za provjeru: {parts}.",
+ "ritaglio di «{part}»": "isječak iz «{part}»",
+ "Un blocco con il perno e 3 blocchi forati, segnati da ● a ●●●.": "Jedan blok s klinom i 3 bloka s rupom, označena od ● do ●●●.",
+ "Un blocco con il perno, ritagliato da «{a}», e 3 blocchi forati ritagliati da «{b}», segnati da ● a ●●●.": "Jedan blok s klinom, izrezan iz «{a}», i 3 bloka s rupom izrezana iz «{b}», označena od ● do ●●●."
 }

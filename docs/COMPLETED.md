@@ -4,7 +4,7 @@ Attività concluse, le più recenti in alto. Quelle ancora aperte sono in [TODO.
 
 ## Novembre 2026
 
-- **14/11 – Supporti nei campioni di prova.** Gli agganci ritagliati dal modello hanno i supporti attivi quando servono (prima mai); tolte le briciole del ritaglio (il cubetto di 1,2 mm dello scatto).
+- **14/11 – Supporti, ponti e istruzioni dei campioni di prova.** I ponti corti (cielo di un foro, tasca, arco) non chiedono più supporti, nel modello e nei campioni; i campioni hanno i supporti quando servono (prima mai); tolte le briciole del ritaglio; ogni pezzo dice ruolo e parte d'origine e ogni prova elenca i suoi pezzi.
 - **14/11 – Campioni senza regioni fluttuanti** (PR #48). I pezzi sospesi di un ritaglio si posano accanto; gli oggetti nello slicer hanno il nome del campione.
 - **13/11 – Tolto il KV del connettore.** Le sessioni stanno solo nei Durable Object; tolti il recupero dal vecchio archivio e la variabile `CONNECTOR_KV_ID`.
 - **13/11 – Campioni di prova ritagliati dal modello** (PR #44, #45, #46).

@@ -584,5 +584,15 @@
  "Monta i pezzi: se entrano a fatica o ballano, dillo all’assistente prima di stampare il modello.": "Setze die Teile zusammen: Wenn sie schwer hineingehen oder wackeln, sag es dem Assistenten, bevor du das Modell druckst.",
  "Sono pezzi del tuo modello ritagliati attorno alle parti incerte.": "Das sind Stücke deines Modells, rund um die unsicheren Stellen ausgeschnitten.",
  "Sono pezzi del tuo modello: dove ce ne sono 3, i segni (da 1 a 3) indicano il gioco. Dopo la stampa indica il migliore nella scheda Stampa → Campioni di prova.": "Das sind Stücke deines Modells: Wo es 3 gibt, zeigen die Markierungen (1 bis 3) das Spiel. Trage nach dem Druck das beste unter Drucken → Testmuster ein.",
- "Un solo pezzo con il perno: infila sullo stesso perno i pezzi forati, uno alla volta.": "Nur ein Teil mit Stift: Stecke die gebohrten Teile nacheinander auf denselben Stift."
+ "Un solo pezzo con il perno: infila sullo stesso perno i pezzi forati, uno alla volta.": "Nur ein Teil mit Stift: Stecke die gebohrten Teile nacheinander auf denselben Stift.",
+ "3 cerniere già montate, ritagliate da «{a}» e «{b}», segnate da ● a ●●●.": "3 bereits montierte Scharniere, ausgeschnitten aus «{a}» und «{b}», markiert mit ● bis ●●●.",
+ "3 coppie di perno e blocco forato, ritagliate da «{a}» e «{b}», segnate da ● a ●●●.": "3 Paare aus Stift und Lochblock, ausgeschnitten aus «{a}» und «{b}», markiert mit ● bis ●●●.",
+ "foro da «{part}»": "Loch aus «{part}»",
+ "Ogni pezzo porta il nome della parte del modello da cui viene: non sono supporti di stampa.": "Jedes Teil trägt den Namen des Modellteils, aus dem es stammt: Es sind keine Druckstützen.",
+ "perno da «{part}»": "Stift aus «{part}»",
+ "Pezzi: {pieces}": "Teile: {pieces}",
+ "Ritagli del modello nella zona da provare: {parts}.": "Ausschnitte des Modells im zu testenden Bereich: {parts}.",
+ "ritaglio di «{part}»": "Ausschnitt aus «{part}»",
+ "Un blocco con il perno e 3 blocchi forati, segnati da ● a ●●●.": "Ein Block mit dem Stift und 3 Lochblöcke, markiert mit ● bis ●●●.",
+ "Un blocco con il perno, ritagliato da «{a}», e 3 blocchi forati ritagliati da «{b}», segnati da ● a ●●●.": "Ein Block mit dem Stift, ausgeschnitten aus «{a}», und 3 Lochblöcke, ausgeschnitten aus «{b}», markiert mit ● bis ●●●."
 }

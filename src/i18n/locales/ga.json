@@ -584,5 +584,15 @@
  "Monta i pezzi: se entrano a fatica o ballano, dillo all’assistente prima di stampare il modello.": "Cuir na píosaí le chéile: má théann siad isteach go crua nó má bhíonn siad scaoilte, inis don chúntóir sula bpriontálann tú an múnla.",
  "Sono pezzi del tuo modello ritagliati attorno alle parti incerte.": "Is píosaí de do mhúnla iad seo, gearrtha timpeall na bpáirteanna éiginnte.",
  "Sono pezzi del tuo modello: dove ce ne sono 3, i segni (da 1 a 3) indicano il gioco. Dopo la stampa indica il migliore nella scheda Stampa → Campioni di prova.": "Is píosaí de do mhúnla iad seo: áit a bhfuil 3, taispeánann na marcanna (1 go 3) an bhearna. Tar éis priontála, roghnaigh an ceann is fearr in Priontáil → Samplaí tástála.",
- "Un solo pezzo con il perno: infila sullo stesso perno i pezzi forati, uno alla volta.": "Níl ach píosa amháin leis an bpionna: cuir na píosaí le poll ar an bpionna céanna, ceann ar cheann."
+ "Un solo pezzo con il perno: infila sullo stesso perno i pezzi forati, uno alla volta.": "Níl ach píosa amháin leis an bpionna: cuir na píosaí le poll ar an bpionna céanna, ceann ar cheann.",
+ "3 cerniere già montate, ritagliate da «{a}» e «{b}», segnate da ● a ●●●.": "3 insí atá cóimeáilte cheana, gearrtha as «{a}» agus «{b}», marcáilte ó ● go ●●●.",
+ "3 coppie di perno e blocco forato, ritagliate da «{a}» e «{b}», segnate da ● a ●●●.": "3 phéire de phionna agus bloc le poll, gearrtha as «{a}» agus «{b}», marcáilte ó ● go ●●●.",
+ "foro da «{part}»": "poll ó «{part}»",
+ "Ogni pezzo porta il nome della parte del modello da cui viene: non sono supporti di stampa.": "Tá ainm na coda den mhúnla as a dtagann sé ar gach píosa: ní tacaí priontála iad.",
+ "perno da «{part}»": "pionna ó «{part}»",
+ "Pezzi: {pieces}": "Píosaí: {pieces}",
+ "Ritagli del modello nella zona da provare: {parts}.": "Píosaí gearrtha den mhúnla sa limistéar le tástáil: {parts}.",
+ "ritaglio di «{part}»": "gearrthán ó «{part}»",
+ "Un blocco con il perno e 3 blocchi forati, segnati da ● a ●●●.": "Bloc leis an bpionna agus 3 bhloc le poll, marcáilte ó ● go ●●●.",
+ "Un blocco con il perno, ritagliato da «{a}», e 3 blocchi forati ritagliati da «{b}», segnati da ● a ●●●.": "Bloc leis an bpionna, gearrtha as «{a}», agus 3 bhloc le poll gearrtha as «{b}», marcáilte ó ● go ●●●."
 }

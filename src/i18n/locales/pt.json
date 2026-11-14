@@ -584,5 +584,15 @@
  "Monta i pezzi: se entrano a fatica o ballano, dillo all’assistente prima di stampare il modello.": "Monta as peças: se entrarem com dificuldade ou ficarem soltas, diz ao assistente antes de imprimir o modelo.",
  "Sono pezzi del tuo modello ritagliati attorno alle parti incerte.": "São pedaços do teu modelo recortados à volta das partes incertas.",
  "Sono pezzi del tuo modello: dove ce ne sono 3, i segni (da 1 a 3) indicano il gioco. Dopo la stampa indica il migliore nella scheda Stampa → Campioni di prova.": "São pedaços do teu modelo: onde há 3, as marcas (de 1 a 3) indicam a folga. Depois de imprimir, indica a melhor em Imprimir → Amostras de teste.",
- "Un solo pezzo con il perno: infila sullo stesso perno i pezzi forati, uno alla volta.": "Só uma peça com o pino: encaixa as peças furadas no mesmo pino, uma de cada vez."
+ "Un solo pezzo con il perno: infila sullo stesso perno i pezzi forati, uno alla volta.": "Só uma peça com o pino: encaixa as peças furadas no mesmo pino, uma de cada vez.",
+ "3 cerniere già montate, ritagliate da «{a}» e «{b}», segnate da ● a ●●●.": "3 dobradiças já montadas, recortadas de «{a}» e «{b}», marcadas de ● a ●●●.",
+ "3 coppie di perno e blocco forato, ritagliate da «{a}» e «{b}», segnate da ● a ●●●.": "3 pares de pino e bloco furado, recortados de «{a}» e «{b}», marcados de ● a ●●●.",
+ "foro da «{part}»": "furo de «{part}»",
+ "Ogni pezzo porta il nome della parte del modello da cui viene: non sono supporti di stampa.": "Cada peça tem o nome da parte do modelo de onde vem: não são suportes de impressão.",
+ "perno da «{part}»": "pino de «{part}»",
+ "Pezzi: {pieces}": "Peças: {pieces}",
+ "Ritagli del modello nella zona da provare: {parts}.": "Recortes do modelo na zona a testar: {parts}.",
+ "ritaglio di «{part}»": "recorte de «{part}»",
+ "Un blocco con il perno e 3 blocchi forati, segnati da ● a ●●●.": "Um bloco com o pino e 3 blocos furados, marcados de ● a ●●●.",
+ "Un blocco con il perno, ritagliato da «{a}», e 3 blocchi forati ritagliati da «{b}», segnati da ● a ●●●.": "Um bloco com o pino, recortado de «{a}», e 3 blocos furados recortados de «{b}», marcados de ● a ●●●."
 }

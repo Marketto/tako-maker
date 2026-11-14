@@ -584,5 +584,15 @@
  "Monta i pezzi: se entrano a fatica o ballano, dillo all’assistente prima di stampare il modello.": "Bashko pjesët: nëse hyjnë me vështirësi ose lëkunden, thuaja asistentit para se të printosh modelin.",
  "Sono pezzi del tuo modello ritagliati attorno alle parti incerte.": "Këto janë copa të modelit tënd të prera rreth pjesëve të pasigurta.",
  "Sono pezzi del tuo modello: dove ce ne sono 3, i segni (da 1 a 3) indicano il gioco. Dopo la stampa indica il migliore nella scheda Stampa → Campioni di prova.": "Këto janë copa të modelit tënd: aty ku ka 3, shenjat (nga 1 në 3) tregojnë hapësirën. Pas printimit, zgjidh më të mirën te Printo → Mostra provë.",
- "Un solo pezzo con il perno: infila sullo stesso perno i pezzi forati, uno alla volta.": "Vetëm një copë me kunj: fut copat me vrimë në të njëjtin kunj, një nga një."
+ "Un solo pezzo con il perno: infila sullo stesso perno i pezzi forati, uno alla volta.": "Vetëm një copë me kunj: fut copat me vrimë në të njëjtin kunj, një nga një.",
+ "3 cerniere già montate, ritagliate da «{a}» e «{b}», segnate da ● a ●●●.": "3 menteshe të printuara të montuara, të prera nga «{a}» dhe «{b}», të shënuara nga ● deri në ●●●.",
+ "3 coppie di perno e blocco forato, ritagliate da «{a}» e «{b}», segnate da ● a ●●●.": "3 çifte kunji dhe blloku me vrimë, të prera nga «{a}» dhe «{b}», të shënuara nga ● deri në ●●●.",
+ "foro da «{part}»": "vrimë nga «{part}»",
+ "Ogni pezzo porta il nome della parte del modello da cui viene: non sono supporti di stampa.": "Çdo copë mban emrin e pjesës së modelit nga vjen: nuk janë mbështetëse printimi.",
+ "perno da «{part}»": "kunj nga «{part}»",
+ "Pezzi: {pieces}": "Copat: {pieces}",
+ "Ritagli del modello nella zona da provare: {parts}.": "Prerje të modelit në zonën për t'u provuar: {parts}.",
+ "ritaglio di «{part}»": "prerje nga «{part}»",
+ "Un blocco con il perno e 3 blocchi forati, segnati da ● a ●●●.": "Një bllok me kunj dhe 3 blloqe me vrimë, të shënuara nga ● deri në ●●●.",
+ "Un blocco con il perno, ritagliato da «{a}», e 3 blocchi forati ritagliati da «{b}», segnati da ● a ●●●.": "Një bllok me kunj, i prerë nga «{a}», dhe 3 blloqe me vrimë të prera nga «{b}», të shënuara nga ● deri në ●●●."
 }
