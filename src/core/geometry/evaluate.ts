@@ -4,6 +4,7 @@ import { pairKey, printedTogether } from '../design/links';
 import { ARCH_SAG_MM, BASE_TOLERANCES } from '../../data/guidelines';
 import { msg } from '../../i18n';
 import { settleIslands } from './islands';
+import { evaluateOrientation, isDesignDown, orientOptions, pickOrientation, rotateMesh, type OrientOption } from './orient';
 
 /* Trasforma il Design in mesh triangolari usando manifold-3d (WASM).
    Gira in un Web Worker nel browser e direttamente in Node nei test. */
@@ -98,6 +99,24 @@ export interface PrintStats {
   parts: Record<string, BodyStats>;
   /** Il modello montato (stampa unica o multicolore): un elemento per ogni blocco separato, con le parti che contiene. */
   together: (BodyStats & { partIds: string[] })[];
+  /** Posizioni sul piatto provate: una per il modello montato (`*`) o una per parte separata. `parts` e `together` sono già nella posizione scelta. */
+  orient?: OrientGroup[];
+}
+
+export interface OrientGroup {
+  /** `*` per il modello montato, altrimenti l'id della parte. */
+  key: string;
+  partIds: string[];
+  options: OrientOption[];
+  /** Indice della posizione usata. */
+  chosen: number;
+}
+
+/** Dati per scegliere come appoggiare i pezzi: piatto e limiti del materiale di ogni parte. */
+export interface OrientInput {
+  bed: Vec3;
+  overhangDeg: Record<string, number>;
+  bridgeMm: Record<string, number>;
 }
 
 const BUCKETS = 18;
@@ -694,6 +713,7 @@ export function evaluateDesign(
   design: Design,
   meshes: Record<string, RawMesh> = {},
   tolByPart: Record<string, Tolerances> = {},
+  orientInput?: OrientInput,
 ): EvalResult {
   const ctx = new Ctx(w, meshes);
   const errors: string[] = [];
@@ -827,11 +847,17 @@ export function evaluateDesign(
     // Stampata da sola: i pezzi staccati della parte poggiano ognuno sul piatto (come nel file esportato).
     printStats.parts[r.id] = bodyStats(settleIslands(r.mesh), r.bbox.min[2]);
   }
+  const comps: { partIds: string[]; mesh: RawMesh }[] = [];
+  let allMesh: RawMesh | null = null;
   try {
     const list = [...finals.entries()];
     if (list.length) {
       const all = list.length === 1 ? list[0][1] : ctx.keep(w.Manifold.union(list.map(([, m]) => m)));
       const bedZ = (all.boundingBox() as Box).min[2];
+      if (orientInput) {
+        const am = all.getMesh();
+        allMesh = positionsOnly(am.vertProperties, am.numProp, am.triVerts);
+      }
       for (const comp of all.decompose()) {
         ctx.keep(comp);
         const cm = comp.getMesh();
@@ -853,14 +879,83 @@ export function evaluateDesign(
             .sort((a, b) => a.d - b.d)[0];
           if (near) partIds.push(near.id);
         }
-        printStats.together.push({ partIds, ...bodyStats(positionsOnly(cm.vertProperties, cm.numProp, cm.triVerts), bedZ) });
+        const mesh = positionsOnly(cm.vertProperties, cm.numProp, cm.triVerts);
+        comps.push({ partIds, mesh });
+        printStats.together.push({ partIds, ...bodyStats(mesh, bedZ) });
       }
     }
   } catch (e) {
     errors.push(`Analisi dei supporti: ${(e as Error).message}`);
   }
+  if (orientInput) {
+    try {
+      printStats.orient = orientGroups(design, parts, comps, allMesh, printStats, orientInput, jointPairs);
+    } catch (e) {
+      errors.push(`Posizione sul piatto: ${(e as Error).message}`);
+    }
+  }
   ctx.dispose();
   return { parts, errors, connectors, overlaps, buttons, printStats };
+}
+
+/**
+ * Sceglie come appoggiare sul piatto il modello montato (stampa unica o multicolore) o ogni parte
+ * separata, e riscrive `printStats` nella posizione scelta. Il cambio colore a quota resta com'è
+ * disegnato (le fasce di colore sono orizzontali). Con cerniere o pulsanti stampati montati, se
+ * l'utente non ha scelto, resta la posizione del disegno.
+ */
+function orientGroups(
+  design: Design,
+  parts: PartResult[],
+  comps: { partIds: string[]; mesh: RawMesh }[],
+  allMesh: RawMesh | null,
+  printStats: PrintStats,
+  input: OrientInput,
+  jointPairs: Set<string>,
+): OrientGroup[] {
+  const { strategy, orient = {} } = design.printPlan;
+  if (strategy === 'layer-swap') return [];
+  const limits = (ids: string[]) => ({
+    overhangDeg: Math.min(...ids.map((id) => input.overhangDeg[id] ?? 45)),
+    bridgeMm: Math.min(...ids.map((id) => input.bridgeMm[id] ?? 30)),
+    bed: input.bed,
+  });
+  const choose = (mesh: RawMesh, ids: string[], key: string, preferDesign: boolean, settle?: (m: RawMesh) => RawMesh) => {
+    const o = { ...limits(ids), settle };
+    const options = orientOptions(mesh, o);
+    const wanted = orient[key];
+    if (wanted && !options.some((x) => x.down.every((v, k) => Math.abs(v - wanted[k]) < 0.05))) {
+      const { mesh: _m, ...extra } = evaluateOrientation(mesh, wanted, o);
+      options.push(extra);
+    }
+    return { key, partIds: ids, options, chosen: pickOrientation(options, wanted, preferDesign) };
+  };
+  if (strategy !== 'separate') {
+    if (!allMesh) return [];
+    const ids = parts.map((p) => p.id);
+    const inPlace = design.joints.length > 0 || design.parts.some((p) => p.button);
+    const g = choose(allMesh, ids, '*', inPlace);
+    const pick = g.options[g.chosen];
+    if (!isDesignDown(pick.down)) {
+      // Tutti i blocchi girano insieme e poggiano sulla stessa quota.
+      const turned = comps.map((c) => ({ partIds: c.partIds, mesh: rotateMesh(c.mesh, pick.rot, false) }));
+      let bedZ = Infinity;
+      for (const c of turned) for (let i = 2; i < c.mesh.positions.length; i += 3) bedZ = Math.min(bedZ, c.mesh.positions[i]);
+      printStats.together = turned.map((c) => ({ partIds: c.partIds, ...bodyStats(c.mesh, bedZ) }));
+    }
+    return [g];
+  }
+  // Parti separate: ognuna per conto suo, tranne quelle stampate già montate (cerniere, pulsanti).
+  const linked = new Set([...jointPairs].flatMap((k) => k.split('|')));
+  const out: OrientGroup[] = [];
+  for (const r of parts) {
+    if (!r.manifold || linked.has(r.id) || !printStats.parts[r.id]) continue;
+    const g = choose(r.mesh, [r.id], r.id, false, settleIslands);
+    const pick = g.options[g.chosen];
+    printStats.parts[r.id] = pick.stats;
+    out.push(g);
+  }
+  return out;
 }
 
 function positionsOnly(vp: Float32Array, numProp: number, tri: Uint32Array): RawMesh {

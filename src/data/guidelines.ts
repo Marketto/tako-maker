@@ -162,3 +162,10 @@ export function supportInterfaceFor(material: string, available: string[], multi
 export function plaSupportWeakensPetg(material: string, available: string[], multiNozzle: boolean): boolean {
   return family(material) === 'PETG' && !multiNozzle && available.some((m) => family(m) === 'PLA');
 }
+
+/** Frazione del volume sotto le sporgenze riempita dai supporti (alberi o griglia rada): per stimarne i grammi. */
+export const SUPPORT_FILL = 0.15;
+/** Supporti più alti di così (mm) sotto una zona stretta rischiano di piegarsi o staccarsi durante la stampa. */
+export const RISKY_SUPPORT_MM = 30;
+/** Zona da sostenere «stretta»: altezza dei supporti oltre questo multiplo della sua larghezza. */
+export const RISKY_SUPPORT_RATIO = 2.5;

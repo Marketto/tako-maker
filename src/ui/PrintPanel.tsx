@@ -8,6 +8,9 @@ import { centerValue, materialsToTest, neededTests, TEST_HOWTO, TEST_KEYS, TEST_
 import { isCalibrated, tolerancesFor } from '../core/calibration/tolerances';
 import { fmtNum, t } from '../i18n';
 import { hardwareLabel, hardwareOf } from '../core/hardware';
+import { orientLabel } from '../core/analysis';
+import { isDesignDown, supportGrams } from '../core/geometry/orient';
+import { material } from '../data/materials';
 
 export function PrintPanel({ session, snap }: { session: ProjectSession; snap: Snapshot }) {
   const { setup } = useStore();
@@ -58,6 +61,49 @@ export function PrintPanel({ session, snap }: { session: ProjectSession; snap: S
         </tbody>
       </table>
       <p className="muted small">{t('Stime indicative: lo slicer darà i valori precisi.')}</p>
+
+      {snap.orient.length > 0 && (
+        <>
+          <h3>{t('Come appoggiarlo sul piatto')}</h3>
+          {snap.orient.map((g) => {
+            const density = material(setup!.filaments.find((f) => f.id === d.parts.find((p) => p.id === g.partIds[0])?.filamentId)?.material ?? 'PLA').density;
+            const best = g.options[0];
+            // Al massimo 4 posizioni: le migliori, più quella scelta e quella del disegno.
+            const shown = g.options.filter((o, i) => i < 3 || i === g.chosen || isDesignDown(o.down)).slice(0, 5);
+            const title = g.key === '*' ? null : d.parts.find((p) => p.id === g.key)?.name;
+            return (
+              <fieldset key={g.key} className="orient">
+                {title && <legend>{title}</legend>}
+                {shown.map((o) => {
+                  const i = g.options.indexOf(o);
+                  const grams = Math.round(supportGrams(o.supportMm3, density));
+                  const label = orientLabel(o.down);
+                  return (
+                    <label key={o.down.join(',')} className={`orient-row ${i === g.chosen ? 'current' : ''} ${o.fits ? '' : 'off'}`}>
+                      <input type="radio" name={`orient-${g.key}`} checked={i === g.chosen} disabled={!o.fits}
+                        onChange={() => session.applyLocal([{ op: 'set_plan', orient: { key: g.key, down: o.down } }])} />
+                      <span>
+                        <strong>{label.charAt(0).toUpperCase() + label.slice(1)}</strong>
+                        {o === best && <span className="badge">{t('consigliata')}</span>}
+                        {o.risky.length > 0 && <span className="badge off">{t('supporti fragili')}</span>}
+                        <span className="muted small">
+                          {' · '}
+                          {!o.fits
+                            ? t('non entra nel piatto')
+                            : grams > 0
+                              ? t('circa {g} g di supporti, alti fino a {h} mm', { g: grams, h: Math.round(o.supportMaxH) })
+                              : t('senza supporti')}
+                        </span>
+                      </span>
+                    </label>
+                  );
+                })}
+              </fieldset>
+            );
+          })}
+          <p className="muted small">{t('Il file per lo slicer è già girato nella posizione scelta. Stime indicative.')}</p>
+        </>
+      )}
 
       {d.printPlan.strategy === 'separate' && (
         <>
