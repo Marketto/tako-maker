@@ -81,6 +81,16 @@ export interface UserSetup {
   tolerances?: Record<string, Partial<Tolerances>>;
   /** Caratteristiche della stampante personalizzata (printerId "custom"). */
   custom?: { enclosed: boolean; kinematics: 'corexy' | 'bedslinger'; multiSlots: number };
+  /** Preferenze di forma per tutti i progetti (chieste una volta sola). */
+  style?: StylePrefs;
+}
+
+/** Come rifinire le forme. `undefined` = non ancora chiesto. */
+export interface StylePrefs {
+  /** Arrotonda angoli e spigoli vivi esterni. */
+  round?: boolean;
+  /** Armonizza le forme: raggi più ampi e forme più morbide (vale solo con `round`). */
+  smooth?: boolean;
 }
 
 /* ---------- Design DSL ---------- */
@@ -94,7 +104,7 @@ interface NodeBase {
 
 export type ShapeNode =
   | (NodeBase & { op: 'box'; size: Vec3; radius?: number; center?: boolean })
-  | (NodeBase & { op: 'cylinder'; h: number; r: number; r2?: number; center?: boolean; segments?: number })
+  | (NodeBase & { op: 'cylinder'; h: number; r: number; r2?: number; radius?: number; center?: boolean; segments?: number })
   | (NodeBase & { op: 'sphere'; r: number })
   | (NodeBase & { op: 'mesh'; ref: string; scale?: number })
   | (NodeBase & { op: 'union' | 'difference' | 'intersection' | 'hull'; children: ShapeNode[] });
@@ -177,6 +187,8 @@ export interface Design {
   name: string;
   description?: string;
   intendedUse: { children: boolean; notes?: string };
+  /** Rifinitura delle forme solo per questo progetto; se manca vale la preferenza generale (`UserSetup.style`). */
+  style?: StylePrefs;
   source?: Attribution & { kind: 'remix' | 'inspiration' };
   parts: Part[];
   joints: Joint[];
@@ -215,6 +227,8 @@ export interface QuestionOption {
   action?: 'calibration' | 'ask_ai';
   /** Con action 'ask_ai': richiesta inviata all'assistente. */
   prompt?: string;
+  /** Preferenze di forma da salvare per tutti i progetti. */
+  prefs?: StylePrefs;
 }
 
 export interface Question {

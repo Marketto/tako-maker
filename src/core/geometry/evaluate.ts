@@ -4,6 +4,7 @@ import { pairKey, printedTogether } from '../design/links';
 import { ARCH_SAG_MM, BASE_TOLERANCES } from '../../data/guidelines';
 import { msg } from '../../i18n';
 import { settleIslands } from './islands';
+import { roundShape, styleRadius } from '../design/style';
 import { evaluateOrientation, isDesignDown, orientOptions, pickOrientation, rotateMesh, type OrientOption } from './orient';
 
 /* Trasforma il Design in mesh triangolari usando manifold-3d (WASM).
@@ -285,6 +286,23 @@ function roundedBox(ctx: Ctx, size: Vec3, radius: number, center: boolean): Mani
   return ctx.keep(Manifold.hull(pts));
 }
 
+/** Cilindro (o tronco di cono) con i bordi in alto e in basso arrotondati: inviluppo di due tori. */
+function roundedCylinder(ctx: Ctx, h: number, r: number, r2: number, radius: number, segments: number, center: boolean): Manifold {
+  const { Manifold, CrossSection } = ctx.w;
+  const rad = Math.min(radius, h / 2 - 0.01, Math.min(r, r2) - 0.01);
+  if (rad <= 0.05) return ctx.keep(Manifold.cylinder(h, r, r2, segments, center));
+  const ring = (R: number, z: number) => {
+    const c = CrossSection.circle(rad, 16);
+    const cs = c.translate([R - rad, 0]);
+    const m = ctx.keep(Manifold.revolve(cs, segments));
+    c.delete();
+    cs.delete();
+    return ctx.keep(m.translate([0, 0, z]));
+  };
+  const m = ctx.keep(Manifold.hull([ring(r, rad), ring(r2, h - rad)]));
+  return center ? ctx.keep(m.translate([0, 0, -h / 2])) : m;
+}
+
 function build(ctx: Ctx, node: ShapeNode): Manifold {
   const { Manifold } = ctx.w;
   let m: Manifold;
@@ -293,7 +311,9 @@ function build(ctx: Ctx, node: ShapeNode): Manifold {
       m = node.radius ? roundedBox(ctx, node.size, node.radius, !!node.center) : ctx.keep(Manifold.cube(node.size, !!node.center));
       break;
     case 'cylinder':
-      m = ctx.keep(Manifold.cylinder(node.h, node.r, node.r2 ?? node.r, node.segments ?? SEG, !!node.center));
+      m = node.radius
+        ? roundedCylinder(ctx, node.h, node.r, node.r2 ?? node.r, node.radius, node.segments ?? SEG, !!node.center)
+        : ctx.keep(Manifold.cylinder(node.h, node.r, node.r2 ?? node.r, node.segments ?? SEG, !!node.center));
       break;
     case 'sphere':
       m = ctx.keep(Manifold.sphere(node.r, SEG));
@@ -720,11 +740,13 @@ export function evaluateDesign(
   const base = new Map<string, Manifold>();
   const rawFallback = new Map<string, RawMesh>();
   const warnings = new Map<string, string[]>();
+  // Angoli e spigoli vivi arrotondati se l'utente lo preferisce (design.style già risolto con la preferenza generale).
+  const radius = styleRadius(design.style);
 
   for (const p of design.parts) {
     warnings.set(p.id, []);
     try {
-      base.set(p.id, build(ctx, p.shape));
+      base.set(p.id, build(ctx, radius ? roundShape(p.shape, radius) : p.shape));
     } catch (e) {
       if (e instanceof NonManifoldMesh && p.shape.op === 'mesh') {
         rawFallback.set(p.id, transformRaw(meshes[p.shape.ref], p.shape));

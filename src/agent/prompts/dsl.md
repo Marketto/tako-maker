@@ -6,7 +6,7 @@ Unità: millimetri. Asse Z verso l'alto. Il piatto di stampa è il piano z=0. Le
 
 Nodi forma (`shape`):
 - `{"op":"box","size":[x,y,z],"radius":r?}` parallelepipedo; `radius` arrotonda spigoli e angoli.
-- `{"op":"cylinder","h":h,"r":r,"r2":r2?,"center":bool?}` cilindro o cono lungo Z.
+- `{"op":"cylinder","h":h,"r":r,"r2":r2?,"radius":r?,"center":bool?}` cilindro o cono lungo Z; `radius` arrotonda i bordi in alto e in basso.
 - `{"op":"sphere","r":r}` sfera centrata in (0,0,0).
 - `{"op":"mesh","ref":"id","scale":s?}` mesh importata dall'utente (vedi contesto).
 - `{"op":"union"|"difference"|"intersection"|"hull","children":[...]}`. In `difference` il primo figlio è il pezzo, gli altri vengono sottratti.
@@ -22,13 +22,15 @@ Giunti (parti mobili), l'app genera da sola la geometria:
 Pulsanti: una parte con `"button":{"housing":"<id del guscio>"}` diventa un tasto stampato già montato. La sua forma (box o cylinder) indica solo l'impronta del tasto, posata sulla superficie del guscio; foro, gambo, flangia, molla e sporgenza li genera l'app. Il guscio sotto il tasto deve essere pieno per almeno 8 mm. Non impostare `protrusionMm` né `feel`: li chiede l'app all'utente.
 
 Operazioni per `edit_design.ops`:
-- `{"op":"set_meta","name":"...","description":"...","children":true|false,"notes":"..."}`
+- `{"op":"set_meta","name":"...","description":"...","children":true|false,"notes":"...","round":true|false|null,"smooth":true|false|null}` (`round`/`smooth` solo se l'utente chiede per questo progetto qualcosa di diverso dalla sua preferenza, vedi «Forme»; `null` = torna alla preferenza)
 - `{"op":"add_part","part":{...}}`, `{"op":"update_part","id":"...","name"?,"filamentId"?,"shape"?,"button"?}` (shape sostituisce tutta la forma; `button:null` toglie il pulsante)
 - `{"op":"move_part","id":"...","at":[...],"rot":[...]}`, `{"op":"remove_part","id":"..."}`
 - `{"op":"add_joint","joint":{...}}`, `{"op":"update_joint","id":"...","patch":{...}}`, `{"op":"remove_joint","id":"..."}`
 - `{"op":"add_hardware","item":{"id":"magneti","name":"Magnete al neodimio","qty":4,"spec":"6×2 mm","purpose":"chiusura del coperchio"}}`, `{"op":"update_hardware","id":"...","patch":{...}}`, `{"op":"remove_hardware","id":"..."}`
 - `{"op":"add_sample","sample":{"id":"sella","name":"Fetta della sella","check":"Calzala sul bracciolo: deve stringere senza forzare","regions":[{"part":"sella","min":[x,y,z],"max":[x,y,z]}]}}`, `{"op":"remove_sample","id":"..."}`
 - `{"op":"set_plan","strategy":"single|multicolor|separate|layer-swap","connection":"glue|snap|none|designed"}` (di solito lo decide l'app con l'utente; `none` = non ancora deciso, l'app chiede; `designed` = aggancio disegnato da te, l'app non aggiunge perni). Posizione sul piatto: `"orient":{"key":"*","down":[0,0,1]}` (`*` = modello montato, oppure id della parte separata; `down` = direzione del disegno che va verso il piatto, `null` = la sceglie l'app). Di solito la sceglie l'app: disegna nella posizione d'uso
+
+Forme: l'utente sceglie una volta sola se arrotondare angoli e spigoli vivi e se armonizzare le forme (vedi «Preferenze di forma» nel contesto; `style` nel design se vale solo per questo progetto). L'arrotondamento lo applica l'app a box e cilindri non sottratti: non aggiungere tu `radius` per questo. Con le forme armonizzate disegna forme morbide e raccordate: proporzioni equilibrate, raggi coerenti, passaggi graduali tra le parti (`hull` tra sfere o cilindri al posto di gradini netti), niente sporgenze sottili e spigolose.
 
 Elementi da comprare a parte:
 - Preferisci soluzioni tutte stampate (incastri, cerniere, scatti, filettature grosse, molle stampate).

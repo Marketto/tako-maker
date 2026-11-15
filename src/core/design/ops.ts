@@ -5,7 +5,7 @@ import type { ButtonSpec, Design, Hardware, Joint, Part, Sample, ShapeNode, Vec3
    meno token in uscita e modifiche più facili da validare. */
 
 export type DesignOp =
-  | { op: 'set_meta'; name?: string; description?: string; children?: boolean; notes?: string }
+  | { op: 'set_meta'; name?: string; description?: string; children?: boolean; notes?: string; round?: boolean | null; smooth?: boolean | null }
   | { op: 'add_part'; part: Part }
   | { op: 'update_part'; id: string; name?: string; filamentId?: string; shape?: ShapeNode; button?: Partial<ButtonSpec> | null }
   | { op: 'move_part'; id: string; at?: Vec3; rot?: Vec3 }
@@ -61,6 +61,7 @@ export function validateShape(node: ShapeNode, depth = 0): number {
       checkDim(node.h, 'cylinder.h');
       checkDim(node.r, 'cylinder.r');
       if (node.r2 !== undefined && (node.r2 < 0 || node.r2 > LIMITS.maxSizeMm)) throw new DesignError('cylinder.r2 non valido');
+      if (node.radius !== undefined && (node.radius < 0 || !Number.isFinite(node.radius))) throw new DesignError('cylinder.radius non valido');
       return 1;
     case 'sphere':
       checkDim(node.r, 'sphere.r');
@@ -154,6 +155,13 @@ export function applyOps(design: Design, ops: DesignOp[], filamentIds?: Set<stri
         if (o.description !== undefined) d.description = String(o.description).slice(0, 500);
         if (o.children !== undefined) d.intendedUse.children = !!o.children;
         if (o.notes !== undefined) d.intendedUse.notes = String(o.notes).slice(0, 300);
+        for (const k of ['round', 'smooth'] as const) {
+          if (o[k] === undefined) continue;
+          const style = { ...d.style };
+          if (o[k] === null) delete style[k];
+          else style[k] = !!o[k];
+          d.style = Object.keys(style).length ? style : undefined;
+        }
         break;
       case 'add_part':
         if (d.parts.some((p) => p.id === o.part.id)) throw new DesignError(`La parte "${o.part.id}" esiste già`);

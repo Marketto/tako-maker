@@ -135,6 +135,10 @@ export const MIXED_PLA_PETG_C = { PETG: 230, PLA: 225 };
 /** Pezzo "grande e piatto" (rischio di angoli sollevati): area d'appoggio e altezza massima. */
 export const LARGE_FLAT_MM2 = 8000;
 export const LARGE_FLAT_MAX_H = 25;
+/** Raggio per arrotondare angoli e spigoli vivi (anche per gli oggetti da bambini). */
+export const ROUND_RADIUS_MM = 2;
+/** Raggio con le forme armonizzate: più morbido, sempre limitato dallo spessore del pezzo. */
+export const SMOOTH_RADIUS_MM = 5;
 /** Brim consigliato per fissare pezzi piccoli o snelli (mm). */
 export const SMALL_PART_BRIM_MM = 5;
 

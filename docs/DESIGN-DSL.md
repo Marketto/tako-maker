@@ -24,7 +24,7 @@ Il modello è un documento JSON (`Design` in `src/core/types.ts`). La specifica 
 
 - Millimetri, Z verso l’alto, piatto di stampa a z = 0.
 - Ogni parte ha **un solo filamento**: più colori = più parti.
-- Nodi: `box` (con `radius` per arrotondare), `cylinder`, `sphere`, `mesh` (import), `union`, `difference`, `intersection`, `hull`. Ogni nodo accetta `at` (traslazione) e `rot` (gradi, applicata prima di `at`).
+- Nodi: `box` (con `radius` per arrotondare), `cylinder` (con `radius` per arrotondare i bordi in alto e in basso), `sphere`, `mesh` (import), `union`, `difference`, `intersection`, `hull`. Ogni nodo accetta `at` (traslazione) e `rot` (gradi, applicata prima di `at`).
 
 ## Operazioni (`src/core/design/ops.ts`)
 
@@ -32,6 +32,12 @@ Il modello è un documento JSON (`Design` in `src/core/types.ts`). La specifica 
 `remove_joint`, `set_plan`, `add_hardware`, `update_hardware`, `remove_hardware`, `add_sample`, `remove_sample`. Sono **atomiche**: si applicano a una copia, poi si valida tutto
 (id unici, filamenti esistenti, misure tra 0,2 e 1000 mm, max 40 parti e 600 nodi, profondità max 12).
 Se qualcosa non va, il design resta invariato e l’AI riceve il messaggio d’errore.
+
+`style` (rifinitura delle forme): `round` arrotonda angoli e spigoli vivi di box e cilindri non sottratti (raggio 2 mm), `smooth`
+armonizza le forme (raggio fino a 5 mm, sempre limitato dallo spessore) e chiede all'AI forme morbide e raccordate. L'utente sceglie
+una volta sola e la scelta vale per tutti i progetti (`UserSetup.style`); `design.style` la cambia per un solo progetto e si imposta
+con `set_meta` e `"round"`/`"smooth"` (`null` torna alla preferenza generale). L'arrotondamento si applica nel calcolo della geometria
+(`core/design/style.ts`): il disegno salvato non cambia.
 
 `printPlan.connection` (unione delle parti stampate separate): `snap` (perni a incastro), `glue` (perni di centraggio per la colla),
 `none` (non ancora deciso: l'app chiede all'utente), `designed` (aggancio disegnato dall'AI nel modello, es. coda di rondine o binario
