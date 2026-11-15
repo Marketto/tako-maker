@@ -76,6 +76,12 @@ Un Cloudflare Worker (`connector/`) espone:
 
 Il link `#/collega/<codice>` apre il progetto collegato anche su un altro dispositivo.
 
+**Più chat con lo stesso account Claude.** Il connettore distingue i progetti solo dal codice. Con la memoria
+delle chat attiva, Claude può riprendere il codice di un'altra conversazione e modificare il progetto sbagliato.
+Le istruzioni del server e la descrizione del campo `codice` dicono di usare solo il codice scritto in quella
+conversazione. Ogni risposta che salva qualcosa inizia con «Progetto «nome» (codice …)», così in chat si vede
+subito su quale progetto si è scritto.
+
 Il server MCP è standard: funziona anche con altri client MCP. ChatGPT accetta connettori personalizzati con
 scrittura solo nei piani Business, Enterprise ed Edu (in developer mode). Sui piani Plus e Pro, se il modo
 sviluppatore è disponibile, solo in lettura.

@@ -58,6 +58,22 @@ describe('connettore MCP', () => {
     expect(state().v).toBe(v0 + 1);
   });
 
+  it('due chat con codici diversi non si toccano, e la risposta dice su quale progetto si è scritto', async () => {
+    const a = await setupSession();
+    const b = await setupSession();
+    const r = await a.call('printopus_modifica', { ops: [box('pezzo')] });
+    expect(r.text).toContain(`Progetto «Prova» (codice ${a.code})`);
+    expect(a.state().design.parts).toHaveLength(1);
+    expect(b.state().design.parts).toHaveLength(0);
+    expect(b.state().v).toBe(1);
+  });
+
+  it('le istruzioni vietano di riusare codici da altre chat o dalla memoria', async () => {
+    const { deps } = await setupSession();
+    const init = (await handleRpc({ jsonrpc: '2.0', id: 1, method: 'initialize', params: {} }, deps)) as { result: { instructions: string } };
+    expect(init.result.instructions).toContain('mai uno preso dalla memoria o da altre chat');
+  });
+
   it('modifica il modello, salva la nuova versione e propone le domande dell’app', async () => {
     const { call, state } = await setupSession();
     const r = await call('printopus_modifica', {
