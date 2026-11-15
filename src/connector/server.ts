@@ -34,10 +34,11 @@ const PROTOCOL = '2025-06-18';
 export const INSTRUCTIONS = [
   'Printopus aiuta a progettare oggetti da stampare in 3D sulla stampante dell’utente.',
   'Per iniziare chiedi all’utente il codice di abbinamento mostrato nell’app Printopus (formato XXXX-XXXX-XX), poi chiama printopus_apri una sola volta: riceverai regole, stampante, filamenti e modello attuale.',
+  'Ogni codice è un progetto diverso: usa solo il codice che l’utente ha scritto in questa conversazione, mai uno preso dalla memoria o da altre chat. Se qui non c’è, chiedilo.',
   'Per rileggere modello e analisi usa printopus_stato, più leggero. Modifica il modello solo con printopus_modifica. Rispondi all’utente nella sua lingua, con frasi brevi.',
 ].join(' ');
 
-const codeProp = { codice: { type: 'string', description: 'Codice di abbinamento mostrato nell’app Printopus, es. K7QM-2XPA-9D' } };
+const codeProp = { codice: { type: 'string', description: 'Codice di abbinamento scritto dall’utente in questa conversazione (mai da memoria o altre chat), es. K7QM-2XPA-9D' } };
 
 export const TOOLS = [
   {
@@ -254,8 +255,12 @@ interface ToolOut {
 }
 const missing: ToolOut = { res: text(MISSING, true), missing: true };
 
+/** Su quale progetto si è scritto: in chat si vede subito se il codice è quello giusto. */
+const projectLine = (code: string, s: ConnectorState) => `Progetto ${s.design.name ? `«${s.design.name}» ` : ''}(codice ${code}).`;
+
 /** Testo dopo una modifica salvata: analisi dall'app (se arriva) e domande. */
-async function afterChange(deps: ServerDeps, code: string, saved: ConnectorState, head: string): Promise<ToolText> {
+async function afterChange(deps: ServerDeps, code: string, saved: ConnectorState, extra: string): Promise<ToolText> {
+  const head = [projectLine(code, saved), extra].filter(Boolean).join('\n');
   const report = await waitReport(deps, code, designKey(saved), deps.reportWaitMs ?? 20000);
   if (!report) return text([head, `Modifica salvata (versione ${saved.v}): non ripeterla.`, noApp(deps, code)].join('\n'));
   if (report.errors.length)
@@ -293,7 +298,7 @@ async function runConnectorTool(name: string, args: Json, deps: ServerDeps, code
         .map((s) => `### ${s}\n${SKILLS[s].description}\n${SKILLS[s].instructions}`)
         .join('\n\n');
       const parts = [
-        `# Progetto Printopus ${code}`,
+        `# Progetto Printopus ${state.design.name ? `«${state.design.name}» ` : ''}${code}`,
         `L’utente vede l’anteprima 3D nell’app: ${appLink(deps, code)}`,
         languageLine(state),
         '',
@@ -390,7 +395,7 @@ async function runConnectorTool(name: string, args: Json, deps: ServerDeps, code
       const msg = typeof args.messaggio === 'string' ? args.messaggio : '';
       const r = await update(deps.store, code, (s) => ({ out: null, next: changed(deps, s, {}, { role: 'assistant', text: msg, results }) }));
       if (!r) return missing;
-      return { res: text(`Mostrati ${results.length} risultati nell’app: ${appLink(deps, code)}`) };
+      return { res: text(`${projectLine(code, r.state)}\nMostrati ${results.length} risultati nell’app: ${appLink(deps, code)}`) };
     }
 
     default:
