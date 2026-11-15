@@ -56,6 +56,25 @@ export function BudgetBadge({ usage }: { usage?: ProjectUsage }) {
   );
 }
 
+/** Rifinitura delle forme per tutti i progetti (la stessa scelta della domanda nel progetto). */
+function ShapeSettings() {
+  const { setup } = useStore();
+  if (!setup) return null;
+  const style = setup.style ?? {};
+  const set = (patch: Partial<NonNullable<typeof setup.style>>) => store.setSetup({ ...setup, style: { ...style, ...patch } });
+  return (
+    <section>
+      <h3>{t('Forme')}</h3>
+      <SeaSwitch checked={!!style.round} onChange={(e) => set(e.target.checked ? { round: true } : { round: false, smooth: false })}>
+        {t('Arrotonda angoli e spigoli vivi')}
+      </SeaSwitch>
+      <SeaSwitch checked={!!style.round && !!style.smooth} disabled={!style.round} onChange={(e) => set({ smooth: e.target.checked })}>
+        {t('Armonizza le forme (curve più ampie, forme morbide)')}
+      </SeaSwitch>
+    </section>
+  );
+}
+
 export function SettingsDialog({ onClose, onEditSetup, onFilaments }: { onClose: () => void; onEditSetup: () => void; onFilaments: () => void }) {
   const { settings } = useStore();
   const { rec } = useSpend();
@@ -130,6 +149,8 @@ export function SettingsDialog({ onClose, onEditSetup, onFilaments }: { onClose:
         </section>
 
         <CloudSettings />
+
+        <ShapeSettings />
 
         <section>
           <h3>{t('Attrezzatura')}</h3>

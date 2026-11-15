@@ -25,7 +25,8 @@ Punteggio = ore + grammi di scarto / 20 + penalità (montaggio, attenzione richi
 | Pulsanti senza sporgenza scelta | “Quanto devono sporgere i pulsanti?” 1 / 2 / 3 mm (con i bambini consiglia almeno 2 mm) | `update_part.button.protrusionMm` |
 | Pulsanti senza risposta scelta | “Devono fare click o essere morbidi?” | `update_part.button.feel` |
 | Pulsante di colore diverso dal guscio senza multicolore | “Usiamo lo stesso colore?” | `update_part.filamentId` |
-| Oggetto per bambini con spigoli vivi | “Arrotondo gli spigoli esterni (2 mm)?” | `radius` sui box non sottrattivi |
+| Preferenza di forma non ancora scelta (una volta sola, per tutti i progetti) | “Arrotondo angoli e spigoli vivi dei modelli?”, poi, se sì, “Vuoi anche armonizzare le forme?” | `UserSetup.style` (anche nelle Impostazioni, sezione «Forme») |
+| Oggetto per bambini con spigoli vivi, se l'utente non arrotonda già tutto | “Arrotondo gli spigoli esterni (2 mm)?” | `radius` su box e cilindri non sottrattivi |
 
 ## Avvisi
 

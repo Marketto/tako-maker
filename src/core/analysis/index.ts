@@ -1,16 +1,19 @@
-import type { Design, PrinterSpec, Question, ShapeNode, UserSetup, Vec3 } from '../types';
+import type { Design, PrinterSpec, Question, UserSetup, Vec3 } from '../types';
 import type { DesignOp } from '../design/ops';
 import { walkShape } from '../design/ops';
 import { findContacts, overhangBeyond, PEG_SPACING, type PrintStats, type BodyStats, type ButtonReport, type ConnectorReport, type OverlapReport } from '../geometry/evaluate';
 import { printedTogether } from '../design/links';
 import { material } from '../../data/materials';
-import { bondsPoorly, guideline, MAX_SLENDERNESS, MIN_CONTACT_MM2, minWall, SMALL_PART_BRIM_MM, SUPPORT_MIN_AREA_MM2, supportInterfaceFor, plaSupportWeakensPetg, LARGE_FLAT_MM2, LARGE_FLAT_MAX_H, MIXED_PLA_PETG_C } from '../../data/guidelines';
+import { bondsPoorly, guideline, MAX_SLENDERNESS, MIN_CONTACT_MM2, minWall, SMALL_PART_BRIM_MM, SUPPORT_MIN_AREA_MM2, supportInterfaceFor, plaSupportWeakensPetg, LARGE_FLAT_MM2, LARGE_FLAT_MAX_H, MIXED_PLA_PETG_C, ROUND_RADIUS_MM } from '../../data/guidelines';
 import { pendingSamples } from '../calibration/coupons';
 import { bedOf, estimateStrategies, fitsBed, fmtTime, STRATEGY_LABEL, type PartStat, type StrategyEstimate } from './estimate';
 import { fmtNum, t } from '../../i18n';
 import { hardwareLabel, hardwareOf, toBuy } from '../hardware';
 import { plateKeepFree } from '../plate';
 import { isDesignDown, isRisky, supportGrams, type OrientOption } from '../geometry/orient';
+import { effectiveStyle, roundShape, sharpBoxes } from '../design/style';
+
+export { roundShape, sharpBoxes };
 
 /* Controlli deterministici eseguiti dopo OGNI modifica, senza chiamare l'AI:
    - strategia di stampa (multicolore / parti separate / cambio a quota)
@@ -43,42 +46,11 @@ export interface AnalysisReport {
   printHints: Record<string, PrintHint>;
 }
 
-const CHILD_RADIUS = 2;
 /** Cilindro del test "small parts" (diametro 31,7 mm, profondità 57,1 mm). */
 const SMALL_PART = { d: 31.7, depth: 57.1 };
 
 function sig(design: Design): string {
   return design.parts.map((p) => `${p.id}:${p.filamentId ?? ''}`).sort().join(',');
-}
-
-/** Raggio di arrotondamento ottenibile su un box (limitato dallo spessore). */
-function targetRadius(size: Vec3, radius = CHILD_RADIUS): number {
-  return Math.round(Math.min(radius, Math.min(...size) / 4) * 10) / 10;
-}
-
-const isSharp = (node: { size: Vec3; radius?: number }) => {
-  const t = targetRadius(node.size);
-  return t >= 0.3 && (node.radius ?? 0) < t - 0.05;
-};
-
-export function sharpBoxes(shape: ShapeNode): number {
-  let n = 0;
-  walkShape(shape, (node, ctx) => {
-    if (node.op === 'box' && !ctx.subtractive && isSharp(node)) n++;
-  });
-  return n;
-}
-
-/** Copia della forma con gli spigoli esterni arrotondati. */
-export function roundShape(shape: ShapeNode, radius = CHILD_RADIUS, subtractive = false): ShapeNode {
-  if (shape.op === 'box') {
-    if (subtractive || !isSharp(shape)) return shape;
-    return { ...shape, radius: targetRadius(shape.size, radius) };
-  }
-  if ('children' in shape) {
-    return { ...shape, children: shape.children.map((c, i) => roundShape(c, radius, subtractive || (shape.op === 'difference' && i > 0))) };
-  }
-  return shape;
 }
 
 /** Supporti necessari: corpo sospeso o sporgenze oltre l'angolo tollerato dal materiale più delicato (i ponti corti no). */
@@ -328,16 +300,45 @@ export function analyze(
     }
   }
 
+  /* ---- Rifinitura delle forme (chiesta una volta sola, vale per tutti i progetti) ---- */
+  const style = effectiveStyle(design, setup);
+  if (design.parts.length && style.round === undefined && !answered.has('style:round')) {
+    questions.push({
+      id: 'style:round',
+      key: 'style:round',
+      source: 'analysis',
+      text: t('Arrotondo angoli e spigoli vivi dei modelli?'),
+      detail: t('Te lo chiedo una volta sola: vale per tutti i progetti. Puoi cambiarlo nelle Impostazioni, o chiedere in chat di fare diversamente in un progetto.'),
+      options: [
+        { id: 'yes', label: t('Sì, arrotonda'), hint: t('raggio {r} mm, fori esclusi', { r: ROUND_RADIUS_MM }), prefs: { round: true } },
+        { id: 'no', label: t('No, lascia gli spigoli vivi'), prefs: { round: false, smooth: false } },
+      ],
+    });
+  } else if (design.parts.length && style.round && style.smooth === undefined && !answered.has('style:smooth')) {
+    questions.push({
+      id: 'style:smooth',
+      key: 'style:smooth',
+      source: 'analysis',
+      text: t('Vuoi anche armonizzare le forme?'),
+      detail: t('Curve più ampie e forme morbide e raccordate, anche nei nuovi disegni dell\'assistente. Vale per tutti i progetti.'),
+      options: [
+        { id: 'yes', label: t('Sì, armonizza'), prefs: { smooth: true } },
+        { id: 'no', label: t('No, basta arrotondare'), prefs: { smooth: false } },
+      ],
+    });
+  }
+
   /* ---- Bambini ---- */
   if (design.intendedUse.children) {
-    const sharp = design.parts.map((p) => ({ p, n: sharpBoxes(p.shape) })).filter((x) => x.n > 0);
+    // Con l'arrotondamento attivo ci pensa già il calcolo della geometria.
+    const sharp = style.round ? [] : design.parts.map((p) => ({ p, n: sharpBoxes(p.shape) })).filter((x) => x.n > 0);
     const key = `round:${s}:${sharp.reduce((a, x) => a + x.n, 0)}`;
     if (sharp.length && !answered.has(key)) {
       questions.push({
         id: key,
         key,
         source: 'analysis',
-        text: t('È per bambini: arrotondo gli spigoli esterni (raggio {r} mm)?', { r: CHILD_RADIUS }),
+        text: t('È per bambini: arrotondo gli spigoli esterni (raggio {r} mm)?', { r: ROUND_RADIUS_MM }),
         detail: t('Spigoli vivi trovati in: {parts}.', { parts: sharp.map((x) => x.p.name).join(', ') }),
         options: [
           { id: 'yes', label: t('Sì, arrotonda'), ops: sharp.map((x) => ({ op: 'update_part', id: x.p.id, shape: roundShape(x.p.shape) })) },

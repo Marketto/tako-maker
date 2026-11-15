@@ -1,6 +1,7 @@
 import { analyze, type AnalysisReport } from '../core/analysis';
 import { applyOps, type DesignOp } from '../core/design/ops';
 import { evaluateInWorker } from '../core/geometry/engine';
+import { withStyle } from '../core/design/style';
 import { tolerancesByPart } from '../core/calibration/tolerances';
 import { buildCalibrationFiles, type CalibrationFiles } from '../core/calibration/export';
 import { applyTestValue, type TestKind } from '../core/calibration/coupons';
@@ -13,7 +14,7 @@ import { build3MF, flavorForSlicer, slicerProfileFor } from '../core/export/thre
 import { buildSTLZip } from '../core/export/stl';
 import { bedOf } from '../core/analysis/estimate';
 import { settleIslands } from '../core/geometry/islands';
-import type { Design, Filament, Question } from '../core/types';
+import type { Design, Filament, Question, StylePrefs } from '../core/types';
 import { Budget, addTally, diffTally, estimateTokens, type EstimatedMode, type TokenTally } from '../agent/budget';
 import type { AiClient } from '../agent/client';
 import { KeyRouter } from '../agent/providers/keyRouter';
@@ -83,6 +84,7 @@ export class ProjectSession {
   private abort: AbortController | null = null;
   private evalSeq = 0;
   private filaments: Filament[] = [];
+  private style: StylePrefs | undefined;
   private unsubStore: (() => void) | null = null;
 
   private constructor(project: Project) {
@@ -100,11 +102,23 @@ export class ProjectSession {
     void this.persist({ ...this.snap.project, design }).then(() => (reevaluate ? this.refresh() : undefined));
   }
 
+  /** La preferenza di forma cambiata (domanda o Impostazioni) cambia la geometria: ricalcola. */
+  private syncStyle() {
+    const now = store.get().setup?.style;
+    if (now === this.style) return;
+    this.style = now;
+    void this.refresh();
+  }
+
   static async open(project: Project): Promise<ProjectSession> {
     const s = new ProjectSession(project);
     openProjectIds.add(project.id);
     s.syncFilaments(false);
-    s.unsubStore = store.subscribe(() => s.syncFilaments());
+    s.style = store.get().setup?.style;
+    s.unsubStore = store.subscribe(() => {
+      s.syncFilaments();
+      s.syncStyle();
+    });
     for (const id of project.meshIds) {
       const m = await loadMesh(id);
       if (m) s.meshes[id] = m.mesh;
@@ -134,7 +148,7 @@ export class ProjectSession {
   /* ---------- Geometria e analisi ---------- */
 
   private async evaluate(d: Design) {
-    const r = await evaluateInWorker(d, this.meshes, tolerancesByPart(d, this.setup), orientInputFor(d, this.setup, this.printer));
+    const r = await evaluateInWorker(withStyle(d, this.setup), this.meshes, tolerancesByPart(d, this.setup), orientInputFor(d, this.setup, this.printer));
     return r;
   }
 
@@ -604,6 +618,8 @@ export class ProjectSession {
       }
       return;
     }
+    const prefs = chosen.reduce<StylePrefs | undefined>((a, o) => (o.prefs ? { ...a, ...o.prefs } : a), undefined);
+    if (prefs) store.setSetup({ ...this.setup, style: { ...this.setup.style, ...prefs } }); // syncStyle ricalcola
     const ops = [...(q.baseOps ?? []), ...chosen.flatMap((o) => o.ops ?? [])];
     const ai = chosen.find((o) => o.action === 'ask_ai' && o.prompt);
     if (ai) {
@@ -694,7 +710,7 @@ export class ProjectSession {
     this.set({ busy: t('Preparo i campioni di prova…'), error: null });
     try {
       const boxes = Object.fromEntries(this.snap.parts.map((p) => [p.id, { ...p.bbox, mesh: p.mesh }]));
-      const files = await buildCalibrationFiles(this.snap.project.design, this.setup, this.printer, async (d, tol) => (await evaluateInWorker(d, this.meshes, tol)).parts, boxes);
+      const files = await buildCalibrationFiles(this.snap.project.design, this.setup, this.printer, async (d, tol) => (await evaluateInWorker(withStyle(d, this.setup), this.meshes, tol)).parts, boxes);
       downloadBlob(new Blob([files.data as BlobPart], { type: files.mime }), files.filename);
       await this.pushChat({
         role: 'assistant',
