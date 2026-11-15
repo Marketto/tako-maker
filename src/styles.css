@@ -252,6 +252,12 @@ label.opt { flex-direction: row; align-items: center; gap: 0.4rem; }
 .estimates td { padding: 0.45rem 0.3rem; border-bottom: 1px solid var(--line); vertical-align: top; font-variant-numeric: tabular-nums; }
 .estimates td label { display: flex; gap: 0.35rem; align-items: flex-start; }
 .estimates tr.off { color: var(--muted); }
+.orient { border: 0; padding: 0; margin: 0 0 0.6rem; }
+.orient legend { font-weight: 600; font-size: 0.9rem; padding: 0; margin-bottom: 0.2rem; }
+.orient-row { display: flex; gap: 0.5rem; align-items: flex-start; min-height: 40px; padding: 0.35rem 0.2rem; border-bottom: 1px solid var(--line); cursor: pointer; font-size: 0.9rem; }
+.orient-row input { margin-top: 0.2rem; }
+.orient-row.off { color: var(--muted); cursor: default; }
+.orient-row .badge { margin-left: 0.35rem; }
 .estimates tr.current td { background: color-mix(in srgb, var(--brand-soft) 60%, transparent); }
 .part-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 0.4rem; }
 .part-list li { display: flex; justify-content: space-between; align-items: center; gap: 0.5rem; }

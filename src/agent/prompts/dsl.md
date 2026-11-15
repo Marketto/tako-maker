@@ -28,7 +28,7 @@ Operazioni per `edit_design.ops`:
 - `{"op":"add_joint","joint":{...}}`, `{"op":"update_joint","id":"...","patch":{...}}`, `{"op":"remove_joint","id":"..."}`
 - `{"op":"add_hardware","item":{"id":"magneti","name":"Magnete al neodimio","qty":4,"spec":"6×2 mm","purpose":"chiusura del coperchio"}}`, `{"op":"update_hardware","id":"...","patch":{...}}`, `{"op":"remove_hardware","id":"..."}`
 - `{"op":"add_sample","sample":{"id":"sella","name":"Fetta della sella","check":"Calzala sul bracciolo: deve stringere senza forzare","regions":[{"part":"sella","min":[x,y,z],"max":[x,y,z]}]}}`, `{"op":"remove_sample","id":"..."}`
-- `{"op":"set_plan","strategy":"single|multicolor|separate|layer-swap","connection":"glue|snap|none|designed"}` (di solito lo decide l'app con l'utente; `none` = non ancora deciso, l'app chiede; `designed` = aggancio disegnato da te, l'app non aggiunge perni)
+- `{"op":"set_plan","strategy":"single|multicolor|separate|layer-swap","connection":"glue|snap|none|designed"}` (di solito lo decide l'app con l'utente; `none` = non ancora deciso, l'app chiede; `designed` = aggancio disegnato da te, l'app non aggiunge perni). Posizione sul piatto: `"orient":{"key":"*","down":[0,0,1]}` (`*` = modello montato, oppure id della parte separata; `down` = direzione del disegno che va verso il piatto, `null` = la sceglie l'app). Di solito la sceglie l'app: disegna nella posizione d'uso
 
 Elementi da comprare a parte:
 - Preferisci soluzioni tutte stampate (incastri, cerniere, scatti, filettature grosse, molle stampate).

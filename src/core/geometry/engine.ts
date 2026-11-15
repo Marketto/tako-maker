@@ -1,5 +1,5 @@
 import type { Design, Tolerances } from '../types';
-import type { EvalResult, RawMesh } from './evaluate';
+import type { EvalResult, OrientInput, RawMesh } from './evaluate';
 
 /* Interfaccia del thread principale verso il Web Worker della geometria. */
 
@@ -21,11 +21,11 @@ function getWorker(): Worker {
   return worker;
 }
 
-export function evaluateInWorker(design: Design, meshes: Record<string, RawMesh>, tol: Record<string, Tolerances> = {}): Promise<EvalResult> {
+export function evaluateInWorker(design: Design, meshes: Record<string, RawMesh>, tol: Record<string, Tolerances> = {}, orient?: OrientInput): Promise<EvalResult> {
   const id = ++seq;
   return new Promise((resolve, reject) => {
     pending.set(id, { resolve, reject });
     // Le mesh importate vengono copiate (non trasferite) perché servono ancora qui.
-    getWorker().postMessage({ id, design, meshes, tol });
+    getWorker().postMessage({ id, design, meshes, tol, orient });
   });
 }

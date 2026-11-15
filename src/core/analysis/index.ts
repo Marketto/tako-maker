@@ -10,6 +10,7 @@ import { bedOf, estimateStrategies, fitsBed, fmtTime, STRATEGY_LABEL, type PartS
 import { fmtNum, t } from '../../i18n';
 import { hardwareLabel, hardwareOf, toBuy } from '../hardware';
 import { plateKeepFree } from '../plate';
+import { isDesignDown, isRisky, supportGrams, type OrientOption } from '../geometry/orient';
 
 /* Controlli deterministici eseguiti dopo OGNI modifica, senza chiamare l'AI:
    - strategia di stampa (multicolore / parti separate / cambio a quota)
@@ -690,6 +691,53 @@ export function analyze(
     }
   }
 
+  /* ---- Posizione sul piatto (core/geometry/orient.ts) ---- */
+  for (const g of extras.printStats?.orient ?? []) {
+    const pick = g.options[g.chosen];
+    if (!pick) continue;
+    const names = g.key === '*' ? `"${design.name}"` : `"${pname(g.key)}"`;
+    const density = material(partMat(g.partIds[0] ?? '')).density;
+    const grams = (o: OrientOption) => Math.round(supportGrams(o.supportMm3, density));
+    const drawn = g.options.find((o) => isDesignDown(o.down));
+    if (drawn && !isDesignDown(pick.down) && !design.printPlan.orient?.[g.key])
+      tips.push(
+        t('Per stampare {names} lo appoggio {position}: circa {g} g di supporti invece di {g0} g nella posizione del disegno. Nel file per lo slicer è già girato; puoi cambiare posizione nella scheda Stampa.', {
+          names,
+          position: orientLabel(pick.down),
+          g: grams(pick),
+          g0: grams(drawn),
+        }),
+      );
+    if (pick.risky.length) {
+      const worst = [...pick.risky].sort((a, b) => b.height / b.width - a.height / a.width)[0];
+      warnings.push(
+        t('{names}: in questa posizione i supporti arrivano a {h} mm sotto una zona larga circa {w} mm. Supporti così alti e stretti possono piegarsi o staccarsi a metà stampa. Scegli un\'altra posizione nella scheda Stampa, oppure chiedi all\'assistente di inclinare di più quella parete o di aggiungere un rinforzo sotto.', {
+          names,
+          h: Math.round(worst.height),
+          w: Math.round(worst.width),
+        }),
+      );
+      // Domanda a opzioni (zero token): passare alla posizione migliore senza supporti fragili.
+      const safe = g.options.filter((o) => o.fits && !o.risky.some(isRisky)).sort((a, b) => a.score - b.score)[0];
+      const key = `orient:${g.key}:${pick.down.map((v) => v.toFixed(2)).join(',')}`;
+      if (safe && !answered.has(key))
+        questions.push({
+          id: key,
+          key,
+          source: 'analysis',
+          text: t('Cambio posizione sul piatto per {names}?', { names }),
+          detail:
+            grams(safe) > 0
+              ? t('{position}: circa {g} g di supporti, senza zone fragili.', { position: capitalize(orientLabel(safe.down)), g: grams(safe) })
+              : t('{position}: senza supporti.', { position: capitalize(orientLabel(safe.down)) }),
+          options: [
+            { id: 'yes', label: t('Sì, appoggialo {position}', { position: orientLabel(safe.down) }), ops: [{ op: 'set_plan', orient: { key: g.key, down: safe.down } }] },
+            { id: 'no', label: t('No, lo sistemo io') },
+          ],
+        });
+    }
+  }
+
   // PLA e PETG nello stesso piatto (multicolore o interfaccia dei supporti): finestra di temperatura comune
   {
     const together = design.printPlan.strategy !== 'separate';
@@ -730,3 +778,20 @@ export function analyze(
 
   return { estimates, recommended, questions, warnings, tips, materialNotes, summary, printHints };
 }
+
+/** Come è appoggiato il pezzo rispetto al disegno, in parole semplici (per frasi come «lo appoggio …»).
+ *  Destra e davanti come nella vista 3D: la camera guarda verso +Y, quindi il davanti è −Y e la destra +X. */
+export function orientLabel(down: Vec3): string {
+  const [x, y, z] = down;
+  if (z < -0.996) return t('come l\'hai disegnato');
+  if (z > 0.996) return t('capovolto');
+  if (Math.abs(z) < 0.05 && (Math.abs(x) > 0.996 || Math.abs(y) > 0.996)) {
+    if (x > 0.996) return t('coricato sul fianco destro');
+    if (x < -0.996) return t('coricato sul fianco sinistro');
+    if (y > 0.996) return t('coricato sul retro');
+    return t('coricato sul davanti');
+  }
+  return t('su una faccia inclinata');
+}
+
+const capitalize = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);

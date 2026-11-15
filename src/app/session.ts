@@ -5,7 +5,8 @@ import { tolerancesByPart } from '../core/calibration/tolerances';
 import { buildCalibrationFiles, type CalibrationFiles } from '../core/calibration/export';
 import { applyTestValue, type TestKind } from '../core/calibration/coupons';
 import { downloadBlob } from './download';
-import type { PartResult, RawMesh } from '../core/geometry/evaluate';
+import type { OrientGroup, PartResult, RawMesh } from '../core/geometry/evaluate';
+import { orientedMeshes } from '../core/geometry/orient';
 import { importModelFile } from '../core/geometry/import';
 import { planAssembly, type AssemblyPlan } from '../core/assembly/plan';
 import { build3MF, flavorForSlicer, slicerProfileFor } from '../core/export/threemf';
@@ -26,7 +27,7 @@ import { cachedSearch, loadMesh, printerOf, saveMesh, saveProject, store, storeS
 import { localeInfo, t } from '../i18n';
 import { shoppingListText } from '../core/hardware';
 import { printedTogether } from '../core/design/links';
-import { plateKeepFree } from '../core/plate';
+import { orientInputFor, plateKeepFree } from '../core/plate';
 import { buildManualPrompt, correctionPrompt, parseManualReply } from '../agent/manual';
 import { createSession, getSession, postReport, putSession } from './connector';
 import { designKey, type ConnectorReport, type ConnectorState } from '../connector/state';
@@ -46,6 +47,8 @@ export interface Snapshot {
   busy: string | null;
   error: string | null;
   meshInfo: ImportedMeshInfo[];
+  /** Come appoggiare i pezzi sul piatto (posizioni provate e quella scelta). */
+  orient: OrientGroup[];
   /** Modalità copia e incolla: richiesta pronta da copiare nella chat. */
   manual: ManualRequest | null;
 }
@@ -83,7 +86,7 @@ export class ProjectSession {
   private unsubStore: (() => void) | null = null;
 
   private constructor(project: Project) {
-    this.snap = { project, parts: [], geometryErrors: [], report: null, assembly: null, questions: [], busy: null, error: null, meshInfo: [], manual: null };
+    this.snap = { project, parts: [], geometryErrors: [], report: null, assembly: null, questions: [], busy: null, error: null, meshInfo: [], manual: null, orient: [] };
   }
 
   /** Se l'utente toglie un filamento usato, i pezzi passano a uno rimasto (stesso materiale se c'è). */
@@ -131,7 +134,7 @@ export class ProjectSession {
   /* ---------- Geometria e analisi ---------- */
 
   private async evaluate(d: Design) {
-    const r = await evaluateInWorker(d, this.meshes, tolerancesByPart(d, this.setup));
+    const r = await evaluateInWorker(d, this.meshes, tolerancesByPart(d, this.setup), orientInputFor(d, this.setup, this.printer));
     return r;
   }
 
@@ -140,7 +143,7 @@ export class ProjectSession {
     const d = this.snap.project.design;
     const answered = this.snap.project.answered;
     if (!d.parts.length) {
-      this.set({ parts: [], report: null, assembly: null, questions: this.pendingQuestions(), geometryErrors: [] });
+      this.set({ parts: [], report: null, assembly: null, questions: this.pendingQuestions(), geometryErrors: [], orient: [] });
       this.setConnectorReport({ key: designKey({ design: d, answered }), text: 'Il modello è vuoto.', questions: [], errors: [] });
       return;
     }
@@ -160,6 +163,7 @@ export class ProjectSession {
         report,
         assembly,
         meshInfo,
+        orient: r.printStats.orient ?? [],
         questions: [...this.pendingQuestions(), ...report.questions],
       });
       this.setConnectorReport({ key: designKey({ design: d, answered }), text: analysisText(d, r.parts, this.setup, report), questions: report.questions, errors: r.errors });
@@ -673,7 +677,8 @@ export class ProjectSession {
     const fil = this.setup.filaments;
     const groups = jointGroups(this.snap.project.design);
     const separate = this.snap.project.design.printPlan.strategy === 'separate';
-    return this.snap.parts.map((p) => {
+    // Nella posizione scelta per la stampa (core/geometry/orient.ts).
+    return orientedMeshes(this.snap.parts, this.snap.orient).map((p) => {
       const f = fil.find((x) => x.id === p.filamentId);
       const h = this.snap.report?.printHints[p.id];
       const iface = h?.interfaceFilamentId ? fil.findIndex((x) => x.id === h.interfaceFilamentId) + 1 : 0;

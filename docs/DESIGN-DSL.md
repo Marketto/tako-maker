@@ -38,6 +38,12 @@ Se qualcosa non va, il design resta invariato e l’AI riceve il messaggio d’e
 con scatto: l'app non aggiunge perni e non chiede). La regola per l'AI è nella sezione «Unione di parti stampate separatamente» di
 `src/agent/prompts/dsl.md`.
 
+`printPlan.orient` (posizione sul piatto): per `*` (modello montato) o per l'id di una parte separata, la direzione del disegno che
+va verso il piatto, es. `[0, 0, 1]` per capovolgerlo. Si imposta con `set_plan` e `"orient": { "key": "*", "down": [0, 0, 1] }`
+(`down: null` la toglie). Se manca, la sceglie l'app (`core/geometry/orient.ts`): prova le sei facce e le facce piatte grandi,
+stima i grammi di supporto e scarta le posizioni con supporti alti sotto zone strette. Con cerniere o pulsanti stampati montati
+resta la posizione del disegno. Il file per lo slicer esce già girato.
+
 ## Pulsanti (`button`)
 
 ```json

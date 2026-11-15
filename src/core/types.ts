@@ -187,6 +187,8 @@ export interface Design {
   printPlan: {
     strategy: PrintStrategy;
     connection: Connection;
+    /** Come appoggiare sul piatto: per `*` (modello montato) o per id di parte, la direzione del disegno che va verso il piatto. Se manca, la sceglie l'app. */
+    orient?: Record<string, Vec3>;
   };
 }
 

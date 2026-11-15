@@ -13,7 +13,7 @@ export type DesignOp =
   | { op: 'add_joint'; joint: Joint }
   | { op: 'update_joint'; id: string; patch: Partial<Omit<Joint, 'id'>> }
   | { op: 'remove_joint'; id: string }
-  | { op: 'set_plan'; strategy?: PrintStrategy; connection?: Connection }
+  | { op: 'set_plan'; strategy?: PrintStrategy; connection?: Connection; orient?: { key: string; down: Vec3 | null } }
   | { op: 'add_hardware'; item: Hardware }
   | { op: 'update_hardware'; id: string; patch: Partial<Omit<Hardware, 'id'>> }
   | { op: 'remove_hardware'; id: string }
@@ -132,6 +132,10 @@ export function validateDesign(d: Design, filamentIds?: Set<string>): void {
   if (!plan) return;
   if (!['single', 'multicolor', 'separate', 'layer-swap'].includes(plan.strategy)) throw new DesignError(`Strategia di stampa non valida: "${plan.strategy}"`);
   if (!['glue', 'snap', 'none', 'designed'].includes(plan.connection)) throw new DesignError(`Unione delle parti non valida: "${plan.connection}" (glue, snap, none o designed)`);
+  for (const [key, down] of Object.entries(plan.orient ?? {})) {
+    if (key !== '*' && !ids.has(key)) throw new DesignError(`Posizione sul piatto per una parte inesistente: "${key}"`);
+    if (!isVec3(down) || Math.hypot(...down) < 0.1) throw new DesignError(`Posizione sul piatto non valida per "${key}": serve la direzione verso il piatto, es. [0, 0, 1] per capovolgere`);
+  }
 }
 
 function findIndex<T extends { id: string }>(list: T[], id: string, what: string): number {
@@ -173,6 +177,7 @@ export function applyOps(design: Design, ops: DesignOp[], filamentIds?: Set<stri
         d.parts.splice(findIndex(d.parts, o.id, 'Parte'), 1);
         d.joints = d.joints.filter((j) => j.partA !== o.id && j.partB !== o.id);
         if (d.samples) d.samples = d.samples.filter((x) => x.regions.every((r) => r.part !== o.id));
+        if (d.printPlan.orient) delete d.printPlan.orient[o.id];
         break;
       case 'add_joint':
         if (d.joints.some((j) => j.id === o.joint.id)) throw new DesignError(`Il giunto "${o.joint.id}" esiste già`);
@@ -189,6 +194,12 @@ export function applyOps(design: Design, ops: DesignOp[], filamentIds?: Set<stri
       case 'set_plan':
         if (o.strategy) d.printPlan.strategy = o.strategy;
         if (o.connection) d.printPlan.connection = o.connection;
+        if (o.orient) {
+          const orient = { ...(d.printPlan.orient ?? {}) };
+          if (o.orient.down) orient[o.orient.key] = o.orient.down;
+          else delete orient[o.orient.key];
+          d.printPlan.orient = Object.keys(orient).length ? orient : undefined;
+        }
         break;
       case 'add_hardware': {
         const list = (d.hardware ??= []);

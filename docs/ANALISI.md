@@ -163,3 +163,24 @@ Con le soglie di `src/data/guidelines.ts` l'analisi decide:
 
 Le impostazioni sono scritte per oggetto: gli slicer che non le riconoscono le ignorano. Se l'utente cambia il profilo,
 restano comunque modificabili nello slicer.
+
+## Posizione sul piatto (`src/core/geometry/orient.ts`)
+
+L'app sceglie come appoggiare il pezzo sul piatto, invece di usare sempre la posizione del disegno. Il disegno resta
+nella posizione d'uso; il 3MF e gli STL escono già girati.
+
+- **Posizioni provate**: le sei facce del riquadro e le facce piatte più grandi del pezzo (almeno il 4% della superficie).
+- **Supporti stimati** con una griglia in pianta di 2 mm: sotto ogni faccia oltre l'angolo del materiale c'è una colonna
+  che scende fino al piatto o alla superficie del pezzo più vicina. I grammi sono il volume delle colonne per
+  `SUPPORT_FILL` (15%). I ponti corti riducono la stima nella stessa proporzione dell'area di sporgenza.
+- **Supporti fragili**: una zona sostenuta (celle collegate) con supporti alti almeno `RISKY_SUPPORT_MM` (30 mm) e
+  `RISKY_SUPPORT_RATIO` (2,5) volte la sua larghezza tipica (2 × area / perimetro). Caso reale: un cruscotto capovolto,
+  con i bordi delle ali a sbalzo in alto: pochi grammi di supporti, ma alberi alti 8 cm in uno spazio stretto, che si
+  sono piegati a metà stampa.
+- **Punteggio**: grammi di supporto + 150 per ogni zona fragile + altezza × 0,05; esclusa se non entra nel piatto.
+- **Gruppi**: con la stampa unica o multicolore gira tutto il modello montato (`*`); con le parti separate ogni parte per
+  conto suo, tranne quelle stampate già montate. Il cambio colore a quota resta com'è disegnato (fasce orizzontali). Con
+  cerniere o pulsanti stampati montati resta la posizione del disegno, finché l'utente non ne sceglie un'altra.
+- **Scelta dell'utente**: scheda Stampa → «Come appoggiarlo sul piatto», salvata in `printPlan.orient`. Se la posizione
+  scelta ha supporti fragili, l'analisi avvisa e propone (domanda a opzioni, zero token) la migliore senza zone fragili.
+- I risultati sono in cache nel Worker: scegliere una posizione o cambiare colore non ricalcola le posizioni.
