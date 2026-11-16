@@ -6,7 +6,7 @@ import { planAssembly } from '../src/core/assembly/plan';
 import { applyOps, DesignError } from '../src/core/design/ops';
 import { printedTogether } from '../src/core/design/links';
 import type { Design, Joint, PrintStrategy } from '../src/core/types';
-import { manifold, printer, setup } from './fixtures';
+import { manifold, printer, setup, toyLaptop } from './fixtures';
 
 const ORIENT = { bed: [256, 256, 256] as [number, number, number], overhangDeg: {}, bridgeMm: {} };
 
@@ -145,5 +145,75 @@ describe('perno rotante', () => {
     expect(() => applyOps(d, [{ op: 'update_joint', id: 'sterzo', patch: { print: 'snap' } }])).not.toThrow();
     expect(() => applyOps(d, [{ op: 'update_joint', id: 'sterzo', patch: { type: 'hinge', print: 'snap' } }])).toThrow(DesignError);
     expect(() => applyOps(d, [{ op: 'update_joint', id: 'sterzo', patch: { print: 'loose' } }])).toThrow(DesignError);
+  });
+});
+
+/** Volume in comune tra A e B ruotato di `deg` attorno all'asse del giunto, vicino all'asse (dove stanno perno e costole). */
+function biteAt(w: ManifoldToplevel, r: EvalResult, j: Joint, deg: number, probeR: number, along: [number, number]): number {
+  const A = solid(w, r, j.partA);
+  const B = solid(w, r, j.partB);
+  const k = { x: 0, y: 1, z: 2 }[j.axis];
+  const rot = [0, 0, 0] as [number, number, number];
+  rot[k] = deg;
+  const back = j.origin.map((v) => -v) as [number, number, number];
+  const turned = B.translate(back).rotate(rot).translate(j.origin);
+  const toAxis = j.axis === 'x' ? [0, 90, 0] : j.axis === 'y' ? [-90, 0, 0] : [0, 0, 0];
+  const probe = w.Manifold.cylinder(along[1] - along[0], probeR, probeR, 48).translate([0, 0, along[0]]).rotate(toAxis as [number, number, number]).translate(j.origin);
+  return A.intersect(turned).intersect(probe).volume();
+}
+
+describe('scatti sul perno', () => {
+  it('perno a scatto: le costole delle lamelle urtano il foro tra una posizione e l\'altra, non nelle posizioni scelte', async () => {
+    const w = await manifold();
+    const d = wheel('separate', { detent: { enabled: true, anglesDeg: [0, 60] } });
+    const r = evaluateDesign(w, d, {}, {}, ORIENT);
+    expect(r.errors).toEqual([]);
+    expect(r.jointModes).toEqual({ sterzo: 'snap' });
+    expectFreeAndHeld(w, r, 'piantone', 'volante');
+    const j = d.joints[0];
+    const at = (deg: number) => biteAt(w, r, j, deg, 6, [0, 14]);
+    expect(at(0)).toBeLessThan(0.01);
+    expect(at(60)).toBeLessThan(0.01);
+    // Il verso conta: -60° non è una posizione scelta.
+    expect(at(-60)).toBeGreaterThan(0.3);
+    expect(at(30)).toBeGreaterThan(0.3);
+  });
+
+  it('con gli scatti e le parti separate l\'app sceglie il perno a scatto', async () => {
+    const w = await manifold();
+    const d: Design = { ...turntable(), printPlan: { strategy: 'separate', connection: 'none' } };
+    d.joints[0].detent = { enabled: true };
+    const r = evaluateDesign(w, d, {}, {}, ORIENT);
+    expect(r.jointModes).toEqual({ perno: 'snap' });
+  });
+
+  it('piatto girevole già montato: scatta ogni 90° e resta trattenuto', async () => {
+    const w = await manifold();
+    const d = turntable();
+    d.joints[0].detent = { enabled: true };
+    const r = evaluateDesign(w, d, {}, {}, ORIENT);
+    expect(r.errors).toEqual([]);
+    expect(r.jointModes).toEqual({ perno: 'in-place' });
+    expectFreeAndHeld(w, r, 'base', 'piatto');
+    const j = d.joints[0];
+    const at = (deg: number) => biteAt(w, r, j, deg, 8, [0, 10]);
+    expect(at(0)).toBeLessThan(0.01);
+    expect(at(180)).toBeLessThan(0.01);
+    expect(at(45)).toBeGreaterThan(0.1);
+  });
+
+  it('cerniera: il perno diviso in lamelle scatta nelle posizioni scelte', async () => {
+    const w = await manifold();
+    const d = toyLaptop();
+    d.joints[0].detent = { enabled: true, anglesDeg: [0, 100] };
+    const r = evaluateDesign(w, d);
+    expect(r.errors).toEqual([]);
+    const j = d.joints[0];
+    // Solo il tratto della nocca centrale (B), dentro il raggio della nocca.
+    const at = (deg: number) => biteAt(w, r, j, deg, 3.4, [-5, 5]);
+    expect(at(0)).toBeLessThan(0.01);
+    expect(at(100)).toBeLessThan(0.01);
+    expect(at(-100)).toBeGreaterThan(0.05);
+    expect(at(50)).toBeGreaterThan(0.05);
   });
 });

@@ -43,6 +43,7 @@ La fonte è `src/data/catalog.ts`: per aggiungere una voce modifica quel file e 
 - Lamella a molla fissata alle due estremità sopra una cavità, con una costola che entra in scanalature.
 - Interferenza della costola 0,6 mm, raggio della scanalatura 1,5 mm (più largo della costola), precarico 0,1 mm.
 - Più scanalature ad angoli diversi danno più posizioni stabili.
+- Su un perno che gira lo scatto va sul perno stesso: le lamelle del perno spaccato fanno da molla e le costole entrano nelle scanalature del foro. Un dentino sulla faccia non scatta: il gioco lungo l’asse lo lascia scivolare via.
 
 ## Pulsanti con click (`click`)
 

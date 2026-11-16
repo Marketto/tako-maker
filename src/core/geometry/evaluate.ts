@@ -1,7 +1,7 @@
 import type { ManifoldToplevel, Manifold } from 'manifold-3d';
 import type { ButtonSpec, Design, Joint, Part, RotaryPrint, ShapeNode, Tolerances, Vec3 } from '../types';
 import { jointPrint, pairKey, printedTogether, type JointModes } from '../design/links';
-import { ARCH_SAG_MM, BASE_TOLERANCES, ROTARY_SNAP, ROTARY_SNAP_EXTRA_SUPPORT_G } from '../../data/guidelines';
+import { ARCH_SAG_MM, BASE_TOLERANCES, PIN_DETENT, ROTARY_SNAP, ROTARY_SNAP_EXTRA_SUPPORT_G } from '../../data/guidelines';
 import { msg } from '../../i18n';
 import { settleIslands } from './islands';
 import { roundShape, styleRadius } from '../design/style';
@@ -362,6 +362,38 @@ interface JointGeometry {
   postA?: Manifold[];
 }
 
+/**
+ * Scatti sul perno (coordinate locali, asse lungo Z). Una fessura divide il perno in due lamelle a sbalzo
+ * che fanno da molla; su ognuna una costola sporge oltre il foro e, girando, entra nelle scanalature del foro.
+ * Un dentino su una faccia non scatterebbe: il gioco lungo l'asse lo lascerebbe scivolare via.
+ * - `root`/`tip`: inizio della fessura (lamelle fisse) ed estremità libera; le costole stanno nella metà verso la punta.
+ * - c'è sempre una scanalatura a 0°: è la posizione in cui il pezzo esce dalla stampa.
+ */
+function pinDetent(ctx: Ctx, pinR: number, holeR: number, slotW: number, root: number, tip: number, angles: number[], tol: Tolerances) {
+  const { Manifold } = ctx.w;
+  const L = tip - root;
+  const t = Math.max(0.4, pinR - slotW / 2);
+  // Interferenza voluta, ridotta se le lamelle sono corte o spesse (si spezzerebbero).
+  const bite = Math.max(PIN_DETENT.minBiteMm, Math.min(PIN_DETENT.reachMm - tol.detentClearance, (PIN_DETENT.maxStrain * L * L) / (1.5 * t)));
+  const rr = Math.min(PIN_DETENT.ribR, pinR * 0.45);
+  const c = holeR + bite - rr;
+  const z0 = root + L / 2;
+  const z1 = tip - 0.3;
+  const rib = (y: number) => ctx.keep(ctx.keep(Manifold.cylinder(z1 - z0, rr, rr, 16)).translate([0, y, z0]));
+  const ribs = [rib(c), rib(-c)];
+  const grooves: Manifold[] = [];
+  for (const a of [...new Set([0, ...angles.map((x) => ((x % 360) + 360) % 360)])]) {
+    // Ruotando B di `a` (verso antiorario attorno a +Z) la scanalatura arriva sulla costola a 90°.
+    const rad = ((90 - a) * Math.PI) / 180;
+    for (const s of [1, -1]) {
+      const g = ctx.keep(ctx.keep(Manifold.cylinder(z1 - z0 + 2 * tol.hingeGap, rr + tol.hingeGap, rr + tol.hingeGap, 16)).translate([s * c * Math.cos(rad), s * c * Math.sin(rad), z0 - tol.hingeGap]));
+      grooves.push(g);
+    }
+  }
+  const slot = ctx.keep(ctx.keep(Manifold.cube([2 * (pinR + rr + 1), slotW, L])).translate([-(pinR + rr + 1), -slotW / 2, root]));
+  return { ribs, grooves, slot, bite };
+}
+
 /** Cerniera stampabile già montata: nocche A-B-A con perno integrato in A. */
 export function hingeGeometry(ctx: Ctx, j: Joint, tol: Tolerances = TOL): JointGeometry {
   const { Manifold } = ctx.w;
@@ -377,9 +409,30 @@ export function hingeGeometry(ctx: Ctx, j: Joint, tol: Tolerances = TOL): JointG
   const kB = cyl(seg, R, z0 + seg + g);
   const kA2 = cyl(seg, R, z0 + 2 * (seg + g));
   const pin = cyl(L - 0.2, pinR, z0 + 0.1);
+  const bZ0 = z0 + seg + g;
+  const bZ1 = z0 + 2 * seg + g;
 
   // Il perno va aggiunto dopo aver scavato lo spazio attorno alla nocca B, altrimenti lo scavo ne toglie il tratto centrale.
-  const out: JointGeometry = { addA: [], subA: [], addB: [], subB: [], postA: [placeOnAxis(ctx, pin, j)] };
+  const out: JointGeometry = { addA: [], subA: [], addB: [], subB: [], postA: [] };
+  if (j.detent?.enabled) {
+    // Scatti: il perno è diviso a metà della nocca B, ogni metà è spaccata in due lamelle a sbalzo con le costole.
+    const half = (sign: 1 | -1) => {
+      // Lamelle dalla faccia della nocca B fino a metà nocca (costruite sul lato -Z).
+      const root = -Math.abs(sign === 1 ? bZ1 : bZ0);
+      // Il ribaltamento della metà positiva inverte il verso degli angoli: si compensa qui.
+      const angles = (j.detent!.anglesDeg?.length ? j.detent!.anglesDeg : [0, 90]).map((a) => (sign === 1 ? -a : a));
+      const d = pinDetent(ctx, pinR, pinR + tol.pinClearance, Math.max(1, pinR * 0.6), root, -0.3, angles, tol);
+      const body = ctx.keep(ctx.keep(Manifold.union([cyl(L / 2 - 0.1 - 0.3, pinR, -(L / 2 - 0.1)), ...d.ribs])).subtract(d.slot));
+      // Costruita verso -Z: per la metà positiva si ribalta.
+      return { pin: sign === 1 ? ctx.keep(body.rotate([180, 0, 0])) : body, grooves: d.grooves.map((m) => (sign === 1 ? ctx.keep(m.rotate([180, 0, 0])) : m)) };
+    };
+    for (const h of [half(-1), half(1)]) {
+      out.postA!.push(placeOnAxis(ctx, h.pin, j));
+      out.subB.push(...h.grooves.map((m) => placeOnAxis(ctx, m, j)));
+    }
+  } else {
+    out.postA!.push(placeOnAxis(ctx, pin, j));
+  }
   out.addA.push(placeOnAxis(ctx, kA1, j), placeOnAxis(ctx, kA2, j));
   // Con l'asse orizzontale gli archi stampati sopra perno e nocche si abbassano un po':
   // foro "ovale" con gioco extra in alto (vedi ARCH_SAG_MM).
@@ -392,22 +445,6 @@ export function hingeGeometry(ctx: Ctx, j: Joint, tol: Tolerances = TOL): JointG
     ...withSag(placeOnAxis(ctx, cyl(L + 1, pinR + tol.pinClearance, z0 - 0.5), j)),
   );
   out.addB.push(placeOnAxis(ctx, kB, j));
-
-  if (j.detent?.enabled) {
-    // Sfere sporgenti sulle facce della nocca B, incavi sulle facce delle nocche A.
-    const bumpR = Math.max(0.6, R * 0.15);
-    const ring = (pinR + R) / 2;
-    const angles = j.detent.anglesDeg?.length ? j.detent.anglesDeg : [0, 90];
-    const faces = [z0 + seg + g, z0 + 2 * seg + g];
-    for (const fz of faces) {
-      out.addB.push(placeOnAxis(ctx, ctx.keep(ctx.keep(Manifold.sphere(bumpR, 16)).translate([ring, 0, fz])), j));
-      for (const a of angles) {
-        const rad = (a * Math.PI) / 180;
-        const dimple = ctx.keep(ctx.keep(Manifold.sphere(bumpR + tol.detentClearance, 16)).translate([ring * Math.cos(rad), ring * Math.sin(rad), fz]));
-        out.subA.push(placeOnAxis(ctx, dimple, j));
-      }
-    }
-  }
   return out;
 }
 
@@ -468,20 +505,29 @@ export function rotaryGeometry(ctx: Ctx, j: Joint, A: Manifold, B: Manifold, mod
   const out: JointGeometry = { addA: [], subA: bNearA.isEmpty() ? [] : [grow(ctx, bNearA, g)], addB: [], subB: [], postA: [] };
 
   const hubLen = hf - hn;
+  // Col pezzo ribaltato (dir = -1) il verso degli angoli si inverte: si compensa qui.
+  const detentAngles = j.detent?.enabled ? (j.detent.anglesDeg?.length ? j.detent.anglesDeg : [0, 90, 180, 270]).map((a) => a * dir) : null;
   if (snap) {
     const { lipMm: lip, axialPlayMm: play } = ROTARY_SNAP;
     const tipZ = hf + play;
-    const pin = ctx.keep(Manifold.union([cyl(start, tipZ, pinR), cyl(tipZ, tipZ + 0.6, pinR + lip), cyl(tipZ + 0.6, tipZ + 0.6 + 2 * lip + 0.6, pinR + lip, pinR - 0.3)]));
-    // Fessura che divide il perno in due lamelle: si stringono per passare nel foro.
+    // Il dentino supera il foro (gioco compreso) di `lip`: è questo che lo tiene, il gioco non conta.
+    const barbR = pinR + clr + lip;
+    const parts = [cyl(start, tipZ, pinR), cyl(tipZ, tipZ + 0.6, barbR), cyl(tipZ + 0.6, tipZ + 0.6 + 2 * lip + 0.6, barbR, pinR - 0.3)];
+    // Fessura che divide il perno in due lamelle lungo tutto il mozzo: si stringono per passare nel foro.
     const slotW = Math.max(1.5, 2 * lip + 0.1);
-    const slot0 = Math.max(hn + 0.5, Math.min(hn + hubLen * 0.3, tipZ - 4));
-    const slot = ctx.keep(ctx.keep(Manifold.cube([2 * (pinR + lip) + 2, slotW, tipZ + 10 - slot0])).translate([-(pinR + lip) - 1, -slotW / 2, slot0]));
-    out.postA!.push(place(ctx.keep(pin.subtract(slot))));
+    const slot0 = hn;
+    if (detentAngles) {
+      const d = pinDetent(ctx, pinR, pinR + clr, slotW, slot0, tipZ, detentAngles, tol);
+      parts.push(...d.ribs);
+      out.subB.push(...d.grooves.map(place));
+    }
+    const slot = ctx.keep(ctx.keep(Manifold.cube([2 * (barbR + 1), slotW, tipZ + 10 - slot0])).translate([-(barbR + 1), -slotW / 2, slot0]));
+    out.postA!.push(place(ctx.keep(ctx.keep(Manifold.union(parts)).subtract(slot))));
     // Foro con invito sulla faccia d'ingresso e spazio libero per il dentino oltre la faccia lontana.
     out.subB.push(
       ...withSag(place(cyl(Math.min(start, hn) - 1, hf + 1, pinR + clr))),
       place(cyl(hn - 0.01, hn + lip, pinR + clr + lip, pinR + clr)),
-      place(cyl(hf, tipZ + 4, pinR + lip + clr)),
+      place(cyl(hf, tipZ + 4, barbR + clr)),
     );
   } else {
     // Testa conica (45°) a filo della faccia lontana, in una svasatura con lo stesso gioco del foro.
@@ -490,22 +536,21 @@ export function rotaryGeometry(ctx: Ctx, j: Joint, A: Manifold, B: Manifold, mod
     const pinEnd = head ? hf - c : hf;
     const parts = [cyl(start, pinEnd, pinR)];
     if (head) parts.push(cyl(pinEnd, hf - 0.01, pinR, pinR + c - 0.01));
-    out.postA!.push(place(ctx.keep(Manifold.union(parts))));
+    let pin = ctx.keep(Manifold.union(parts));
+    if (detentAngles) {
+      // Già montato: le lamelle arrivano fino alla testa (che quindi tiene un po' meno);
+      // per questo con gli scatti l'app preferisce i due pezzi a scatto (vedi evaluateDesign).
+      const slotW = Math.max(1.2, pinR * 0.6);
+      const d = pinDetent(ctx, pinR, pinR + clr, slotW, hn, pinEnd, detentAngles, tol);
+      const slot = ctx.keep(ctx.keep(Manifold.cube([2 * (pinR + c + 1), slotW, hf + 1 - hn])).translate([-(pinR + c + 1), -slotW / 2, hn]));
+      pin = ctx.keep(ctx.keep(Manifold.union([pin, ...d.ribs])).subtract(slot));
+      out.subB.push(...d.grooves.map(place));
+    }
+    out.postA!.push(place(pin));
     out.subB.push(...withSag(place(cyl(Math.min(start, hn) - 1, hf + 1, pinR + clr))));
     if (head) {
       const z0 = hf - c - 0.41 * clr;
       out.subB.push(place(cyl(z0, hf + 1, pinR + clr, pinR + clr + hf + 1 - z0)));
-    }
-  }
-
-  if (j.detent?.enabled) {
-    // Dentino sulla faccia di A rivolta verso il mozzo, incavi sulla faccia del mozzo.
-    const bumpR = Math.max(0.6, R * 0.12);
-    const ring = pinR + clr + bumpR * 1.5;
-    out.postA!.push(place(ctx.keep(ctx.keep(Manifold.sphere(bumpR, 16)).translate([ring, 0, hn - g]))));
-    for (const a of j.detent.anglesDeg?.length ? j.detent.anglesDeg : [0, 90, 180, 270]) {
-      const rad = (a * Math.PI) / 180;
-      out.subB.push(place(ctx.keep(ctx.keep(Manifold.sphere(bumpR + tol.detentClearance, 16)).translate([ring * Math.cos(rad), ring * Math.sin(rad), hn - g]))));
     }
   }
   return out;
@@ -870,6 +915,11 @@ export function evaluateDesign(
     if (j.print === 'loose') continue;
     if (j.print) {
       jointModes[j.id] = j.print;
+      continue;
+    }
+    // Con le parti separate e gli scatti il perno a scatto tiene meglio: le lamelle fanno da molla e il dentino trattiene.
+    if (j.detent?.enabled && design.printPlan.strategy === 'separate') {
+      jointModes[j.id] = 'snap';
       continue;
     }
     try {

@@ -143,6 +143,8 @@ export interface Joint {
   /** Raggio esterno delle nocche (mm). */
   radius?: number;
   /** undefined = l'utente non ha ancora scelto. */
+  /** Scatti: `anglesDeg` = posizioni di B, in gradi dalla posizione disegnata, positivi in senso antiorario
+      guardando dalla punta dell'asse (+x, +y o +z). La posizione disegnata (0) scatta sempre. */
   detent?: { enabled: boolean; anglesDeg?: number[] };
   /** Solo `rotary`: `in-place` stampato già montato, `snap` due pezzi da montare con il perno a scatto;
       undefined = sceglie l'app (quello con meno supporti). `loose` (solo per i campioni di prova):
