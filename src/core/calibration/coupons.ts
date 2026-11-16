@@ -269,7 +269,8 @@ function jointSeries(kind: TestKind, j: Joint, design: Design, setup: UserSetup,
       const arrange: Arrange = hinge ? { mode: 'asis' } : { mode: 'axis', axis: a as 0 | 1 | 2, dir };
       const w = 2 * (R + 5);
       return {
-        design: couponDesign(tag, parts, [{ ...j }]),
+        // Perno rotante: liscio, i pezzi stampati affiancati si infilano a mano.
+        design: couponDesign(tag, parts, [hinge ? { ...j } : { ...j, print: 'loose' }]),
         tol,
         arrange,
         size: hinge ? [region.max[0] - region.min[0], region.max[1] - region.min[1]] : [2 * w + 4, w],

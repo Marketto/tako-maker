@@ -2,6 +2,7 @@ import type { Design, PrinterSpec, Question, UserSetup } from '../core/types';
 import { applyOps, DesignError, type DesignOp } from '../core/design/ops';
 import type { AnalysisReport } from '../core/analysis';
 import type { ButtonReport, ConnectorReport, OverlapReport, PrintStats } from '../core/geometry/evaluate';
+import type { JointModes } from '../core/design/links';
 import type { PartStat } from '../core/analysis/estimate';
 import { fmtTime, STRATEGY_LABEL } from '../core/analysis/estimate';
 import type { ServerTool, ToolDef } from './client';
@@ -27,8 +28,8 @@ export interface ToolEnv {
   setup: UserSetup;
   printer: PrinterSpec;
   /** Calcola la geometria (Web Worker) e restituisce statistiche per parte. */
-  evaluate(d: Design): Promise<{ parts: PartStat[]; errors: string[]; connectors?: ConnectorReport[]; overlaps?: OverlapReport[]; buttons?: ButtonReport[]; printStats?: PrintStats }>;
-  analyze(d: Design, parts: PartStat[], extras?: { connectors?: ConnectorReport[]; overlaps?: OverlapReport[]; buttons?: ButtonReport[]; printStats?: PrintStats }): AnalysisReport;
+  evaluate(d: Design): Promise<{ parts: PartStat[]; errors: string[]; connectors?: ConnectorReport[]; overlaps?: OverlapReport[]; buttons?: ButtonReport[]; printStats?: PrintStats; jointModes?: JointModes }>;
+  analyze(d: Design, parts: PartStat[], extras?: { connectors?: ConnectorReport[]; overlaps?: OverlapReport[]; buttons?: ButtonReport[]; printStats?: PrintStats; jointModes?: JointModes }): AnalysisReport;
 }
 
 export const TOOL_DEFS: Record<string, ToolDef | ServerTool> = {

@@ -110,8 +110,9 @@ export function isZStratified(parts: PartStat[], tol = 0.3): boolean {
 /**
  * @param linked coppie di parti unite da articolazioni stampate già montate:
  *               non possono essere stampate separatamente con colori diversi.
+ * @param snapRotary c'è un perno rotante da stampare in due pezzi a scatto: il modello montato non va bene.
  */
-export function estimateStrategies(parts: PartStat[], setup: UserSetup, printer: PrinterSpec, linked: [string, string][] = []): StrategyEstimate[] {
+export function estimateStrategies(parts: PartStat[], setup: UserSetup, printer: PrinterSpec, linked: [string, string][] = [], snapRotary = false): StrategyEstimate[] {
   const fil = new Map(setup.filaments.map((f) => [f.id, f]));
   const usedIds = [...new Set(parts.map((p) => p.filamentId ?? '_'))];
   const k = usedIds.length;
@@ -120,6 +121,7 @@ export function estimateStrategies(parts: PartStat[], setup: UserSetup, printer:
   const totalG = parts.reduce((s, p) => s + grams(p.volume * EST.massFactor, fil.get(p.filamentId ?? '')), 0);
   const baseTime = extrudeTimeS(totalVol, printer) + EST.plateOverheadS;
   const assembledFits = parts.length ? fitsBed(sizeOf(unionBox(parts)), bed) : true;
+  const snapWhy = t('Già montato, il perno rotante richiede molti supporti: conviene stamparlo in due pezzi da montare a scatto');
   const avgDensityG = (mm3: number) => grams(mm3, setup.filaments.find((f) => usedIds.includes(f.id)));
   const out: StrategyEstimate[] = [];
 
@@ -130,7 +132,8 @@ export function estimateStrategies(parts: PartStat[], setup: UserSetup, printer:
   };
 
   if (k <= 1) {
-    out.push(mk({ strategy: 'single', feasible: assembledFits, reason: assembledFits ? undefined : t('Il modello montato non entra nel piatto'), timeS: baseTime, filamentG: totalG, wasteG: 0, plates: 1, colorChanges: 0, needsAssembly: false }));
+    const reason = !assembledFits ? t('Il modello montato non entra nel piatto') : snapRotary ? snapWhy : undefined;
+    out.push(mk({ strategy: 'single', feasible: !reason, reason, timeS: baseTime, filamentG: totalG, wasteG: 0, plates: 1, colorChanges: 0, needsAssembly: false }));
   }
 
   // Multicolore in un'unica stampa
@@ -144,6 +147,7 @@ export function estimateStrategies(parts: PartStat[], setup: UserSetup, printer:
     else if (usedIds.some((id) => fil.get(id) && !material(fil.get(id)!.material).multiFriendly)) reason = t('Uno dei materiali non è adatto al sistema multicolore');
     else if (!assembledFits) reason = t('Il modello montato non entra nel piatto');
     else if (!fitsWithTower(sizeOf(unionBox(parts)), bed, towerZone(printer, k, bed))) reason = t('Il modello e la torre di spurgo non entrano insieme nel piatto');
+    else if (snapRotary) reason = snapWhy;
     const changes = colorChangesPerPrint(parts);
     const purge = multi ? changes * multi.purgeMm3 : 0;
     out.push(mk({ strategy: 'multicolor', feasible: !reason, reason, timeS: baseTime + changes * (multi?.changeS ?? 0), filamentG: totalG, wasteG: avgDensityG(purge), plates: 1, colorChanges: changes, needsAssembly: false }));
@@ -151,8 +155,8 @@ export function estimateStrategies(parts: PartStat[], setup: UserSetup, printer:
 
   // Cambio colore manuale a quota (solo se i colori sono a fasce)
   if (k > 1) {
-    const ok = isZStratified(parts) && assembledFits;
-    out.push(mk({ strategy: 'layer-swap', feasible: ok, reason: ok ? undefined : t('I colori non sono a fasce orizzontali'), timeS: baseTime + (k - 1) * EST.layerSwapS, filamentG: totalG, wasteG: avgDensityG((k - 1) * EST.layerSwapWasteMm3), plates: 1, colorChanges: k - 1, needsAssembly: false }));
+    const ok = isZStratified(parts) && assembledFits && !snapRotary;
+    out.push(mk({ strategy: 'layer-swap', feasible: ok, reason: ok ? undefined : snapRotary ? snapWhy : t('I colori non sono a fasce orizzontali'), timeS: baseTime + (k - 1) * EST.layerSwapS, filamentG: totalG, wasteG: avgDensityG((k - 1) * EST.layerSwapWasteMm3), plates: 1, colorChanges: k - 1, needsAssembly: false }));
   }
 
   // Parti separate, un piatto per colore (più piatti se non entrano)

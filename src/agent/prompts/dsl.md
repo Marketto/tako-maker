@@ -16,7 +16,7 @@ Parte: `{"id":"base","name":"Base","filamentId":"<id filamento>","shape":{...}}`
 
 Giunti (parti mobili), l'app genera da sola la geometria:
 - `{"id":"j1","type":"hinge","partA":"base","partB":"schermo","axis":"x","origin":[x,y,z],"length":40,"radius":4}` cerniera stampata già montata: lascia nella parte A e nella parte B lo spazio attorno all'asse; il cilindro della cerniera sta nell'origine.
-- `type:"rotary"`: perno su A, B ruota attorno all'asse. `type:"slider"`: solo segnalazione (geometria a tuo carico).
+- `type:"rotary"`: perno su A che attraversa il mozzo di B (`origin` sull'asse del mozzo; mozzo pieno con raggio almeno `radius` e lungo almeno 6 mm). L'app lascia il gioco tra A e B e sceglie se stamparlo già montato o in due pezzi con perno a scatto (meno supporti): imposta `"print":"in-place"|"snap"` solo se l'utente lo chiede. `type:"slider"`: solo segnalazione (geometria a tuo carico).
 - Non impostare `detent`: lo chiede l'app all'utente.
 
 Pulsanti: una parte con `"button":{"housing":"<id del guscio>"}` diventa un tasto stampato già montato. La sua forma (box o cylinder) indica solo l'impronta del tasto, posata sulla superficie del guscio; foro, gambo, flangia, molla e sporgenza li genera l'app. Il guscio sotto il tasto deve essere pieno per almeno 8 mm. Non impostare `protrusionMm` né `feel`: li chiede l'app all'utente.

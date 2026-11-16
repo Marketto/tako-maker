@@ -47,6 +47,7 @@ export const CATALOG: CatalogEntry[] = [
       'Asse parallelo al piatto per le cerniere stampate già montate.',
       'Sopra un asse orizzontale l’arco del foro cede di 0,2–0,4 mm: foro ovale, più gioco in alto (circa 0,45) che ai lati (0,15). L’app lo aggiunge da sola alle cerniere del DSL.',
       'Per una cerniera che resta in posizione: una lamella a molla che preme su scanalature (vedi fermi) invece di stringere l’asse.',
+      'Parti che girano su un perno (volanti, ruote, manopole): giunto rotary con un mozzo pieno su B, attraversato dall’asse. Se già montato servirebbero molti supporti (es. una manovella a L sopra il volante), l’app lo divide in due pezzi con perno a scatto, ognuno appoggiato di piatto.',
     ],
   },
   {
