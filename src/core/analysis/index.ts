@@ -4,7 +4,7 @@ import { walkShape } from '../design/ops';
 import { findContacts, overhangBeyond, PEG_SPACING, type PrintStats, type BodyStats, type ButtonReport, type ConnectorReport, type OverlapReport } from '../geometry/evaluate';
 import { pairKey, prefersSnap, printedTogether, type JointModes } from '../design/links';
 import { material } from '../../data/materials';
-import { bondsPoorly, guideline, MAX_SLENDERNESS, MIN_CONTACT_MM2, minWall, SMALL_PART_BRIM_MM, SUPPORT_MIN_AREA_MM2, supportInterfaceFor, plaSupportWeakensPetg, LARGE_FLAT_MM2, LARGE_FLAT_MAX_H, MIXED_PLA_PETG_C, ROUND_RADIUS_MM, HAND_GRIP, STABILITY } from '../../data/guidelines';
+import { bondsPoorly, guideline, MAX_SLENDERNESS, MIN_CONTACT_MM2, minWall, SMALL_PART_BRIM_MM, SUPPORT_MIN_AREA_MM2, supportInterfaceFor, plaSupportWeakensPetg, LARGE_FLAT_MM2, LARGE_FLAT_MAX_H, MIXED_PLA_PETG_C, ROUND_RADIUS_MM, HAND_GRIP, STABILITY, SUPPORT_INTERFACE_MIN_MM2 } from '../../data/guidelines';
 import { pendingSamples } from '../calibration/coupons';
 import { bedOf, estimateStrategies, fitsBed, fmtTime, STRATEGY_LABEL, type PartStat, type StrategyEstimate } from './estimate';
 import { fmtNum, t } from '../../i18n';
@@ -721,8 +721,12 @@ export function analyze(
         const partner = supportInterfaceFor(mats[0], ownedMaterials, multiNozzle);
         if (!partner && plaSupportWeakensPetg(mats[0], ownedMaterials, multiNozzle))
           tips.push(t('Per i supporti di {names} (in PETG) non uso il PLA: con un solo ugello, negli strati in cui si alternano i due materiali la temperatura scende e il PETG vicino diventa fragile e si può dividere. Meglio supporti in PETG con un piccolo distacco.', { names }));
-        if (partner && canSwap) interfaceFilamentId = setup.filaments.find((f) => f.material === partner)?.id;
-        if (partner)
+        // Con un ugello solo il cambio di materiale aggiunge la torre di spurgo: conviene solo con molti supporti.
+        const worth = multiNozzle || over >= SUPPORT_INTERFACE_MIN_MM2;
+        if (partner && canSwap && worth) interfaceFilamentId = setup.filaments.find((f) => f.material === partner)?.id;
+        if (partner && canSwap && !worth)
+          tips.push(t('Per i supporti di {names} non uso il {b} come interfaccia: sono pochi, e con un ugello solo il cambio di filamento aggiungerebbe la torre di spurgo e tempo di stampa. Si staccano bene anche così.', { b: partner, names }));
+        else if (partner)
           tips.push(
             canSwap
               ? t('Hai sia {a} che {b}: per i supporti di {names} uso il {b} come interfaccia, così si staccano puliti (non si attacca al {a}). L\'ho impostato nel file per lo slicer: Supporti → Filamento per l\'interfaccia.', { a: mats[0], b: partner, names })
