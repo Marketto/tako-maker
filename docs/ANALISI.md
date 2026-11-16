@@ -6,7 +6,7 @@ Dopo ogni modifica `core/analysis/index.ts` esegue controlli deterministici e pr
 
 Modello volutamente semplice e trasparente, per **confrontare** le strategie:
 
-- filamento estruso ≈ volume pieno × 0,35 (pareti + ~15% di riempimento);
+- filamento estruso ≈ volume pieno × 0,4 (3 pareti, pelli di 1-1,2 mm, 20% di riempimento: i gusci scritti nel 3MF);
 - tempo ≈ volume estruso / (flusso tipico della stampante × 0,5) + 5 minuti per piatto;
 - **multicolore**: per ogni strato da 0,2 mm, cambi = colori presenti − 1; ogni cambio aggiunge il tempo e lo spurgo tipici del sistema (`multi.changeS`, `multi.purgeMm3` in `printers.json`);
 - **parti separate**: un piatto per colore (di più se l’area non basta), 2 minuti per cambio bobina manuale, nessuno scarto, penalità per il montaggio;
@@ -165,6 +165,7 @@ Con le soglie di `src/data/guidelines.ts` l'analisi decide:
 | Caso | Cosa fa l'app |
 |---|---|
 | Sporgenze oltre l'angolo massimo del materiale (> 15 mm², esclusi i ponti entro la luce del materiale, `bridgeMm`) o corpo sospeso (`needsSupports`) | supporti ad albero attivati nel 3MF (`enable_support`, `support_type` per Bambu/Orca; `support_material` per PrusaSlicer) e consiglio |
+| Sempre, per ogni oggetto | gusci robusti nel 3MF (`SHELLS`): 3 pareti, pelle sopra 1,2 mm, fondo 1 mm (1,4 mm con i supporti, così staccandoli non viene via la pelle), riempimento 20%. I profili standard hanno 2 pareti, fondo di 0,6 mm e 15%: il riempimento si vede dalle superfici curve e la pelle sopra i supporti si strappa (`wall_loops`, `top_shell_*`, `bottom_shell_*`, `sparse_infill_density`; `perimeters`, `*_solid_*`, `fill_density` per PrusaSlicer) |
 | Appoggio < 40 mm² o pezzo snello (altezza > 6 × lato d'appoggio) | brim di 5 mm nel 3MF e avviso |
 | Supporti su un pezzo in PLA e l'utente ha anche PETG | interfaccia dei supporti nel materiale opposto (non aderisce, si stacca pulita): impostata nel 3MF se c'è un sistema multicolore (`support_interface_filament` / `support_material_interface_extruder`), altrimenti solo consigliata. Con un ugello solo, solo da 25 cm² di sporgenze in su (`SUPPORT_INTERFACE_MIN_MM2`): il cambio di materiale aggiunge la torre di spurgo in ogni piatto, anche con pezzi di un colore solo |
 | Supporti su un pezzo in PETG e l'utente ha anche PLA | interfaccia in PLA **solo** con più ugelli (doppio ugello, cambio utensile: `multi.multiNozzle`). Con un ugello solo (AMS, ACE, CFS…) negli strati in cui si alternano i materiali la temperatura scende e il PETG vicino ai supporti si salda male e si divide: l'app usa supporti in PETG e lo spiega |

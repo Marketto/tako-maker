@@ -7,8 +7,8 @@ import { fitsWithTower, towerZone } from '../plate/primeTower';
    Servono a confrontare le strategie tra loro, non a sostituire lo slicer. */
 
 export const EST = {
-  /** Frazione del volume pieno effettivamente estrusa (pareti + ~15% riempimento). */
-  massFactor: 0.35,
+  /** Frazione del volume pieno effettivamente estrusa (3 pareti, pelli di 1-1,2 mm, 20% di riempimento: vedi SHELLS). */
+  massFactor: 0.4,
   /** Utilizzo medio del flusso massimo della stampante. */
   flowUtilization: 0.5,
   layerHeight: 0.2,

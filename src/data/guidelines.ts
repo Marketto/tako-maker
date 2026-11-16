@@ -199,6 +199,12 @@ export function plaSupportWeakensPetg(material: string, available: string[], mul
     in ogni piatto, anche se i pezzi sono di un colore: conviene solo da questa area di sporgenze in su (mm²). */
 export const SUPPORT_INTERFACE_MIN_MM2 = 2500;
 
+/** Gusci e riempimento scritti nel file per lo slicer, per ogni oggetto (i profili standard ne hanno meno:
+    2 pareti, fondo di 0,6 mm, 15% di riempimento). Con meno il riempimento si vede attraverso le superfici,
+    soprattutto quelle curve e poco inclinate, e staccando i supporti viene via anche la pelle sopra.
+    Spessori in mm (lo slicer usa il maggiore tra strati e spessore). */
+export const SHELLS = { walls: 3, topMm: 1.2, bottomMm: 1.0, supportedBottomMm: 1.4, infillPct: 20, layerMm: 0.2 };
+
 /** Frazione del volume sotto le sporgenze riempita dai supporti (alberi o griglia rada): per stimarne i grammi. */
 export const SUPPORT_FILL = 0.15;
 /** Supporti più alti di così (mm) sotto una zona stretta rischiano di piegarsi o staccarsi durante la stampa. */

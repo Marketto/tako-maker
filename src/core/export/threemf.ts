@@ -4,6 +4,7 @@ import type { RawMesh } from '../geometry/evaluate';
 import { t } from '../../i18n';
 import { overlaps, placeAvoiding, type Rect } from '../plate/primeTower';
 import { bambuFiles } from './bambu3mf';
+import { SHELLS } from '../../data/guidelines';
 
 /* Esportazione 3MF.
    - Formato "orca": Bambu Studio e derivati (Anycubic Slicer Next, OrcaSlicer, Creality Print,
@@ -39,20 +40,30 @@ function mergePrint(list: (PrintSettings | undefined)[]): PrintSettings | undefi
   return { supports: xs.some((x) => x.supports), brim: Math.max(...xs.map((x) => x.brim)), interfaceExtruder: xs.find((x) => x.interfaceExtruder)?.interfaceExtruder, ears: xs.some((x) => x.ears) };
 }
 
+/** Gusci (pareti, pelli sopra e sotto) e riempimento robusti: vedi SHELLS. Con i supporti il fondo è più spesso,
+    perché la pelle appoggiata sui supporti non si strappi quando li stacchi. */
+function shells(s: PrintSettings | undefined) {
+  const bottomMm = s?.supports ? SHELLS.supportedBottomMm : SHELLS.bottomMm;
+  const layers = (mm: number) => String(Math.ceil(mm / SHELLS.layerMm - 1e-6));
+  return { walls: String(SHELLS.walls), top: layers(SHELLS.topMm), topMm: String(SHELLS.topMm), bottom: layers(bottomMm), bottomMm: String(bottomMm), infill: `${SHELLS.infillPct}%` };
+}
+
 /** Metadati per oggetto letti dallo slicer (le chiavi sconosciute vengono ignorate). */
 function printMeta(flavor: SlicerFlavor, s: PrintSettings | undefined): string {
-  if (!s) return '';
+  const g = shells(s);
   const kv: [string, string][] = [];
   if (flavor === 'orca') {
-    if (s.supports) kv.push(['enable_support', '1'], ['support_type', 'tree(auto)']);
-    if (s.supports && s.interfaceExtruder) kv.push(['support_interface_filament', String(s.interfaceExtruder)]);
+    kv.push(['wall_loops', g.walls], ['top_shell_layers', g.top], ['top_shell_thickness', g.topMm], ['bottom_shell_layers', g.bottom], ['bottom_shell_thickness', g.bottomMm], ['sparse_infill_density', g.infill]);
+    if (s?.supports) kv.push(['enable_support', '1'], ['support_type', 'tree(auto)']);
+    if (s?.supports && s.interfaceExtruder) kv.push(['support_interface_filament', String(s.interfaceExtruder)]);
     // "brim_ears" = orecchie agli angoli (Bambu Studio e derivati): si staccano meglio del bordo intero.
-    if (s.brim > 0) kv.push(['brim_type', s.ears ? 'brim_ears' : 'outer_only'], ['brim_width', String(s.brim)]);
+    if (s && s.brim > 0) kv.push(['brim_type', s.ears ? 'brim_ears' : 'outer_only'], ['brim_width', String(s.brim)]);
     return kv.map(([k, v]) => `\n<metadata key="${k}" value="${v}"/>`).join('');
   }
-  if (s.supports) kv.push(['support_material', '1'], ['support_material_auto', '1'], ['support_material_style', 'organic']);
-  if (s.supports && s.interfaceExtruder) kv.push(['support_material_interface_extruder', String(s.interfaceExtruder)]);
-  if (s.brim > 0) kv.push(['brim_width', String(s.brim)]);
+  kv.push(['perimeters', g.walls], ['top_solid_layers', g.top], ['top_solid_min_thickness', g.topMm], ['bottom_solid_layers', g.bottom], ['bottom_solid_min_thickness', g.bottomMm], ['fill_density', g.infill]);
+  if (s?.supports) kv.push(['support_material', '1'], ['support_material_auto', '1'], ['support_material_style', 'organic']);
+  if (s?.supports && s.interfaceExtruder) kv.push(['support_material_interface_extruder', String(s.interfaceExtruder)]);
+  if (s && s.brim > 0) kv.push(['brim_width', String(s.brim)]);
   return kv.map(([k, v]) => `\n<metadata type="object" key="${k}" value="${v}"/>`).join('');
 }
 
