@@ -5,6 +5,7 @@ import { ARCH_SAG_MM, BASE_TOLERANCES, PIN_DETENT, ROTARY_SNAP, ROTARY_SNAP_EXTR
 import { msg } from '../../i18n';
 import { settleIslands } from './islands';
 import { roundShape, styleRadius } from '../design/style';
+import { junctionFillets } from './fillets';
 import { evaluateOrientation, isDesignDown, orientOptions, pickOrientation, rotateMesh, supportGrams, type OrientOption } from './orient';
 
 /* Trasforma il Design in mesh triangolari usando manifold-3d (WASM).
@@ -896,6 +897,30 @@ export function evaluateDesign(
         warnings.get(p.id)!.push('Mesh non chiusa: le modifiche geometriche su questa parte non sono disponibili.');
       } else {
         errors.push(`Parte "${p.name}": ${(e as Error).message}`);
+      }
+    }
+  }
+
+  // Raccordi tra le forme che si toccano (con l'arrotondamento attivo): mai nello spazio delle altre parti,
+  // allargato del gioco delle cerniere, così incastri e parti mobili restano liberi.
+  if (radius) {
+    for (const p of design.parts) {
+      const own = base.get(p.id);
+      if (!own || p.shape.op === 'mesh') continue;
+      try {
+        let f = junctionFillets(ctx, p.shape, (n) => build(ctx, n), radius);
+        if (!f) continue;
+        const gap = (tolByPart[p.id] ?? TOL).hingeGap;
+        const fb = f.boundingBox() as Box;
+        for (const [id, other] of base) {
+          if (id === p.id) continue;
+          const ob = other.boundingBox() as Box;
+          if (![0, 1, 2].every((k) => ob.min[k] - gap <= fb.max[k] && fb.min[k] - gap <= ob.max[k])) continue;
+          f = ctx.keep(f.subtract(grow(ctx, other, gap)));
+        }
+        if (!f.isEmpty()) base.set(p.id, ctx.keep(ctx.w.Manifold.union([own, f])));
+      } catch {
+        // Un raccordo non riuscito non blocca il pezzo: resta com'è disegnato.
       }
     }
   }

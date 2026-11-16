@@ -126,7 +126,12 @@ export interface Part {
   shape: ShapeNode;
   /** Se presente, la parte è un pulsante: la forma indica solo l'impronta del tasto. */
   button?: ButtonSpec;
+  /** La parte (o una sua zona) si impugna: maniglia, manico, leva. `ergonomic` lo sceglie l'utente (domanda dell'app). */
+  grip?: { ergonomic?: boolean };
 }
+
+/** Per chi è pensata l'impugnatura (misure della mano in `HAND_GRIP`, src/data/guidelines.ts). */
+export type HandSize = 'man' | 'woman' | 'teen' | 'child' | 'toddler';
 
 export type JointType = 'hinge' | 'slider' | 'rotary';
 
@@ -194,7 +199,9 @@ export interface Design {
   version: 1;
   name: string;
   description?: string;
-  intendedUse: { children: boolean; notes?: string };
+  /** `rests`: si usa appoggiato su un piano (true) o tenuto in mano / appeso (false); serve al controllo del baricentro.
+      `hand`: per chi è pensata l'impugnatura. */
+  intendedUse: { children: boolean; notes?: string; rests?: boolean; hand?: HandSize };
   /** Rifinitura delle forme solo per questo progetto; se manca vale la preferenza generale (`UserSetup.style`). */
   style?: StylePrefs;
   source?: Attribution & { kind: 'remix' | 'inspiration' };

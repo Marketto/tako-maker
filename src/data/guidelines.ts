@@ -1,4 +1,4 @@
-import type { Tolerances } from '../core/types';
+import type { HandSize, Tolerances } from '../core/types';
 import { msg } from '../i18n';
 
 /* Linee guida di stampa per materiale. Valori indicativi e prudenti, raccolti dalle
@@ -149,6 +149,24 @@ export const LARGE_FLAT_MAX_H = 25;
 export const ROUND_RADIUS_MM = 2;
 /** Raggio con le forme armonizzate: più morbido, sempre limitato dallo spessore del pezzo. */
 export const SMOOTH_RADIUS_MM = 5;
+/** Raccordi tra le forme che si toccano in una parte (core/geometry/fillets.ts): raggio al massimo
+    `thickRatio` dello spessore della forma più sottile, niente sotto `minMm`; `innerLeg` = lato corto dei due
+    smussi che approssimano il quarto di cerchio; oltre `maxShapes` forme per parte non si calcolano. */
+export const FILLET = { thickRatio: 0.35, minMm: 0.6, innerLeg: 0.41, maxShapes: 40 };
+/** Impugnatura comoda (presa a mano piena), valori indicativi da tabelle antropometriche:
+    diametro della sezione (mm, min-max) e lunghezza minima della zona impugnata (mm). */
+export const HAND_GRIP: Record<HandSize, { label: string; who: string; diameter: [number, number]; length: number }> = {
+  man: { label: msg('Uomo adulto'), who: 'un uomo adulto', diameter: [35, 40], length: 120 },
+  woman: { label: msg('Donna adulta'), who: 'una donna adulta', diameter: [30, 35], length: 110 },
+  teen: { label: msg('Ragazzo o ragazza (11–14 anni)'), who: 'un ragazzo o una ragazza di 11–14 anni', diameter: [28, 33], length: 100 },
+  child: { label: msg('Bambino o bambina (6–10 anni)'), who: 'un bambino o una bambina di 6–10 anni', diameter: [22, 28], length: 85 },
+  toddler: { label: msg('Bambino piccolo (3–5 anni)'), who: 'un bambino di 3–5 anni', diameter: [18, 22], length: 70 },
+};
+
+/** Stabilità appoggiato su un piano: vertici entro `contactMm` dal punto più basso formano la base;
+    sotto `minTipDeg` di inclinazione (o `childrenTipDeg` per i bambini) il modello si ribalta con poco. */
+export const STABILITY = { contactMm: 0.5, minTipDeg: 10, childrenTipDeg: 15 };
+
 /** Brim consigliato per fissare pezzi piccoli o snelli (mm). */
 export const SMALL_PART_BRIM_MM = 5;
 
