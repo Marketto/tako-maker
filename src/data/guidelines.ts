@@ -33,6 +33,10 @@ export const ARCH_SAG_MM = 0.25;
 export const ROTARY_SNAP = { lipMm: 0.7, axialPlayMm: 0.3, minPinR: 3 };
 /** Un perno rotante si stampa in due pezzi a scatto se già montato richiede almeno questi grammi di supporti in più. */
 export const ROTARY_SNAP_EXTRA_SUPPORT_G = 1;
+/** Scatti sul perno: il perno diviso in due lamelle fa da molla e due costole entrano nelle scanalature del foro.
+    `reachMm`: sporgenza della costola oltre il foro con il gioco di base (meno `detentClearance` = interferenza);
+    `maxStrain`: deformazione massima delle lamelle (PLA ~3%), limita l'interferenza sulle lamelle corte. */
+export const PIN_DETENT = { reachMm: 0.7, ribR: 0.8, maxStrain: 0.03, minBiteMm: 0.15 };
 
 export const BASE_TOLERANCES: Tolerances = {
   hingeGap: 0.4,

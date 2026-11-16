@@ -13,7 +13,8 @@ Attività in corso o da fare. Quando una è conclusa, spostala in [COMPLETED.md]
 
   Senza le variabili resta solo il backup su file.
 - **Perno rotante a scatto e già montato.** Stampa un volante con manovella e un piatto girevole. Controlla che:
-  - lo scatto entri a mano senza spezzare le lamelle (dentino 0,7 mm, `ROTARY_SNAP` in `src/data/guidelines.ts`);
+  - lo scatto entri a mano senza spezzare le lamelle e non si sfili tirando (dentino 0,7 mm oltre il foro, `ROTARY_SNAP` in `src/data/guidelines.ts`);
+  - con gli scatti (`detent`) il pezzo resti fermo nelle posizioni scelte senza cadere per il peso e scatti in modo netto (`PIN_DETENT`);
   - il pezzo già montato si stacchi e giri.
 - **Consumo di token con il connettore.** Badge e impostazioni devono mostrare la stima dopo `printopus_apri`.
 
