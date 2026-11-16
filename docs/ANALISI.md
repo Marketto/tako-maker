@@ -11,6 +11,7 @@ Modello volutamente semplice e trasparente, per **confrontare** le strategie:
 - **multicolore**: per ogni strato da 0,2 mm, cambi = colori presenti − 1; ogni cambio aggiunge il tempo e lo spurgo tipici del sistema (`multi.changeS`, `multi.purgeMm3` in `printers.json`);
 - **parti separate**: un piatto per colore (di più se l’area non basta), 2 minuti per cambio bobina manuale, nessuno scarto, penalità per il montaggio;
 - **cambio a quota**: possibile solo se ogni colore occupa una fascia di altezza distinta; una pausa per colore.
+- **perni rotanti**: se un giunto `rotary` conviene in due pezzi a scatto (vedi `chooseRotaryPrint` e docs/DESIGN-DSL.md), stampa unica, multicolore e cambio a quota non sono possibili: l'analisi propone le parti separate. Se l'utente resta sulla stampa unica, il perno esce già montato.
 
 Punteggio = ore + grammi di scarto / 20 + penalità (montaggio, attenzione richiesta). Vince il più basso.
 
@@ -19,7 +20,7 @@ Punteggio = ore + grammi di scarto / 20 + penalità (montaggio, attenzione richi
 | Quando | Domanda | Effetto |
 |---|---|---|
 | La strategia migliore è diversa da quella attuale | “Conviene passare a …?” con il confronto dei numeri | `set_plan.strategy` |
-| Strategia “parti separate” e parti a contatto | “Come vuoi unire le parti?” A incastro / Da incollare | `set_plan.connection` → perni generati |
+| Strategia “parti separate” e parti a contatto (escluse quelle unite da un giunto) | “Come vuoi unire le parti?” A incastro / Da incollare | `set_plan.connection` → perni generati |
 | Giunti senza scelta sullo scatto | “Ci sono parti mobili. Vuoi che si fermino a scatto?” (scelta per giunto se più di uno) | `update_joint.detent` |
 | Elemento da comprare a parte non ancora confermato (uno per domanda) | “Serve un elemento da comprare a parte: 4 × Magnete (6×2 mm). Va bene o cerco un’alternativa stampata?” | `update_hardware.decision`; con «alternativa stampata» parte una richiesta all’assistente (skill modifica-modello) |
 | Pulsanti senza sporgenza scelta | “Quanto devono sporgere i pulsanti?” 1 / 2 / 3 mm (con i bambini consiglia almeno 2 mm) | `update_part.button.protrusionMm` |
@@ -74,7 +75,7 @@ I campioni sono **pezzi del modello ritagliati** attorno alle parti incerte (`pl
 | Prova | Quando | Campione | Quanti |
 |---|---|---|---|
 | Cerniera | giunti `hinge` | ritaglio dei due pezzi lungo la cerniera, stampato montato | 3 (consigliato −0,1 / 0 / +0,1 mm) |
-| Perno rotante | giunti `rotary` (preferito quello senza scatto) | ritaglio attorno al perno; asse in verticale, perno verso l'alto, pezzo forato accanto | 3 (`pinClearance`) |
+| Perno rotante | giunti `rotary` (preferito quello senza scatto) | ritaglio attorno al perno, perno liscio (`print: "loose"`, senza testa né dentino) da infilare a mano; asse in verticale, perno verso l'alto, pezzo forato accanto | 3 (`pinClearance`) |
 | Scatto | giunti con scatto | ritaglio del giunto con scatto | 3 (`detentClearance`) |
 | Incastro a pressione / Perno da incollare | collegamento `snap` / `glue` | perno + blocco con foro (i perni li aggiunge l'app) | 3 |
 | Aggancio | parti separate con collegamento `designed` i cui ingombri si compenetrano (senza giunto) | ritaglio della zona comune dei due pezzi; agganci uguali ripetuti si provano una volta | 1 |

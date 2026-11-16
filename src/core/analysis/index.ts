@@ -2,7 +2,7 @@ import type { Design, PrinterSpec, Question, UserSetup, Vec3 } from '../types';
 import type { DesignOp } from '../design/ops';
 import { walkShape } from '../design/ops';
 import { findContacts, overhangBeyond, PEG_SPACING, type PrintStats, type BodyStats, type ButtonReport, type ConnectorReport, type OverlapReport } from '../geometry/evaluate';
-import { printedTogether } from '../design/links';
+import { pairKey, prefersSnap, printedTogether, type JointModes } from '../design/links';
 import { material } from '../../data/materials';
 import { bondsPoorly, guideline, MAX_SLENDERNESS, MIN_CONTACT_MM2, minWall, SMALL_PART_BRIM_MM, SUPPORT_MIN_AREA_MM2, supportInterfaceFor, plaSupportWeakensPetg, LARGE_FLAT_MM2, LARGE_FLAT_MAX_H, MIXED_PLA_PETG_C, ROUND_RADIUS_MM } from '../../data/guidelines';
 import { pendingSamples } from '../calibration/coupons';
@@ -66,7 +66,7 @@ export function analyze(
   setup: UserSetup,
   printer: PrinterSpec,
   answered: Set<string>,
-  extras: { connectors?: ConnectorReport[]; overlaps?: OverlapReport[]; buttons?: ButtonReport[]; printStats?: PrintStats } = {},
+  extras: { connectors?: ConnectorReport[]; overlaps?: OverlapReport[]; buttons?: ButtonReport[]; printStats?: PrintStats; jointModes?: JointModes } = {},
 ): AnalysisReport {
   const questions: Question[] = [];
   const warnings: string[] = [];
@@ -76,8 +76,10 @@ export function analyze(
   const filById = new Map(setup.filaments.map((f) => [f.id, f]));
 
   /* ---- Strategia ---- */
-  const linked = printedTogether(design);
-  const estimates = estimateStrategies(parts, setup, printer, linked);
+  const modes = extras.jointModes ?? {};
+  const linked = printedTogether(design, modes);
+  const snapRotary = prefersSnap(design, modes);
+  const estimates = estimateStrategies(parts, setup, printer, linked, snapRotary.length > 0);
   const feasible = estimates.filter((e) => e.feasible);
   const recommended = feasible[0];
   const current = design.printPlan.strategy;
@@ -197,7 +199,9 @@ export function analyze(
 
   /* ---- Collegamento tra parti separate ---- */
   if (design.printPlan.strategy === 'separate' && design.printPlan.connection === 'none') {
-    const contacts = findContacts(parts.map((p) => ({ id: p.id, box: p.contactBox ?? p.bbox })));
+    // Le parti unite da un giunto hanno già il loro collegamento.
+    const jointed = new Set(design.joints.filter((j) => j.type !== 'slider').map((j) => pairKey(j.partA, j.partB)));
+    const contacts = findContacts(parts.map((p) => ({ id: p.id, box: p.contactBox ?? p.bbox }))).filter((c) => !jointed.has(pairKey(c.a, c.b)));
     const key = `connection:${s}`;
     if (contacts.length && !answered.has(key)) {
       questions.push({
@@ -554,7 +558,8 @@ export function analyze(
     if ([j.partA, j.partB].some((id) => partMat(id) === 'TPU')) warnings.push(t('La cerniera di "{name}" è in TPU: è flessibile, meglio PLA o PETG per le parti rigide.', { name }));
   }
 
-  const usesSnap = (design.printPlan.strategy === 'separate' && design.printPlan.connection === 'snap') || articulated.some((j) => j.detent?.enabled);
+  const usesSnap =
+    (design.printPlan.strategy === 'separate' && (design.printPlan.connection === 'snap' || snapRotary.length > 0)) || articulated.some((j) => j.detent?.enabled);
   if (usesSnap) {
     const weak = [...new Set(design.parts.map((p) => partMat(p.id)))].filter((m) => !guideline(m).goodForSnap && m !== 'TPU');
     const hasPetg = setup.filaments.some((f) => guideline(f.material).goodForSnap);

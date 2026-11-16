@@ -96,6 +96,7 @@ export function validateDesign(d: Design, filamentIds?: Set<string>): void {
     if (!ids.has(j.partA) || !ids.has(j.partB)) throw new DesignError(`Il giunto "${j.id}" collega parti inesistenti`);
     if (!isVec3(j.origin)) throw new DesignError(`Il giunto "${j.id}" ha un'origine non valida`);
     if (!['x', 'y', 'z'].includes(j.axis)) throw new DesignError(`Il giunto "${j.id}" ha un asse non valido`);
+    if (j.print !== undefined && (j.type !== 'rotary' || !['in-place', 'snap'].includes(j.print))) throw new DesignError(`Il giunto "${j.id}": "print" vale solo per i giunti rotary ("in-place" o "snap")`);
   }
   for (const p of d.parts) {
     const b = p.button;

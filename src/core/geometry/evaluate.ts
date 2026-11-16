@@ -1,11 +1,11 @@
 import type { ManifoldToplevel, Manifold } from 'manifold-3d';
-import type { ButtonSpec, Design, Joint, Part, ShapeNode, Tolerances, Vec3 } from '../types';
-import { pairKey, printedTogether } from '../design/links';
-import { ARCH_SAG_MM, BASE_TOLERANCES } from '../../data/guidelines';
+import type { ButtonSpec, Design, Joint, Part, RotaryPrint, ShapeNode, Tolerances, Vec3 } from '../types';
+import { jointPrint, pairKey, printedTogether, type JointModes } from '../design/links';
+import { ARCH_SAG_MM, BASE_TOLERANCES, ROTARY_SNAP, ROTARY_SNAP_EXTRA_SUPPORT_G } from '../../data/guidelines';
 import { msg } from '../../i18n';
 import { settleIslands } from './islands';
 import { roundShape, styleRadius } from '../design/style';
-import { evaluateOrientation, isDesignDown, orientOptions, pickOrientation, rotateMesh, type OrientOption } from './orient';
+import { evaluateOrientation, isDesignDown, orientOptions, pickOrientation, rotateMesh, supportGrams, type OrientOption } from './orient';
 
 /* Trasforma il Design in mesh triangolari usando manifold-3d (WASM).
    Gira in un Web Worker nel browser e direttamente in Node nei test. */
@@ -71,6 +71,8 @@ export interface EvalResult {
   buttons: ButtonReport[];
   /** Appoggio sul piatto e sporgenze, per i supporti. */
   printStats: PrintStats;
+  /** Perni rotanti: già montati o in due pezzi a scatto (scelta dell'utente o dell'app). */
+  jointModes: JointModes;
 }
 
 /** Appoggio e sporgenze di un corpo, come verrebbe stampato (appoggiato alla quota più bassa). */
@@ -409,27 +411,123 @@ export function hingeGeometry(ctx: Ctx, j: Joint, tol: Tolerances = TOL): JointG
   return out;
 }
 
-/** Giunto rotante semplice: base A con perno, B ruota sopra con foro. */
-export function rotaryGeometry(ctx: Ctx, j: Joint, tol: Tolerances = TOL): JointGeometry {
+/** Tratto della parte lungo l'asse del giunto, entro `r` dall'asse (coordinate del mondo); null se l'asse non la attraversa. */
+function spanOnAxis(ctx: Ctx, m: Manifold, j: Joint, r: number): [number, number] | null {
+  const probe = placeOnAxis(ctx, ctx.keep(ctx.keep(ctx.w.Manifold.cylinder(4000, r, r, SEG)).translate([0, 0, -2000])), j);
+  const hit = ctx.keep(m.intersect(probe));
+  if (hit.isEmpty() || hit.volume() < 0.01) return null;
+  const k = AXIS_INDEX[j.axis];
+  const b = hit.boundingBox() as Box;
+  return [b.min[k], b.max[k]];
+}
+
+const AXIS_INDEX = { x: 0, y: 1, z: 2 } as const;
+
+/** Allarga un corpo di `g` in tutte le direzioni (unione di copie spostate lungo gli assi): lo spazio libero attorno a B. */
+function grow(ctx: Ctx, m: Manifold, g: number): Manifold {
+  const moves: Vec3[] = [[g, 0, 0], [-g, 0, 0], [0, g, 0], [0, -g, 0], [0, 0, g], [0, 0, -g]];
+  return ctx.keep(ctx.w.Manifold.union([m, ...moves.map((v) => ctx.keep(m.translate(v)))]));
+}
+
+/**
+ * Giunto rotante: perno su A che attraversa il mozzo di B (la parte di B lungo l'asse).
+ * - `in-place`: stampato già montato. Attorno a B resta un gioco su tutte le facce, il perno finisce
+ *   con una testa conica dentro una svasatura del mozzo: B gira ma non si sfila.
+ * - `snap`: due pezzi separati. Il perno è spaccato in due lamelle con un dentino in punta:
+ *   si infila nel mozzo, scatta oltre la faccia lontana e B gira libero.
+ * - `loose` (campioni di prova): perno liscio, senza testa né fessura.
+ */
+export function rotaryGeometry(ctx: Ctx, j: Joint, A: Manifold, B: Manifold, mode: RotaryPrint | 'loose', tol: Tolerances = TOL): JointGeometry {
   const { Manifold } = ctx.w;
-  const L = j.length ?? 10;
   const R = j.radius ?? 5;
-  const pinR = R * 0.5;
-  const pin = ctx.keep(ctx.keep(Manifold.cylinder(L, pinR, pinR * 0.9, SEG)).translate([0, 0, -L / 2]));
-  const hole = ctx.keep(ctx.keep(Manifold.cylinder(L + 1, pinR + tol.pinClearance, pinR + tol.pinClearance, SEG)).translate([0, 0, -L / 2]));
-  const out: JointGeometry = { addA: [placeOnAxis(ctx, pin, j)], subA: [], addB: [], subB: [placeOnAxis(ctx, hole, j)] };
+  const snap = mode === 'snap';
+  const pinR = snap ? Math.max(R * 0.5, ROTARY_SNAP.minPinR) : Math.max(R * 0.5, 1.5);
+  const clr = tol.pinClearance;
+  const g = tol.hingeGap;
+  const k = AXIS_INDEX[j.axis];
+  const o = j.origin[k];
+  const hub = spanOnAxis(ctx, B, j, pinR + clr);
+  if (!hub) throw new Error('il perno non attraversa la parte che ruota: metti l\'origine del giunto sull\'asse del mozzo');
+  const aSpan = spanOnAxis(ctx, A, j, pinR + clr);
+  // Coordinate locali lungo l'asse: 0 nell'origine, verso positivo da A verso B.
+  const aMid = aSpan ? (aSpan[0] + aSpan[1]) / 2 : o;
+  const dir = (hub[0] + hub[1]) / 2 >= aMid ? 1 : -1;
+  const loc = (v: number) => (v - o) * dir;
+  const [hn, hf] = [loc(hub[0]), loc(hub[1])].sort((a, b) => a - b);
+  const aNear = aSpan ? Math.min(loc(aSpan[0]), loc(aSpan[1])) : hn - 6;
+  const start = hn - Math.min(6, Math.max(1, hn - aNear));
+  const cyl = (z0: number, z1: number, r1: number, r2 = r1) => ctx.keep(ctx.keep(Manifold.cylinder(z1 - z0, r1, r2, SEG)).translate([0, 0, z0]));
+  const place = (m: Manifold) => placeOnAxis(ctx, dir === 1 ? m : ctx.keep(m.rotate([180, 0, 0])), j);
+  // Sopra un asse orizzontale gli archi del foro si abbassano: gioco in più verso l'alto.
+  const withSag = (m: Manifold): Manifold[] => (j.axis === 'z' ? [m] : [m, ctx.keep(m.translate([0, 0, ARCH_SAG_MM]))]);
+
+  // A non tocca B da nessuna parte: si toglie ad A il corpo di B allargato del gioco (solo vicino ad A).
+  const ab = A.boundingBox() as Box;
+  const near = ctx.keep(ctx.keep(Manifold.cube([0, 1, 2].map((d) => ab.max[d] - ab.min[d] + 4 * g) as Vec3)).translate(ab.min.map((v) => v - 2 * g) as Vec3));
+  const bNearA = ctx.keep(B.intersect(near));
+  const out: JointGeometry = { addA: [], subA: bNearA.isEmpty() ? [] : [grow(ctx, bNearA, g)], addB: [], subB: [], postA: [] };
+
+  const hubLen = hf - hn;
+  if (snap) {
+    const { lipMm: lip, axialPlayMm: play } = ROTARY_SNAP;
+    const tipZ = hf + play;
+    const pin = ctx.keep(Manifold.union([cyl(start, tipZ, pinR), cyl(tipZ, tipZ + 0.6, pinR + lip), cyl(tipZ + 0.6, tipZ + 0.6 + 2 * lip + 0.6, pinR + lip, pinR - 0.3)]));
+    // Fessura che divide il perno in due lamelle: si stringono per passare nel foro.
+    const slotW = Math.max(1.5, 2 * lip + 0.1);
+    const slot0 = Math.max(hn + 0.5, Math.min(hn + hubLen * 0.3, tipZ - 4));
+    const slot = ctx.keep(ctx.keep(Manifold.cube([2 * (pinR + lip) + 2, slotW, tipZ + 10 - slot0])).translate([-(pinR + lip) - 1, -slotW / 2, slot0]));
+    out.postA!.push(place(ctx.keep(pin.subtract(slot))));
+    // Foro con invito sulla faccia d'ingresso e spazio libero per il dentino oltre la faccia lontana.
+    out.subB.push(
+      ...withSag(place(cyl(Math.min(start, hn) - 1, hf + 1, pinR + clr))),
+      place(cyl(hn - 0.01, hn + lip, pinR + clr + lip, pinR + clr)),
+      place(cyl(hf, tipZ + 4, pinR + lip + clr)),
+    );
+  } else {
+    // Testa conica (45°) a filo della faccia lontana, in una svasatura con lo stesso gioco del foro.
+    const c = Math.min(1.5, Math.max(0.8, pinR * 0.5));
+    const head = mode === 'in-place' && hubLen >= c + 2;
+    const pinEnd = head ? hf - c : hf;
+    const parts = [cyl(start, pinEnd, pinR)];
+    if (head) parts.push(cyl(pinEnd, hf - 0.01, pinR, pinR + c - 0.01));
+    out.postA!.push(place(ctx.keep(Manifold.union(parts))));
+    out.subB.push(...withSag(place(cyl(Math.min(start, hn) - 1, hf + 1, pinR + clr))));
+    if (head) {
+      const z0 = hf - c - 0.41 * clr;
+      out.subB.push(place(cyl(z0, hf + 1, pinR + clr, pinR + clr + hf + 1 - z0)));
+    }
+  }
+
   if (j.detent?.enabled) {
+    // Dentino sulla faccia di A rivolta verso il mozzo, incavi sulla faccia del mozzo.
     const bumpR = Math.max(0.6, R * 0.12);
-    const ring = pinR + tol.pinClearance + bumpR * 1.5;
-    out.addA.push(placeOnAxis(ctx, ctx.keep(ctx.keep(Manifold.sphere(bumpR, 16)).translate([ring, 0, -L / 2])), j));
+    const ring = pinR + clr + bumpR * 1.5;
+    out.postA!.push(place(ctx.keep(ctx.keep(Manifold.sphere(bumpR, 16)).translate([ring, 0, hn - g]))));
     for (const a of j.detent.anglesDeg?.length ? j.detent.anglesDeg : [0, 90, 180, 270]) {
       const rad = (a * Math.PI) / 180;
-      out.subB.push(
-        placeOnAxis(ctx, ctx.keep(ctx.keep(Manifold.sphere(bumpR + tol.detentClearance, 16)).translate([ring * Math.cos(rad), ring * Math.sin(rad), -L / 2])), j),
-      );
+      out.subB.push(place(ctx.keep(ctx.keep(Manifold.sphere(bumpR + tol.detentClearance, 16)).translate([ring * Math.cos(rad), ring * Math.sin(rad), hn - g]))));
     }
   }
   return out;
+}
+
+export interface RotaryChoiceParams {
+  overhangDeg: number;
+  bridgeMm: number;
+  bed: Vec3;
+}
+
+/** Già montato o due pezzi a scatto: si sceglie lo scatto se il pezzo montato richiede molti più supporti
+    delle due parti stampate ognuna nella posizione migliore. */
+export function chooseRotaryPrint(ctx: Ctx, A: Manifold, B: Manifold, p: RotaryChoiceParams): RotaryPrint {
+  const raw = (m: Manifold) => {
+    const mesh = m.getMesh();
+    return positionsOnly(mesh.vertProperties, mesh.numProp, mesh.triVerts);
+  };
+  const best = (m: Manifold) => supportGrams(orientOptions(raw(m), p)[0]?.supportMm3 ?? 0);
+  const together = best(ctx.keep(ctx.w.Manifold.union([A, B])));
+  const apart = best(A) + best(B);
+  return together - apart >= ROTARY_SNAP_EXTRA_SUPPORT_G ? 'snap' : 'in-place';
 }
 
 /* ---------- Perni di collegamento tra parti separate ---------- */
@@ -765,11 +863,37 @@ export function evaluateDesign(
   const replaced = new Map<string, Manifold>();
   const push = (m: Map<string, Manifold[]>, id: string, list: Manifold[]) => m.set(id, [...(m.get(id) ?? []), ...list]);
 
+  // Perni rotanti: già montati o in due pezzi a scatto (scelta dell'utente o dell'app, vedi chooseRotaryPrint).
+  const jointModes: JointModes = {};
+  for (const j of design.joints) {
+    if (j.type !== 'rotary' || !base.has(j.partA) || !base.has(j.partB)) continue;
+    if (j.print === 'loose') continue;
+    if (j.print) {
+      jointModes[j.id] = j.print;
+      continue;
+    }
+    try {
+      const ids = [j.partA, j.partB];
+      jointModes[j.id] = chooseRotaryPrint(ctx, base.get(j.partA)!, base.get(j.partB)!, {
+        overhangDeg: Math.min(...ids.map((id) => orientInput?.overhangDeg[id] ?? 45)),
+        bridgeMm: Math.min(...ids.map((id) => orientInput?.bridgeMm[id] ?? 30)),
+        bed: orientInput?.bed ?? [1000, 1000, 1000],
+      });
+    } catch {
+      jointModes[j.id] = 'in-place';
+    }
+  }
+
   for (const j of design.joints) {
     if (!base.has(j.partA) || !base.has(j.partB)) continue;
     try {
       const t = mergeTol(tolByPart[j.partA], tolByPart[j.partB]);
-      const g = j.type === 'hinge' ? hingeGeometry(ctx, j, t) : j.type === 'rotary' ? rotaryGeometry(ctx, j, t) : null;
+      const g =
+        j.type === 'hinge'
+          ? hingeGeometry(ctx, j, t)
+          : j.type === 'rotary'
+            ? rotaryGeometry(ctx, j, base.get(j.partA)!, base.get(j.partB)!, jointPrint(design, j, jointModes), t)
+            : null;
       if (!g) continue;
       push(add, j.partA, g.addA);
       push(sub, j.partA, g.subA);
@@ -799,12 +923,14 @@ export function evaluateDesign(
 
   const { strategy, connection } = design.printPlan;
   const connectors: ConnectorReport[] = [];
-  const jointPairs = new Set(printedTogether(design).map(([a, b]) => pairKey(a, b)));
+  const jointPairs = new Set(printedTogether(design, jointModes).map(([a, b]) => pairKey(a, b)));
+  // Coppie unite da un giunto (anche a scatto): niente perni di incastro né avvisi di compenetrazione, il giunto ha già il suo gioco.
+  const jointed = new Set([...jointPairs, ...design.joints.filter((j) => j.type !== 'slider').map((j) => pairKey(j.partA, j.partB))]);
   // Perni automatici solo per incastro o colla: con «designed» l'aggancio è già nel modello.
   if (strategy === 'separate' && (connection === 'snap' || connection === 'glue')) {
     const boxes = [...base.entries()].map(([id, m]) => ({ id, box: m.boundingBox() as Box }));
     for (const c of findContacts(boxes)) {
-      if (jointPairs.has([c.a, c.b].sort().join('|'))) continue;
+      if (jointed.has(pairKey(c.a, c.b))) continue;
       const g = placePegs(ctx, base.get(c.a)!, base.get(c.b)!, c, connection === 'snap', mergeTol(tolByPart[c.a], tolByPart[c.b]));
       connectors.push({ a: c.a, b: c.b, ...g.report });
       if (!g.addA.length) continue;
@@ -818,7 +944,7 @@ export function evaluateDesign(
   const ids = [...base.keys()];
   for (let i = 0; i < ids.length; i++)
     for (let k = i + 1; k < ids.length; k++) {
-      if (jointPairs.has([ids[i], ids[k]].sort().join('|'))) continue;
+      if (jointed.has(pairKey(ids[i], ids[k]))) continue;
       const A = base.get(ids[i])!.boundingBox() as Box;
       const B = base.get(ids[k])!.boundingBox() as Box;
       if ([0, 1, 2].some((d) => Math.min(A.max[d], B.max[d]) - Math.max(A.min[d], B.min[d]) <= 0.05)) continue;
@@ -917,7 +1043,7 @@ export function evaluateDesign(
     }
   }
   ctx.dispose();
-  return { parts, errors, connectors, overlaps, buttons, printStats };
+  return { parts, errors, connectors, overlaps, buttons, printStats, jointModes };
 }
 
 /**

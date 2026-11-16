@@ -144,7 +144,13 @@ export interface Joint {
   radius?: number;
   /** undefined = l'utente non ha ancora scelto. */
   detent?: { enabled: boolean; anglesDeg?: number[] };
+  /** Solo `rotary`: `in-place` stampato già montato, `snap` due pezzi da montare con il perno a scatto;
+      undefined = sceglie l'app (quello con meno supporti). `loose` (solo per i campioni di prova):
+      perno liscio senza fermo, i due pezzi si infilano a mano. */
+  print?: RotaryPrint | 'loose';
 }
+
+export type RotaryPrint = 'in-place' | 'snap';
 
 export type PrintStrategy = 'single' | 'multicolor' | 'separate' | 'layer-swap';
 /** `none`: non ancora deciso (l'app chiede); `designed`: aggancio disegnato nel modello, l'app non aggiunge perni. */

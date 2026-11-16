@@ -28,6 +28,12 @@ export interface MaterialGuideline {
     nei fori orizzontali delle parti mobili si aggiunge questo gioco solo verso l'alto. */
 export const ARCH_SAG_MM = 0.25;
 
+/** Perno rotante da montare a scatto (parti stampate separate): dentino che supera il foro,
+    gioco lungo l'asse perché giri libero, raggio minimo del perno spaccato. */
+export const ROTARY_SNAP = { lipMm: 0.7, axialPlayMm: 0.3, minPinR: 3 };
+/** Un perno rotante si stampa in due pezzi a scatto se già montato richiede almeno questi grammi di supporti in più. */
+export const ROTARY_SNAP_EXTRA_SUPPORT_G = 1;
+
 export const BASE_TOLERANCES: Tolerances = {
   hingeGap: 0.4,
   pinClearance: 0.35,

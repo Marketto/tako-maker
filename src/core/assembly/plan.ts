@@ -1,5 +1,6 @@
 import type { Connection, Design, Vec3 } from '../types';
 import { findContacts, type Contact } from '../geometry/evaluate';
+import { jointPrint, type JointModes } from '../design/links';
 import { msg, t } from '../../i18n';
 import { hardwareLabel, toBuy } from '../hardware';
 
@@ -29,6 +30,8 @@ export interface AssemblyPlan {
   loose: string[];
 }
 
+const AXES = ['x', 'y', 'z'] as const;
+
 interface Box {
   min: Vec3;
   max: Vec3;
@@ -49,6 +52,7 @@ export function planAssembly(
   boxes: { id: string; box: Box }[],
   connection: Connection = design.printPlan.connection,
   connectors: { a: string; b: string; pegs: number }[] = [],
+  jointModes: JointModes = {},
 ): AssemblyPlan {
   const pegsBetween = (x: string, y: string) => connectors.find((c) => (c.a === x && c.b === y) || (c.a === y && c.b === x))?.pegs ?? 0;
   if (boxes.length < 2) return { steps: [], loose: [] };
@@ -116,7 +120,19 @@ export function planAssembly(
 
     let text: string;
     const tips: string[] = [];
-    if (buttonOf.has(best.id)) {
+    const snapJoint = joint && jointPrint(design, joint, jointModes) === 'snap' ? joint : undefined;
+    if (snapJoint) {
+      // Perno a scatto: il pezzo arriva lungo l'asse del perno, dalla sua parte.
+      const k = AXES.indexOf(snapJoint.axis);
+      const box = (id: string) => boxes.find((b) => b.id === id)!.box;
+      const other = best.id === snapJoint.partA ? snapJoint.partB : snapJoint.partA;
+      const mid = (b: Box) => (b.min[k] + b.max[k]) / 2;
+      approach[0] = approach[1] = approach[2] = 0;
+      approach[k] = mid(box(best.id)) >= mid(box(other)) ? 1 : -1;
+      text = t('Infila il perno di "{pin}" nel foro di "{hole}" e premi finché scatta: poi gira libero.', { pin: name(snapJoint.partA), hole: name(snapJoint.partB) });
+      tips.push(t('Per smontarlo stringi con le dita le due lamelle del perno e sfila il pezzo.'));
+      tips.push(t('Se gira duro, fallo ruotare qualche volta avanti e indietro.'));
+    } else if (buttonOf.has(best.id)) {
       text = t('"{name}" esce dalla stampa già montato in {target}: premilo qualche volta per staccarlo e farlo scorrere bene.', { name: name(best.id), target });
     } else if (joint) {
       text =
@@ -146,7 +162,8 @@ export function planAssembly(
     }
 
     // Le parti incernierate escono già montate: nessuna animazione d'arrivo.
-    steps.push({ index: steps.length, partId: best.id, partName: name(best.id), attachTo, approach, distance: joint || buttonOf.has(best.id) ? 0 : Math.max(20, size * 0.6), text, tips });
+    const inPlace = (joint && !snapJoint) || buttonOf.has(best.id);
+    steps.push({ index: steps.length, partId: best.id, partName: name(best.id), attachTo, approach, distance: inPlace ? 0 : Math.max(20, size * 0.6), text, tips });
     placed.add(best.id);
   }
 

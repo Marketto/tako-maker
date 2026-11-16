@@ -27,7 +27,7 @@ import type { ImportedMeshInfo } from '../agent/context';
 import { cachedSearch, loadMesh, printerOf, saveMesh, saveProject, store, storeSearch, uid, type ChatItem, type Project } from './store';
 import { localeInfo, t } from '../i18n';
 import { shoppingListText } from '../core/hardware';
-import { printedTogether } from '../core/design/links';
+import { printedTogether, type JointModes } from '../core/design/links';
 import { orientInputFor, plateKeepFree } from '../core/plate';
 import { buildManualPrompt, correctionPrompt, parseManualReply } from '../agent/manual';
 import { createSession, getSession, postReport, putSession } from './connector';
@@ -50,6 +50,8 @@ export interface Snapshot {
   meshInfo: ImportedMeshInfo[];
   /** Come appoggiare i pezzi sul piatto (posizioni provate e quella scelta). */
   orient: OrientGroup[];
+  /** Perni rotanti: già montati o in due pezzi a scatto (scelta dell'app, vedi core/design/links.ts). */
+  jointModes: JointModes;
   /** Modalità copia e incolla: richiesta pronta da copiare nella chat. */
   manual: ManualRequest | null;
 }
@@ -88,7 +90,7 @@ export class ProjectSession {
   private unsubStore: (() => void) | null = null;
 
   private constructor(project: Project) {
-    this.snap = { project, parts: [], geometryErrors: [], report: null, assembly: null, questions: [], busy: null, error: null, meshInfo: [], manual: null, orient: [] };
+    this.snap = { project, parts: [], geometryErrors: [], report: null, assembly: null, questions: [], busy: null, error: null, meshInfo: [], manual: null, orient: [], jointModes: {} };
   }
 
   /** Se l'utente toglie un filamento usato, i pezzi passano a uno rimasto (stesso materiale se c'è). */
@@ -157,15 +159,15 @@ export class ProjectSession {
     const d = this.snap.project.design;
     const answered = this.snap.project.answered;
     if (!d.parts.length) {
-      this.set({ parts: [], report: null, assembly: null, questions: this.pendingQuestions(), geometryErrors: [], orient: [] });
+      this.set({ parts: [], report: null, assembly: null, questions: this.pendingQuestions(), geometryErrors: [], orient: [], jointModes: {} });
       this.setConnectorReport({ key: designKey({ design: d, answered }), text: 'Il modello è vuoto.', questions: [], errors: [] });
       return;
     }
     try {
       const r = await this.evaluate(d);
       if (seq !== this.evalSeq) return; // nel frattempo è arrivata una modifica più recente
-      const report = analyze(d, r.parts, this.setup, this.printer, new Set(answered), { connectors: r.connectors, overlaps: r.overlaps, buttons: r.buttons, printStats: r.printStats });
-      const assembly = d.printPlan.strategy === 'separate' ? planAssembly(d, r.parts.map((p) => ({ id: p.id, box: p.contactBox })), d.printPlan.connection, r.connectors) : null;
+      const report = analyze(d, r.parts, this.setup, this.printer, new Set(answered), { connectors: r.connectors, overlaps: r.overlaps, buttons: r.buttons, printStats: r.printStats, jointModes: r.jointModes });
+      const assembly = d.printPlan.strategy === 'separate' ? planAssembly(d, r.parts.map((p) => ({ id: p.id, box: p.contactBox })), d.printPlan.connection, r.connectors, r.jointModes) : null;
       const meshInfo = this.snap.project.meshIds.map((id) => {
         const part = r.parts.find((p) => d.parts.find((x) => x.id === p.id)?.shape.op === 'mesh' && (d.parts.find((x) => x.id === p.id)!.shape as { ref: string }).ref === id);
         const size = part ? ([0, 1, 2].map((k) => part.bbox.max[k] - part.bbox.min[k]) as [number, number, number]) : ([0, 0, 0] as [number, number, number]);
@@ -178,6 +180,7 @@ export class ProjectSession {
         assembly,
         meshInfo,
         orient: r.printStats.orient ?? [],
+        jointModes: r.jointModes,
         questions: [...this.pendingQuestions(), ...report.questions],
       });
       this.setConnectorReport({ key: designKey({ design: d, answered }), text: analysisText(d, r.parts, this.setup, report), questions: report.questions, errors: r.errors });
@@ -410,7 +413,7 @@ export class ProjectSession {
       printer: this.printer,
       evaluate: async (d) => {
         const r = await this.evaluate(d);
-        return { parts: r.parts, errors: r.errors, connectors: r.connectors, overlaps: r.overlaps, buttons: r.buttons, printStats: r.printStats };
+        return { parts: r.parts, errors: r.errors, connectors: r.connectors, overlaps: r.overlaps, buttons: r.buttons, printStats: r.printStats, jointModes: r.jointModes };
       },
       analyze: (d, parts, extras) => analyze(d, parts, this.setup, this.printer, new Set(this.snap.project.answered), extras),
     };
@@ -691,7 +694,7 @@ export class ProjectSession {
 
   private exportParts() {
     const fil = this.setup.filaments;
-    const groups = jointGroups(this.snap.project.design);
+    const groups = jointGroups(this.snap.project.design, this.snap.jointModes);
     const separate = this.snap.project.design.printPlan.strategy === 'separate';
     // Nella posizione scelta per la stampa (core/geometry/orient.ts).
     return orientedMeshes(this.snap.parts, this.snap.orient).map((p) => {
@@ -768,10 +771,10 @@ export class ProjectSession {
 }
 
 /** Parti collegate da cerniere/perni stampati già montati (union-find semplice). */
-export function jointGroups(d: Design): Map<string, string> {
+export function jointGroups(d: Design, modes: JointModes = {}): Map<string, string> {
   const parent = new Map<string, string>();
   const find = (x: string): string => (parent.get(x) ?? x) === x ? x : find(parent.get(x)!);
-  const pairs = printedTogether(d);
+  const pairs = printedTogether(d, modes);
   for (const [a, b] of pairs) parent.set(find(b), find(a));
   const out = new Map<string, string>();
   for (const p of d.parts) if (pairs.some(([a, b]) => a === p.id || b === p.id)) out.set(p.id, find(p.id));

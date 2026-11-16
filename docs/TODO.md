@@ -12,6 +12,9 @@ Attività in corso o da fare. Quando una è conclusa, spostala in [COMPLETED.md]
   5. Dopo un'ora, prova «Ricollega» di Google.
 
   Senza le variabili resta solo il backup su file.
+- **Perno rotante a scatto e già montato.** Stampa un volante con manovella e un piatto girevole. Controlla che:
+  - lo scatto entri a mano senza spezzare le lamelle (dentino 0,7 mm, `ROTARY_SNAP` in `src/data/guidelines.ts`);
+  - il pezzo già montato si stacchi e giri.
 - **Consumo di token con il connettore.** Badge e impostazioni devono mostrare la stima dopo `printopus_apri`.
 
 ## Da fare
