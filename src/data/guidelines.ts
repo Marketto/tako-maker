@@ -195,6 +195,10 @@ export function plaSupportWeakensPetg(material: string, available: string[], mul
   return family(material) === 'PETG' && !multiNozzle && available.some((m) => family(m) === 'PLA');
 }
 
+/** Con un ugello solo l'interfaccia dei supporti in un altro materiale costa cambi di filamento e la torre di spurgo
+    in ogni piatto, anche se i pezzi sono di un colore: conviene solo da questa area di sporgenze in su (mm²). */
+export const SUPPORT_INTERFACE_MIN_MM2 = 2500;
+
 /** Frazione del volume sotto le sporgenze riempita dai supporti (alberi o griglia rada): per stimarne i grammi. */
 export const SUPPORT_FILL = 0.15;
 /** Supporti più alti di così (mm) sotto una zona stretta rischiano di piegarsi o staccarsi durante la stampa. */

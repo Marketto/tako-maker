@@ -60,10 +60,17 @@ describe('supporti e adesione al piatto', () => {
   });
 
   it('attiva i supporti con l’interfaccia nel materiale opposto (PLA ↔ PETG)', async () => {
-    const { rep } = await run(design([tee]));
+    // Molte sporgenze (mensola larga): l'interfaccia in PETG vale i cambi di filamento.
+    const shelf: Part = { id: 't', name: 'Mensola', filamentId: 'f1', shape: { op: 'union', children: [{ op: 'box', size: [10, 60, 40] }, { op: 'box', size: [60, 60, 3], at: [10, 0, 37] }] } };
+    const { rep } = await run(design([shelf]));
     expect(rep.printHints.t.supports).toBe(true);
     expect(rep.printHints.t.interfaceFilamentId).toBe("f2");
     expect(rep.tips.join(' ')).toMatch(/PETG come interfaccia/);
+    // Poche sporgenze con un ugello solo: niente interfaccia, quindi niente torre di spurgo per un pezzo di un colore.
+    const small = (await run(design([tee]))).rep;
+    expect(small.printHints.t.supports).toBe(true);
+    expect(small.printHints.t.interfaceFilamentId).toBeUndefined();
+    expect(small.tips.join(' ')).toMatch(/torre di spurgo/);
     expect(supportInterfaceFor('PETG', ['PLA-Silk', 'PETG'], true)).toBe('PLA-Silk');
     // Ugello singolo: niente PLA sotto il PETG (il PETG diventerebbe fragile)
     expect(supportInterfaceFor('PETG', ['PLA', 'PETG'])).toBeUndefined();
