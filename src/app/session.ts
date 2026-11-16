@@ -166,7 +166,7 @@ export class ProjectSession {
     try {
       const r = await this.evaluate(d);
       if (seq !== this.evalSeq) return; // nel frattempo è arrivata una modifica più recente
-      const report = analyze(d, r.parts, this.setup, this.printer, new Set(answered), { connectors: r.connectors, overlaps: r.overlaps, buttons: r.buttons, printStats: r.printStats, jointModes: r.jointModes });
+      const report = analyze(d, r.parts, this.setup, this.printer, new Set(answered), { connectors: r.connectors, overlaps: r.overlaps, buttons: r.buttons, printStats: r.printStats, jointModes: r.jointModes, detents: r.detents });
       const assembly = d.printPlan.strategy === 'separate' ? planAssembly(d, r.parts.map((p) => ({ id: p.id, box: p.contactBox })), d.printPlan.connection, r.connectors, r.jointModes) : null;
       const meshInfo = this.snap.project.meshIds.map((id) => {
         const part = r.parts.find((p) => d.parts.find((x) => x.id === p.id)?.shape.op === 'mesh' && (d.parts.find((x) => x.id === p.id)!.shape as { ref: string }).ref === id);
@@ -413,7 +413,7 @@ export class ProjectSession {
       printer: this.printer,
       evaluate: async (d) => {
         const r = await this.evaluate(d);
-        return { parts: r.parts, errors: r.errors, connectors: r.connectors, overlaps: r.overlaps, buttons: r.buttons, printStats: r.printStats, jointModes: r.jointModes };
+        return { parts: r.parts, errors: r.errors, connectors: r.connectors, overlaps: r.overlaps, buttons: r.buttons, printStats: r.printStats, jointModes: r.jointModes, detents: r.detents };
       },
       analyze: (d, parts, extras) => analyze(d, parts, this.setup, this.printer, new Set(this.snap.project.answered), extras),
     };

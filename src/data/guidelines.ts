@@ -35,8 +35,13 @@ export const ROTARY_SNAP = { lipMm: 0.7, axialPlayMm: 0.3, minPinR: 3 };
 export const ROTARY_SNAP_EXTRA_SUPPORT_G = 1;
 /** Scatti sul perno: il perno diviso in due lamelle fa da molla e due costole entrano nelle scanalature del foro.
     `reachMm`: sporgenza della costola oltre il foro con il gioco di base (meno `detentClearance` = interferenza);
-    `maxStrain`: deformazione massima delle lamelle (PLA ~3%), limita l'interferenza sulle lamelle corte. */
-export const PIN_DETENT = { reachMm: 0.7, ribR: 0.8, maxStrain: 0.03, minBiteMm: 0.15 };
+    `maxStrain`: deformazione massima delle lamelle (PLA ~3%), limita l'interferenza sulle lamelle corte.
+    `grooveClearanceMm`: gioco tra costola e scanalatura; `seatMm`: in posizione la costola entra nella parete
+    della scanalatura di tanto (al massimo un terzo dell'interferenza), quindi la lamella resta un po' piegata e spinge: niente gioco, la posizione non si
+    perde con un soffio (prima la scanalatura aveva il gioco delle cerniere tutto attorno, 0,4 mm, e la manopola
+    girava libera di qualche grado prima di incontrare resistenza). `weakBiteMm`: sotto questa interferenza (lamelle
+    corte) gli scatti tengono poco e l'analisi lo segnala. */
+export const PIN_DETENT = { reachMm: 0.9, ribR: 0.8, maxStrain: 0.03, minBiteMm: 0.2, grooveClearanceMm: 0.1, seatMm: 0.1, weakBiteMm: 0.35 };
 
 export const BASE_TOLERANCES: Tolerances = {
   hingeGap: 0.4,
@@ -203,6 +208,11 @@ export const SUPPORT_INTERFACE_MIN_MM2 = 2500;
     2 pareti, fondo di 0,6 mm, 15% di riempimento). Con meno il riempimento si vede attraverso le superfici,
     soprattutto quelle curve e poco inclinate, e staccando i supporti viene via anche la pelle sopra.
     Spessori in mm (lo slicer usa il maggiore tra strati e spessore). */
+/** Supporti dello stesso materiale del pezzo: interfaccia fitta (3 strati, linee a 0,2 mm) e distanza di uno
+    strato. Con i profili standard (2 strati a 0,5 mm) la pelle sopra i supporti cade tra le linee ed esce ruvida e
+    sfilacciata. Con un'interfaccia di un altro materiale la distanza resta quella dello slicer (di solito 0). */
+export const SUPPORT_SURFACE = { topZMm: 0.2, interfaceLayers: 3, interfaceSpacingMm: 0.2 };
+
 export const SHELLS = { walls: 3, topMm: 1.2, bottomMm: 1.0, supportedBottomMm: 1.4, infillPct: 20, layerMm: 0.2 };
 
 /** Frazione del volume sotto le sporgenze riempita dai supporti (alberi o griglia rada): per stimarne i grammi. */

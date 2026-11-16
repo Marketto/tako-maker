@@ -4,7 +4,7 @@ import type { RawMesh } from '../geometry/evaluate';
 import { t } from '../../i18n';
 import { overlaps, placeAvoiding, type Rect } from '../plate/primeTower';
 import { bambuFiles } from './bambu3mf';
-import { SHELLS } from '../../data/guidelines';
+import { SHELLS, SUPPORT_SURFACE } from '../../data/guidelines';
 
 /* Esportazione 3MF.
    - Formato "orca": Bambu Studio e derivati (Anycubic Slicer Next, OrcaSlicer, Creality Print,
@@ -54,15 +54,21 @@ function printMeta(flavor: SlicerFlavor, s: PrintSettings | undefined): string {
   const kv: [string, string][] = [];
   if (flavor === 'orca') {
     kv.push(['wall_loops', g.walls], ['top_shell_layers', g.top], ['top_shell_thickness', g.topMm], ['bottom_shell_layers', g.bottom], ['bottom_shell_thickness', g.bottomMm], ['sparse_infill_density', g.infill]);
-    if (s?.supports) kv.push(['enable_support', '1'], ['support_type', 'tree(auto)']);
-    if (s?.supports && s.interfaceExtruder) kv.push(['support_interface_filament', String(s.interfaceExtruder)]);
+    if (s?.supports) {
+      kv.push(['enable_support', '1'], ['support_type', 'tree(auto)'], ['support_interface_top_layers', String(SUPPORT_SURFACE.interfaceLayers)], ['support_interface_spacing', String(SUPPORT_SURFACE.interfaceSpacingMm)], ['support_interface_pattern', 'rectilinear']);
+      if (s.interfaceExtruder) kv.push(['support_interface_filament', String(s.interfaceExtruder)]);
+      else kv.push(['support_top_z_distance', String(SUPPORT_SURFACE.topZMm)]);
+    }
     // "brim_ears" = orecchie agli angoli (Bambu Studio e derivati): si staccano meglio del bordo intero.
     if (s && s.brim > 0) kv.push(['brim_type', s.ears ? 'brim_ears' : 'outer_only'], ['brim_width', String(s.brim)]);
     return kv.map(([k, v]) => `\n<metadata key="${k}" value="${v}"/>`).join('');
   }
   kv.push(['perimeters', g.walls], ['top_solid_layers', g.top], ['top_solid_min_thickness', g.topMm], ['bottom_solid_layers', g.bottom], ['bottom_solid_min_thickness', g.bottomMm], ['fill_density', g.infill]);
-  if (s?.supports) kv.push(['support_material', '1'], ['support_material_auto', '1'], ['support_material_style', 'organic']);
-  if (s?.supports && s.interfaceExtruder) kv.push(['support_material_interface_extruder', String(s.interfaceExtruder)]);
+  if (s?.supports) {
+    kv.push(['support_material', '1'], ['support_material_auto', '1'], ['support_material_style', 'organic'], ['support_material_interface_layers', String(SUPPORT_SURFACE.interfaceLayers)], ['support_material_interface_spacing', String(SUPPORT_SURFACE.interfaceSpacingMm)]);
+    if (s.interfaceExtruder) kv.push(['support_material_interface_extruder', String(s.interfaceExtruder)]);
+    else kv.push(['support_material_contact_distance', String(SUPPORT_SURFACE.topZMm)]);
+  }
   if (s && s.brim > 0) kv.push(['brim_width', String(s.brim)]);
   return kv.map(([k, v]) => `\n<metadata type="object" key="${k}" value="${v}"/>`).join('');
 }

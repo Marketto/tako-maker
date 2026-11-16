@@ -68,6 +68,7 @@ La fonte è `src/data/catalog.ts`: per aggiungere una voce modifica quel file e 
 
 - Sopra una cavità lascia una pelle di almeno 0,6 mm (3 strati).
 - Gusci nello slicer: 3 pareti, pelle sopra 1,2 mm, fondo 1 mm (1,4 mm sopra i supporti), riempimento 20%: con meno il riempimento si vede dalle superfici curve e la pelle si strappa con i supporti. L'app li scrive nel 3MF.
+- Supporti dello stesso materiale: interfaccia di 3 strati con linee a 0,2 mm e distanza di uno strato (0,2 mm). Con l'interfaccia rada dei profili standard la superficie sopra i supporti esce ruvida e sfilacciata.
 - Intarsi di colore: 0,6 mm di profondità (3 strati) bastano.
 - Niente lamelle sotto 1,7 mm stampate nel vuoto: si rompono o non si formano.
 - Sbalzi: preferisci forme autoportanti a 45° invece dei supporti.

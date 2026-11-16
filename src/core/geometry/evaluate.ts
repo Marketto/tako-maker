@@ -74,6 +74,17 @@ export interface EvalResult {
   printStats: PrintStats;
   /** Perni rotanti: già montati o in due pezzi a scatto (scelta dell'utente o dell'app). */
   jointModes: JointModes;
+  /** Scatti generati sui perni: `weak` se le lamelle sono troppo corte per tenere bene. */
+  detents: DetentReport[];
+}
+
+export interface DetentReport {
+  jointId: string;
+  biteMm: number;
+  lamellaMm: number;
+  /** Lunghezza delle lamelle che servirebbe per scatti che tengono (mm). */
+  needMm: number;
+  weak: boolean;
 }
 
 /** Appoggio e sporgenze di un corpo, come verrebbe stampato (appoggiato alla quota più bassa). */
@@ -361,6 +372,8 @@ interface JointGeometry {
   subB: Manifold[];
   /** Aggiunte ad A dopo le sottrazioni (il perno della cerniera, che attraversa lo spazio libero attorno alla nocca di B). */
   postA?: Manifold[];
+  /** Scatti sul perno: interferenza e lunghezza delle lamelle (la più corta). */
+  detent?: { biteMm: number; lamellaMm: number; needMm: number };
 }
 
 /**
@@ -370,12 +383,14 @@ interface JointGeometry {
  * - `root`/`tip`: inizio della fessura (lamelle fisse) ed estremità libera; le costole stanno nella metà verso la punta.
  * - c'è sempre una scanalatura a 0°: è la posizione in cui il pezzo esce dalla stampa.
  */
-function pinDetent(ctx: Ctx, pinR: number, holeR: number, slotW: number, root: number, tip: number, angles: number[], tol: Tolerances) {
+/** `assembled`: stampato già montato, la posizione 0 è quella di stampa e non deve toccare (si salderebbe). */
+function pinDetent(ctx: Ctx, pinR: number, holeR: number, slotW: number, root: number, tip: number, angles: number[], tol: Tolerances, assembled: boolean) {
   const { Manifold } = ctx.w;
   const L = tip - root;
   const t = Math.max(0.4, pinR - slotW / 2);
   // Interferenza voluta, ridotta se le lamelle sono corte o spesse (si spezzerebbero).
-  const bite = Math.max(PIN_DETENT.minBiteMm, Math.min(PIN_DETENT.reachMm - tol.detentClearance, (PIN_DETENT.maxStrain * L * L) / (1.5 * t)));
+  // Mai più di quanto la fessura lascia chiudere le lamelle.
+  const bite = Math.min(slotW / 2 - 0.1, Math.max(PIN_DETENT.minBiteMm, Math.min(PIN_DETENT.reachMm - tol.detentClearance, (PIN_DETENT.maxStrain * L * L) / (1.5 * t))));
   const rr = Math.min(PIN_DETENT.ribR, pinR * 0.45);
   const c = holeR + bite - rr;
   const z0 = root + L / 2;
@@ -386,13 +401,21 @@ function pinDetent(ctx: Ctx, pinR: number, holeR: number, slotW: number, root: n
   for (const a of [...new Set([0, ...angles.map((x) => ((x % 360) + 360) % 360)])]) {
     // Ruotando B di `a` (verso antiorario attorno a +Z) la scanalatura arriva sulla costola a 90°.
     const rad = ((90 - a) * Math.PI) / 180;
+    // Scanalatura stretta attorno alla costola e un po' più vicina all'asse: in posizione la lamella resta
+    // precaricata, quindi non c'è gioco (PIN_DETENT.seatMm). Lungo l'asse resta il gioco delle cerniere.
+    // Già montato, la posizione di stampa ha il gioco delle cerniere tutto attorno, altrimenti si salderebbe.
+    const free = assembled && a === 0;
+    const gc = free ? c : c - Math.min(PIN_DETENT.seatMm, bite / 3) - PIN_DETENT.grooveClearanceMm;
+    const gr = rr + (free ? tol.hingeGap : PIN_DETENT.grooveClearanceMm);
     for (const s of [1, -1]) {
-      const g = ctx.keep(ctx.keep(Manifold.cylinder(z1 - z0 + 2 * tol.hingeGap, rr + tol.hingeGap, rr + tol.hingeGap, 16)).translate([s * c * Math.cos(rad), s * c * Math.sin(rad), z0 - tol.hingeGap]));
+      const g = ctx.keep(ctx.keep(Manifold.cylinder(z1 - z0 + 2 * tol.hingeGap, gr, gr, 16)).translate([s * gc * Math.cos(rad), s * gc * Math.sin(rad), z0 - tol.hingeGap]));
       grooves.push(g);
     }
   }
   const slot = ctx.keep(ctx.keep(Manifold.cube([2 * (pinR + rr + 1), slotW, L])).translate([-(pinR + rr + 1), -slotW / 2, root]));
-  return { ribs, grooves, slot, bite };
+  // Lunghezza delle lamelle che basterebbe per scatti che tengono (interferenza almeno `weakBiteMm`).
+  const needL = Math.sqrt((PIN_DETENT.weakBiteMm * 1.5 * t) / PIN_DETENT.maxStrain);
+  return { ribs, grooves, slot, bite, L, needL };
 }
 
 /** Cerniera stampabile già montata: nocche A-B-A con perno integrato in A. */
@@ -422,9 +445,10 @@ export function hingeGeometry(ctx: Ctx, j: Joint, tol: Tolerances = TOL): JointG
       const root = -Math.abs(sign === 1 ? bZ1 : bZ0);
       // Il ribaltamento della metà positiva inverte il verso degli angoli: si compensa qui.
       const angles = (j.detent!.anglesDeg?.length ? j.detent!.anglesDeg : [0, 90]).map((a) => (sign === 1 ? -a : a));
-      const d = pinDetent(ctx, pinR, pinR + tol.pinClearance, Math.max(1, pinR * 0.6), root, -0.3, angles, tol);
+      const d = pinDetent(ctx, pinR, pinR + tol.pinClearance, Math.max(1, pinR * 0.6), root, -0.3, angles, tol, true);
       const body = ctx.keep(ctx.keep(Manifold.union([cyl(L / 2 - 0.1 - 0.3, pinR, -(L / 2 - 0.1)), ...d.ribs])).subtract(d.slot));
       // Costruita verso -Z: per la metà positiva si ribalta.
+      out.detent = !out.detent || d.bite < out.detent.biteMm ? { biteMm: d.bite, lamellaMm: d.L, needMm: d.needL } : out.detent;
       return { pin: sign === 1 ? ctx.keep(body.rotate([180, 0, 0])) : body, grooves: d.grooves.map((m) => (sign === 1 ? ctx.keep(m.rotate([180, 0, 0])) : m)) };
     };
     for (const h of [half(-1), half(1)]) {
@@ -518,9 +542,10 @@ export function rotaryGeometry(ctx: Ctx, j: Joint, A: Manifold, B: Manifold, mod
     const slotW = Math.max(1.5, 2 * lip + 0.1);
     const slot0 = hn;
     if (detentAngles) {
-      const d = pinDetent(ctx, pinR, pinR + clr, slotW, slot0, tipZ, detentAngles, tol);
+      const d = pinDetent(ctx, pinR, pinR + clr, slotW, slot0, tipZ, detentAngles, tol, false);
       parts.push(...d.ribs);
       out.subB.push(...d.grooves.map(place));
+      out.detent = { biteMm: d.bite, lamellaMm: d.L, needMm: d.needL };
     }
     const slot = ctx.keep(ctx.keep(Manifold.cube([2 * (barbR + 1), slotW, tipZ + 10 - slot0])).translate([-(barbR + 1), -slotW / 2, slot0]));
     out.postA!.push(place(ctx.keep(ctx.keep(Manifold.union(parts)).subtract(slot))));
@@ -542,10 +567,11 @@ export function rotaryGeometry(ctx: Ctx, j: Joint, A: Manifold, B: Manifold, mod
       // Già montato: le lamelle arrivano fino alla testa (che quindi tiene un po' meno);
       // per questo con gli scatti l'app preferisce i due pezzi a scatto (vedi evaluateDesign).
       const slotW = Math.max(1.2, pinR * 0.6);
-      const d = pinDetent(ctx, pinR, pinR + clr, slotW, hn, pinEnd, detentAngles, tol);
+      const d = pinDetent(ctx, pinR, pinR + clr, slotW, hn, pinEnd, detentAngles, tol, true);
       const slot = ctx.keep(ctx.keep(Manifold.cube([2 * (pinR + c + 1), slotW, hf + 1 - hn])).translate([-(pinR + c + 1), -slotW / 2, hn]));
       pin = ctx.keep(ctx.keep(Manifold.union([pin, ...d.ribs])).subtract(slot));
       out.subB.push(...d.grooves.map(place));
+      out.detent = { biteMm: d.bite, lamellaMm: d.L, needMm: d.needL };
     }
     out.postA!.push(place(pin));
     out.subB.push(...withSag(place(cyl(Math.min(start, hn) - 1, hf + 1, pinR + clr))));
@@ -935,6 +961,7 @@ export function evaluateDesign(
 
   // Perni rotanti: già montati o in due pezzi a scatto (scelta dell'utente o dell'app, vedi chooseRotaryPrint).
   const jointModes: JointModes = {};
+  const detents: DetentReport[] = [];
   for (const j of design.joints) {
     if (j.type !== 'rotary' || !base.has(j.partA) || !base.has(j.partB)) continue;
     if (j.print === 'loose') continue;
@@ -975,6 +1002,7 @@ export function evaluateDesign(
       push(add, j.partB, g.addB);
       push(sub, j.partB, g.subB);
       if (g.postA?.length) push(post, j.partA, g.postA);
+      if (g.detent) detents.push({ jointId: j.id, ...g.detent, weak: g.detent.biteMm < PIN_DETENT.weakBiteMm });
     } catch (e) {
       errors.push(`Giunto "${j.id}": ${(e as Error).message}`);
     }
@@ -1118,7 +1146,7 @@ export function evaluateDesign(
     }
   }
   ctx.dispose();
-  return { parts, errors, connectors, overlaps, buttons, printStats, jointModes };
+  return { parts, errors, connectors, overlaps, buttons, printStats, jointModes, detents };
 }
 
 /**

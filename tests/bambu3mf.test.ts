@@ -115,6 +115,11 @@ describe('3MF per Bambu Studio e derivati (Anycubic Slicer Next)', () => {
     const supported = objects.find((o) => o.includes('enable_support'))!;
     const plain = objects.find((o) => !o.includes('enable_support'))!;
     expect(supported).toContain('key="bottom_shell_layers" value="7"');
+    // Supporti dello stesso materiale: interfaccia fitta a un strato di distanza, così la pelle sopra esce liscia.
+    expect(supported).toContain('key="support_interface_top_layers" value="3"');
+    expect(supported).toContain('key="support_interface_spacing" value="0.2"');
+    expect(supported).toContain('key="support_top_z_distance" value="0.2"');
+    expect(plain).not.toContain('support_interface');
     expect(plain).toContain('key="bottom_shell_layers" value="5"');
     const prusa = strFromU8(unzipSync(build3MF(parts, { title: 'Gusci', flavor: 'prusa', strategy: 'separate', bed: [256, 256, 256] }))['Metadata/Slic3r_PE_model.config']);
     expect(prusa).toContain('key="perimeters" value="3"');

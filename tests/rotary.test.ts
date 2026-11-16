@@ -65,12 +65,13 @@ const solid = (w: ManifoldToplevel, r: EvalResult, id: string): Manifold => {
 };
 
 /** A e B non si toccano e B non si sfila allontanandosi da A lungo l'asse. */
-function expectFreeAndHeld(w: ManifoldToplevel, r: EvalResult, a: string, b: string) {
+/** `seated`: volume ammesso in comune a riposo (costole precaricate degli scatti, solo con i pezzi separati). */
+function expectFreeAndHeld(w: ManifoldToplevel, r: EvalResult, a: string, b: string, seated = 0.01) {
   const A = solid(w, r, a);
   const B = solid(w, r, b);
-  expect(A.intersect(B).volume()).toBeLessThan(0.01);
+  expect(A.intersect(B).volume()).toBeLessThan(seated);
   // Spinto di 0,2 mm verso A non tocca: c'è gioco anche sulle facce, non si saldano.
-  expect(A.intersect(B.translate([0, 0, -0.2])).volume()).toBeLessThan(0.01);
+  expect(A.intersect(B.translate([0, 0, -0.2])).volume()).toBeLessThan(seated);
   // Tirato via di 1 mm urta il fermo del perno.
   expect(A.intersect(B.translate([0, 0, 1])).volume()).toBeGreaterThan(1);
 }
@@ -169,14 +170,14 @@ describe('scatti sul perno', () => {
     const r = evaluateDesign(w, d, {}, {}, ORIENT);
     expect(r.errors).toEqual([]);
     expect(r.jointModes).toEqual({ sterzo: 'snap' });
-    expectFreeAndHeld(w, r, 'piantone', 'volante');
+    expectFreeAndHeld(w, r, 'piantone', 'volante', 3);
     const j = d.joints[0];
     const at = (deg: number) => biteAt(w, r, j, deg, 6, [0, 14]);
-    expect(at(0)).toBeLessThan(0.01);
-    expect(at(60)).toBeLessThan(0.01);
-    // Il verso conta: -60° non è una posizione scelta.
-    expect(at(-60)).toBeGreaterThan(0.3);
-    expect(at(30)).toBeGreaterThan(0.3);
+    // In posizione la costola spinge appena (precarico, niente gioco); tra una posizione e l'altra molto di più.
+    const seated = Math.max(at(0), at(60));
+    expect(seated).toBeGreaterThan(0.1);
+    expect(at(-60)).toBeGreaterThan(2 * seated);
+    expect(at(30)).toBeGreaterThan(2 * seated);
   });
 
   it('con gli scatti e le parti separate l\'app sceglie il perno a scatto', async () => {
@@ -197,9 +198,28 @@ describe('scatti sul perno', () => {
     expectFreeAndHeld(w, r, 'base', 'piatto');
     const j = d.joints[0];
     const at = (deg: number) => biteAt(w, r, j, deg, 8, [0, 10]);
+    // Già montato la posizione di stampa non tocca (si salderebbe); le altre sono precaricate.
     expect(at(0)).toBeLessThan(0.01);
-    expect(at(180)).toBeLessThan(0.01);
-    expect(at(45)).toBeGreaterThan(0.1);
+    // 180° coincide con 0° (le costole sono due, opposte): si guarda 90°.
+    expect(at(90)).toBeGreaterThan(0.01);
+    expect(at(45)).toBeGreaterThan(2 * at(90));
+  });
+
+  it('lamelle corte: gli scatti terrebbero poco e l\'analisi lo dice, con la lunghezza che servirebbe', async () => {
+    const w = await manifold();
+    const d = wheel('separate', { detent: { enabled: true } });
+    const r = evaluateDesign(w, d, {}, {}, ORIENT);
+    // Mozzo lungo: lamelle lunghe, interferenza piena, nessun avviso.
+    expect(r.detents).toEqual([expect.objectContaining({ jointId: 'sterzo', weak: false })]);
+    expect(r.detents[0].biteMm).toBeGreaterThan(0.6);
+    const warn = (rep: ReturnType<typeof analyze>) => rep.warnings.filter((x) => x.includes('terranno poco'));
+    expect(warn(analyze(d, r.parts, setup, printer('bambu-a1'), new Set(), r))).toEqual([]);
+    // Lamelle corte (stesso giunto, dati dello scatto simulati): avviso con la lunghezza che servirebbe.
+    const short = { ...r, detents: [{ jointId: 'sterzo', biteMm: 0.2, lamellaMm: 4, needMm: 7.5, weak: true }] };
+    const msgs = warn(analyze(d, r.parts, setup, printer('bambu-a1'), new Set(), short));
+    expect(msgs).toHaveLength(1);
+    expect(msgs[0]).toContain('4 mm');
+    expect(msgs[0]).toContain('8 mm');
   });
 
   it('cerniera: il perno diviso in lamelle scatta nelle posizioni scelte', async () => {
@@ -212,8 +232,7 @@ describe('scatti sul perno', () => {
     // Solo il tratto della nocca centrale (B), dentro il raggio della nocca.
     const at = (deg: number) => biteAt(w, r, j, deg, 3.4, [-5, 5]);
     expect(at(0)).toBeLessThan(0.01);
-    expect(at(100)).toBeLessThan(0.01);
-    expect(at(-100)).toBeGreaterThan(0.05);
-    expect(at(50)).toBeGreaterThan(0.05);
+    expect(at(-100)).toBeGreaterThan(2 * at(100));
+    expect(at(50)).toBeGreaterThan(2 * at(100));
   });
 });
