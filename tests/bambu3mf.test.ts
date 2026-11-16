@@ -98,6 +98,29 @@ describe('3MF per Bambu Studio e derivati (Anycubic Slicer Next)', () => {
     expect(cfg.match(/<plate>/g)).toHaveLength(1);
   });
 
+  it('gusci robusti per ogni oggetto: 3 pareti, pelli spesse, fondo più spesso sopra i supporti', () => {
+    const parts: ExportPart[] = [
+      { name: 'Con supporti', mesh: cube(20), extruder: 1, group: 'a', print: { supports: true, brim: 0 } },
+      { name: 'Senza', mesh: cube(20, 40), extruder: 1, group: 'b' },
+    ];
+    const zip = unzipSync(build3MF(parts, { title: 'Gusci', flavor: 'orca', strategy: 'separate', bed: [256, 256, 256] }));
+    const objects = strFromU8(zip['Metadata/model_settings.config']).split('<object id=').slice(1);
+    expect(objects).toHaveLength(2);
+    for (const o of objects) {
+      expect(o).toContain('key="wall_loops" value="3"');
+      expect(o).toContain('key="top_shell_layers" value="6"');
+      expect(o).toContain('key="top_shell_thickness" value="1.2"');
+      expect(o).toContain('key="sparse_infill_density" value="20%"');
+    }
+    const supported = objects.find((o) => o.includes('enable_support'))!;
+    const plain = objects.find((o) => !o.includes('enable_support'))!;
+    expect(supported).toContain('key="bottom_shell_layers" value="7"');
+    expect(plain).toContain('key="bottom_shell_layers" value="5"');
+    const prusa = strFromU8(unzipSync(build3MF(parts, { title: 'Gusci', flavor: 'prusa', strategy: 'separate', bed: [256, 256, 256] }))['Metadata/Slic3r_PE_model.config']);
+    expect(prusa).toContain('key="perimeters" value="3"');
+    expect(prusa).toContain('key="fill_density" value="20%"');
+  });
+
   it('con il profilo della stampante il 3MF è un progetto: impostazioni minime e filamenti usati (estrusori 8 e 9 → 1 e 2)', () => {
     const white = { id: 'w', material: 'PETG', colorName: 'Bianco', hex: '#ffffff' };
     const black = { id: 'k', material: 'PETG', colorName: 'Nero', hex: '#000000' };

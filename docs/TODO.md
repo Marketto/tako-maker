@@ -4,6 +4,7 @@ Attività in corso o da fare. Quando una è conclusa, spostala in [COMPLETED.md]
 
 ## Da verificare
 
+- **Gusci robusti (16/11):** riesportare il cruscotto e controllare nello slicer che gli oggetti abbiano 3 pareti, fondo da 7 strati con i supporti e 20%; dopo la stampa, che il riempimento non si veda e la pelle resti attaccata staccando i supporti.
 - **Backup nel cloud.**
   1. Registra le app Dropbox e Google.
   2. Salva `DROPBOX_APP_KEY` e `GOOGLE_CLIENT_ID` come variabili del repository ([BACKUP.md](BACKUP.md)).
