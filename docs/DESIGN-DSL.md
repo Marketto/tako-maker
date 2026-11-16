@@ -37,7 +37,17 @@ Se qualcosa non va, il design resta invariato e l’AI riceve il messaggio d’e
 armonizza le forme (raggio fino a 5 mm, sempre limitato dallo spessore) e chiede all'AI forme morbide e raccordate. L'utente sceglie
 una volta sola e la scelta vale per tutti i progetti (`UserSetup.style`); `design.style` la cambia per un solo progetto e si imposta
 con `set_meta` e `"round"`/`"smooth"` (`null` torna alla preferenza generale). L'arrotondamento si applica nel calcolo della geometria
-(`core/design/style.ts`): il disegno salvato non cambia.
+(`core/design/style.ts`): il disegno salvato non cambia. Con l'arrotondamento attivo l'app aggiunge anche i **raccordi** dove due
+forme della stessa parte si toccano (`core/geometry/fillets.ts`): ogni box, cilindro, sfera o `hull` è convesso, quindi il raccordo è
+l'inviluppo delle due fasce vicine al contatto, calcolato sulle forme disegnate (riempie anche il solco che lascerebbero gli spigoli
+arrotondati). Due smussi con lati r e 0,41·r approssimano il quarto di cerchio. Raggio al massimo quello della preferenza e 0,35 volte lo
+spessore della forma più sottile (`FILLET`): anche i pezzi piccoli hanno raccordi piccoli. Il raccordo non riempie mai i fori e le tasche
+disegnati né lo spazio delle altre parti allargato del gioco delle cerniere; giunti, perni, pulsanti e agganci si generano dopo, esatti.
+`intersection` e `mesh` non hanno raccordi.
+
+`intendedUse.rests` (si usa appoggiato su un piano: `true`; in mano o appeso: `false`) e `intendedUse.hand` (`man`, `woman`, `teen`,
+`child`, `toddler`: per chi è l'impugnatura) si impostano con `set_meta`. Una parte che si impugna ha `"grip": {}`; `grip.ergonomic`
+lo sceglie l'utente rispondendo alla domanda dell'app (`update_part` con `grip`, `null` lo toglie). Misure della mano in `HAND_GRIP`.
 
 `printPlan.connection` (unione delle parti stampate separate): `snap` (perni a incastro), `glue` (perni di centraggio per la colla),
 `none` (non ancora deciso: l'app chiede all'utente), `designed` (aggancio disegnato dall'AI nel modello, es. coda di rondine o binario

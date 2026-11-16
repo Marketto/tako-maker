@@ -13,6 +13,7 @@ export type CatalogTopic =
   | 'perni'
   | 'fermi'
   | 'click'
+  | 'impugnature'
   | 'guide'
   | 'pareti'
   | 'imbarcamento'
@@ -87,6 +88,16 @@ export const CATALOG: CatalogEntry[] = [
       'Interferenza della costola 0,6 mm, raggio della scanalatura 1,5 mm (più largo della costola), precarico 0,1 mm.',
       'Più scanalature ad angoli diversi danno più posizioni stabili.',
       'Su un perno che gira lo scatto va sul perno stesso: le lamelle del perno spaccato fanno da molla e le costole entrano nelle scanalature del foro. Un dentino sulla faccia non scatta: il gioco lungo l’asse lo lascia scivolare via.',
+    ],
+  },
+  {
+    topic: 'impugnature',
+    title: 'Impugnature e maniglie',
+    rules: [
+      'Presa a mano piena: sezione tonda o ovale da 35–40 mm per un uomo adulto, 30–35 per una donna, 28–33 a 11–14 anni, 22–28 a 6–10 anni, 18–22 a 3–5 anni; zona impugnata lunga almeno la larghezza della mano più 2 cm (120, 110, 100, 85, 70 mm).',
+      'Sezione ovale (circa 1,2:1) se l’impugnatura deve far capire il verso o trasmettere una torsione; tonda se gira in mano.',
+      'Niente spigoli dove appoggiano dita e palmo; eventuali incavi per le dita larghi 20–22 mm negli adulti (15–17 nei bambini) e poco profondi (2–3 mm), altrimenti vanno bene solo a una mano.',
+      'Maniglia ad arco: almeno 30 mm di spazio libero per le dita (adulti), 25 mm per i bambini.',
     ],
   },
   {

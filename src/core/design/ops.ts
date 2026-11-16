@@ -1,13 +1,13 @@
-import type { ButtonSpec, Design, Hardware, Joint, Part, Sample, ShapeNode, Vec3, PrintStrategy, Connection } from '../types';
+import type { ButtonSpec, Design, Hardware, Joint, Part, Sample, ShapeNode, Vec3, PrintStrategy, Connection, HandSize } from '../types';
 
 /* Operazioni di modifica del Design. L'agente invia una lista di queste
    operazioni (tool "edit_design") invece di riscrivere tutto il documento:
    meno token in uscita e modifiche più facili da validare. */
 
 export type DesignOp =
-  | { op: 'set_meta'; name?: string; description?: string; children?: boolean; notes?: string; round?: boolean | null; smooth?: boolean | null }
+  | { op: 'set_meta'; name?: string; description?: string; children?: boolean; notes?: string; round?: boolean | null; smooth?: boolean | null; rests?: boolean | null; hand?: HandSize | null }
   | { op: 'add_part'; part: Part }
-  | { op: 'update_part'; id: string; name?: string; filamentId?: string; shape?: ShapeNode; button?: Partial<ButtonSpec> | null }
+  | { op: 'update_part'; id: string; name?: string; filamentId?: string; shape?: ShapeNode; button?: Partial<ButtonSpec> | null; grip?: { ergonomic?: boolean } | null }
   | { op: 'move_part'; id: string; at?: Vec3; rot?: Vec3 }
   | { op: 'remove_part'; id: string }
   | { op: 'add_joint'; joint: Joint }
@@ -31,6 +31,8 @@ export const LIMITS = {
 };
 
 export class DesignError extends Error {}
+
+const HANDS: HandSize[] = ['man', 'woman', 'teen', 'child', 'toddler'];
 
 const SHAPE_OPS = new Set(['box', 'cylinder', 'sphere', 'mesh', 'union', 'difference', 'intersection', 'hull']);
 
@@ -98,7 +100,9 @@ export function validateDesign(d: Design, filamentIds?: Set<string>): void {
     if (!['x', 'y', 'z'].includes(j.axis)) throw new DesignError(`Il giunto "${j.id}" ha un asse non valido`);
     if (j.print !== undefined && (j.type !== 'rotary' || !['in-place', 'snap'].includes(j.print))) throw new DesignError(`Il giunto "${j.id}": "print" vale solo per i giunti rotary ("in-place" o "snap")`);
   }
+  if (d.intendedUse.hand !== undefined && !HANDS.includes(d.intendedUse.hand)) throw new DesignError(`"hand" non valido: usa ${HANDS.join(', ')}`);
   for (const p of d.parts) {
+    if (p.grip !== undefined && (typeof p.grip !== 'object' || (p.grip.ergonomic !== undefined && typeof p.grip.ergonomic !== 'boolean'))) throw new DesignError(`La parte "${p.id}": "grip" deve essere un oggetto, es. {} o {"ergonomic":true}`);
     const b = p.button;
     if (!b) continue;
     if (!ids.has(b.housing) || b.housing === p.id) throw new DesignError(`Il pulsante "${p.id}" deve indicare in "housing" la parte che lo contiene`);
@@ -156,6 +160,14 @@ export function applyOps(design: Design, ops: DesignOp[], filamentIds?: Set<stri
         if (o.description !== undefined) d.description = String(o.description).slice(0, 500);
         if (o.children !== undefined) d.intendedUse.children = !!o.children;
         if (o.notes !== undefined) d.intendedUse.notes = String(o.notes).slice(0, 300);
+        if (o.rests !== undefined) {
+          if (o.rests === null) delete d.intendedUse.rests;
+          else d.intendedUse.rests = !!o.rests;
+        }
+        if (o.hand !== undefined) {
+          if (o.hand === null) delete d.intendedUse.hand;
+          else d.intendedUse.hand = o.hand;
+        }
         for (const k of ['round', 'smooth'] as const) {
           if (o[k] === undefined) continue;
           const style = { ...d.style };
@@ -173,6 +185,8 @@ export function applyOps(design: Design, ops: DesignOp[], filamentIds?: Set<stri
         if (o.name !== undefined) p.name = o.name;
         if (o.filamentId !== undefined) p.filamentId = o.filamentId;
         if (o.shape !== undefined) p.shape = o.shape;
+        if (o.grip === null) delete p.grip;
+        else if (o.grip !== undefined) p.grip = { ...p.grip, ...o.grip };
         if (o.button === null) delete p.button;
         else if (o.button !== undefined) p.button = { ...p.button, ...o.button } as ButtonSpec;
         break;

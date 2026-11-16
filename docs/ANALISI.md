@@ -27,6 +27,9 @@ Punteggio = ore + grammi di scarto / 20 + penalità (montaggio, attenzione richi
 | Pulsanti senza risposta scelta | “Devono fare click o essere morbidi?” | `update_part.button.feel` |
 | Pulsante di colore diverso dal guscio senza multicolore | “Usiamo lo stesso colore?” | `update_part.filamentId` |
 | Preferenza di forma non ancora scelta (una volta sola, per tutti i progetti) | “Arrotondo angoli e spigoli vivi dei modelli?”, poi, se sì, “Vuoi anche armonizzare le forme?” | `UserSetup.style` (anche nelle Impostazioni, sezione «Forme») |
+| Parte con `grip` senza scelta | “«Leva» si impugna: vuoi che sia ergonomica?”; se la mano è già nota il sì chiede subito all'assistente forma e misure | `update_part.grip.ergonomic` (+ richiesta all'assistente) |
+| Impugnatura ergonomica senza `hand` | “Per chi è pensata l'impugnatura?” (uomo, donna, 11–14, 6–10, 3–5 anni; per i bambini solo le età giovani), con diametro consigliato | `set_meta.hand` + richiesta all'assistente con diametro e lunghezza da `HAND_GRIP` |
+| Modello instabile appoggiato (`rests` non scelto) | “Il modello deve stare in piedi da solo, appoggiato su un piano?”: sì chiede all'assistente di renderlo stabile | `set_meta.rests` |
 | Oggetto per bambini con spigoli vivi, se l'utente non arrotonda già tutto | “Arrotondo gli spigoli esterni (2 mm)?” | `radius` su box e cilindri non sottrattivi |
 
 ## Avvisi
@@ -38,7 +41,10 @@ Punteggio = ore + grammi di scarto / 20 + penalità (montaggio, attenzione richi
 - tratti di bordo lunghi senza ganci tra parti a incastro (oltre 1,5 volte la distanza tra i perni);
 - pulsanti che non si possono generare (guscio troppo sottile, tasto troppo piccolo, tasto non sopra il guscio);
 - elementi acquistati in oggetti per bambini (fissarli bene; magneti e pile a bottone);
-- elementi da sostituire con una soluzione stampata non ancora sostituiti.
+- elementi da sostituire con una soluzione stampata non ancora sostituiti;
+- modello che si usa appoggiato (`rests: true`) e cade o si ribalta con meno di 10° di inclinazione (15° per i bambini). Il baricentro
+  (`core/analysis/stability.ts`) è quello di tutte le parti montate, nella posizione disegnata, pesato con la densità del materiale;
+  la base è l'inviluppo dei punti entro 0,5 mm dal più basso (`STABILITY`). Con `rests` non scelto è una domanda; con `false` niente.
 
 ## Guida di montaggio (`core/assembly/plan.ts`)
 

@@ -1,10 +1,10 @@
-import type { Design, PrinterSpec, Question, UserSetup, Vec3 } from '../types';
+import type { Design, HandSize, PrinterSpec, Question, UserSetup, Vec3 } from '../types';
 import type { DesignOp } from '../design/ops';
 import { walkShape } from '../design/ops';
 import { findContacts, overhangBeyond, PEG_SPACING, type PrintStats, type BodyStats, type ButtonReport, type ConnectorReport, type OverlapReport } from '../geometry/evaluate';
 import { pairKey, prefersSnap, printedTogether, type JointModes } from '../design/links';
 import { material } from '../../data/materials';
-import { bondsPoorly, guideline, MAX_SLENDERNESS, MIN_CONTACT_MM2, minWall, SMALL_PART_BRIM_MM, SUPPORT_MIN_AREA_MM2, supportInterfaceFor, plaSupportWeakensPetg, LARGE_FLAT_MM2, LARGE_FLAT_MAX_H, MIXED_PLA_PETG_C, ROUND_RADIUS_MM } from '../../data/guidelines';
+import { bondsPoorly, guideline, MAX_SLENDERNESS, MIN_CONTACT_MM2, minWall, SMALL_PART_BRIM_MM, SUPPORT_MIN_AREA_MM2, supportInterfaceFor, plaSupportWeakensPetg, LARGE_FLAT_MM2, LARGE_FLAT_MAX_H, MIXED_PLA_PETG_C, ROUND_RADIUS_MM, HAND_GRIP, STABILITY } from '../../data/guidelines';
 import { pendingSamples } from '../calibration/coupons';
 import { bedOf, estimateStrategies, fitsBed, fmtTime, STRATEGY_LABEL, type PartStat, type StrategyEstimate } from './estimate';
 import { fmtNum, t } from '../../i18n';
@@ -12,6 +12,7 @@ import { hardwareLabel, hardwareOf, toBuy } from '../hardware';
 import { plateKeepFree } from '../plate';
 import { isDesignDown, isRisky, supportGrams, type OrientOption } from '../geometry/orient';
 import { effectiveStyle, roundShape, sharpBoxes } from '../design/style';
+import { stability } from './stability';
 
 export { roundShape, sharpBoxes };
 
@@ -330,6 +331,83 @@ export function analyze(
         { id: 'no', label: t('No, basta arrotondare'), prefs: { smooth: false } },
       ],
     });
+  }
+
+  /* ---- Impugnature: ergonomiche e per quale mano ---- */
+  {
+    const grips = design.parts.filter((p) => p.grip);
+    const names = (list: typeof grips) => list.map((p) => `«${p.name}»`).join(', ');
+    // Richiesta per l'assistente (solo per l'AI, in italiano): forma e misure per la mano scelta.
+    const gripPrompt = (list: typeof grips, hand: HandSize) => {
+      const g = HAND_GRIP[hand];
+      return `Rendi ergonomica l'impugnatura di ${names(list)} per ${g.who}: sezione tonda o ovale da ${g.diameter[0]}–${g.diameter[1]} mm, zona impugnata lunga almeno ${g.length} mm, forme morbide che riempiono la mano, niente spigoli dove appoggiano le dita. Non cambiare giunti, agganci e parti mobili.`;
+    };
+    const hand = design.intendedUse.hand;
+    const undecided = grips.filter((p) => p.grip!.ergonomic === undefined);
+    const key = `grip:${undecided.map((p) => p.id).join(',')}`;
+    if (undecided.length && !answered.has(key)) {
+      const yes: DesignOp[] = undecided.map((p) => ({ op: 'update_part', id: p.id, grip: { ergonomic: true } }));
+      const no: DesignOp[] = undecided.map((p) => ({ op: 'update_part', id: p.id, grip: { ergonomic: false } }));
+      questions.push({
+        id: key,
+        key,
+        source: 'analysis',
+        text: undecided.length === 1 ? t('«{name}» si impugna: vuoi che sia ergonomica?', { name: undecided[0].name }) : t('Queste parti si impugnano: {names}. Vuoi che siano ergonomiche?', { names: names(undecided) }),
+        detail: t('Forme morbide che riempiono la mano, con le misure adatte a chi la usa.'),
+        options: [
+          hand ? { id: 'yes', label: t('Sì, ergonomica'), ops: yes, action: 'ask_ai', prompt: gripPrompt(undecided, hand) } : { id: 'yes', label: t('Sì, ergonomica'), ops: yes },
+          { id: 'no', label: t('No, va bene così'), ops: no },
+        ],
+      });
+    }
+    const ergonomic = grips.filter((p) => p.grip!.ergonomic);
+    if (ergonomic.length && !hand && !answered.has('hand')) {
+      const options = (Object.keys(HAND_GRIP) as HandSize[])
+        .filter((h) => !design.intendedUse.children || h === 'teen' || h === 'child' || h === 'toddler')
+        .map((h) => ({
+          id: h,
+          label: t(HAND_GRIP[h].label),
+          hint: t('impugnatura da {min}–{max} mm', { min: HAND_GRIP[h].diameter[0], max: HAND_GRIP[h].diameter[1] }),
+          ops: [{ op: 'set_meta', hand: h }] as DesignOp[],
+          action: 'ask_ai' as const,
+          prompt: gripPrompt(ergonomic, h),
+        }));
+      questions.push({ id: 'hand', key: 'hand', source: 'analysis', text: t('Per chi è pensata l\'impugnatura?'), detail: t('Età e mano di chi la userà: ne dipendono spessore e lunghezza.'), options });
+    }
+  }
+
+  /* ---- Stabilità sul piano (posizione d'uso = come è disegnato) ---- */
+  if (design.intendedUse.rests !== false && parts.length) {
+    const st = stability(parts, (id) => material(filById.get(id ?? '')?.material ?? 'PLA').density);
+    const limit = design.intendedUse.children ? STABILITY.childrenTipDeg : STABILITY.minTipDeg;
+    if (st && st.tipDeg < limit) {
+      const falls = st.marginMm <= 0;
+      const deg = fmtNum(st.tipDeg, 0, 0);
+      if (design.intendedUse.rests === undefined) {
+        if (!answered.has('rests')) {
+          const why = falls ? 'cade da solo: il baricentro è fuori dalla base d\'appoggio' : `si ribalta inclinandolo di soli ${Math.round(st.tipDeg)}°: il baricentro è a ${Math.round(st.marginMm)} mm dal bordo della base e alto ${Math.round(st.heightMm)} mm`;
+          questions.push({
+            id: 'rests',
+            key: 'rests',
+            source: 'analysis',
+            text: t('Il modello deve stare in piedi da solo, appoggiato su un piano?'),
+            detail: falls ? t('Appoggiato come è disegnato cade: il baricentro è fuori dalla base.') : t('Appoggiato come è disegnato si ribalta inclinandolo di soli {deg}°.', { deg }),
+            options: [
+              {
+                id: 'yes',
+                label: t('Sì, deve stare appoggiato'),
+                ops: [{ op: 'set_meta', rests: true }],
+                action: 'ask_ai',
+                prompt: `Appoggiato sul piano come è disegnato, il modello ${why}. Rendilo stabile senza cambiarne l'uso: allarga la base o la zona d'appoggio, abbassa le parti pesanti o aggiungi materiale in basso. Non toccare giunti, agganci e parti mobili.`,
+              },
+              { id: 'no', label: t('No, si tiene in mano o si appende'), ops: [{ op: 'set_meta', rests: false }] },
+            ],
+          });
+        }
+      } else {
+        warnings.push(falls ? t('Appoggiato sul piano il modello cade: il baricentro è fuori dalla base. Allarga la base o abbassa le parti pesanti.') : t('Appoggiato sul piano il modello si ribalta inclinandolo di soli {deg}°: allarga la base o abbassa le parti pesanti.', { deg }));
+      }
+    }
   }
 
   /* ---- Bambini ---- */

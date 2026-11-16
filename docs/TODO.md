@@ -16,6 +16,10 @@ Attività in corso o da fare. Quando una è conclusa, spostala in [COMPLETED.md]
   - lo scatto entri a mano senza spezzare le lamelle e non si sfili tirando (dentino 0,7 mm oltre il foro, `ROTARY_SNAP` in `src/data/guidelines.ts`);
   - con gli scatti (`detent`) il pezzo resti fermo nelle posizioni scelte senza cadere per il peso e scatti in modo netto (`PIN_DETENT`);
   - il pezzo già montato si stacchi e giri.
+- **Raccordi, baricentro e impugnature.** Con «armonizza le forme» attivo chiedi un oggetto con più forme, per esempio una lampada con piede, stelo e braccio, o un manico. Controlla che:
+  - i raccordi nascondano le giunzioni e non chiudano fori o incastri;
+  - la domanda sulla stabilità esca solo per modelli davvero instabili;
+  - con una maniglia arrivino le domande su ergonomia e mano, e l'assistente rispetti le misure.
 - **Consumo di token con il connettore.** Badge e impostazioni devono mostrare la stima dopo `printopus_apri`.
 
 ## Da fare
