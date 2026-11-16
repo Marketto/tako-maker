@@ -857,3 +857,23 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
 .cloud-actions .link, .restore .link { min-height: 40px; }
 .cloud-line { text-align: center; margin: 0.6rem 0 0; }
 .restore { margin-top: 0.8rem; text-align: center; }
+
+/* ---------- Telefono: area di lavoro meno affollata ---------- */
+@media (max-width: 760px) {
+  /* Legenda in una riga sola in alto, scorrevole: in basso c'è Takotta, al centro il modello. */
+  .viewer-legend, .mascot-dock.compact ~ .viewer-legend {
+    top: 0.45rem; bottom: auto; left: 0; right: 0; max-width: none;
+    flex-wrap: nowrap; overflow-x: auto; overscroll-behavior-x: contain; scrollbar-width: none;
+    padding-inline: 0.6rem; pointer-events: auto; touch-action: pan-x;
+    mask-image: linear-gradient(to right, transparent, #000 0.6rem, #000 calc(100% - 1.4rem), transparent);
+  }
+  .viewer-legend::-webkit-scrollbar { display: none; }
+  .viewer-legend > span { flex: none; white-space: nowrap; font-size: 0.72rem; padding: 0.1rem 0.5rem; }
+  /* Titolo su due righe invece di troncarlo dopo poche lettere. */
+  .topbar .title {
+    white-space: normal; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+    font-size: 0.95rem; line-height: 1.15; overflow-wrap: anywhere;
+  }
+  .topbar { gap: 0.35rem; padding-inline: 0.5rem; }
+  .budget { padding-inline: 0.45rem; font-size: 0.8rem; }
+}

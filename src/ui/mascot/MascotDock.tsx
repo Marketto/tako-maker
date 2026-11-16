@@ -102,7 +102,7 @@ export function MascotDock({ snap, tips, compact }: { snap: Snapshot; tips: stri
         }}
         aria-label={t('Coccola Takotta')}
       >
-        <Takotta mood={mood} size={compact ? 92 : 132} tips={tips} />
+        <Takotta mood={mood} size={compact ? 76 : 132} tips={tips} />
       </button>
     </div>
   );
