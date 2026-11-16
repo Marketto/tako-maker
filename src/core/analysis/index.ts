@@ -1,7 +1,7 @@
 import type { Design, HandSize, PrinterSpec, Question, UserSetup, Vec3 } from '../types';
 import type { DesignOp } from '../design/ops';
 import { walkShape } from '../design/ops';
-import { findContacts, overhangBeyond, PEG_SPACING, type PrintStats, type BodyStats, type ButtonReport, type ConnectorReport, type OverlapReport } from '../geometry/evaluate';
+import { findContacts, overhangBeyond, PEG_SPACING, type PrintStats, type BodyStats, type ButtonReport, type ConnectorReport, type OverlapReport, type DetentReport } from '../geometry/evaluate';
 import { pairKey, prefersSnap, printedTogether, type JointModes } from '../design/links';
 import { material } from '../../data/materials';
 import { bondsPoorly, guideline, MAX_SLENDERNESS, MIN_CONTACT_MM2, minWall, SMALL_PART_BRIM_MM, SUPPORT_MIN_AREA_MM2, supportInterfaceFor, plaSupportWeakensPetg, LARGE_FLAT_MM2, LARGE_FLAT_MAX_H, MIXED_PLA_PETG_C, ROUND_RADIUS_MM, HAND_GRIP, STABILITY, SUPPORT_INTERFACE_MIN_MM2 } from '../../data/guidelines';
@@ -67,7 +67,7 @@ export function analyze(
   setup: UserSetup,
   printer: PrinterSpec,
   answered: Set<string>,
-  extras: { connectors?: ConnectorReport[]; overlaps?: OverlapReport[]; buttons?: ButtonReport[]; printStats?: PrintStats; jointModes?: JointModes } = {},
+  extras: { connectors?: ConnectorReport[]; overlaps?: OverlapReport[]; buttons?: ButtonReport[]; printStats?: PrintStats; jointModes?: JointModes; detents?: DetentReport[] } = {},
 ): AnalysisReport {
   const questions: Question[] = [];
   const warnings: string[] = [];
@@ -262,6 +262,21 @@ export function analyze(
     if (r.ok || !r.reason) continue;
     const vars = Object.fromEntries(Object.entries(r.reasonVars ?? {}).map(([k, v]) => [k, fmtNum(v, 1, 0)]));
     warnings.push(t(r.reason, { ...vars, name: pname0(r.id) }));
+  }
+
+  // Scatti con lamelle corte: l'interferenza è ridotta per non spezzarle, quindi la posizione si perde facilmente.
+  for (const r of extras.detents ?? []) {
+    if (!r.weak) continue;
+    const j = design.joints.find((x) => x.id === r.jointId);
+    if (!j) continue;
+    warnings.push(
+      t('Gli scatti tra "{a}" e "{b}" terranno poco: le lamelle del perno sono lunghe solo {mm} mm. Chiedi all\'assistente di allungare il perno e la parte attorno (almeno {min} mm).', {
+        a: pname0(j.partA),
+        b: pname0(j.partB),
+        mm: fmtNum(r.lamellaMm, 1, 0),
+        min: fmtNum(Math.ceil(r.needMm), 0, 0),
+      }),
+    );
   }
 
   /* ---- Parti mobili → scatti ---- */
