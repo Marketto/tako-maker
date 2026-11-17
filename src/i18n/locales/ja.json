@@ -739,5 +739,9 @@
  "Viola scuro": "ダークパープル",
  "Viola traslucido": "半透明パープル",
  "Il calcolo della geometria non è partito: forse è uscita una nuova versione dell’app.": "形状の計算が始まりませんでした。アプリの新しいバージョンが出ているかもしれません。",
- "Ricarica la pagina": "ページを再読み込み"
+ "Ricarica la pagina": "ページを再読み込み",
+ "Scrivi la risposta qui sotto, oppure scegli un’opzione.": "下に答えを入力するか、選択肢を選んでください。",
+ "Scrivi la risposta qui sotto.": "下に答えを入力してください。",
+ "Scrivi la risposta…": "答えを入力…",
+ "Il modello si aggancia a «{object}»: prima di stamparlo tutto serve un campione piccolo della zona d’aggancio, per provare le misure. Chiedilo all’assistente.": "このモデルは「{object}」に取り付けます。全体を印刷する前に、寸法を確かめるため取り付け部分の小さな試作片が必要です。アシスタントに頼んでください。"
 }

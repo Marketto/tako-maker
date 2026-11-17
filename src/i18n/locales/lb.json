@@ -739,5 +739,9 @@
  "Viola scuro": "Donkelviolett",
  "Viola traslucido": "Violett transluzent",
  "Il calcolo della geometria non è partito: forse è uscita una nuova versione dell’app.": "D’Berechnung vun der Geometrie ass net ugaangen: vläicht gëtt et eng nei Versioun vun der App.",
- "Ricarica la pagina": "Säit nei lueden"
+ "Ricarica la pagina": "Säit nei lueden",
+ "Scrivi la risposta qui sotto, oppure scegli un’opzione.": "Schreif d'Äntwert hei drënner oder wiel eng Optioun.",
+ "Scrivi la risposta qui sotto.": "Schreif d'Äntwert hei drënner.",
+ "Scrivi la risposta…": "Schreif d'Äntwert…",
+ "Il modello si aggancia a «{object}»: prima di stamparlo tutto serve un campione piccolo della zona d’aggancio, per provare le misure. Chiedilo all’assistente.": "De Modell gëtt un „{object}“ befestegt: Ier s de alles dréckst, brauchs de e klengt Probestéck vun der Befestegungsstell, fir d’Moossen ze kontrolléieren. Fro den Assistent dono."
 }

@@ -739,5 +739,9 @@
  "Viola scuro": "Тъмновиолетово",
  "Viola traslucido": "Полупрозрачно виолетово",
  "Il calcolo della geometria non è partito: forse è uscita una nuova versione dell’app.": "Изчисляването на геометрията не започна: може би е излязла нова версия на приложението.",
- "Ricarica la pagina": "Презареди страницата"
+ "Ricarica la pagina": "Презареди страницата",
+ "Scrivi la risposta qui sotto, oppure scegli un’opzione.": "Напиши отговора по-долу или избери вариант.",
+ "Scrivi la risposta qui sotto.": "Напиши отговора по-долу.",
+ "Scrivi la risposta…": "Напиши отговора…",
+ "Il modello si aggancia a «{object}»: prima di stamparlo tutto serve un campione piccolo della zona d’aggancio, per provare le misure. Chiedilo all’assistente.": "Моделът се закача за „{object}“: преди да го отпечаташ целия, трябва малка проба от зоната на закачане, за да провериш размерите. Поискай я от асистента."
 }

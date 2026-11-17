@@ -739,5 +739,9 @@
  "Viola scuro": "Dökkfjólublátt",
  "Viola traslucido": "Hálfgegnsætt fjólublátt",
  "Il calcolo della geometria non è partito: forse è uscita una nuova versione dell’app.": "Útreikningur rúmfræðinnar fór ekki af stað: kannski er komin ný útgáfa af forritinu.",
- "Ricarica la pagina": "Endurhlaða síðuna"
+ "Ricarica la pagina": "Endurhlaða síðuna",
+ "Scrivi la risposta qui sotto, oppure scegli un’opzione.": "Skrifaðu svarið hér fyrir neðan eða veldu valkost.",
+ "Scrivi la risposta qui sotto.": "Skrifaðu svarið hér fyrir neðan.",
+ "Scrivi la risposta…": "Skrifaðu svarið…",
+ "Il modello si aggancia a «{object}»: prima di stamparlo tutto serve un campione piccolo della zona d’aggancio, per provare le misure. Chiedilo all’assistente.": "Líkanið festist á „{object}“: áður en þú prentar það allt þarftu lítið prufustykki af festingunni til að athuga málin. Biddu aðstoðarmanninn um það."
 }

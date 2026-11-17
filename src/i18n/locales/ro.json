@@ -739,5 +739,9 @@
  "Viola scuro": "Violet închis",
  "Viola traslucido": "Violet translucid",
  "Il calcolo della geometria non è partito: forse è uscita una nuova versione dell’app.": "Calculul geometriei nu a pornit: poate a apărut o versiune nouă a aplicației.",
- "Ricarica la pagina": "Reîncarcă pagina"
+ "Ricarica la pagina": "Reîncarcă pagina",
+ "Scrivi la risposta qui sotto, oppure scegli un’opzione.": "Scrie răspunsul mai jos sau alege o opțiune.",
+ "Scrivi la risposta qui sotto.": "Scrie răspunsul mai jos.",
+ "Scrivi la risposta…": "Scrie răspunsul…",
+ "Il modello si aggancia a «{object}»: prima di stamparlo tutto serve un campione piccolo della zona d’aggancio, per provare le misure. Chiedilo all’assistente.": "Modelul se prinde de „{object}”: înainte să-l imprimi întreg, ai nevoie de o mostră mică a zonei de prindere ca să verifici măsurile. Cere-o asistentului."
 }

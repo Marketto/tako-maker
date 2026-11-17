@@ -739,5 +739,9 @@
  "Viola scuro": "Donkerpaars",
  "Viola traslucido": "Doorschijnend paars",
  "Il calcolo della geometria non è partito: forse è uscita una nuova versione dell’app.": "De geometrieberekening is niet gestart: misschien is er een nieuwe versie van de app.",
- "Ricarica la pagina": "Pagina opnieuw laden"
+ "Ricarica la pagina": "Pagina opnieuw laden",
+ "Scrivi la risposta qui sotto, oppure scegli un’opzione.": "Typ je antwoord hieronder of kies een optie.",
+ "Scrivi la risposta qui sotto.": "Typ je antwoord hieronder.",
+ "Scrivi la risposta…": "Typ je antwoord…",
+ "Il modello si aggancia a «{object}»: prima di stamparlo tutto serve un campione piccolo della zona d’aggancio, per provare le misure. Chiedilo all’assistente.": "Het model wordt bevestigd aan ‘{object}’: voordat je alles print, heb je een klein proefstuk van de bevestiging nodig om de maten te controleren. Vraag het aan de assistent."
 }

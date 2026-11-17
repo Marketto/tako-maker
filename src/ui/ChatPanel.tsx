@@ -27,6 +27,8 @@ export function ChatPanel({ session, snap }: { session: ProjectSession; snap: Sn
   const endRef = useRef<HTMLDivElement>(null);
   const empty = snap.project.design.parts.length === 0;
   const { settings } = useStore();
+  // Se l'assistente aspetta una risposta scritta (es. misure), la si scrive nel campo in basso.
+  const writing = snap.questions.some((q) => q.freeText);
   useEffect(() => {
     void endRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end' });
   }, [snap.project.chat.length, snap.busy, snap.questions.length]);
@@ -90,7 +92,7 @@ export function ChatPanel({ session, snap }: { session: ProjectSession; snap: Sn
         <textarea
           rows={1}
           value={text}
-          placeholder={empty ? t('Descrivi l’oggetto…') : t('Chiedi una modifica…')}
+          placeholder={writing ? t('Scrivi la risposta…') : empty ? t('Descrivi l’oggetto…') : t('Chiedi una modifica…')}
           onChange={(e) => setText(e.target.value)}
           onKeyDown={(e) => {
             if (e.key === 'Enter' && !e.shiftKey) submit(e);
@@ -115,7 +117,8 @@ function QuestionCard({ q, onAnswer, disabled }: { q: Question; onAnswer: (ids: 
     <div className="question" role="group" aria-label={q.text}>
       <div className="q-text">{q.text}</div>
       {q.detail && <div className="muted small">{q.detail}</div>}
-      <div className="q-options">
+      {q.freeText && <div className="muted small">{q.options.length ? t('Scrivi la risposta qui sotto, oppure scegli un’opzione.') : t('Scrivi la risposta qui sotto.')}</div>}
+      {q.options.length > 0 && <div className="q-options">
         {q.options.map((o) =>
           q.multi ? (
             <SeaGlass key={o.id} className="opt" color={GLOW} on={sel.includes(o.id)} title={o.hint} onClick={() => setSel(sel.includes(o.id) ? sel.filter((x) => x !== o.id) : [...sel, o.id])}>
@@ -128,7 +131,7 @@ function QuestionCard({ q, onAnswer, disabled }: { q: Question; onAnswer: (ids: 
             </SeaChoice>
           ),
         )}
-      </div>
+      </div>}
       {q.multi && (
         <div className="row gap">
           <button className="btn primary small" disabled={disabled} onClick={() => onAnswer(sel)}>{sel.length ? t('Conferma') : t('Nessuna')}</button>

@@ -739,5 +739,9 @@
  "Viola scuro": "Mørkelilla",
  "Viola traslucido": "Gennemskinnelig lilla",
  "Il calcolo della geometria non è partito: forse è uscita una nuova versione dell’app.": "Beregningen af geometrien startede ikke: måske er der kommet en ny version af appen.",
- "Ricarica la pagina": "Genindlæs siden"
+ "Ricarica la pagina": "Genindlæs siden",
+ "Scrivi la risposta qui sotto, oppure scegli un’opzione.": "Skriv dit svar herunder, eller vælg en mulighed.",
+ "Scrivi la risposta qui sotto.": "Skriv dit svar herunder.",
+ "Scrivi la risposta…": "Skriv dit svar…",
+ "Il modello si aggancia a «{object}»: prima di stamparlo tutto serve un campione piccolo della zona d’aggancio, per provare le misure. Chiedilo all’assistente.": "Modellen sættes fast på “{object}”: før du printer det hele, skal du bruge en lille prøve af fastgørelsesområdet for at tjekke målene. Bed assistenten om den."
 }

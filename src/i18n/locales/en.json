@@ -739,5 +739,9 @@
  "Viola scuro": "Dark purple",
  "Viola traslucido": "Translucent purple",
  "Il calcolo della geometria non è partito: forse è uscita una nuova versione dell’app.": "The geometry calculation didn’t start: a new version of the app may be out.",
- "Ricarica la pagina": "Reload the page"
+ "Ricarica la pagina": "Reload the page",
+ "Scrivi la risposta qui sotto, oppure scegli un’opzione.": "Type your answer below, or pick an option.",
+ "Scrivi la risposta qui sotto.": "Type your answer below.",
+ "Scrivi la risposta…": "Type your answer…",
+ "Il modello si aggancia a «{object}»: prima di stamparlo tutto serve un campione piccolo della zona d’aggancio, per provare le misure. Chiedilo all’assistente.": "The model attaches to “{object}”: before printing all of it you need a small test piece of the attachment area, to check the measurements. Ask the assistant."
 }

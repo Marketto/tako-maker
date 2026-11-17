@@ -739,5 +739,9 @@
  "Viola scuro": "Vjola skur",
  "Viola traslucido": "Vjola trasluċidu",
  "Il calcolo della geometria non è partito: forse è uscita una nuova versione dell’app.": "Il-kalkolu tal-ġeometrija ma bediex: forsi ħarġet verżjoni ġdida tal-app.",
- "Ricarica la pagina": "Erġa’ tella’ l-paġna"
+ "Ricarica la pagina": "Erġa’ tella’ l-paġna",
+ "Scrivi la risposta qui sotto, oppure scegli un’opzione.": "Ikteb it-tweġiba hawn taħt, jew agħżel għażla.",
+ "Scrivi la risposta qui sotto.": "Ikteb it-tweġiba hawn taħt.",
+ "Scrivi la risposta…": "Ikteb it-tweġiba…",
+ "Il modello si aggancia a «{object}»: prima di stamparlo tutto serve un campione piccolo della zona d’aggancio, per provare le misure. Chiedilo all’assistente.": "Il-mudell jeħel ma’ “{object}”: qabel ma tipprintjah kollu għandek bżonn kampjun żgħir tal-parti li teħel, biex tiċċekkja l-qisien. Itlobu lill-assistent."
 }

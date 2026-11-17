@@ -739,5 +739,9 @@
  "Viola scuro": "Tumši violeta",
  "Viola traslucido": "Puscaurspīdīga violeta",
  "Il calcolo della geometria non è partito: forse è uscita una nuova versione dell’app.": "Ģeometrijas aprēķins nesākās: iespējams, ir iznākusi jauna lietotnes versija.",
- "Ricarica la pagina": "Pārlādēt lapu"
+ "Ricarica la pagina": "Pārlādēt lapu",
+ "Scrivi la risposta qui sotto, oppure scegli un’opzione.": "Uzraksti atbildi zemāk vai izvēlies variantu.",
+ "Scrivi la risposta qui sotto.": "Uzraksti atbildi zemāk.",
+ "Scrivi la risposta…": "Uzraksti atbildi…",
+ "Il modello si aggancia a «{object}»: prima di stamparlo tutto serve un campione piccolo della zona d’aggancio, per provare le misure. Chiedilo all’assistente.": "Modelis stiprinās pie “{object}”: pirms drukā visu, vajag nelielu stiprinājuma vietas paraugu, lai pārbaudītu izmērus. Palūdz to asistentam."
 }

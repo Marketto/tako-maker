@@ -739,5 +739,9 @@
  "Viola scuro": "Tamnoljubičasta",
  "Viola traslucido": "Poluprozirna ljubičasta",
  "Il calcolo della geometria non è partito: forse è uscita una nuova versione dell’app.": "Proračun geometrije nije pokrenut: možda je izašla nova verzija aplikacije.",
- "Ricarica la pagina": "Ponovo učitaj stranicu"
+ "Ricarica la pagina": "Ponovo učitaj stranicu",
+ "Scrivi la risposta qui sotto, oppure scegli un’opzione.": "Napiši odgovor ispod ili odaberi opciju.",
+ "Scrivi la risposta qui sotto.": "Napiši odgovor ispod.",
+ "Scrivi la risposta…": "Napiši odgovor…",
+ "Il modello si aggancia a «{object}»: prima di stamparlo tutto serve un campione piccolo della zona d’aggancio, per provare le misure. Chiedilo all’assistente.": "Model se kači na „{object}“: prije nego što ga odštampaš cijelog, treba ti mali uzorak dijela za kačenje da provjeriš mjere. Traži ga od asistenta."
 }

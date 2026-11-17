@@ -39,6 +39,12 @@ export const TOOL_DEFS: Record<string, ToolDef | ServerTool> = {
     max_uses: LIMITS.maxSearchUses,
     allowed_domains: SEARCH_DOMAINS,
   },
+  // Schede tecniche di prodotti reali (mobili, apparecchi): stessa ricerca web, senza limiti di sito.
+  cerca_misure: {
+    type: 'web_search_20250305',
+    name: 'web_search',
+    max_uses: LIMITS.maxSpecSearchUses,
+  },
   show_results: {
     name: 'show_results',
     description: 'Mostra all’utente i modelli trovati, come schede selezionabili. Chiamalo una sola volta alla fine della ricerca.',
@@ -81,15 +87,16 @@ export const TOOL_DEFS: Record<string, ToolDef | ServerTool> = {
   },
   ask_user: {
     name: 'ask_user',
-    description: 'Fai UNA domanda all’utente con poche opzioni brevi. Usalo solo se la scelta cambia molto il risultato.',
+    description: 'Fai UNA domanda all’utente: con poche opzioni brevi, oppure con `free_text` per farti scrivere misure o dettagli (le opzioni allora sono facoltative, es. «Non so misurarlo»). Usalo se la scelta cambia molto il risultato o se manca una misura critica.',
     input_schema: {
       type: 'object',
       properties: {
         question: { type: 'string' },
-        options: { type: 'array', minItems: 2, maxItems: 5, items: { type: 'object', properties: { id: { type: 'string' }, label: { type: 'string' } }, required: ['id', 'label'] } },
+        options: { type: 'array', maxItems: 5, items: { type: 'object', properties: { id: { type: 'string' }, label: { type: 'string' } }, required: ['id', 'label'] } },
         multi: { type: 'boolean' },
+        free_text: { type: 'boolean', description: 'true = l’utente può scrivere la risposta (misure, modello esatto…)' },
       },
-      required: ['question', 'options'],
+      required: ['question'],
     },
   },
   consulta_catalogo: {
@@ -188,9 +195,11 @@ export async function runTool(name: string, input: unknown, env: ToolEnv): Promi
     case 'ask_user': {
       const opts = Array.isArray(args.options) ? (args.options as { id: string; label: string }[]) : [];
       const text = String(args.question ?? '');
+      const options = opts.slice(0, 5).map((o) => ({ id: String(o.id), label: String(o.label) }));
+      const freeText = !!args.free_text || options.length < 2;
       return {
         kind: 'question',
-        question: { id: `agent:${Date.now()}`, key: `agent:${text}`, text, options: opts.slice(0, 5).map((o) => ({ id: String(o.id), label: String(o.label) })), multi: !!args.multi, source: 'agent' },
+        question: { id: `agent:${Date.now()}`, key: `agent:${text}`, text, options, multi: !!args.multi && !freeText, ...(freeText ? { freeText } : {}), source: 'agent' },
       };
     }
     case 'show_results': {

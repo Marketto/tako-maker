@@ -115,6 +115,27 @@ describe('ciclo agente (API simulata)', () => {
     expect(done.text).toBe('Va bene, piccolo.');
   });
 
+  it('chiede le misure con una domanda a risposta libera', async () => {
+    const e = await env(emptyDesign());
+    const seen: unknown[] = [];
+    const client = new KeyRouter(() => [{ id: 'k1', provider: 'anthropic', label: 'Test', key: 'test', enabled: true }], memKV(), new Budget(memKV(), 10), fakeFetch([
+      { id: '1', stop_reason: 'tool_use', usage, content: [{ type: 'tool_use', id: 'q1', name: 'ask_user', input: { question: 'Quanto è spessa la sponda del letto (mm)?', free_text: true } }] },
+      { id: '2', stop_reason: 'end_turn', usage, content: [{ type: 'text', text: 'Grazie.' }] },
+    ], seen));
+    const base = { skill: SKILLS['crea-modello'], env: e, client, economy: false, meshes: [] };
+    const out = await runAgent({ ...base, text: 'un supporto per la telecamera sul letto', history: [] });
+    expect(out.question?.freeText).toBe(true);
+    expect(out.question?.options).toHaveLength(0);
+    await resumeAgent(base, out.state!, '18 mm');
+    const last = (seen[1] as { messages: { content: { content: string }[] }[] }).messages.at(-1)!.content[0];
+    expect(last.content).toContain('18 mm');
+    // La skill può cercare le schede tecniche, senza limiti ai siti di modelli.
+    const tools = (seen[0] as { tools: { name: string; allowed_domains?: string[] }[] }).tools;
+    const search = tools.find((t) => t.name === 'web_search');
+    expect(search).toBeDefined();
+    expect(search!.allowed_domains).toBeUndefined();
+  });
+
   it('restituisce un errore all’AI se le operazioni non sono valide', async () => {
     const e = await env(emptyDesign());
     const seen: unknown[] = [];

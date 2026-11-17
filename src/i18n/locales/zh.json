@@ -739,5 +739,9 @@
  "Viola scuro": "深紫色",
  "Viola traslucido": "半透明紫",
  "Il calcolo della geometria non è partito: forse è uscita una nuova versione dell’app.": "几何计算没有启动：可能应用已发布新版本。",
- "Ricarica la pagina": "重新加载页面"
+ "Ricarica la pagina": "重新加载页面",
+ "Scrivi la risposta qui sotto, oppure scegli un’opzione.": "在下方输入答案，或选择一个选项。",
+ "Scrivi la risposta qui sotto.": "在下方输入答案。",
+ "Scrivi la risposta…": "输入答案…",
+ "Il modello si aggancia a «{object}»: prima di stamparlo tutto serve un campione piccolo della zona d’aggancio, per provare le misure. Chiedilo all’assistente.": "该模型要装在“{object}”上：整件打印之前，需要先打印安装部位的小试样来核对尺寸。请让助手来做。"
 }

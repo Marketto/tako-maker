@@ -32,6 +32,7 @@ describe('copia e incolla con una chat', () => {
     expect(r.message).toBe('Schermo più grande.');
     expect(r.ops).toEqual([{ op: 'set_meta', name: 'Laptop' }]);
     expect(parseManualReply('{"question":{"question":"Grande o piccolo?","options":[{"id":"g","label":"Grande"},{"id":"p","label":"Piccolo"}]}}').question?.options).toHaveLength(2);
+    expect(parseManualReply('{"question":{"question":"Quanto è spessa la sponda (mm)?","free_text":true}}').question).toMatchObject({ options: [], free_text: true });
     const res = parseManualReply('{"results":[{"title":"Vaso","url":"https://www.printables.com/model/1","license":"CC BY","summary":"Un vaso"},{"title":"x","url":"javascript:alert(1)"}]}');
     expect(res.results).toHaveLength(1);
     expect(res.results![0].site).toBe('www.printables.com');

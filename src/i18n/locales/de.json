@@ -739,5 +739,9 @@
  "Viola scuro": "Dunkelviolett",
  "Viola traslucido": "Violett transluzent",
  "Il calcolo della geometria non è partito: forse è uscita una nuova versione dell’app.": "Die Geometrieberechnung ist nicht gestartet: Vielleicht gibt es eine neue Version der App.",
- "Ricarica la pagina": "Seite neu laden"
+ "Ricarica la pagina": "Seite neu laden",
+ "Scrivi la risposta qui sotto, oppure scegli un’opzione.": "Schreib die Antwort unten oder wähle eine Option.",
+ "Scrivi la risposta qui sotto.": "Schreib die Antwort unten.",
+ "Scrivi la risposta…": "Schreib die Antwort…",
+ "Il modello si aggancia a «{object}»: prima di stamparlo tutto serve un campione piccolo della zona d’aggancio, per provare le misure. Chiedilo all’assistente.": "Das Modell wird an „{object}“ befestigt: Bevor du alles druckst, brauchst du ein kleines Probestück der Befestigungsstelle, um die Maße zu prüfen. Frag den Assistenten danach."
 }

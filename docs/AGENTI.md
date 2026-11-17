@@ -33,8 +33,8 @@ Istruzioni…
 | Skill | Modello | Strumenti | Scopo |
 |---|---|---|---|
 | `cerca-modelli` | Haiku | `web_search`, `show_results` | trovare 3-6 modelli gratuiti con licenza che permette modifiche |
-| `crea-modello` | Sonnet | `consulta_catalogo`, `edit_design`, `ask_user` | costruire un modello parametrico nuovo |
-| `modifica-modello` | Sonnet | `consulta_catalogo`, `edit_design`, `ask_user` | migliorie mirate al modello corrente |
+| `crea-modello` | Sonnet | `consulta_catalogo`, `cerca_misure`, `edit_design`, `ask_user` | costruire un modello parametrico nuovo |
+| `modifica-modello` | Sonnet | `consulta_catalogo`, `cerca_misure`, `edit_design`, `ask_user` | migliorie mirate al modello corrente |
 | `consiglia-stampa` | Haiku | `print_report`, `consulta_catalogo`, `edit_design` | colori, materiali, strategia, tempi; diagnosi di stampe venute male (il router ci manda “si è staccato”, “si imbarca”, “fragile”…) |
 | `spiega` | Haiku | — | domande generali |
 
@@ -50,9 +50,18 @@ in `skills/index.ts`, eventualmente una regola nel router e gli strumenti in `to
 | `web_search` | server Anthropic | ricerca limitata ai domini dei repository di modelli, max 3 usi per richiesta |
 | `show_results` | browser | mostra le schede risultato; **termina il ciclo** senza un’altra chiamata |
 | `edit_design` | browser | applica operazioni DSL in modo atomico, calcola la geometria nel worker, risponde con ingombri e analisi compatta, oppure con un errore da correggere |
-| `ask_user` | browser | mette in pausa il ciclo e mostra una domanda con opzioni |
+| `cerca_misure` | server Anthropic | la stessa `web_search`, senza limiti di sito, per le schede tecniche di mobili e apparecchi su cui il modello si aggancia; max 2 usi per richiesta |
+| `ask_user` | browser | mette in pausa il ciclo e mostra una domanda con opzioni, oppure a risposta libera (`free_text`, es. misure): la risposta si scrive nel campo della chat. Anche senza `free_text`, il testo scritto in chat mentre c'è una domanda aperta vale come risposta |
 | `print_report` | browser | stime per strategia + avvisi |
 | `consulta_catalogo` | browser | regole pratiche del [catalogo dei dettagli](CATALOGO.md) per argomento; nel copia e incolla e nel connettore è già nel testo |
+
+## Misure di oggetti reali
+
+Regola nel prompt di sistema (vale per chiave API, copia e incolla e connettore): quando il modello si aggancia a un oggetto
+esistente, l'AI non inventa le misure. Elenca quelle critiche, cerca la scheda tecnica del modello esatto, chiede quelle che
+mancano (scritte, o una foto con un righello appoggiato) e altrimenti dice che non le ha. Poi imposta `fitsOnto` e aggiunge
+una prova di misura per ogni zona d'aggancio; se manca, l'analisi lo segnala (vedi [ANALISI.md](ANALISI.md)). Nell'app la chat
+non riceve foto: l'AI chiede le misure scritte.
 
 ## Ciclo agente (`src/agent/runner.ts`)
 

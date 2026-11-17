@@ -5,7 +5,7 @@ import type { ButtonSpec, Design, Hardware, Joint, Part, Sample, ShapeNode, Vec3
    meno token in uscita e modifiche più facili da validare. */
 
 export type DesignOp =
-  | { op: 'set_meta'; name?: string; description?: string; children?: boolean; notes?: string; round?: boolean | null; smooth?: boolean | null; rests?: boolean | null; hand?: HandSize | null }
+  | { op: 'set_meta'; name?: string; description?: string; children?: boolean; notes?: string; round?: boolean | null; smooth?: boolean | null; rests?: boolean | null; hand?: HandSize | null; fitsOnto?: string | null }
   | { op: 'add_part'; part: Part }
   | { op: 'update_part'; id: string; name?: string; filamentId?: string; shape?: ShapeNode; button?: Partial<ButtonSpec> | null; grip?: { ergonomic?: boolean } | null }
   | { op: 'move_part'; id: string; at?: Vec3; rot?: Vec3 }
@@ -163,6 +163,11 @@ export function applyOps(design: Design, ops: DesignOp[], filamentIds?: Set<stri
         if (o.rests !== undefined) {
           if (o.rests === null) delete d.intendedUse.rests;
           else d.intendedUse.rests = !!o.rests;
+        }
+        if (o.fitsOnto !== undefined) {
+          const what = o.fitsOnto === null ? '' : String(o.fitsOnto).trim().slice(0, 120);
+          if (what) d.intendedUse.fitsOnto = what;
+          else delete d.intendedUse.fitsOnto;
         }
         if (o.hand !== undefined) {
           if (o.hand === null) delete d.intendedUse.hand;
