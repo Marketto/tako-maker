@@ -10,6 +10,8 @@ function load() {
     w.setup();
     return w;
   });
+  // Se il wasm non si scarica (rete, aggiornamento in corso) la prossima richiesta riprova.
+  ready.catch(() => (ready = null));
   return ready;
 }
 

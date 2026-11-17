@@ -737,5 +737,7 @@
  "Verde traslucido": "Translucent green",
  "Verdi": "Greens",
  "Viola scuro": "Dark purple",
- "Viola traslucido": "Translucent purple"
+ "Viola traslucido": "Translucent purple",
+ "Il calcolo della geometria non è partito: forse è uscita una nuova versione dell’app.": "The geometry calculation didn’t start: a new version of the app may be out.",
+ "Ricarica la pagina": "Reload the page"
 }

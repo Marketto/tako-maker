@@ -74,6 +74,12 @@ export function ChatPanel({ session, snap }: { session: ProjectSession; snap: Sn
         )}
         {snap.manual && <ManualCard session={session} snap={snap} />}
         {snap.error && <SeaError>{snap.error}</SeaError>}
+        {snap.geometryStalled && (
+          <SeaError>
+            {t('Il calcolo della geometria non è partito: forse è uscita una nuova versione dell’app.')}{' '}
+            <button className="btn" onClick={() => window.location.reload()}>{t('Ricarica la pagina')}</button>
+          </SeaError>
+        )}
         <div ref={endRef} />
       </div>
 
