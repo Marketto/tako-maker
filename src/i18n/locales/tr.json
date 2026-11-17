@@ -739,5 +739,9 @@
  "Viola scuro": "Koyu mor",
  "Viola traslucido": "Yarı saydam mor",
  "Il calcolo della geometria non è partito: forse è uscita una nuova versione dell’app.": "Geometri hesaplaması başlamadı: uygulamanın yeni bir sürümü çıkmış olabilir.",
- "Ricarica la pagina": "Sayfayı yeniden yükle"
+ "Ricarica la pagina": "Sayfayı yeniden yükle",
+ "Scrivi la risposta qui sotto, oppure scegli un’opzione.": "Cevabını aşağıya yaz veya bir seçenek seç.",
+ "Scrivi la risposta qui sotto.": "Cevabını aşağıya yaz.",
+ "Scrivi la risposta…": "Cevabını yaz…",
+ "Il modello si aggancia a «{object}»: prima di stamparlo tutto serve un campione piccolo della zona d’aggancio, per provare le misure. Chiedilo all’assistente.": "Model “{object}” üzerine takılıyor: tamamını basmadan önce ölçüleri kontrol etmek için takılma bölgesinden küçük bir deneme parçası gerekir. Asistandan iste."
 }

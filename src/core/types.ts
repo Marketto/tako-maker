@@ -201,7 +201,8 @@ export interface Design {
   description?: string;
   /** `rests`: si usa appoggiato su un piano (true) o tenuto in mano / appeso (false); serve al controllo del baricentro.
       `hand`: per chi è pensata l'impugnatura. */
-  intendedUse: { children: boolean; notes?: string; rests?: boolean; hand?: HandSize };
+  /** `fitsOnto`: oggetto esistente su cui il modello si aggancia o calza (es. «sponda del letto Ikea Malm»). */
+  intendedUse: { children: boolean; notes?: string; rests?: boolean; hand?: HandSize; fitsOnto?: string };
   /** Rifinitura delle forme solo per questo progetto; se manca vale la preferenza generale (`UserSetup.style`). */
   style?: StylePrefs;
   source?: Attribution & { kind: 'remix' | 'inspiration' };
@@ -254,6 +255,8 @@ export interface Question {
   detail?: string;
   options: QuestionOption[];
   multi?: boolean;
+  /** L'utente può scrivere la risposta (misure, modello esatto…). */
+  freeText?: boolean;
   /** Applicate prima delle opzioni scelte (es. "disattiva tutti gli scatti"). */
   baseOps?: DesignOp[];
   source: 'analysis' | 'agent' | 'manual';

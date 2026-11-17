@@ -45,6 +45,8 @@ spessore della forma più sottile (`FILLET`): anche i pezzi piccoli hanno raccor
 disegnati né lo spazio delle altre parti allargato del gioco delle cerniere; giunti, perni, pulsanti e agganci si generano dopo, esatti.
 `intersection` e `mesh` non hanno raccordi.
 
+`intendedUse.fitsOnto` (l'oggetto esistente su cui il modello si aggancia o calza, es. «sponda del letto»; `null` lo toglie) si imposta con `set_meta`: senza prove di misura l'analisi chiede un campione della zona d'aggancio.
+
 `intendedUse.rests` (si usa appoggiato su un piano: `true`; in mano o appeso: `false`) e `intendedUse.hand` (`man`, `woman`, `teen`,
 `child`, `toddler`: per chi è l'impugnatura) si impostano con `set_meta`. Una parte che si impugna ha `"grip": {}`; `grip.ergonomic`
 lo sceglie l'utente rispondendo alla domanda dell'app (`update_part` con `grip`, `null` lo toglie). Misure della mano in `HAND_GRIP`.
@@ -92,7 +94,7 @@ Se l'AI cambia nome, quantità o misure di un elemento, la conferma viene richie
 
 Ogni zona ritaglia la parte indicata (coordinate del modello, lati da 1 a 200 mm) e diventa un pezzo del
 campione, stampato nel verso con meno sporgenze. Servono per ciò che l'app non trova da sola: un pezzo da
-calzare su un oggetto esterno, due copie dello stesso pezzo da agganciare. Giunti e agganci tra parti diverse
+calzare su un oggetto esterno (obbligatorie con `fitsOnto`, con linguette, ganci, perni e sedi), due copie dello stesso pezzo da agganciare. Giunti e agganci tra parti diverse
 li ritaglia già l'app (vedi `docs/ANALISI.md`). Max 6 prove, da 1 a 4 zone ciascuna; rimuovendo una parte
 spariscono le prove che la usano.
 

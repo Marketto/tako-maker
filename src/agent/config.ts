@@ -72,6 +72,8 @@ export const LIMITS = {
   /** Messaggi di chat precedenti inviati all'AI (il design attuale viaggia sempre a parte). */
   historyMessages: 6,
   maxSearchUses: 3,
+  /** Ricerche delle schede tecniche (misure di mobili e apparecchi) per messaggio. */
+  maxSpecSearchUses: 2,
   searchCacheDays: 7,
 };
 

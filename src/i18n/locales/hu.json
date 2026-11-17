@@ -739,5 +739,9 @@
  "Viola scuro": "Sötétlila",
  "Viola traslucido": "Áttetsző lila",
  "Il calcolo della geometria non è partito: forse è uscita una nuova versione dell’app.": "A geometria számítása nem indult el: lehet, hogy megjelent az alkalmazás új verziója.",
- "Ricarica la pagina": "Oldal újratöltése"
+ "Ricarica la pagina": "Oldal újratöltése",
+ "Scrivi la risposta qui sotto, oppure scegli un’opzione.": "Írd be a választ lent, vagy válassz egy lehetőséget.",
+ "Scrivi la risposta qui sotto.": "Írd be a választ lent.",
+ "Scrivi la risposta…": "Írd be a választ…",
+ "Il modello si aggancia a «{object}»: prima di stamparlo tutto serve un campione piccolo della zona d’aggancio, per provare le misure. Chiedilo all’assistente.": "A modell erre rögzül: „{object}”. Mielőtt az egészet kinyomtatod, kell egy kis próbadarab a rögzítési részből, hogy ellenőrizd a méreteket. Kérd az asszisztenstől."
 }

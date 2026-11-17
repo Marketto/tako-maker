@@ -30,7 +30,7 @@ export interface ManualReply {
   message?: string;
   ops?: DesignOp[];
   summary?: string;
-  question?: { question: string; options: { id: string; label: string }[]; multi?: boolean };
+  question?: { question: string; options: { id: string; label: string }[]; multi?: boolean; free_text?: boolean };
   results?: SearchResult[];
 }
 
@@ -44,14 +44,15 @@ function formatSection(skill: Skill): string {
     map.push('- edit_design → campi "ops" (le operazioni) e "summary". Mandale tutte insieme: l’app le applica in modo atomico e, se qualcosa non va, ti rimanderà l’errore.');
   }
   if (tools.has('ask_user')) {
-    fields.push('  "question": { "question": "…", "options": [ { "id": "a", "label": "…" } ], "multi": false }');
-    map.push('- ask_user → campo "question" (se fai una domanda, non mandare "ops": aspetta la risposta).');
+    fields.push('  "question": { "question": "…", "options": [ { "id": "a", "label": "…" } ], "multi": false, "free_text": false }');
+    map.push('- ask_user → campo "question" (se fai una domanda, non mandare "ops": aspetta la risposta). Con "free_text": true l’utente scrive la risposta (misure, modello esatto) e le opzioni sono facoltative.');
   }
   if (tools.has('show_results')) {
     fields.push('  "results": [ { "title": "…", "url": "…", "site": "…", "author": "…", "license": "…", "summary": "…", "printInPlace": false } ]');
     map.push('- show_results → campo "results" (massimo 6).');
   }
   if (tools.has('web_search')) map.push('- web_search → usa la tua ricerca web, se ce l’hai; altrimenti dillo in "message" e proponi link utili.');
+  if (tools.has('cerca_misure')) map.push('- cerca_misure → usa la tua ricerca web per la scheda tecnica, se ce l’hai; altrimenti chiedi le misure con "question".');
   if (tools.has('consulta_catalogo')) map.push('- consulta_catalogo → non serve: il catalogo dei dettagli è qui sotto.');
   if (tools.has('print_report')) map.push('- print_report → non serve: l’analisi attuale è qui sotto.');
   return [
@@ -141,12 +142,10 @@ function normalize(v: Record<string, unknown>): ManualReply {
     if (v.ops.length) out.ops = v.ops as DesignOp[];
   }
   const q = v.question as ManualReply['question'] | undefined;
-  if (q && typeof q === 'object' && typeof q.question === 'string' && Array.isArray(q.options) && q.options.length >= 2) {
-    out.question = {
-      question: q.question,
-      options: q.options.slice(0, 5).map((o, i) => ({ id: String(o?.id ?? i), label: String(o?.label ?? o?.id ?? i) })),
-      multi: !!q.multi,
-    };
+  if (q && typeof q === 'object' && typeof q.question === 'string') {
+    const options = (Array.isArray(q.options) ? q.options : []).slice(0, 5).map((o, i) => ({ id: String(o?.id ?? i), label: String(o?.label ?? o?.id ?? i) }));
+    const freeText = !!q.free_text || options.length < 2;
+    out.question = { question: q.question, options, multi: !!q.multi && !freeText, ...(freeText ? { free_text: true } : {}) };
   }
   if (Array.isArray(v.results)) {
     out.results = (v.results as SearchResult[])

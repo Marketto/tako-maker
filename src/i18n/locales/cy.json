@@ -739,5 +739,9 @@
  "Viola scuro": "Porffor tywyll",
  "Viola traslucido": "Porffor tryleu",
  "Il calcolo della geometria non è partito: forse è uscita una nuova versione dell’app.": "Ni ddechreuodd cyfrifo’r geometreg: efallai fod fersiwn newydd o’r ap wedi’i rhyddhau.",
- "Ricarica la pagina": "Ail-lwytho’r dudalen"
+ "Ricarica la pagina": "Ail-lwytho’r dudalen",
+ "Scrivi la risposta qui sotto, oppure scegli un’opzione.": "Ysgrifenna dy ateb isod, neu dewisa opsiwn.",
+ "Scrivi la risposta qui sotto.": "Ysgrifenna dy ateb isod.",
+ "Scrivi la risposta…": "Ysgrifenna dy ateb…",
+ "Il modello si aggancia a «{object}»: prima di stamparlo tutto serve un campione piccolo della zona d’aggancio, per provare le misure. Chiedilo all’assistente.": "Mae’r model yn bachu ar “{object}”: cyn ei argraffu i gyd mae angen sampl bach o’r rhan sy’n bachu, i wirio’r mesuriadau. Gofynna i’r cynorthwyydd."
 }

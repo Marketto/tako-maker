@@ -739,5 +739,9 @@
  "Viola scuro": "Tummanvioletti",
  "Viola traslucido": "Läpikuultava violetti",
  "Il calcolo della geometria non è partito: forse è uscita una nuova versione dell’app.": "Geometrian laskenta ei käynnistynyt: sovelluksesta on ehkä tullut uusi versio.",
- "Ricarica la pagina": "Lataa sivu uudelleen"
+ "Ricarica la pagina": "Lataa sivu uudelleen",
+ "Scrivi la risposta qui sotto, oppure scegli un’opzione.": "Kirjoita vastaus alle tai valitse vaihtoehto.",
+ "Scrivi la risposta qui sotto.": "Kirjoita vastaus alle.",
+ "Scrivi la risposta…": "Kirjoita vastaus…",
+ "Il modello si aggancia a «{object}»: prima di stamparlo tutto serve un campione piccolo della zona d’aggancio, per provare le misure. Chiedilo all’assistente.": "Malli kiinnittyy kohteeseen ”{object}”: ennen koko mallin tulostamista tarvitset pienen koekappaleen kiinnityskohdasta mittojen tarkistamiseen. Pyydä sitä avustajalta."
 }

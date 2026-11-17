@@ -739,5 +739,9 @@
  "Viola scuro": "Темно-фіолетовий",
  "Viola traslucido": "Напівпрозорий фіолетовий",
  "Il calcolo della geometria non è partito: forse è uscita una nuova versione dell’app.": "Розрахунок геометрії не запустився: можливо, вийшла нова версія застосунку.",
- "Ricarica la pagina": "Перезавантажити сторінку"
+ "Ricarica la pagina": "Перезавантажити сторінку",
+ "Scrivi la risposta qui sotto, oppure scegli un’opzione.": "Напиши відповідь нижче або вибери варіант.",
+ "Scrivi la risposta qui sotto.": "Напиши відповідь нижче.",
+ "Scrivi la risposta…": "Напиши відповідь…",
+ "Il modello si aggancia a «{object}»: prima di stamparlo tutto serve un campione piccolo della zona d’aggancio, per provare le misure. Chiedilo all’assistente.": "Модель кріпиться до «{object}»: перш ніж друкувати її повністю, потрібен маленький зразок зони кріплення, щоб перевірити розміри. Попроси його в помічника."
 }

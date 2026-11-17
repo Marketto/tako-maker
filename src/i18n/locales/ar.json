@@ -739,5 +739,9 @@
  "Viola scuro": "بنفسجي داكن",
  "Viola traslucido": "بنفسجي شبه شفاف",
  "Il calcolo della geometria non è partito: forse è uscita una nuova versione dell’app.": "لم يبدأ حساب الشكل الهندسي: ربما صدر إصدار جديد من التطبيق.",
- "Ricarica la pagina": "أعد تحميل الصفحة"
+ "Ricarica la pagina": "أعد تحميل الصفحة",
+ "Scrivi la risposta qui sotto, oppure scegli un’opzione.": "اكتب إجابتك في الأسفل، أو اختر أحد الخيارات.",
+ "Scrivi la risposta qui sotto.": "اكتب إجابتك في الأسفل.",
+ "Scrivi la risposta…": "اكتب إجابتك…",
+ "Il modello si aggancia a «{object}»: prima di stamparlo tutto serve un campione piccolo della zona d’aggancio, per provare le misure. Chiedilo all’assistente.": "النموذج يُثبَّت على «{object}»: قبل طباعته كاملًا تحتاج إلى عيّنة صغيرة من منطقة التثبيت للتحقق من القياسات. اطلبها من المساعد."
 }

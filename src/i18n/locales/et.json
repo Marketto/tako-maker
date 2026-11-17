@@ -739,5 +739,9 @@
  "Viola scuro": "Tumelilla",
  "Viola traslucido": "Poolläbipaistev lilla",
  "Il calcolo della geometria non è partito: forse è uscita una nuova versione dell’app.": "Geomeetria arvutamine ei alanud: võib-olla on rakendusest ilmunud uus versioon.",
- "Ricarica la pagina": "Laadi leht uuesti"
+ "Ricarica la pagina": "Laadi leht uuesti",
+ "Scrivi la risposta qui sotto, oppure scegli un’opzione.": "Kirjuta vastus allpool või vali variant.",
+ "Scrivi la risposta qui sotto.": "Kirjuta vastus allpool.",
+ "Scrivi la risposta…": "Kirjuta vastus…",
+ "Il modello si aggancia a «{object}»: prima di stamparlo tutto serve un campione piccolo della zona d’aggancio, per provare le misure. Chiedilo all’assistente.": "Mudel kinnitub objektile „{object}“: enne kogu mudeli printimist on vaja väikest kinnituskoha näidist, et mõõte kontrollida. Küsi seda assistendilt."
 }

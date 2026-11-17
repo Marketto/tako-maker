@@ -739,5 +739,9 @@
  "Viola scuro": "Corcra dorcha",
  "Viola traslucido": "Corcra tréshoilseach",
  "Il calcolo della geometria non è partito: forse è uscita una nuova versione dell’app.": "Níor thosaigh ríomh na céimseatan: b’fhéidir go bhfuil leagan nua den aip ar fáil.",
- "Ricarica la pagina": "Athlódáil an leathanach"
+ "Ricarica la pagina": "Athlódáil an leathanach",
+ "Scrivi la risposta qui sotto, oppure scegli un’opzione.": "Scríobh do fhreagra thíos, nó roghnaigh rogha.",
+ "Scrivi la risposta qui sotto.": "Scríobh do fhreagra thíos.",
+ "Scrivi la risposta…": "Scríobh do fhreagra…",
+ "Il modello si aggancia a «{object}»: prima di stamparlo tutto serve un campione piccolo della zona d’aggancio, per provare le misure. Chiedilo all’assistente.": "Ceanglaíonn an múnla le “{object}”: sula bpriontálann tú é ar fad, teastaíonn sampla beag den limistéar ceangail chun na tomhais a sheiceáil. Iarr ar an gcúntóir é."
 }

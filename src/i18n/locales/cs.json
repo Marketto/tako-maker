@@ -739,5 +739,9 @@
  "Viola scuro": "Tmavě fialová",
  "Viola traslucido": "Průsvitná fialová",
  "Il calcolo della geometria non è partito: forse è uscita una nuova versione dell’app.": "Výpočet geometrie se nespustil: možná vyšla nová verze aplikace.",
- "Ricarica la pagina": "Načíst stránku znovu"
+ "Ricarica la pagina": "Načíst stránku znovu",
+ "Scrivi la risposta qui sotto, oppure scegli un’opzione.": "Napiš odpověď níže, nebo vyber možnost.",
+ "Scrivi la risposta qui sotto.": "Napiš odpověď níže.",
+ "Scrivi la risposta…": "Napiš odpověď…",
+ "Il modello si aggancia a «{object}»: prima di stamparlo tutto serve un campione piccolo della zona d’aggancio, per provare le misure. Chiedilo all’assistente.": "Model se uchycuje na „{object}“: než ho vytiskneš celý, potřebuješ malý vzorek místa uchycení, abys ověřil rozměry. Požádej o něj asistenta."
 }

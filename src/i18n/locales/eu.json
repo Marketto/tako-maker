@@ -739,5 +739,9 @@
  "Viola scuro": "More iluna",
  "Viola traslucido": "More zeharrargia",
  "Il calcolo della geometria non è partito: forse è uscita una nuova versione dell’app.": "Geometriaren kalkulua ez da abiatu: agian aplikazioaren bertsio berri bat atera da.",
- "Ricarica la pagina": "Kargatu berriro orria"
+ "Ricarica la pagina": "Kargatu berriro orria",
+ "Scrivi la risposta qui sotto, oppure scegli un’opzione.": "Idatzi erantzuna behean, edo aukeratu aukera bat.",
+ "Scrivi la risposta qui sotto.": "Idatzi erantzuna behean.",
+ "Scrivi la risposta…": "Idatzi erantzuna…",
+ "Il modello si aggancia a «{object}»: prima di stamparlo tutto serve un campione piccolo della zona d’aggancio, per provare le misure. Chiedilo all’assistente.": "Eredua «{object}»-ri lotzen zaio: osorik inprimatu aurretik, lotura-eremuaren lagin txiki bat behar duzu neurriak egiaztatzeko. Eskatu laguntzaileari."
 }

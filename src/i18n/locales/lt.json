@@ -739,5 +739,9 @@
  "Viola scuro": "Tamsiai violetinė",
  "Viola traslucido": "Pusiau permatoma violetinė",
  "Il calcolo della geometria non è partito: forse è uscita una nuova versione dell’app.": "Geometrijos skaičiavimas neprasidėjo: galbūt išleista nauja programėlės versija.",
- "Ricarica la pagina": "Įkelti puslapį iš naujo"
+ "Ricarica la pagina": "Įkelti puslapį iš naujo",
+ "Scrivi la risposta qui sotto, oppure scegli un’opzione.": "Parašyk atsakymą žemiau arba pasirink variantą.",
+ "Scrivi la risposta qui sotto.": "Parašyk atsakymą žemiau.",
+ "Scrivi la risposta…": "Parašyk atsakymą…",
+ "Il modello si aggancia a «{object}»: prima di stamparlo tutto serve un campione piccolo della zona d’aggancio, per provare le misure. Chiedilo all’assistente.": "Modelis tvirtinamas prie „{object}“: prieš spausdindamas visą, reikia mažo tvirtinimo vietos bandinio, kad patikrintum matmenis. Paprašyk jo asistento."
 }

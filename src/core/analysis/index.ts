@@ -113,6 +113,12 @@ export function analyze(
     }
   }
 
+  /* ---- Aggancio a un oggetto esistente: prima un campione di prova ---- */
+  const fitsOnto = design.intendedUse.fitsOnto;
+  if (fitsOnto && design.parts.length && !design.samples?.length) {
+    warnings.push(t('Il modello si aggancia a «{object}»: prima di stamparlo tutto serve un campione piccolo della zona d’aggancio, per provare le misure. Chiedilo all’assistente.', { object: fitsOnto }));
+  }
+
   /* ---- Elementi da comprare a parte: conferma per ognuno ---- */
   for (const h of hardwareOf(design)) {
     const item = hardwareLabel(h);

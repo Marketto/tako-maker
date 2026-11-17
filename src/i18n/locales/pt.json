@@ -739,5 +739,9 @@
  "Viola scuro": "Roxo escuro",
  "Viola traslucido": "Roxo translúcido",
  "Il calcolo della geometria non è partito: forse è uscita una nuova versione dell’app.": "O cálculo da geometria não começou: talvez tenha saído uma nova versão da app.",
- "Ricarica la pagina": "Recarregar a página"
+ "Ricarica la pagina": "Recarregar a página",
+ "Scrivi la risposta qui sotto, oppure scegli un’opzione.": "Escreve a resposta abaixo ou escolhe uma opção.",
+ "Scrivi la risposta qui sotto.": "Escreve a resposta abaixo.",
+ "Scrivi la risposta…": "Escreve a resposta…",
+ "Il modello si aggancia a «{object}»: prima di stamparlo tutto serve un campione piccolo della zona d’aggancio, per provare le misure. Chiedilo all’assistente.": "O modelo prende-se a «{object}»: antes de o imprimires inteiro precisas de uma amostra pequena da zona de fixação para verificar as medidas. Pede-a ao assistente."
 }

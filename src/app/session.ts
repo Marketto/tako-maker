@@ -442,6 +442,9 @@ export class ProjectSession {
     text = text.trim();
     if (!text || this.snap.busy) return;
     this.set({ error: null });
+    // Se l'assistente aspetta una risposta, il testo scritto in chat è quella risposta (es. le misure chieste).
+    const waiting = this.pendingAgent?.question ?? this.pendingManual?.question;
+    if (waiting && !force) return this.answer(waiting, [], text);
     if (store.get().settings.aiMode === 'manual') return this.prepareManual(text, force);
     const history = this.snap.project.chat.map((c) => ({ role: c.role, text: c.text })).filter((t) => t.text);
     await this.pushChat({ role: 'user', text });
@@ -590,19 +593,21 @@ export class ProjectSession {
       this.pendingManual = {
         skill: m.skill,
         text: m.text,
-        question: { id: `manual:${Date.now()}`, key: `manual:${q.question}`, text: q.question, options: q.options, multi: q.multi, source: 'manual' },
+        question: { id: `manual:${Date.now()}`, key: `manual:${q.question}`, text: q.question, options: q.options, multi: q.multi, ...(q.free_text ? { freeText: true } : {}), source: 'manual' },
       };
     }
     await this.refresh();
   }
 
-  /** Risposta a una domanda (analisi locale = zero token, agente = riprende il ciclo). */
-  async answer(q: Question, selected: string[]) {
+  /** Risposta a una domanda (analisi locale = zero token, agente = riprende il ciclo).
+      `written`: risposta scritta dall'utente (domande con `freeText` o testo mandato in chat). */
+  async answer(q: Question, selected: string[], written?: string) {
     const chosen = q.options.filter((o) => selected.includes(o.id));
+    written = written?.trim();
     if (q.source === 'manual' && this.pendingManual?.question.id === q.id) {
       const pending = this.pendingManual;
       this.pendingManual = null;
-      const label = chosen.map((o) => o.label).join(', ') || t('nessuna preferenza');
+      const label = written || chosen.map((o) => o.label).join(', ') || t('nessuna preferenza');
       await this.pushChat({ role: 'user', text: label });
       await this.prepareManual(`${pending.text}\n\nAlla tua domanda «${q.text}» l'utente ha risposto: ${label}`, pending.skill, false);
       await this.refresh();
@@ -611,7 +616,7 @@ export class ProjectSession {
     if (q.source === 'agent' && this.pendingAgent?.question.id === q.id) {
       const pending = this.pendingAgent;
       this.pendingAgent = null;
-      const label = chosen.map((o) => o.label).join(', ') || 'nessuna preferenza';
+      const label = written || chosen.map((o) => o.label).join(', ') || 'nessuna preferenza';
       await this.pushChat({ role: 'user', text: label });
       const client = makeClient();
       this.set({ busy: t('Continuo…'), questions: this.snap.questions.filter((x) => x.id !== q.id) });

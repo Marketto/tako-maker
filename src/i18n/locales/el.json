@@ -739,5 +739,9 @@
  "Viola scuro": "Σκούρο μωβ",
  "Viola traslucido": "Ημιδιαφανές μωβ",
  "Il calcolo della geometria non è partito: forse è uscita una nuova versione dell’app.": "Ο υπολογισμός της γεωμετρίας δεν ξεκίνησε: ίσως κυκλοφόρησε νέα έκδοση της εφαρμογής.",
- "Ricarica la pagina": "Επαναφόρτωση σελίδας"
+ "Ricarica la pagina": "Επαναφόρτωση σελίδας",
+ "Scrivi la risposta qui sotto, oppure scegli un’opzione.": "Γράψε την απάντηση παρακάτω ή διάλεξε μια επιλογή.",
+ "Scrivi la risposta qui sotto.": "Γράψε την απάντηση παρακάτω.",
+ "Scrivi la risposta…": "Γράψε την απάντηση…",
+ "Il modello si aggancia a «{object}»: prima di stamparlo tutto serve un campione piccolo della zona d’aggancio, per provare le misure. Chiedilo all’assistente.": "Το μοντέλο στερεώνεται στο «{object}»: πριν το τυπώσεις ολόκληρο χρειάζεσαι ένα μικρό δείγμα της περιοχής στερέωσης για να ελέγξεις τις διαστάσεις. Ζήτα το από τον βοηθό."
 }

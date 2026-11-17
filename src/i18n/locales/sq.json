@@ -739,5 +739,9 @@
  "Viola scuro": "Vjollcë e errët",
  "Viola traslucido": "Vjollcë gjysmë e tejdukshme",
  "Il calcolo della geometria non è partito: forse è uscita una nuova versione dell’app.": "Llogaritja e gjeometrisë nuk nisi: ndoshta ka dalë një version i ri i aplikacionit.",
- "Ricarica la pagina": "Ringarko faqen"
+ "Ricarica la pagina": "Ringarko faqen",
+ "Scrivi la risposta qui sotto, oppure scegli un’opzione.": "Shkruaj përgjigjen më poshtë ose zgjidh një opsion.",
+ "Scrivi la risposta qui sotto.": "Shkruaj përgjigjen më poshtë.",
+ "Scrivi la risposta…": "Shkruaj përgjigjen…",
+ "Il modello si aggancia a «{object}»: prima di stamparlo tutto serve un campione piccolo della zona d’aggancio, per provare le misure. Chiedilo all’assistente.": "Modeli kapet te “{object}”: para se ta printosh të gjithë, të duhet një mostër e vogël e pjesës së kapjes për të kontrolluar masat. Kërkoja asistentit."
 }

@@ -107,6 +107,9 @@ piatto, un materiale per piatto; con più piatti si scarica uno zip con `LEGGIMI
 campione migliore si fa nella scheda Stampa → Campioni di prova; le prove di misura non salvano valori:
 se un aggancio non va, lo si dice all'assistente.
 
+Se il modello ha `intendedUse.fitsOnto` (si aggancia a un oggetto esistente) e nessuna prova di misura, l'analisi avvisa:
+prima di stampare tutto serve un campione della zona d'aggancio. L'avviso arriva anche all'assistente, che aggiunge la prova.
+
 ## Coerenza della forma e perni di incastro
 
 Dopo ogni modifica, per le parti che vanno montate:
