@@ -1,6 +1,6 @@
 import { analyze, type AnalysisReport } from '../core/analysis';
 import { applyOps, type DesignOp } from '../core/design/ops';
-import { evaluateInWorker } from '../core/geometry/engine';
+import { evaluateInWorker, GeometryWorkerError } from '../core/geometry/engine';
 import { withStyle } from '../core/design/style';
 import { tolerancesByPart } from '../core/calibration/tolerances';
 import { buildCalibrationFiles, type CalibrationFiles } from '../core/calibration/export';
@@ -52,6 +52,8 @@ export interface Snapshot {
   orient: OrientGroup[];
   /** Perni rotanti: già montati o in due pezzi a scatto (scelta dell'app, vedi core/design/links.ts). */
   jointModes: JointModes;
+  /** Il calcolo della geometria non è partito: si propone di ricaricare la pagina. */
+  geometryStalled: boolean;
   /** Modalità copia e incolla: richiesta pronta da copiare nella chat. */
   manual: ManualRequest | null;
 }
@@ -90,7 +92,7 @@ export class ProjectSession {
   private unsubStore: (() => void) | null = null;
 
   private constructor(project: Project) {
-    this.snap = { project, parts: [], geometryErrors: [], report: null, assembly: null, questions: [], busy: null, error: null, meshInfo: [], manual: null, orient: [], jointModes: {} };
+    this.snap = { project, parts: [], geometryErrors: [], report: null, assembly: null, questions: [], busy: null, error: null, meshInfo: [], manual: null, orient: [], jointModes: {}, geometryStalled: false };
   }
 
   /** Se l'utente toglie un filamento usato, i pezzi passano a uno rimasto (stesso materiale se c'è). */
@@ -181,11 +183,13 @@ export class ProjectSession {
         meshInfo,
         orient: r.printStats.orient ?? [],
         jointModes: r.jointModes,
+        geometryStalled: false,
         questions: [...this.pendingQuestions(), ...report.questions],
       });
       this.setConnectorReport({ key: designKey({ design: d, answered }), text: analysisText(d, r.parts, this.setup, report), questions: report.questions, errors: r.errors });
     } catch (e) {
-      this.set({ error: t('Errore nel calcolo della geometria: {error}', { error: (e as Error).message }) });
+      if (e instanceof GeometryWorkerError) this.set({ geometryStalled: true });
+      else this.set({ error: t('Errore nel calcolo della geometria: {error}', { error: (e as Error).message }) });
       if (seq === this.evalSeq) this.setConnectorReport({ key: designKey({ design: d, answered }), text: '', questions: [], errors: [(e as Error).message] });
     }
   }

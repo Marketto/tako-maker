@@ -737,5 +737,7 @@
  "Verde traslucido": "半透明グリーン",
  "Verdi": "緑",
  "Viola scuro": "ダークパープル",
- "Viola traslucido": "半透明パープル"
+ "Viola traslucido": "半透明パープル",
+ "Il calcolo della geometria non è partito: forse è uscita una nuova versione dell’app.": "形状の計算が始まりませんでした。アプリの新しいバージョンが出ているかもしれません。",
+ "Ricarica la pagina": "ページを再読み込み"
 }
