@@ -768,5 +768,6 @@
  "Tempo stimato: {time}, filamento: {grams} g": "Arvioitu aika: {time}, filamentti: {grams} g",
  "Titolo": "Otsikko",
  "ugello {nozzle} °C, piatto {bed} °C": "suutin {nozzle} °C, alusta {bed} °C",
- "Ti piace Printopus? Sostieni il progetto su Ko-fi": "Pidätkö Printopusista? Tue projektia Ko-fissa"
+ "Ti piace Printopus? Sostieni il progetto su Ko-fi": "Pidätkö Printopusista? Tue projektia Ko-fissa",
+ "Queste parti si uniscono con agganci disegnati, senza i giochi calibrati: {pairs}. Se una parte deve girare o scattare in posizione, chiedi all'assistente un giunto (perno rotante a scatto, scatti): il gioco lo calcola l'app. Gli altri agganci provali con i campioni di prova prima di stampare tutto.": "Nämä osat liittyvät toisiinsa piirretyillä liitoksilla ilman kalibroituja välyksiä: {pairs}. Jos osan pitää kääntyä tai napsahtaa paikalleen, pyydä avustajalta nivel (napsautettava kääntötappi, lukitusasennot): välyksen laskee sovellus. Kokeile muita liitoksia koekappaleilla ennen kuin tulostat kaiken."
 }

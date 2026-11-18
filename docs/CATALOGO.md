@@ -17,6 +17,7 @@ La fonte è `src/data/catalog.ts`: per aggiungere una voce modifica quel file e 
 - Sopra un asse orizzontale l’arco del foro cede di 0,2–0,4 mm: foro ovale, più gioco in alto (circa 0,45) che ai lati (0,15). L’app lo aggiunge da sola alle cerniere del DSL.
 - Per una cerniera che resta in posizione: una lamella a molla che preme su scanalature (vedi fermi) invece di stringere l’asse.
 - Parti che girano su un perno (volanti, ruote, manopole): giunto rotary con un mozzo pieno su B, attraversato dall’asse. Se già montato servirebbero molti supporti (es. una manovella a L sopra il volante), l’app lo divide in due pezzi con perno a scatto, ognuno appoggiato di piatto.
+- Volante o ruota da montare a mano: giunto rotary con `print: snap` (perno spaccato con dentino che scatta oltre il mozzo e non si sfila). Niente baionette o spine disegnate a mano: senza gioco calibrato si sfilano o si bloccano.
 
 ## Molle stampate (`molle`)
 
@@ -40,7 +41,9 @@ La fonte è `src/data/catalog.ts`: per aggiungere una voce modifica quel file e 
 
 ## Fermi a scatto (detent) (`fermi`)
 
-- Lamella a molla fissata alle due estremità sopra una cavità, con una costola che entra in scanalature.
+- Su una parte che gira (volante, manetta, manovella) gli scatti sono il `detent` del giunto rotary: lamelle precaricate e giochi calibrati li genera l’app. Lamelle e ruote dentate disegnate a mano non tengono: al primo urto la parte scende.
+- Raganella o clic continuo: `detent` del giunto con molte posizioni (ogni 30° circa, non meno di 3 mm d’arco tra due scanalature sul bordo del foro).
+- Parti che non girano (cursori, sportelli scorrevoli): lamella a molla fissata alle due estremità sopra una cavità, con una costola che entra in scanalature.
 - Interferenza della costola 0,6 mm, raggio della scanalatura 1,5 mm (più largo della costola), precarico 0,1 mm.
 - Più scanalature ad angoli diversi danno più posizioni stabili.
 - Su un perno che gira lo scatto va sul perno stesso: le lamelle del perno spaccato fanno da molla e le costole entrano nelle scanalature del foro. Un dentino sulla faccia non scatta: il gioco lungo l’asse lo lascia scivolare via.

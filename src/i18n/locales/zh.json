@@ -768,5 +768,6 @@
  "Tempo stimato: {time}, filamento: {grams} g": "预计时间：{time}，耗材：{grams} g",
  "Titolo": "标题",
  "ugello {nozzle} °C, piatto {bed} °C": "喷嘴 {nozzle} °C，热床 {bed} °C",
- "Ti piace Printopus? Sostieni il progetto su Ko-fi": "喜欢 Printopus？在 Ko-fi 上支持这个项目"
+ "Ti piace Printopus? Sostieni il progetto su Ko-fi": "喜欢 Printopus？在 Ko-fi 上支持这个项目",
+ "Queste parti si uniscono con agganci disegnati, senza i giochi calibrati: {pairs}. Se una parte deve girare o scattare in posizione, chiedi all'assistente un giunto (perno rotante a scatto, scatti): il gioco lo calcola l'app. Gli altri agganci provali con i campioni di prova prima di stampare tutto.": "这些零件通过手工绘制的连接结构相连，没有使用校准后的间隙：{pairs}。如果某个零件需要转动或卡入定位，请让助手改用关节（卡扣式转轴、定位卡点）：间隙由应用计算。其他连接请先用测试样件试过，再打印全部。"
 }

@@ -5,7 +5,7 @@ import { findContacts, overhangBeyond, PEG_SPACING, type PrintStats, type BodySt
 import { pairKey, prefersSnap, printedTogether, type JointModes } from '../design/links';
 import { material } from '../../data/materials';
 import { bondsPoorly, guideline, MAX_SLENDERNESS, MIN_CONTACT_MM2, minWall, SMALL_PART_BRIM_MM, SUPPORT_MIN_AREA_MM2, supportInterfaceFor, plaSupportWeakensPetg, LARGE_FLAT_MM2, LARGE_FLAT_MAX_H, MIXED_PLA_PETG_C, ROUND_RADIUS_MM, HAND_GRIP, STABILITY, SUPPORT_INTERFACE_MIN_MM2 } from '../../data/guidelines';
-import { pendingSamples } from '../calibration/coupons';
+import { fitPairs, pendingSamples } from '../calibration/coupons';
 import { bedOf, estimateStrategies, fitsBed, fmtTime, STRATEGY_LABEL, type PartStat, type StrategyEstimate } from './estimate';
 import { fmtNum, t } from '../../i18n';
 import { hardwareLabel, hardwareOf, toBuy } from '../hardware';
@@ -223,6 +223,20 @@ export function analyze(
         ],
       });
     }
+  }
+
+  /* ---- Agganci disegnati a mano tra parti separate ----
+     Con `connection: designed` l'app non aggiunge perni: dove due parti si compenetrano senza un giunto
+     il gioco è quello disegnato, non quello calibrato, e il campione «Aggancio» ne prova uno solo.
+     Perni che girano, baionette, scatti e raganelle disegnati a mano si sfilano, si bloccano o non
+     scattano: per quelli serve un giunto. Stesse coppie dei campioni (fitPairs). */
+  const handMade = fitPairs(design, Object.fromEntries(parts.map((p) => [p.id, { ...p.bbox, mesh: p.mesh }])));
+  if (handMade.length) {
+    warnings.push(
+      t('Queste parti si uniscono con agganci disegnati, senza i giochi calibrati: {pairs}. Se una parte deve girare o scattare in posizione, chiedi all\'assistente un giunto (perno rotante a scatto, scatti): il gioco lo calcola l\'app. Gli altri agganci provali con i campioni di prova prima di stampare tutto.', {
+        pairs: handMade.map((c) => `"${c.a.name}" – "${c.b.name}"`).join(', '),
+      }),
+    );
   }
 
   /* ---- Pulsanti: sporgenza e risposta alla pressione ---- */

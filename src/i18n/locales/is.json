@@ -768,5 +768,6 @@
  "Tempo stimato: {time}, filamento: {grams} g": "Áætlaður tími: {time}, þráður: {grams} g",
  "Titolo": "Titill",
  "ugello {nozzle} °C, piatto {bed} °C": "spíss {nozzle} °C, plata {bed} °C",
- "Ti piace Printopus? Sostieni il progetto su Ko-fi": "Líkar þér Printopus? Styddu verkefnið á Ko-fi"
+ "Ti piace Printopus? Sostieni il progetto su Ko-fi": "Líkar þér Printopus? Styddu verkefnið á Ko-fi",
+ "Queste parti si uniscono con agganci disegnati, senza i giochi calibrati: {pairs}. Se una parte deve girare o scattare in posizione, chiedi all'assistente un giunto (perno rotante a scatto, scatti): il gioco lo calcola l'app. Gli altri agganci provali con i campioni di prova prima di stampare tutto.": "Þessir hlutar eru tengdir með teiknuðum tengingum, án kvarðaðs bils: {pairs}. Ef hluti á að snúast eða smella í stöðu, biddu aðstoðarmanninn um lið (smellupinna, smellistöður): forritið reiknar bilið. Prófaðu hinar tengingarnar með prufustykkjunum áður en þú prentar allt."
 }

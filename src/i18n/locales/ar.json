@@ -768,5 +768,6 @@
  "Tempo stimato: {time}, filamento: {grams} g": "الوقت المقدّر: {time}، الخيط: {grams} غ",
  "Titolo": "العنوان",
  "ugello {nozzle} °C, piatto {bed} °C": "الفوهة {nozzle} °م، السرير {bed} °م",
- "Ti piace Printopus? Sostieni il progetto su Ko-fi": "هل أعجبك Printopus؟ ادعم المشروع على Ko-fi"
+ "Ti piace Printopus? Sostieni il progetto su Ko-fi": "هل أعجبك Printopus؟ ادعم المشروع على Ko-fi",
+ "Queste parti si uniscono con agganci disegnati, senza i giochi calibrati: {pairs}. Se una parte deve girare o scattare in posizione, chiedi all'assistente un giunto (perno rotante a scatto, scatti): il gioco lo calcola l'app. Gli altri agganci provali con i campioni di prova prima di stampare tutto.": "تتصل هذه القطع بوصلات مرسومة، من دون خلوصات معايرة: {pairs}. إذا كان على قطعة أن تدور أو تثبت بنقرة في موضعها، فاطلب من المساعد مفصلًا (محور دوّار بقفل نقري، مواضع تثبيت): الخلوص يحسبه التطبيق. واختبر الوصلات الأخرى بعينات الاختبار قبل طباعة كل شيء."
 }

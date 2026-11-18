@@ -39,6 +39,7 @@ Punteggio = ore + grammi di scarto / 20 + penalità (montaggio, attenzione richi
 - materiali che richiedono camera chiusa su stampanti aperte;
 - articolazioni stampate già montate con strategia a parti separate;
 - tratti di bordo lunghi senza ganci tra parti a incastro (oltre 1,5 volte la distanza tra i perni);
+- agganci disegnati a mano (`connection: designed`) tra parti che si compenetrano senza giunto, le stesse coppie del campione «Aggancio» (`fitPairs`): il gioco è quello del disegno, non quello calibrato. L'avviso chiede un giunto per le parti che girano o scattano e di provare gli altri agganci con i campioni. Nato da un volante con baionetta disegnata che si sfilava e da una manetta e una raganella con lamelle a mano che non scattavano;
 - pulsanti che non si possono generare (guscio troppo sottile, tasto troppo piccolo, tasto non sopra il guscio);
 - elementi acquistati in oggetti per bambini (fissarli bene; magneti e pile a bottone);
 - elementi da sostituire con una soluzione stampata non ancora sostituiti;
@@ -84,7 +85,7 @@ I campioni sono **pezzi del modello ritagliati** attorno alle parti incerte (`pl
 | Perno rotante | giunti `rotary` (preferito quello senza scatto) | ritaglio attorno al perno, perno liscio (`print: "loose"`, senza testa né dentino) da infilare a mano; asse in verticale, perno verso l'alto, pezzo forato accanto | 3 (`pinClearance`) |
 | Scatto | giunti con scatto | ritaglio del giunto con scatto | 3 (`detentClearance`) |
 | Incastro a pressione / Perno da incollare | collegamento `snap` / `glue` | perno + blocco con foro (i perni li aggiunge l'app) | 3 |
-| Aggancio | parti separate con collegamento `designed` i cui ingombri si compenetrano (senza giunto) | ritaglio della zona comune dei due pezzi; agganci uguali ripetuti si provano una volta | 1 |
+| Aggancio | parti separate con collegamento `designed` i cui ingombri si compenetrano (senza giunto); la zona si restringe a ciò che di un pezzo entra nell'ingombro dell'altro, provando prima il pezzo più piccolo e poi il più grande (una spina sotto un volante grande) | ritaglio della zona comune dei due pezzi; agganci uguali ripetuti si provano una volta | 1 |
 | Prova di misura | `design.samples` dichiarate dall'AI (oggetti esterni, copie dello stesso pezzo) | le zone indicate | 1 |
 
 Per ogni tipo di giunto e materiale si sceglie un solo giunto, il più piccolo. Nei perni rotanti e nei perni

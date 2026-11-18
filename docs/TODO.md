@@ -4,6 +4,7 @@ Attività in corso o da fare. Quando una è conclusa, spostala in [COMPLETED.md]
 
 ## Da verificare
 
+- **Meccanismi sui giunti (18/11):** rifare il cruscotto da bracciolo. Controllare che il volante abbia un giunto rotary a scatto che non si sfila, che la manetta abbia gli scatti dell'app e resti in posizione dopo un urto, che la raganella faccia clic con gli scatti dell'app e che la manetta abbia l'aspetto di una manetta. Per la sella: misurare il bracciolo e stampare prima il campione dell'aggancio (la versione stampata era quella più corta).
 - **Pubblicazione sulle piattaforme (18/11):** pubblicare un modello vero su MakerWorld e su Makeronline con il pacchetto. Controllare che il sito accetti il 3MF con il profilo (non solo come file del modello), che la copertina vada bene e che la descrizione si legga bene incollata.
 - **Misure verificate e campioni d'aggancio (17/11):** rifare il supporto della telecamera per il letto. Controllare che l'assistente cerchi le misure del letto e della telecamera, chieda quelle che non trova (spessore della sponda, attacco della telecamera) invece di inventarle, e che il modello arrivi con un campione minimo della pinza e della sede da provare prima della stampa intera.
 - **Scatti precaricati e interfaccia dei supporti (16/11):** ristampare la manopola con gli scatti: deve servire una spinta decisa per cambiare posizione, senza gioco; se è troppo dura o le lamelle si crepano, ridurre `PIN_DETENT.reachMm`. Controllare che la superficie sopra i supporti in PLA esca liscia e che i supporti si stacchino ancora a mano.

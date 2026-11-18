@@ -768,5 +768,6 @@
  "Tempo stimato: {time}, filamento: {grams} g": "Koha e vlerësuar: {time}, filamenti: {grams} g",
  "Titolo": "Titulli",
  "ugello {nozzle} °C, piatto {bed} °C": "hunda {nozzle} °C, pllaka {bed} °C",
- "Ti piace Printopus? Sostieni il progetto su Ko-fi": "Të pëlqen Printopus? Mbështet projektin në Ko-fi"
+ "Ti piace Printopus? Sostieni il progetto su Ko-fi": "Të pëlqen Printopus? Mbështet projektin në Ko-fi",
+ "Queste parti si uniscono con agganci disegnati, senza i giochi calibrati: {pairs}. Se una parte deve girare o scattare in posizione, chiedi all'assistente un giunto (perno rotante a scatto, scatti): il gioco lo calcola l'app. Gli altri agganci provali con i campioni di prova prima di stampare tutto.": "Këto pjesë bashkohen me lidhje të vizatuara, pa lojërat e kalibruara: {pairs}. Nëse një pjesë duhet të rrotullohet ose të fiksohet me klik në pozicion, kërkoji asistentit një nyje (kunj rrotullues me klik, pozicione me klik): lojën e llogarit aplikacioni. Provo lidhjet e tjera me mostrat e provës para se të printosh gjithçka."
 }

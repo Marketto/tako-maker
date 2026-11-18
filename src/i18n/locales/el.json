@@ -768,5 +768,6 @@
  "Tempo stimato: {time}, filamento: {grams} g": "Εκτιμώμενος χρόνος: {time}, νήμα: {grams} g",
  "Titolo": "Τίτλος",
  "ugello {nozzle} °C, piatto {bed} °C": "ακροφύσιο {nozzle} °C, πλάκα {bed} °C",
- "Ti piace Printopus? Sostieni il progetto su Ko-fi": "Σου αρέσει το Printopus; Στήριξε το έργο στο Ko-fi"
+ "Ti piace Printopus? Sostieni il progetto su Ko-fi": "Σου αρέσει το Printopus; Στήριξε το έργο στο Ko-fi",
+ "Queste parti si uniscono con agganci disegnati, senza i giochi calibrati: {pairs}. Se una parte deve girare o scattare in posizione, chiedi all'assistente un giunto (perno rotante a scatto, scatti): il gioco lo calcola l'app. Gli altri agganci provali con i campioni di prova prima di stampare tutto.": "Αυτά τα κομμάτια ενώνονται με σχεδιασμένες συνδέσεις, χωρίς βαθμονομημένα διάκενα: {pairs}. Αν ένα κομμάτι πρέπει να περιστρέφεται ή να κουμπώνει σε θέση, ζήτα από τον βοηθό μια άρθρωση (περιστροφικό πείρο με κούμπωμα, θέσεις κουμπώματος): το διάκενο το υπολογίζει η εφαρμογή. Δοκίμασε τις άλλες συνδέσεις με τα δοκιμαστικά δείγματα πριν τα τυπώσεις όλα."
 }

@@ -180,6 +180,17 @@ describe('scatti sul perno', () => {
     expect(at(30)).toBeGreaterThan(2 * seated);
   });
 
+  it('raganella: scatti ogni 30° su un perno da 8 mm, ogni posizione trattenuta', async () => {
+    const w = await manifold();
+    const angles = Array.from({ length: 12 }, (_, i) => i * 30);
+    const d = wheel('separate', { detent: { enabled: true, anglesDeg: angles } });
+    const r = evaluateDesign(w, d, {}, {}, ORIENT);
+    expect(r.errors).toEqual([]);
+    const j = d.joints[0];
+    const at = (deg: number) => biteAt(w, r, j, deg, 6, [0, 14]);
+    for (const a of [0, 30, 90, 210]) expect(at(a + 15)).toBeGreaterThan(2 * at(a));
+  });
+
   it('con gli scatti e le parti separate l\'app sceglie il perno a scatto', async () => {
     const w = await manifold();
     const d: Design = { ...turntable(), printPlan: { strategy: 'separate', connection: 'none' } };

@@ -768,5 +768,6 @@
  "Tempo stimato: {time}, filamento: {grams} g": "Tempo estimado: {time}, filamento: {grams} g",
  "Titolo": "Título",
  "ugello {nozzle} °C, piatto {bed} °C": "bico {nozzle} °C, base {bed} °C",
- "Ti piace Printopus? Sostieni il progetto su Ko-fi": "Gostas do Printopus? Apoia o projeto no Ko-fi"
+ "Ti piace Printopus? Sostieni il progetto su Ko-fi": "Gostas do Printopus? Apoia o projeto no Ko-fi",
+ "Queste parti si uniscono con agganci disegnati, senza i giochi calibrati: {pairs}. Se una parte deve girare o scattare in posizione, chiedi all'assistente un giunto (perno rotante a scatto, scatti): il gioco lo calcola l'app. Gli altri agganci provali con i campioni di prova prima di stampare tutto.": "Estas peças unem-se com encaixes desenhados, sem as folgas calibradas: {pairs}. Se uma peça tiver de rodar ou encaixar em posição, pede ao assistente uma articulação (eixo rotativo de encaixe, retentores): a folga é calculada pela app. Testa os outros encaixes com as amostras de teste antes de imprimir tudo."
 }

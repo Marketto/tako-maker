@@ -768,5 +768,6 @@
  "Tempo stimato: {time}, filamento: {grams} g": "Am measta: {time}, filiméid: {grams} g",
  "Titolo": "Teideal",
  "ugello {nozzle} °C, piatto {bed} °C": "soic {nozzle} °C, leaba {bed} °C",
- "Ti piace Printopus? Sostieni il progetto su Ko-fi": "An maith leat Printopus? Tacaigh leis an tionscadal ar Ko-fi"
+ "Ti piace Printopus? Sostieni il progetto su Ko-fi": "An maith leat Printopus? Tacaigh leis an tionscadal ar Ko-fi",
+ "Queste parti si uniscono con agganci disegnati, senza i giochi calibrati: {pairs}. Se una parte deve girare o scattare in posizione, chiedi all'assistente un giunto (perno rotante a scatto, scatti): il gioco lo calcola l'app. Gli altri agganci provali con i campioni di prova prima di stampare tutto.": "Ceanglaítear na páirteanna seo le ceangail tarraingthe, gan na bearnaí calabraithe: {pairs}. Má chaithfidh páirt casadh nó cliceáil isteach i suíomh, iarr alt ar an gcúntóir (biorán rothlach a chliceálann, suíomhanna cliceála): ríomhann an aip an bhearna. Tástáil na ceangail eile leis na samplaí tástála sula bpriontálann tú gach rud."
 }

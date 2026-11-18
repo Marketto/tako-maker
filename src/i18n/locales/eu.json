@@ -768,5 +768,6 @@
  "Tempo stimato: {time}, filamento: {grams} g": "Kalkulatutako denbora: {time}, harizpia: {grams} g",
  "Titolo": "Izenburua",
  "ugello {nozzle} °C, piatto {bed} °C": "pita {nozzle} °C, ohea {bed} °C",
- "Ti piace Printopus? Sostieni il progetto su Ko-fi": "Printopus gustatzen zaizu? Babestu proiektua Ko-fi-n"
+ "Ti piace Printopus? Sostieni il progetto su Ko-fi": "Printopus gustatzen zaizu? Babestu proiektua Ko-fi-n",
+ "Queste parti si uniscono con agganci disegnati, senza i giochi calibrati: {pairs}. Se una parte deve girare o scattare in posizione, chiedi all'assistente un giunto (perno rotante a scatto, scatti): il gioco lo calcola l'app. Gli altri agganci provali con i campioni di prova prima di stampare tutto.": "Pieza hauek marraztutako lotuneekin elkartzen dira, kalibratutako tarterik gabe: {pairs}. Pieza batek biratu edo posizioan klik egin behar badu, eskatu laguntzaileari artikulazio bat (klik bidezko ardatz birakaria, kokalekuak): tartea aplikazioak kalkulatzen du. Probatu gainerako lotuneak proba-laginekin dena inprimatu aurretik."
 }

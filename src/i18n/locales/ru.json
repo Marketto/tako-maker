@@ -768,5 +768,6 @@
  "Tempo stimato: {time}, filamento: {grams} g": "Примерное время: {time}, филамент: {grams} г",
  "Titolo": "Название",
  "ugello {nozzle} °C, piatto {bed} °C": "сопло {nozzle} °C, стол {bed} °C",
- "Ti piace Printopus? Sostieni il progetto su Ko-fi": "Нравится Printopus? Поддержи проект на Ko-fi"
+ "Ti piace Printopus? Sostieni il progetto su Ko-fi": "Нравится Printopus? Поддержи проект на Ko-fi",
+ "Queste parti si uniscono con agganci disegnati, senza i giochi calibrati: {pairs}. Se una parte deve girare o scattare in posizione, chiedi all'assistente un giunto (perno rotante a scatto, scatti): il gioco lo calcola l'app. Gli altri agganci provali con i campioni di prova prima di stampare tutto.": "Эти детали соединяются нарисованными креплениями, без откалиброванных зазоров: {pairs}. Если деталь должна вращаться или защёлкиваться в положении, попроси ассистента сделать шарнир (поворотный штифт с защёлкой, фиксаторы): зазор рассчитает приложение. Остальные крепления проверь на пробных образцах, прежде чем печатать всё."
 }

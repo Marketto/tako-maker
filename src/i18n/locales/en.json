@@ -768,5 +768,6 @@
  "Tempo stimato: {time}, filamento: {grams} g": "Estimated time: {time}, filament: {grams} g",
  "Titolo": "Title",
  "ugello {nozzle} °C, piatto {bed} °C": "nozzle {nozzle} °C, bed {bed} °C",
- "Ti piace Printopus? Sostieni il progetto su Ko-fi": "Like Printopus? Support the project on Ko-fi"
+ "Ti piace Printopus? Sostieni il progetto su Ko-fi": "Like Printopus? Support the project on Ko-fi",
+ "Queste parti si uniscono con agganci disegnati, senza i giochi calibrati: {pairs}. Se una parte deve girare o scattare in posizione, chiedi all'assistente un giunto (perno rotante a scatto, scatti): il gioco lo calcola l'app. Gli altri agganci provali con i campioni di prova prima di stampare tutto.": "These parts are joined by hand-drawn couplings, without calibrated clearances: {pairs}. If a part has to turn or click into position, ask the assistant for a joint (snap-fit rotating pin, detents): the app calculates the clearance. Test the other couplings with the test pieces before printing everything."
 }

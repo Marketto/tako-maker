@@ -768,5 +768,6 @@
  "Tempo stimato: {time}, filamento: {grams} g": "Numatomas laikas: {time}, gija: {grams} g",
  "Titolo": "Pavadinimas",
  "ugello {nozzle} °C, piatto {bed} °C": "antgalis {nozzle} °C, pagrindas {bed} °C",
- "Ti piace Printopus? Sostieni il progetto su Ko-fi": "Patinka Printopus? Paremk projektą per Ko-fi"
+ "Ti piace Printopus? Sostieni il progetto su Ko-fi": "Patinka Printopus? Paremk projektą per Ko-fi",
+ "Queste parti si uniscono con agganci disegnati, senza i giochi calibrati: {pairs}. Se una parte deve girare o scattare in posizione, chiedi all'assistente un giunto (perno rotante a scatto, scatti): il gioco lo calcola l'app. Gli altri agganci provali con i campioni di prova prima di stampare tutto.": "Šios detalės sujungtos nupieštais sujungimais, be kalibruotų tarpų: {pairs}. Jei detalė turi suktis ar užsifiksuoti padėtyje, paprašyk asistento lankstinio sujungimo (užsifiksuojančio sukimosi kaiščio, fiksatorių): tarpą apskaičiuoja programėlė. Kitus sujungimus išbandyk su bandomaisiais pavyzdžiais prieš spausdindamas viską."
 }

@@ -768,5 +768,6 @@
  "Tempo stimato: {time}, filamento: {grams} g": "Temps estimé : {time}, filament : {grams} g",
  "Titolo": "Titre",
  "ugello {nozzle} °C, piatto {bed} °C": "buse {nozzle} °C, plateau {bed} °C",
- "Ti piace Printopus? Sostieni il progetto su Ko-fi": "Tu aimes Printopus ? Soutiens le projet sur Ko-fi"
+ "Ti piace Printopus? Sostieni il progetto su Ko-fi": "Tu aimes Printopus ? Soutiens le projet sur Ko-fi",
+ "Queste parti si uniscono con agganci disegnati, senza i giochi calibrati: {pairs}. Se una parte deve girare o scattare in posizione, chiedi all'assistente un giunto (perno rotante a scatto, scatti): il gioco lo calcola l'app. Gli altri agganci provali con i campioni di prova prima di stampare tutto.": "Ces pièces sont assemblées par des attaches dessinées, sans les jeux calibrés : {pairs}. Si une pièce doit tourner ou s’enclencher en position, demande à l’assistant une articulation (pivot à clipser, crans) : l’appli calcule le jeu. Teste les autres attaches avec les échantillons de test avant de tout imprimer."
 }
