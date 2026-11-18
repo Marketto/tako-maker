@@ -1,3 +1,4 @@
+import { SupportLink } from './SupportLink';
 import { useEffect, useState } from 'react';
 import { deleteProject, listProjects, printerOf, saveProject, uid, useStore, type Project } from '../app/store';
 import { emptyDesign } from '../core/types';
@@ -83,7 +84,7 @@ export function Home({ onOpen, onSettings, onFilaments }: { onOpen: (id: string)
               <li key={p.id}>
                 <SeaChoice className="row project" onClick={() => onOpen(p.id)}>
                   <strong>{p.name}</strong>
-                  <span className="muted small">{t('{n} parti', { n: p.design.parts.length })} · {new Date(p.updatedAt).toLocaleDateString(locale())}</span>
+                  <span className="muted small">{p.design.parts.length === 1 ? t('1 parte') : t('{n} parti', { n: p.design.parts.length })} · {new Date(p.updatedAt).toLocaleDateString(locale())}</span>
                 </SeaChoice>
                 <SeaDelete
                   aria-label={t('Elimina {name}', { name: p.name })}
@@ -99,6 +100,7 @@ export function Home({ onOpen, onSettings, onFilaments }: { onOpen: (id: string)
           </ul>
         )}
         <CloudHomeNotice onSettings={onSettings} />
+        <SupportLink />
       </main>
     </div>
   );

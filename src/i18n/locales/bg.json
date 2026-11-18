@@ -767,5 +767,6 @@
  "Tag: {list}": "Етикети: {list}",
  "Tempo stimato: {time}, filamento: {grams} g": "Очаквано време: {time}, филамент: {grams} g",
  "Titolo": "Заглавие",
- "ugello {nozzle} °C, piatto {bed} °C": "дюза {nozzle} °C, легло {bed} °C"
+ "ugello {nozzle} °C, piatto {bed} °C": "дюза {nozzle} °C, легло {bed} °C",
+ "Ti piace Printopus? Sostieni il progetto su Ko-fi": "Харесва ли ти Printopus? Подкрепи проекта в Ko-fi"
 }

@@ -767,5 +767,6 @@
  "Tag: {list}": "Oznake: {list}",
  "Tempo stimato: {time}, filamento: {grams} g": "Ocenjeni čas: {time}, filament: {grams} g",
  "Titolo": "Naslov",
- "ugello {nozzle} °C, piatto {bed} °C": "šoba {nozzle} °C, podlaga {bed} °C"
+ "ugello {nozzle} °C, piatto {bed} °C": "šoba {nozzle} °C, podlaga {bed} °C",
+ "Ti piace Printopus? Sostieni il progetto su Ko-fi": "Ti je Printopus všeč? Podpri projekt na Ko-fi"
 }

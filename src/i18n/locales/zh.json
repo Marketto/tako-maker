@@ -767,5 +767,6 @@
  "Tag: {list}": "标签：{list}",
  "Tempo stimato: {time}, filamento: {grams} g": "预计时间：{time}，耗材：{grams} g",
  "Titolo": "标题",
- "ugello {nozzle} °C, piatto {bed} °C": "喷嘴 {nozzle} °C，热床 {bed} °C"
+ "ugello {nozzle} °C, piatto {bed} °C": "喷嘴 {nozzle} °C，热床 {bed} °C",
+ "Ti piace Printopus? Sostieni il progetto su Ko-fi": "喜欢 Printopus？在 Ko-fi 上支持这个项目"
 }

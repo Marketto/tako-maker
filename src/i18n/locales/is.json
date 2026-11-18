@@ -767,5 +767,6 @@
  "Tag: {list}": "Merki: {list}",
  "Tempo stimato: {time}, filamento: {grams} g": "Áætlaður tími: {time}, þráður: {grams} g",
  "Titolo": "Titill",
- "ugello {nozzle} °C, piatto {bed} °C": "spíss {nozzle} °C, plata {bed} °C"
+ "ugello {nozzle} °C, piatto {bed} °C": "spíss {nozzle} °C, plata {bed} °C",
+ "Ti piace Printopus? Sostieni il progetto su Ko-fi": "Líkar þér Printopus? Styddu verkefnið á Ko-fi"
 }

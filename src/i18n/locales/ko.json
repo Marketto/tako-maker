@@ -767,5 +767,6 @@
  "Tag: {list}": "태그: {list}",
  "Tempo stimato: {time}, filamento: {grams} g": "예상 시간: {time}, 필라멘트: {grams} g",
  "Titolo": "제목",
- "ugello {nozzle} °C, piatto {bed} °C": "노즐 {nozzle} °C, 베드 {bed} °C"
+ "ugello {nozzle} °C, piatto {bed} °C": "노즐 {nozzle} °C, 베드 {bed} °C",
+ "Ti piace Printopus? Sostieni il progetto su Ko-fi": "Printopus가 마음에 드세요? Ko-fi에서 프로젝트를 후원해 주세요"
 }

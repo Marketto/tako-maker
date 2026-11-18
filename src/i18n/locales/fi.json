@@ -767,5 +767,6 @@
  "Tag: {list}": "Tunnisteet: {list}",
  "Tempo stimato: {time}, filamento: {grams} g": "Arvioitu aika: {time}, filamentti: {grams} g",
  "Titolo": "Otsikko",
- "ugello {nozzle} °C, piatto {bed} °C": "suutin {nozzle} °C, alusta {bed} °C"
+ "ugello {nozzle} °C, piatto {bed} °C": "suutin {nozzle} °C, alusta {bed} °C",
+ "Ti piace Printopus? Sostieni il progetto su Ko-fi": "Pidätkö Printopusista? Tue projektia Ko-fissa"
 }

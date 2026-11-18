@@ -767,5 +767,6 @@
  "Tag: {list}": "Etiketler: {list}",
  "Tempo stimato: {time}, filamento: {grams} g": "Tahmini süre: {time}, filament: {grams} g",
  "Titolo": "Başlık",
- "ugello {nozzle} °C, piatto {bed} °C": "nozul {nozzle} °C, tabla {bed} °C"
+ "ugello {nozzle} °C, piatto {bed} °C": "nozul {nozzle} °C, tabla {bed} °C",
+ "Ti piace Printopus? Sostieni il progetto su Ko-fi": "Printopus'u beğendin mi? Projeyi Ko-fi'de destekle"
 }

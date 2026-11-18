@@ -767,5 +767,6 @@
  "Tag: {list}": "Ετικέτες: {list}",
  "Tempo stimato: {time}, filamento: {grams} g": "Εκτιμώμενος χρόνος: {time}, νήμα: {grams} g",
  "Titolo": "Τίτλος",
- "ugello {nozzle} °C, piatto {bed} °C": "ακροφύσιο {nozzle} °C, πλάκα {bed} °C"
+ "ugello {nozzle} °C, piatto {bed} °C": "ακροφύσιο {nozzle} °C, πλάκα {bed} °C",
+ "Ti piace Printopus? Sostieni il progetto su Ko-fi": "Σου αρέσει το Printopus; Στήριξε το έργο στο Ko-fi"
 }

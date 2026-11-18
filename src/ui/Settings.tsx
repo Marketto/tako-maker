@@ -1,3 +1,4 @@
+import { SupportLink } from './SupportLink';
 import { useEffect, useState } from 'react';
 import { store, useStore, type ProjectUsage } from '../app/store';
 import { Budget } from '../agent/budget';
@@ -163,6 +164,7 @@ export function SettingsDialog({ onClose, onEditSetup, onFilaments }: { onClose:
         <p className="muted small">
           {t('I dati restano su questo dispositivo (e nel tuo cloud, se lo colleghi). Il codice è open source (licenza MIT).')}
         </p>
+        <SupportLink />
       </div>
     </div>
   );
