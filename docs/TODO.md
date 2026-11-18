@@ -4,6 +4,7 @@ Attività in corso o da fare. Quando una è conclusa, spostala in [COMPLETED.md]
 
 ## Da verificare
 
+- **Pubblicazione sulle piattaforme (18/11):** pubblicare un modello vero su MakerWorld e su Makeronline con il pacchetto. Controllare che il sito accetti il 3MF con il profilo (non solo come file del modello), che la copertina vada bene e che la descrizione si legga bene incollata.
 - **Misure verificate e campioni d'aggancio (17/11):** rifare il supporto della telecamera per il letto. Controllare che l'assistente cerchi le misure del letto e della telecamera, chieda quelle che non trova (spessore della sponda, attacco della telecamera) invece di inventarle, e che il modello arrivi con un campione minimo della pinza e della sede da provare prima della stampa intera.
 - **Scatti precaricati e interfaccia dei supporti (16/11):** ristampare la manopola con gli scatti: deve servire una spinta decisa per cambiare posizione, senza gioco; se è troppo dura o le lamelle si crepano, ridurre `PIN_DETENT.reachMm`. Controllare che la superficie sopra i supporti in PLA esca liscia e che i supporti si stacchino ancora a mano.
 - **Gusci robusti (16/11):** riesportare il cruscotto e controllare nello slicer che gli oggetti abbiano 3 pareti, fondo da 7 strati con i supporti e 20%; dopo la stampa, che il riempimento non si veda e la pelle resti attaccata staccando i supporti.

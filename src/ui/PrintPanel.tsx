@@ -11,6 +11,7 @@ import { hardwareLabel, hardwareOf } from '../core/hardware';
 import { orientLabel } from '../core/analysis';
 import { isDesignDown, supportGrams } from '../core/geometry/orient';
 import { material } from '../data/materials';
+import { PublishPanel } from './PublishPanel';
 
 export function PrintPanel({ session, snap }: { session: ProjectSession; snap: Snapshot }) {
   const { setup } = useStore();
@@ -232,6 +233,8 @@ export function PrintPanel({ session, snap }: { session: ProjectSession; snap: S
         </button>
         <button className="btn" disabled={!snap.parts.length} onClick={() => download(session.exportSTL())}>{t('STL per ogni parte (zip)')}</button>
       </div>
+
+      <PublishPanel key={printer.id} session={session} snap={snap} printer={printer} />
     </div>
   );
 }

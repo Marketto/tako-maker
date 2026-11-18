@@ -6,6 +6,7 @@ import type { AssemblyStep } from '../core/assembly/plan';
 import type { Vec3 } from '../core/types';
 import { t } from '../i18n';
 import { placeAvoiding, type Rect } from '../core/plate/primeTower';
+import { setViewerCapture } from './viewerCapture';
 
 /* Anteprima 3D: rotazione (un dito / tasto sinistro), zoom (pizzico / rotellina),
    spostamento (due dita / tasto destro). In modalità montaggio anima il pezzo
@@ -33,6 +34,33 @@ interface SceneRefs {
 }
 
 const ANIM_MS = 1100;
+const COVER = { w: 1200, h: 900, bg: 0xeef6f7 };
+
+/** Copertina: il modello visto di tre quarti su fondo chiaro, senza piatto, a dimensione fissa. */
+async function renderCover(r: SceneRefs): Promise<Uint8Array | undefined> {
+  const box = new THREE.Box3().setFromObject(r.group);
+  if (box.isEmpty()) return undefined;
+  const renderer = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
+  try {
+    renderer.setSize(COVER.w, COVER.h, false);
+    renderer.setClearColor(COVER.bg, 1);
+    const camera = new THREE.PerspectiveCamera(30, COVER.w / COVER.h, 1, 10000);
+    camera.up.set(0, 0, 1);
+    const sphere = box.getBoundingSphere(new THREE.Sphere());
+    const dist = sphere.radius / Math.sin(THREE.MathUtils.degToRad(camera.fov / 2)) * 0.98;
+    camera.position.copy(sphere.center).add(new THREE.Vector3(0.6, -0.8, 0.55).normalize().multiplyScalar(dist));
+    camera.lookAt(sphere.center);
+    const bedVisible = r.bed.visible;
+    r.bed.visible = false;
+    renderer.render(r.scene, camera);
+    r.bed.visible = bedVisible;
+    const blob = await new Promise<Blob | null>((ok) => renderer.domElement.toBlob(ok, 'image/png'));
+    return blob ? new Uint8Array(await blob.arrayBuffer()) : undefined;
+  } finally {
+    renderer.dispose();
+    renderer.forceContextLoss();
+  }
+}
 
 export function Viewer3D({ parts, colors, bed, assembly, keepFree = null }: Props) {
   const host = useRef<HTMLDivElement>(null);
@@ -89,7 +117,9 @@ export function Viewer3D({ parts, colors, bed, assembly, keepFree = null }: Prop
       renderer.render(scene, camera);
     };
     raf = requestAnimationFrame(tick);
+    setViewerCapture(() => renderCover(r));
     return () => {
+      setViewerCapture(null);
       cancelAnimationFrame(raf);
       ro.disconnect();
       controls.dispose();
