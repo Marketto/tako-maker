@@ -12,6 +12,7 @@ import { importModelFile } from '../core/geometry/import';
 import { planAssembly, type AssemblyPlan } from '../core/assembly/plan';
 import { build3MF, flavorForSlicer, slicerProfileFor } from '../core/export/threemf';
 import { buildSTLZip } from '../core/export/stl';
+import { buildListing, buildPublishZip, LICENSE_NO_DERIVATIVES, type License, type Listing } from '../core/export/publish';
 import { bedOf } from '../core/analysis/estimate';
 import { settleIslands } from '../core/geometry/islands';
 import type { Design, Filament, Question, StylePrefs } from '../core/types';
@@ -77,7 +78,7 @@ export function makeClient(): KeyRouter {
   return router;
 }
 
-export const LICENSE_NO_DERIVATIVES = /\bND\b|no[\s-]?deriv|non opere derivate|standard digital file/i;
+export { LICENSE_NO_DERIVATIVES };
 
 export class ProjectSession {
   private snap: Snapshot;
@@ -757,7 +758,12 @@ export class ProjectSession {
 
   export3MF(): { blob: Blob; filename: string } {
     const d = this.snap.project.design;
-    const data = build3MF(this.exportParts(), {
+    return { blob: new Blob([this.build3MFData() as BlobPart], { type: 'model/3mf' }), filename: `${slug(d.name)}.3mf` };
+  }
+
+  private build3MFData(): Uint8Array {
+    const d = this.snap.project.design;
+    return build3MF(this.exportParts(), {
       title: d.name,
       flavor: flavorForSlicer(this.printer.slicer),
       strategy: d.printPlan.strategy,
@@ -769,13 +775,33 @@ export class ProjectSession {
       attribution: d.source,
       extraFiles: this.shoppingFiles('Metadata/'),
     });
-    return { blob: new Blob([data as BlobPart], { type: 'model/3mf' }), filename: `${slug(d.name)}.3mf` };
   }
 
   exportSTL(): { blob: Blob; filename: string } {
     const d = this.snap.project.design;
     const data = buildSTLZip(this.exportParts(), d.source, this.shoppingFiles(''));
     return { blob: new Blob([data as BlobPart], { type: 'application/zip' }), filename: `${slug(d.name)}-stl.zip` };
+  }
+
+  /** Scheda per le piattaforme dei produttori, calcolata dal progetto (zero token). */
+  listing(license: License): Listing {
+    const d = this.snap.project.design;
+    const r = this.snap.report;
+    return buildListing({
+      design: d,
+      printer: this.printer,
+      estimate: r?.estimates.find((e) => e.strategy === d.printPlan.strategy && e.feasible) ?? r?.recommended,
+      materialNotes: r?.materialNotes ?? [],
+      supports: Object.values(r?.printHints ?? {}).some((h) => h.supports),
+      license,
+    });
+  }
+
+  /** Pacchetto da caricare: 3MF, STL, copertina e scheda. */
+  publishPackage(listing: Listing, cover?: Uint8Array): { blob: Blob; filename: string } {
+    const d = this.snap.project.design;
+    const data = buildPublishZip({ base: slug(d.name), model3mf: this.build3MFData(), stlZip: buildSTLZip(this.exportParts(), d.source, this.shoppingFiles('')), cover, listing });
+    return { blob: new Blob([data as BlobPart], { type: 'application/zip' }), filename: `${slug(d.name)}-pubblica.zip` };
   }
 }
 
