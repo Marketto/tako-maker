@@ -767,5 +767,6 @@
  "Tag: {list}": "Tagi: {list}",
  "Tempo stimato: {time}, filamento: {grams} g": "Szacowany czas: {time}, filament: {grams} g",
  "Titolo": "Tytuł",
- "ugello {nozzle} °C, piatto {bed} °C": "dysza {nozzle} °C, stół {bed} °C"
+ "ugello {nozzle} °C, piatto {bed} °C": "dysza {nozzle} °C, stół {bed} °C",
+ "Ti piace Printopus? Sostieni il progetto su Ko-fi": "Podoba ci się Printopus? Wesprzyj projekt na Ko-fi"
 }

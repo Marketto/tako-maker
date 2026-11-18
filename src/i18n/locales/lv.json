@@ -767,5 +767,6 @@
  "Tag: {list}": "Birkas: {list}",
  "Tempo stimato: {time}, filamento: {grams} g": "Paredzamais laiks: {time}, filaments: {grams} g",
  "Titolo": "Nosaukums",
- "ugello {nozzle} °C, piatto {bed} °C": "sprausla {nozzle} °C, galds {bed} °C"
+ "ugello {nozzle} °C, piatto {bed} °C": "sprausla {nozzle} °C, galds {bed} °C",
+ "Ti piace Printopus? Sostieni il progetto su Ko-fi": "Patīk Printopus? Atbalsti projektu Ko-fi"
 }

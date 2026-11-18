@@ -767,5 +767,6 @@
  "Tag: {list}": "الوسوم: {list}",
  "Tempo stimato: {time}, filamento: {grams} g": "الوقت المقدّر: {time}، الخيط: {grams} غ",
  "Titolo": "العنوان",
- "ugello {nozzle} °C, piatto {bed} °C": "الفوهة {nozzle} °م، السرير {bed} °م"
+ "ugello {nozzle} °C, piatto {bed} °C": "الفوهة {nozzle} °م، السرير {bed} °م",
+ "Ti piace Printopus? Sostieni il progetto su Ko-fi": "هل أعجبك Printopus؟ ادعم المشروع على Ko-fi"
 }

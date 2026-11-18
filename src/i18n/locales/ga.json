@@ -767,5 +767,6 @@
  "Tag: {list}": "Clibeanna: {list}",
  "Tempo stimato: {time}, filamento: {grams} g": "Am measta: {time}, filiméid: {grams} g",
  "Titolo": "Teideal",
- "ugello {nozzle} °C, piatto {bed} °C": "soic {nozzle} °C, leaba {bed} °C"
+ "ugello {nozzle} °C, piatto {bed} °C": "soic {nozzle} °C, leaba {bed} °C",
+ "Ti piace Printopus? Sostieni il progetto su Ko-fi": "An maith leat Printopus? Tacaigh leis an tionscadal ar Ko-fi"
 }

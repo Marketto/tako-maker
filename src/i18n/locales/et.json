@@ -767,5 +767,6 @@
  "Tag: {list}": "Sildid: {list}",
  "Tempo stimato: {time}, filamento: {grams} g": "Hinnanguline aeg: {time}, filament: {grams} g",
  "Titolo": "Pealkiri",
- "ugello {nozzle} °C, piatto {bed} °C": "otsik {nozzle} °C, alus {bed} °C"
+ "ugello {nozzle} °C, piatto {bed} °C": "otsik {nozzle} °C, alus {bed} °C",
+ "Ti piace Printopus? Sostieni il progetto su Ko-fi": "Meeldib Printopus? Toeta projekti Ko-fis"
 }

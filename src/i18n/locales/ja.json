@@ -767,5 +767,6 @@
  "Tag: {list}": "タグ：{list}",
  "Tempo stimato: {time}, filamento: {grams} g": "推定時間：{time}、フィラメント：{grams} g",
  "Titolo": "タイトル",
- "ugello {nozzle} °C, piatto {bed} °C": "ノズル {nozzle} °C、ベッド {bed} °C"
+ "ugello {nozzle} °C, piatto {bed} °C": "ノズル {nozzle} °C、ベッド {bed} °C",
+ "Ti piace Printopus? Sostieni il progetto su Ko-fi": "Printopus を気に入ってくれましたか？Ko-fi でプロジェクトを応援してください"
 }

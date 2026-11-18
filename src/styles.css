@@ -884,3 +884,7 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
   .topbar { gap: 0.35rem; padding-inline: 0.5rem; }
   .budget { padding-inline: 0.45rem; font-size: 0.8rem; }
 }
+
+/* ---------- Sostieni il progetto ---------- */
+.support-link { display: inline-flex; align-items: center; justify-content: center; gap: 0.4rem; min-height: 44px; padding: 0.25rem 0.5rem; align-self: center; box-sizing: border-box; color: var(--muted); font-size: 0.9rem; text-align: center; text-decoration: none; }
+.support-link:hover, .support-link:focus-visible { color: inherit; text-decoration: underline; }

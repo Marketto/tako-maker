@@ -767,5 +767,6 @@
  "Tag: {list}": "Etiketak: {list}",
  "Tempo stimato: {time}, filamento: {grams} g": "Kalkulatutako denbora: {time}, harizpia: {grams} g",
  "Titolo": "Izenburua",
- "ugello {nozzle} °C, piatto {bed} °C": "pita {nozzle} °C, ohea {bed} °C"
+ "ugello {nozzle} °C, piatto {bed} °C": "pita {nozzle} °C, ohea {bed} °C",
+ "Ti piace Printopus? Sostieni il progetto su Ko-fi": "Printopus gustatzen zaizu? Babestu proiektua Ko-fi-n"
 }
