@@ -768,5 +768,6 @@
  "Tempo stimato: {time}, filamento: {grams} g": "예상 시간: {time}, 필라멘트: {grams} g",
  "Titolo": "제목",
  "ugello {nozzle} °C, piatto {bed} °C": "노즐 {nozzle} °C, 베드 {bed} °C",
- "Ti piace Printopus? Sostieni il progetto su Ko-fi": "Printopus가 마음에 드세요? Ko-fi에서 프로젝트를 후원해 주세요"
+ "Ti piace Printopus? Sostieni il progetto su Ko-fi": "Printopus가 마음에 드세요? Ko-fi에서 프로젝트를 후원해 주세요",
+ "Queste parti si uniscono con agganci disegnati, senza i giochi calibrati: {pairs}. Se una parte deve girare o scattare in posizione, chiedi all'assistente un giunto (perno rotante a scatto, scatti): il gioco lo calcola l'app. Gli altri agganci provali con i campioni di prova prima di stampare tutto.": "이 부품들은 보정된 공차 없이 직접 그린 결합부로 연결되어 있습니다: {pairs}. 부품이 회전하거나 딸깍 하고 제자리에 고정되어야 한다면 어시스턴트에게 조인트(스냅식 회전 핀, 고정 위치)를 요청하세요. 공차는 앱이 계산합니다. 다른 결합부는 전체를 출력하기 전에 테스트 조각으로 확인하세요."
 }

@@ -768,5 +768,6 @@
  "Tempo stimato: {time}, filamento: {grams} g": "Paredzamais laiks: {time}, filaments: {grams} g",
  "Titolo": "Nosaukums",
  "ugello {nozzle} °C, piatto {bed} °C": "sprausla {nozzle} °C, galds {bed} °C",
- "Ti piace Printopus? Sostieni il progetto su Ko-fi": "Patīk Printopus? Atbalsti projektu Ko-fi"
+ "Ti piace Printopus? Sostieni il progetto su Ko-fi": "Patīk Printopus? Atbalsti projektu Ko-fi",
+ "Queste parti si uniscono con agganci disegnati, senza i giochi calibrati: {pairs}. Se una parte deve girare o scattare in posizione, chiedi all'assistente un giunto (perno rotante a scatto, scatti): il gioco lo calcola l'app. Gli altri agganci provali con i campioni di prova prima di stampare tutto.": "Šīs detaļas savienotas ar zīmētiem stiprinājumiem bez kalibrētām atstarpēm: {pairs}. Ja detaļai jāgriežas vai jānofiksējas pozīcijā, palūdz asistentam šarnīru (fiksējamu grozāmo tapu, fiksatorus): atstarpi aprēķina lietotne. Pārbaudi citus stiprinājumus ar testa paraugiem, pirms drukā visu."
 }

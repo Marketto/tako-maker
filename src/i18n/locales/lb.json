@@ -768,5 +768,6 @@
  "Tempo stimato: {time}, filamento: {grams} g": "Geschate Zäit: {time}, Filament: {grams} g",
  "Titolo": "Titel",
  "ugello {nozzle} °C, piatto {bed} °C": "Düs {nozzle} °C, Drockbett {bed} °C",
- "Ti piace Printopus? Sostieni il progetto su Ko-fi": "Gefält dir Printopus? Ënnerstëtz de Projet op Ko-fi"
+ "Ti piace Printopus? Sostieni il progetto su Ko-fi": "Gefält dir Printopus? Ënnerstëtz de Projet op Ko-fi",
+ "Queste parti si uniscono con agganci disegnati, senza i giochi calibrati: {pairs}. Se una parte deve girare o scattare in posizione, chiedi all'assistente un giunto (perno rotante a scatto, scatti): il gioco lo calcola l'app. Gli altri agganci provali con i campioni di prova prima di stampare tutto.": "Dës Deeler gi mat gezeechente Verbindungen zesummegesat, ouni kalibréiert Spill: {pairs}. Wann en Deel sech dréie soll oder an enger Positioun aschnappe soll, fro den Assistent no engem Gelenk (Dréizapen mat Schnappverschloss, Rastungen): d'Spill rechent d'App aus. Test déi aner Verbindunge mat den Testmuster, ier s du alles dréchs."
 }

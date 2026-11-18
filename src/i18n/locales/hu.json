@@ -768,5 +768,6 @@
  "Tempo stimato: {time}, filamento: {grams} g": "Becsült idő: {time}, filament: {grams} g",
  "Titolo": "Cím",
  "ugello {nozzle} °C, piatto {bed} °C": "fúvóka {nozzle} °C, tárgyasztal {bed} °C",
- "Ti piace Printopus? Sostieni il progetto su Ko-fi": "Tetszik a Printopus? Támogasd a projektet a Ko-fin"
+ "Ti piace Printopus? Sostieni il progetto su Ko-fi": "Tetszik a Printopus? Támogasd a projektet a Ko-fin",
+ "Queste parti si uniscono con agganci disegnati, senza i giochi calibrati: {pairs}. Se una parte deve girare o scattare in posizione, chiedi all'assistente un giunto (perno rotante a scatto, scatti): il gioco lo calcola l'app. Gli altri agganci provali con i campioni di prova prima di stampare tutto.": "Ezek az alkatrészek rajzolt kötésekkel kapcsolódnak, kalibrált hézag nélkül: {pairs}. Ha egy alkatrésznek forognia kell vagy a helyére kell pattannia, kérj az asszisztenstől csuklót (bepattanó forgócsapot, rögzítési állásokat): a hézagot az alkalmazás számolja ki. A többi kötést próbáld ki a próbadarabokkal, mielőtt mindent kinyomtatsz."
 }

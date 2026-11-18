@@ -768,5 +768,6 @@
  "Tempo stimato: {time}, filamento: {grams} g": "Procijenjeno vrijeme: {time}, filament: {grams} g",
  "Titolo": "Naslov",
  "ugello {nozzle} °C, piatto {bed} °C": "mlaznica {nozzle} °C, podloga {bed} °C",
- "Ti piace Printopus? Sostieni il progetto su Ko-fi": "Sviđa ti se Printopus? Podrži projekt na Ko-fi"
+ "Ti piace Printopus? Sostieni il progetto su Ko-fi": "Sviđa ti se Printopus? Podrži projekt na Ko-fi",
+ "Queste parti si uniscono con agganci disegnati, senza i giochi calibrati: {pairs}. Se una parte deve girare o scattare in posizione, chiedi all'assistente un giunto (perno rotante a scatto, scatti): il gioco lo calcola l'app. Gli altri agganci provali con i campioni di prova prima di stampare tutto.": "Ovi se dijelovi spajaju nacrtanim spojevima, bez kalibriranih zazora: {pairs}. Ako se dio mora okretati ili škljocnuti u položaj, zatraži od asistenta zglob (okretni klin na škljocaj, položaje na škljocaj): zazor izračunava aplikacija. Ostale spojeve isprobaj na probnim uzorcima prije nego što ispišeš sve."
 }

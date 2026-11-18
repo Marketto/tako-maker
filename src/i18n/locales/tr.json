@@ -768,5 +768,6 @@
  "Tempo stimato: {time}, filamento: {grams} g": "Tahmini süre: {time}, filament: {grams} g",
  "Titolo": "Başlık",
  "ugello {nozzle} °C, piatto {bed} °C": "nozul {nozzle} °C, tabla {bed} °C",
- "Ti piace Printopus? Sostieni il progetto su Ko-fi": "Printopus'u beğendin mi? Projeyi Ko-fi'de destekle"
+ "Ti piace Printopus? Sostieni il progetto su Ko-fi": "Printopus'u beğendin mi? Projeyi Ko-fi'de destekle",
+ "Queste parti si uniscono con agganci disegnati, senza i giochi calibrati: {pairs}. Se una parte deve girare o scattare in posizione, chiedi all'assistente un giunto (perno rotante a scatto, scatti): il gioco lo calcola l'app. Gli altri agganci provali con i campioni di prova prima di stampare tutto.": "Bu parçalar kalibre edilmiş boşluklar olmadan çizilmiş bağlantılarla birleşiyor: {pairs}. Bir parçanın dönmesi veya bir konuma klik diye oturması gerekiyorsa asistandan bir eklem iste (geçmeli döner pim, kilit konumları): boşluğu uygulama hesaplar. Diğer bağlantıları her şeyi basmadan önce deneme parçalarıyla dene."
 }

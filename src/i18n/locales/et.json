@@ -768,5 +768,6 @@
  "Tempo stimato: {time}, filamento: {grams} g": "Hinnanguline aeg: {time}, filament: {grams} g",
  "Titolo": "Pealkiri",
  "ugello {nozzle} °C, piatto {bed} °C": "otsik {nozzle} °C, alus {bed} °C",
- "Ti piace Printopus? Sostieni il progetto su Ko-fi": "Meeldib Printopus? Toeta projekti Ko-fis"
+ "Ti piace Printopus? Sostieni il progetto su Ko-fi": "Meeldib Printopus? Toeta projekti Ko-fis",
+ "Queste parti si uniscono con agganci disegnati, senza i giochi calibrati: {pairs}. Se una parte deve girare o scattare in posizione, chiedi all'assistente un giunto (perno rotante a scatto, scatti): il gioco lo calcola l'app. Gli altri agganci provali con i campioni di prova prima di stampare tutto.": "Need osad on ühendatud joonistatud kinnitustega, ilma kalibreeritud lõtkudeta: {pairs}. Kui osa peab pöörlema või asendisse klõpsatama, palu assistendilt liigendit (klõpsuga pöördtihvt, fikseeritud asendid): lõtku arvutab rakendus. Proovi teisi kinnitusi proovitükkidega enne kõige printimist."
 }

@@ -768,5 +768,6 @@
  "Tempo stimato: {time}, filamento: {grams} g": "Uppskattad tid: {time}, filament: {grams} g",
  "Titolo": "Titel",
  "ugello {nozzle} °C, piatto {bed} °C": "munstycke {nozzle} °C, bädd {bed} °C",
- "Ti piace Printopus? Sostieni il progetto su Ko-fi": "Gillar du Printopus? Stöd projektet på Ko-fi"
+ "Ti piace Printopus? Sostieni il progetto su Ko-fi": "Gillar du Printopus? Stöd projektet på Ko-fi",
+ "Queste parti si uniscono con agganci disegnati, senza i giochi calibrati: {pairs}. Se una parte deve girare o scattare in posizione, chiedi all'assistente un giunto (perno rotante a scatto, scatti): il gioco lo calcola l'app. Gli altri agganci provali con i campioni di prova prima di stampare tutto.": "De här delarna sitter ihop med ritade kopplingar, utan kalibrerat glapp: {pairs}. Om en del ska vrida sig eller klicka fast i ett läge, be assistenten om en led (snäpptapp, snäpplägen): appen räknar ut glappet. Testa de andra kopplingarna med testproven innan du skriver ut allt."
 }

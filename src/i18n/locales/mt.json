@@ -768,5 +768,6 @@
  "Tempo stimato: {time}, filamento: {grams} g": "Ħin stmat: {time}, filament: {grams} g",
  "Titolo": "Titlu",
  "ugello {nozzle} °C, piatto {bed} °C": "żennuna {nozzle} °C, pjanċa {bed} °C",
- "Ti piace Printopus? Sostieni il progetto su Ko-fi": "Jogħġbok Printopus? Appoġġja l-proġett fuq Ko-fi"
+ "Ti piace Printopus? Sostieni il progetto su Ko-fi": "Jogħġbok Printopus? Appoġġja l-proġett fuq Ko-fi",
+ "Queste parti si uniscono con agganci disegnati, senza i giochi calibrati: {pairs}. Se una parte deve girare o scattare in posizione, chiedi all'assistente un giunto (perno rotante a scatto, scatti): il gioco lo calcola l'app. Gli altri agganci provali con i campioni di prova prima di stampare tutto.": "Dawn il-partijiet jingħaqdu b'konnessjonijiet imfassla, mingħajr il-lakuni kkalibrati: {pairs}. Jekk parti trid iddur jew tidħol f'posizzjoni bi klikk, itlob lill-assistent ġonta (pinn li jdur bi klikk, pożizzjonijiet bi klikk): il-lakuna tikkalkulaha l-app. Ipprova l-konnessjonijiet l-oħra bil-kampjuni tal-prova qabel tistampa kollox."
 }

@@ -768,5 +768,6 @@
  "Tempo stimato: {time}, filamento: {grams} g": "Odhadovaný čas: {time}, filament: {grams} g",
  "Titolo": "Název",
  "ugello {nozzle} °C, piatto {bed} °C": "tryska {nozzle} °C, podložka {bed} °C",
- "Ti piace Printopus? Sostieni il progetto su Ko-fi": "Líbí se ti Printopus? Podpoř projekt na Ko-fi"
+ "Ti piace Printopus? Sostieni il progetto su Ko-fi": "Líbí se ti Printopus? Podpoř projekt na Ko-fi",
+ "Queste parti si uniscono con agganci disegnati, senza i giochi calibrati: {pairs}. Se una parte deve girare o scattare in posizione, chiedi all'assistente un giunto (perno rotante a scatto, scatti): il gioco lo calcola l'app. Gli altri agganci provali con i campioni di prova prima di stampare tutto.": "Tyto díly se spojují nakreslenými spoji bez kalibrovaných vůlí: {pairs}. Pokud se má díl otáčet nebo zacvaknout do polohy, požádej asistenta o kloub (otočný čep se západkou, aretace): vůli spočítá aplikace. Ostatní spoje vyzkoušej na zkušebních vzorcích, než vytiskneš všechno."
 }

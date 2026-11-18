@@ -349,16 +349,25 @@ export function fitPairs(design: Design, boxes: Record<string, PartBox>): { a: P
       let lo = [0, 1, 2].map((d) => Math.max(A.min[d], B.min[d]));
       let hi = [0, 1, 2].map((d) => Math.min(A.max[d], B.max[d]));
       if ([0, 1, 2].some((d) => hi[d] - lo[d] <= 1)) continue;
-      // Con la mesh si restringe la zona alla parte del pezzo più piccolo che entra nell'ingombro dell'altro
-      // (un supporto con un braccio lungo non deve allargare il campione).
-      const [big, small] = vol(A) >= vol(B) ? [A, B] : [B, A];
-      if (small.mesh) {
+      // Con la mesh si restringe la zona alla parte di un pezzo che entra nell'ingombro dell'altro
+      // (un supporto con un braccio lungo non deve allargare il campione). Prima il pezzo più piccolo,
+      // poi l'altro: un volante grande può entrare con la sua spina in un supporto piccolo.
+      const order: [PartBox, PartBox][] = vol(A) >= vol(B) ? [[A, B], [B, A]] : [[B, A], [A, B]];
+      let found = false;
+      for (const [big, small] of order) {
+        if (!small.mesh) {
+          found = true;
+          break;
+        }
         const inside = meshInside(small.mesh, big);
         if (!inside) continue;
-        lo = [0, 1, 2].map((d) => Math.max(lo[d], inside.min[d]));
-        hi = [0, 1, 2].map((d) => Math.min(hi[d], inside.max[d]));
-        if ([0, 1, 2].some((d) => hi[d] - lo[d] <= 1)) continue;
+        const l = [0, 1, 2].map((d) => Math.max(lo[d], inside.min[d]));
+        const h = [0, 1, 2].map((d) => Math.min(hi[d], inside.max[d]));
+        if ([0, 1, 2].some((d) => h[d] - l[d] <= 1)) continue;
+        [lo, hi, found] = [l, h, true];
+        break;
       }
+      if (!found) continue;
       const region: Box3 = {
         min: [0, 1, 2].map((d) => Math.max(lo[d] - 5, Math.min(A.min[d], B.min[d]))) as Vec3,
         max: [0, 1, 2].map((d) => Math.min(hi[d] + 5, Math.max(A.max[d], B.max[d]))) as Vec3,

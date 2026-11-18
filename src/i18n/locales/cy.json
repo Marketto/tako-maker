@@ -768,5 +768,6 @@
  "Tempo stimato: {time}, filamento: {grams} g": "Amser amcangyfrifedig: {time}, ffilament: {grams} g",
  "Titolo": "Teitl",
  "ugello {nozzle} °C, piatto {bed} °C": "ffroenell {nozzle} °C, gwely {bed} °C",
- "Ti piace Printopus? Sostieni il progetto su Ko-fi": "Wyt ti'n hoffi Printopus? Cefnoga'r prosiect ar Ko-fi"
+ "Ti piace Printopus? Sostieni il progetto su Ko-fi": "Wyt ti'n hoffi Printopus? Cefnoga'r prosiect ar Ko-fi",
+ "Queste parti si uniscono con agganci disegnati, senza i giochi calibrati: {pairs}. Se una parte deve girare o scattare in posizione, chiedi all'assistente un giunto (perno rotante a scatto, scatti): il gioco lo calcola l'app. Gli altri agganci provali con i campioni di prova prima di stampare tutto.": "Mae'r rhannau hyn yn cael eu cysylltu â chysylltiadau wedi'u lluniadu, heb y bylchau wedi'u graddnodi: {pairs}. Os oes rhaid i ran droi neu glicio i'w lle, gofyn i'r cynorthwyydd am gymal (pin troi sy'n clicio, safleoedd clicio): mae'r ap yn cyfrifo'r bwlch. Profa'r cysylltiadau eraill gyda'r darnau prawf cyn argraffu'r cyfan."
 }

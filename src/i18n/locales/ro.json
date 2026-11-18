@@ -768,5 +768,6 @@
  "Tempo stimato: {time}, filamento: {grams} g": "Timp estimat: {time}, filament: {grams} g",
  "Titolo": "Titlu",
  "ugello {nozzle} °C, piatto {bed} °C": "duză {nozzle} °C, pat {bed} °C",
- "Ti piace Printopus? Sostieni il progetto su Ko-fi": "Îți place Printopus? Susține proiectul pe Ko-fi"
+ "Ti piace Printopus? Sostieni il progetto su Ko-fi": "Îți place Printopus? Susține proiectul pe Ko-fi",
+ "Queste parti si uniscono con agganci disegnati, senza i giochi calibrati: {pairs}. Se una parte deve girare o scattare in posizione, chiedi all'assistente un giunto (perno rotante a scatto, scatti): il gioco lo calcola l'app. Gli altri agganci provali con i campioni di prova prima di stampare tutto.": "Aceste piese se îmbină cu prinderi desenate, fără jocurile calibrate: {pairs}. Dacă o piesă trebuie să se rotească sau să se fixeze cu clic într-o poziție, cere-i asistentului o articulație (ax rotativ cu clic, poziții cu clic): jocul îl calculează aplicația. Testează celelalte prinderi cu mostrele de test înainte să imprimi tot."
 }

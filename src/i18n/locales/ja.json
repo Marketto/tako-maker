@@ -768,5 +768,6 @@
  "Tempo stimato: {time}, filamento: {grams} g": "推定時間：{time}、フィラメント：{grams} g",
  "Titolo": "タイトル",
  "ugello {nozzle} °C, piatto {bed} °C": "ノズル {nozzle} °C、ベッド {bed} °C",
- "Ti piace Printopus? Sostieni il progetto su Ko-fi": "Printopus を気に入ってくれましたか？Ko-fi でプロジェクトを応援してください"
+ "Ti piace Printopus? Sostieni il progetto su Ko-fi": "Printopus を気に入ってくれましたか？Ko-fi でプロジェクトを応援してください",
+ "Queste parti si uniscono con agganci disegnati, senza i giochi calibrati: {pairs}. Se una parte deve girare o scattare in posizione, chiedi all'assistente un giunto (perno rotante a scatto, scatti): il gioco lo calcola l'app. Gli altri agganci provali con i campioni di prova prima di stampare tutto.": "これらのパーツは、キャリブレーションされたクリアランスなしで、手描きの結合部でつながっています：{pairs}。パーツを回転させたり、カチッと位置決めしたりする必要がある場合は、アシスタントにジョイント（スナップ式回転ピン、クリック位置）を頼んでください。クリアランスはアプリが計算します。その他の結合部は、全体をプリントする前にテストピースで確かめてください。"
 }
